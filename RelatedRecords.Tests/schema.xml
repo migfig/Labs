@@ -1,0 +1,17 @@
+﻿<schema>
+  <Table name="Tickets">
+    <Column ColumnName="Id" ColumnType="uniqueidentifier" Nullable="NO" PrimaryKey="1" ForeignKey="0" />
+    <Column ColumnName="TicketNumber" ColumnType="bigint" Nullable="NO" PrimaryKey="0" ForeignKey="0" />
+    <Column ColumnName="Title" ColumnType="varchar" Nullable="NO" PrimaryKey="0" ForeignKey="0" />
+    <Column ColumnName="StatusCodeId" ColumnType="int" Nullable="NO" PrimaryKey="0" ForeignKey="1" />
+    <Column ColumnName="PriorityId" ColumnType="int" Nullable="NO" PrimaryKey="0" ForeignKey="1" />
+  </Table>
+  <Table name="TicketsPriorities">
+    <Column ColumnName="PriorityId" ColumnType="int" Nullable="NO" PrimaryKey="1" ForeignKey="0" />
+    <Column ColumnName="Description" ColumnType="varchar" Nullable="NO" PrimaryKey="0" ForeignKey="0" />
+  </Table>
+  <Table name="TicketsStatusCodes">
+    <Column ColumnName="StatusCodeId" ColumnType="int" Nullable="NO" PrimaryKey="1" ForeignKey="0" />
+    <Column ColumnName="Description" ColumnType="varchar" Nullable="NO" PrimaryKey="0" ForeignKey="0" />
+  </Table>
+</schema>

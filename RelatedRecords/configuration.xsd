@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Configuration" type="CConfiguration"/>
+  <xs:complexType name="CConfiguration">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="Datasource" type="CDatasource"/>
+      <xs:element maxOccurs="unbounded" name="Dataset" type="CDataset"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CDatasource">
+    <xs:sequence>
+      <xs:element name="ConnectionString" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:complexType name="CDataset">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="Table" type="CTable"/>
+      <xs:element maxOccurs="unbounded" name="Relationship" type="CRelationship"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="dataSourceName" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:complexType name="CTable">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="Column" type="CColumn"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:complexType name="CColumn">
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="DbType" type="eDbType" use="required" />
+    <xs:attribute name="isPrimaryKey" type="xs:boolean" use="required" />
+    <xs:attribute name="isForeignKey" type="xs:boolean" use="required" />
+    <xs:attribute name="isNullable" type="xs:boolean" use="required" />
+    <xs:attribute name="defaultValue" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:complexType name="CRelationship">
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="fromTable" type="xs:string" use="required" />
+    <xs:attribute name="toTable" type="xs:string" use="required" />
+    <xs:attribute name="fromColumn" type="xs:string" use="required" />
+    <xs:attribute name="toColumn" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="eDbType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="int"/>
+      <xs:enumeration value="long"/>
+      <xs:enumeration value="float"/>
+      <xs:enumeration value="bool"/>
+      <xs:enumeration value="string"/>
+      <xs:enumeration value="datetime"/>
+      <xs:enumeration value="guid"/>
+      <xs:enumeration value="binary"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

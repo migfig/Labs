@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+  <Datasource name="local">
+    <ConnectionString>Data Source=localhost\development;Initial Catalog=development;Integrated Security=True</ConnectionString>
+  </Datasource>
+  <Datasource name="remote">
+    <ConnectionString>Data Source=remote\development;Initial Catalog=development;Integrated Security=True</ConnectionString>
+  </Datasource>
+
+  <Dataset name="sample" dataSourceName="local">
+    <Table name="Tickets">
+      <Column name="Id" DbType="guid" isPrimaryKey="true" isForeignKey="false" isNullable="false" defaultValue=""/>
+      <Column name="TicketNumber" DbType="long" isPrimaryKey="false" isForeignKey="false" isNullable="false" defaultValue=""/>
+      <Column name="Title" DbType="string" isPrimaryKey="false" isForeignKey="false" isNullable="false" defaultValue=""/>
+      <Column name="StatusCodeId" DbType="int" isPrimaryKey="false" isForeignKey="true" isNullable="false" defaultValue="0"/>
+      <Column name="PriorityId" DbType="int" isPrimaryKey="false" isForeignKey="true" isNullable="false" defaultValue="0"/>
+    </Table>
+    <Table name="TicketsStatusCodes">
+      <Column name="StatusCodeId" DbType="int" isPrimaryKey="true" isForeignKey="false" isNullable="false" defaultValue=""/>
+      <Column name="Description" DbType="string" isPrimaryKey="false" isForeignKey="false" isNullable="false" defaultValue=""/>
+    </Table>
+    <Table name="TicketsPriorities">
+      <Column name="PriorityId" DbType="int" isPrimaryKey="true" isForeignKey="false" isNullable="false" defaultValue=""/>
+      <Column name="Description" DbType="string" isPrimaryKey="false" isForeignKey="false" isNullable="false" defaultValue=""/>
+    </Table>
+
+    <Relationship name="Tickets->TicketsStatusCodes" fromTable="Tickets" toTable="TicketsStatusCodes" fromColumn="StatusCodeId" toColumn="StatusCodeId"/>
+    <Relationship name="Tickets->TicketsPriorities" fromTable="Tickets" toTable="TicketsPriorities" fromColumn="PriorityId" toColumn="PriorityId"/>
+  </Dataset>
+
+  <Dataset name="sample-remote" dataSourceName="remote">
+    <Table name="Tickets">
+      <Column name="Id" DbType="guid" isPrimaryKey="true" isForeignKey="false" isNullable="false" defaultValue=""/>
+      <Column name="TicketNumber" DbType="long" isPrimaryKey="false" isForeignKey="false" isNullable="false" defaultValue=""/>
+      <Column name="Title" DbType="string" isPrimaryKey="false" isForeignKey="false" isNullable="false" defaultValue=""/>
+      <Column name="StatusCodeId" DbType="int" isPrimaryKey="false" isForeignKey="true" isNullable="false" defaultValue="0"/>
+      <Column name="PriorityId" DbType="int" isPrimaryKey="false" isForeignKey="true" isNullable="false" defaultValue="0"/>
+    </Table>
+    <Table name="TicketsStatusCodes">
+      <Column name="StatusCodeId" DbType="int" isPrimaryKey="true" isForeignKey="false" isNullable="false" defaultValue=""/>
+      <Column name="Description" DbType="string" isPrimaryKey="false" isForeignKey="false" isNullable="false" defaultValue=""/>
+    </Table>
+    <Table name="TicketsPriorities">
+      <Column name="PriorityId" DbType="int" isPrimaryKey="true" isForeignKey="false" isNullable="false" defaultValue=""/>
+      <Column name="Description" DbType="string" isPrimaryKey="false" isForeignKey="false" isNullable="false" defaultValue=""/>
+    </Table>
+
+    <Relationship name="Tickets->TicketsStatusCodes" fromTable="Tickets" toTable="TicketsStatusCodes" fromColumn="StatusCodeId" toColumn="StatusCodeId"/>
+    <Relationship name="Tickets->TicketsPriorities" fromTable="Tickets" toTable="TicketsPriorities" fromColumn="PriorityId" toColumn="PriorityId"/>
+  </Dataset>
+</Configuration>

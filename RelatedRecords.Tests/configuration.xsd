@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CConfiguration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="CDatasource">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ConnectionString" type="xs:string" />
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element maxOccurs="unbounded" name="CDataset">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="CTable">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="CColumn">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute name="DbType" type="xs:string" use="required" />
+                        <xs:attribute name="isPrimaryKey" type="xs:boolean" use="required" />
+                        <xs:attribute name="isForeignKey" type="xs:boolean" use="required" />
+                        <xs:attribute name="isNullable" type="xs:boolean" use="required" />
+                        <xs:attribute name="defaultValue" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element maxOccurs="unbounded" name="Relationship">
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="fromTable" type="xs:string" use="required" />
+                  <xs:attribute name="toTable" type="xs:string" use="required" />
+                  <xs:attribute name="fromColumn" type="xs:string" use="required" />
+                  <xs:attribute name="toColumn" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="dataSourceName" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
