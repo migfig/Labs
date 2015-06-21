@@ -8,6 +8,9 @@ The projects created up to this moment are:
 > 
 > Related Records
 
+They have been created from scratch using **MS Visual Studio**  on a **Microsoft Surface 3** with its corresponding **Type Cover**.
+Also using **ReSharper** add-in.
+
 ## Fluent Testing Project ##
 
 The **Fluent Testing** project is about hiding all of the assertion code from testing an object and making that process as Fluent as the **Natural Language**, English and Spanish in this case; all of this by using **.Net Reflection**.
