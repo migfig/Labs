@@ -397,40 +397,6 @@ public class WithParamsIt : BaseIt
 
         }
 
-        /// <summary>
-        /// Placeholder to make the test run
-        /// </summary>
-        public class ThenVerifyPropsIt : BaseIt
-        {
-            public ThenVerifyPropsIt(It parent)
-                :base(parent)
-            {
-            }
-
-#if ENGLISH_LANGUAGE
-            /// <summary>
-            /// Does the actual run test
-            /// </summary>
-            /// <returns>Parent fluent object</returns>
-            public It RunTest()
-            {
-                return Parent.RunTest();
-            }
-#endif
-
-#if SPANISH_LANGUAGE
-            /// <summary>
-            /// Does the actual run test
-            /// </summary>
-            /// <returns>Parent fluent object</returns>
-            public It CorreLaPrueba()
-            {
-                return Parent.RunTest();
-            }
-#endif
-
-        }
-
         #endregion Inner classes
     }
 }
