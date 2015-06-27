@@ -36,16 +36,13 @@ Sample code in **English**:
                 .Call("Append")
                 .WithParams("Hello")
                 .ThenVerifyProps(new NameValue("Length", 5))
-                .RunTest()
                 .WithOtherParams(" World")
                 .ThenVerifyProps(
                     new NameValue("Length", 11),
                     new NameValue("ToString", "Hello World", MemberTypes.Method))
-                .RunTest()
                 .WithOtherParams("!")
                 .ThenVerifyProps(new NameValue("Length",
                     new Func<object, object, object>((len, result) => 12 == (int)len), MemberTypes.Custom))
-                .RunTest()
                 ;
         }
 
@@ -61,12 +58,10 @@ Sample code in **Spanish**:
                 .Llama("Append")
                 .ConParametros("Hola")
                 .LuegoVerificaPropiedades(new NameValue("Length", 4))
-                .CorreLaPrueba()
                 .ConOtrosParametros(" Mundo")
                 .LuegoVerificaPropiedades(
                     new NameValue("Length", 10),
                     new NameValue("ToString", "Hola Mundo", MemberTypes.Method))
-                .CorreLaPrueba()
                 ;
         }
 

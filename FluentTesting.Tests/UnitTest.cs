@@ -21,16 +21,13 @@ namespace FluentTesting.Tests
                 .Call("Append")
                 .WithParams("Hello")
                 .ThenVerifyProps(new NameValue("Length", 5))
-                .RunTest()
                 .WithOtherParams(" World")
                 .ThenVerifyProps(
                     new NameValue("Length", 11),
                     new NameValue("ToString", "Hello World", MemberTypes.Method))
-                .RunTest()
                 .WithOtherParams("!")
                 .ThenVerifyProps(new NameValue("Length",
                     new Func<object, object, object>((len, result) => 12 == (int)len), MemberTypes.Custom))
-                .RunTest()
                 ;
         }
 #endif

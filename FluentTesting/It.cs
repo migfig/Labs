@@ -363,8 +363,8 @@ public class WithParamsIt : BaseIt
             /// or a method name. i.e. as used by reflection
             /// </summary>
             /// <param name="properties"></param>
-            /// <returns>Next object in fluent sequence</returns>
-            public ThenVerifyPropsIt ThenVerifyProps(params NameValue[] properties)
+            /// <returns>Parent fluent object</returns>
+            public It ThenVerifyProps(params NameValue[] properties)
             {
                 Assert.IsNotNull(properties);
                 Assert.IsTrue(properties.Any());
@@ -372,7 +372,7 @@ public class WithParamsIt : BaseIt
                 properties
                     .ToList()
                     .ForEach(p => Parent.Logger.Information(p.ToString()));
-                return new ThenVerifyPropsIt(Parent);
+                return Parent.RunTest();
             }
 #endif
 
@@ -382,8 +382,8 @@ public class WithParamsIt : BaseIt
             /// or a method name. i.e. as used by reflection
             /// </summary>
             /// <param name="properties"></param>
-            /// <returns>Next object in fluent sequence</returns>
-            public ThenVerifyPropsIt LuegoVerificaPropiedades(params NameValue[] properties)
+            /// <returns>Parent fluent object</returns>
+            public It LuegoVerificaPropiedades(params NameValue[] properties)
             {
                 Assert.IsNotNull(properties);
                 Assert.IsTrue(properties.Any());
@@ -391,7 +391,7 @@ public class WithParamsIt : BaseIt
                 properties
                     .ToList()
                     .ForEach(p => Parent.Logger.Information(p.ToString()));
-                return new ThenVerifyPropsIt(Parent);
+                return Parent.RunTest();
             }
 #endif
 

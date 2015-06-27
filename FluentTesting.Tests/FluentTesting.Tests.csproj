@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ENGLISH_LANGUAGE,SPANISH_LANGUAGE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ENGLISH_LANGUAGE,!SPANISH_LANGUAGE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
