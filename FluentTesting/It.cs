@@ -43,6 +43,11 @@ namespace FluentTesting
         protected IEnumerable<NameValue> Properties { get; private set; }
 
         /// <summary>
+        /// Resolves the result, due some complex object casting may be needed
+        /// </summary>
+        protected Func<object, object> ResolveResults { get; private set; }
+
+        /// <summary>
         /// Log strategy for optional testing evidence
         /// </summary>
         protected ILogger Logger { get; private set; }
@@ -169,8 +174,13 @@ namespace FluentTesting
                             && m.GetParameters().Count() == Parameters.Count());
             Assert.IsNotNull(method);
 
-            var result = method.Invoke(Target, Parameters);
+            object result = method.Invoke(Target, Parameters);
             Assert.IsNotNull(result);
+
+            if(null != ResolveResults)
+            {
+                result = ResolveResults(result);
+            }
 
             Properties
                 .ToList()
@@ -221,12 +231,18 @@ namespace FluentTesting
 
         private MethodInfo GetMethod(string name, params object[] sources)
         {
-            return sources
-                .Select(
-                    source => source.GetType()
-                        .GetMethods()
-                        .First(x => x.Name == name))
-                .FirstOrDefault(prop => null != prop);
+            foreach(var source in sources)
+            {
+                var method = source.GetType()
+                    .GetMethods()
+                    .FirstOrDefault(x => x.Name == name);
+                if(null != method)
+                {
+                    return method;
+                }
+            }
+
+            return null;
         }
 
         private object GetMethodResult(MethodInfo method, params object[] sources)
@@ -373,6 +389,20 @@ public class WithParamsIt : BaseIt
                     .ToList()
                     .ForEach(p => Parent.Logger.Information(p.ToString()));
                 return Parent.RunTest();
+            }
+
+            /// <summary>
+            /// Specifies the property names and values in optionally is they are a property name
+            /// or a method name. i.e. as used by reflection
+            /// </summary>
+            /// <param name="resolveResultsFunc">function to resolve casting results</param>
+            /// <param name="properties">list of property names and values</param>
+            /// <returns>Parent fluent object</returns>
+            public It ThenVerifyProps(Func<object,object> resolveResultsFunc, params NameValue[] properties)
+            {
+                Assert.IsNotNull(resolveResultsFunc);
+                Parent.ResolveResults = resolveResultsFunc;
+                return ThenVerifyProps(properties);
             }
 #endif
 
