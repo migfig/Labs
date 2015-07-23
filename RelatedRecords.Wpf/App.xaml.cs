@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Navigation;
 
 namespace RelatedRecords.Wpf
 {
@@ -13,5 +14,10 @@ namespace RelatedRecords.Wpf
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            MainViewModel.Instance.Load();
+        }
     }
 }

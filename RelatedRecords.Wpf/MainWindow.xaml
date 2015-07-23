@@ -7,6 +7,32 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
         
+        <DataGrid ItemsSource="{Binding SelectedDataTable.Root}"
+                  AutoGenerateColumns="True"
+                  SelectionMode="Single"
+                  SelectionUnit="FullRow"
+                  SelectedItem="{Binding SelectedRootDataRowView}"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"/>
+        
+        <HeaderedItemsControl Grid.Column="1"
+                              Header="Children Tables"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              ItemsSource="{Binding SelectedDataTable.Children}">
+            <HeaderedItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <DataGrid ItemsSource="{Binding}"
+                      AutoGenerateColumns="True"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"/>
+                </DataTemplate>                    
+            </HeaderedItemsControl.ItemTemplate>                     
+        </HeaderedItemsControl>
     </Grid>
 </Window>

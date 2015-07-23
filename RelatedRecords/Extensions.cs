@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using Dapper;
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace RelatedRecords
 {
@@ -81,11 +83,11 @@ namespace RelatedRecords
             bool asStar = false, params IDbDataParameter[] pars)
         {
             var query = new StringBuilder();
+            query.Append(table.ToSelectString(asStar));
+
             if (pars.Length > 0 && null != operators && operators.Length == pars.Length
                 && null != andOrs && andOrs.Length >= operators.Length - 1)
             {
-                query.Append(table.ToSelectString(asStar));
-
                 query.Append(" WHERE ");
                 var idx = 0;
                 pars.ToList().ForEach(p =>
@@ -98,6 +100,39 @@ namespace RelatedRecords
                 });
             }
             return query.ToString().Trim();
+        }
+
+        public static ObservableCollection<DataTable> QueryChildren(this DatatableEx parent,
+            CDataset dataset,
+            string connectionString, 
+            DataRow row)
+        {
+            var children = new ObservableCollection<DataTable>();
+            var table = dataset.Table.First(t => t.name == parent.Root.TableName);
+            var queries = table.RelatedTablesSelect(dataset, row);
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                queries.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                .ToList()
+                .ForEach(q =>
+                {
+                    var rdr = connection.ExecuteReader(q);
+                    var tbl = new DataTable(ParseTableName(q));
+                    tbl.Load(rdr);
+                    children.Add(tbl);
+                });
+            }
+
+            return children;
+        }
+
+        private static string ParseTableName(string query)
+        {
+            return Regex.Match(query,
+                @"SELECT[\[\sa-zA-Z0-9,\*\]]*FROM[\s]*(?<tablename>(\[\w*\s\w*\])|([\[]?\w*[\]]?))",
+                RegexOptions.IgnoreCase)
+                    .Groups["tablename"].Value;
         }
 
         public static DatatableEx Query(this CTable table,
@@ -114,16 +149,11 @@ namespace RelatedRecords
                 var reader = connection.ExecuteReader(query);
                 result.Root.Load(reader);
 
-                var queries = table.RelatedTablesSelect(dataset, result.Root.Rows[0]);
-                queries.Split(new char[] {';'}, StringSplitOptions.RemoveEmptyEntries)
-                    .ToList()
-                    .ForEach(q =>
-                    {
-                        var rdr = connection.ExecuteReader(q);
-                        var tbl = new DataTable("");
-                        tbl.Load(rdr);
-                        result.Children.Add(tbl);
-                    });
+                var children = result.QueryChildren(dataset, connectionString, result.Root.Rows[0]);
+                foreach(var t in children)
+                {
+                    result.Children.Add(t);
+                }
             }
 
             return result;
