@@ -19,7 +19,7 @@ namespace RelatedRecords.Tests
             Assert.IsNotNull(_config);
 
             var rows = Helpers.CreateSampleTables(_config);
-            Assert.AreEqual(9, rows);
+            Assert.AreEqual(18, rows);
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@ namespace RelatedRecords.Tests
                 var table = new DataTable(t.name);
                 table.Load(reader);
                 Assert.AreEqual(1, table.Rows.Count);
-                Assert.AreEqual(5, table.Columns.Count);
+                Assert.AreEqual(6, table.Columns.Count);
                 Assert.AreEqual("PriorityId", table.Columns[4].ColumnName);
                 Assert.AreEqual(1, table.Rows[0][4]);
             }
@@ -108,7 +108,7 @@ namespace RelatedRecords.Tests
             Assert.IsNotNull(result.Root);
             Assert.AreEqual(1, result.Root.Rows.Count);
             Assert.IsNotNull(result.Children);
-            Assert.AreEqual(2, result.Children.Count());
+            Assert.AreEqual(3, result.Children.Count());
             Assert.AreEqual(1, result.Children[0].Rows.Count);
             Assert.AreEqual(1, result.Children[1].Rows.Count);
         }

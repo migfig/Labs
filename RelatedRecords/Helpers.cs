@@ -35,6 +35,7 @@ namespace RelatedRecords
       <Column name='Title' DbType='string' isPrimaryKey='false' isForeignKey='false' isNullable='false' defaultValue=''/>
       <Column name='StatusCodeId' DbType='int' isPrimaryKey='false' isForeignKey='true' isNullable='false' defaultValue='0'/>
       <Column name='PriorityId' DbType='int' isPrimaryKey='false' isForeignKey='true' isNullable='false' defaultValue='0'/>
+      <Column name='UserId' DbType='int' isPrimaryKey='false' isForeignKey='true' isNullable='false' defaultValue='0'/>
     </Table>
     <Table name='TicketsStatusCodes'>
       <Column name='StatusCodeId' DbType='int' isPrimaryKey='true' isForeignKey='false' isNullable='false' defaultValue=''/>
@@ -44,9 +45,28 @@ namespace RelatedRecords
       <Column name='PriorityId' DbType='int' isPrimaryKey='true' isForeignKey='false' isNullable='false' defaultValue=''/>
       <Column name='Description' DbType='string' isPrimaryKey='false' isForeignKey='false' isNullable='false' defaultValue=''/>
     </Table>
+    <Table name='Users'>
+      <Column name='UserId' DbType='int' isPrimaryKey='true' isForeignKey='false' isNullable='false' defaultValue=''/>
+      <Column name='GroupId' DbType='int' isPrimaryKey='false' isForeignKey='true' isNullable='false' defaultValue=''/>
+      <Column name='LastName' DbType='string' isPrimaryKey='false' isForeignKey='false' isNullable='false' defaultValue=''/>
+      <Column name='FirstName' DbType='string' isPrimaryKey='false' isForeignKey='false' isNullable='false' defaultValue=''/>
+      <Column name='EmailAddress' DbType='string' isPrimaryKey='false' isForeignKey='false' isNullable='false' defaultValue=''/>
+    </Table>
+    <Table name='Groups'>
+      <Column name='GroupId' DbType='int' isPrimaryKey='true' isForeignKey='false' isNullable='false' defaultValue=''/>
+      <Column name='GroupName' DbType='string' isPrimaryKey='false' isForeignKey='false' isNullable='false' defaultValue=''/>
+      <Column name='DepartmentId' DbType='int' isPrimaryKey='false' isForeignKey='true' isNullable='false' defaultValue=''/>
+    </Table>
+    <Table name='Departments'>
+      <Column name='DepartmentId' DbType='int' isPrimaryKey='true' isForeignKey='false' isNullable='false' defaultValue=''/>
+      <Column name='DepartmentName' DbType='string' isPrimaryKey='false' isForeignKey='false' isNullable='false' defaultValue=''/>
+    </Table>
 
     <Relationship name='Tickets->TicketsStatusCodes' fromTable='Tickets' toTable='TicketsStatusCodes' fromColumn='StatusCodeId' toColumn='StatusCodeId'/>
     <Relationship name='Tickets->TicketsPriorities' fromTable='Tickets' toTable='TicketsPriorities' fromColumn='PriorityId' toColumn='PriorityId'/>
+    <Relationship name='Tickets->Users' fromTable='Tickets' toTable='Users' fromColumn='UserId' toColumn='UserId'/>
+    <Relationship name='Users->Groups' fromTable='Users' toTable='Groups' fromColumn='GroupId' toColumn='GroupId'/>
+    <Relationship name='Groups->Departments' fromTable='Groups' toTable='Departments' fromColumn='DepartmentId' toColumn='DepartmentId'/>
   </Dataset>
 
   <Dataset name='sample-remote' dataSourceName='remote'>

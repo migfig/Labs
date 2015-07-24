@@ -22,7 +22,7 @@ namespace RelatedRecords.Tests
             Assert.IsNotNull(_config);
 
             var rows = Helpers.CreateSampleTables(_config);
-            Assert.AreEqual(9, rows);
+            Assert.AreEqual(18, rows);
         }
 
         [TestMethod]

@@ -40,17 +40,6 @@ namespace RelatedRecords.Wpf
             }
         }
 
-        private DataTable _selectedDataTableDt;
-        public DataTable SelectedDataTableDt
-        {
-            get { return _selectedDataTableDt; }
-            set
-            {
-                _selectedDataTableDt = value;
-                OnPropertyChanged();
-            }
-        }
-
         private DatatableEx _selectedDataTable;
         public DatatableEx SelectedDataTable
         {
@@ -80,6 +69,12 @@ namespace RelatedRecords.Wpf
                     _selectedDataTable.Children.Add(t);
                 }
             }
+        }
+
+        private Stack<DatatableEx> _tableNavigation = new Stack<DatatableEx>();
+        public Stack<DatatableEx> TableNavigation
+        {
+            get { return _tableNavigation; }
         }
 
         private bool _loaded;

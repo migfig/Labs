@@ -332,6 +332,9 @@ namespace RelatedRecords
                             where !(from r in dataset.Relationship
                                     select r.toTable).Distinct().Contains(t.name)
                             select t;
+            var interdependent = from t in dataset.Table
+                                 where !independent.Contains(t) && !dependent.Contains(t)
+                                 select t;
 
             dependent.ToList().ForEach(t =>
             {
@@ -339,6 +342,11 @@ namespace RelatedRecords
                 query.Append(t.ToSchemaString());
             });
             independent.ToList().ForEach(t =>
+            {
+                //query.Append(t.ToSchemaDropString());
+                query.Append(t.ToSchemaString());
+            });
+            interdependent.ToList().ForEach(t =>
             {
                 //query.Append(t.ToSchemaDropString());
                 query.Append(t.ToSchemaString());
@@ -374,8 +382,16 @@ namespace RelatedRecords
                             where !(from r in dataset.Relationship
                                     select r.toTable).Distinct().Contains(t.name)
                             select t;
+            var interdependent = from t in dataset.Table
+                                 where !independent.Contains(t) && !dependent.Contains(t)
+                                 orderby t.name
+                                 select t;
 
             independent.ToList().ForEach(t =>
+            {
+                query.Append(t.ToInsertString(testRows));
+            });
+            interdependent.ToList().ForEach(t =>
             {
                 query.Append(t.ToInsertString(testRows));
             });
