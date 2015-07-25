@@ -15,6 +15,8 @@ namespace RelatedRecords.Tests
         public void Create_Xml_Configuration()
         {
             _config = Helpers.CreateXmlConfiguration();
+            Assert.IsNotNull(_config);
+            Extensions.SelectedConfiguration = _config;
         }
 
         #region configuration load/saving
@@ -136,7 +138,7 @@ namespace RelatedRecords.Tests
             Assert.AreEqual(1, table.Rows.Count);
 
             var queries = _config.Dataset.First().Table.First()
-                .RelatedTablesSelect(_config.Dataset.First(), table.Rows[0]);
+                .RelatedTablesSelect(table.Rows[0]);
             Assert.AreEqual(3, queries.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Count());
             Assert.AreEqual("SELECT * FROM TicketsStatusCodes WHERE StatusCodeId = 1;SELECT * FROM TicketsPriorities WHERE PriorityId = 1;SELECT * FROM Users WHERE UserId = 1;", 
                 queries);

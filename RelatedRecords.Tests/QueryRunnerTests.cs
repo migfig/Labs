@@ -17,6 +17,7 @@ namespace RelatedRecords.Tests
         {
             _config = Helpers.CreateXmlConfiguration();
             Assert.IsNotNull(_config);
+            Extensions.SelectedConfiguration = _config;
 
             var rows = Helpers.CreateSampleTables(_config);
             Assert.AreEqual(18, rows);
@@ -71,7 +72,7 @@ namespace RelatedRecords.Tests
                 table.Load(reader);
 
                 var queries = t
-                    .RelatedTablesSelect(_config.Dataset.First(), table.Rows[0]);
+                    .RelatedTablesSelect(table.Rows[0]);
                 Assert.IsTrue(!string.IsNullOrEmpty(queries));
                 queries.Split(new char[] {';'}, StringSplitOptions.RemoveEmptyEntries)
                     .ToList()
@@ -96,9 +97,7 @@ namespace RelatedRecords.Tests
             Assert.IsNotNull(_config);
 
             var result = _config.Dataset.First().Table.First()
-                .Query(_config.Dataset.First(),
-                    _config.Datasource.First().ConnectionString,
-                    "".ToArray("=",">="),
+                .Query("".ToArray("=",">="),
                     "".ToArray("And"),
                     true,
                     new SqlParameter { ParameterName = "StatusCodeId", Value = 1 },
@@ -106,11 +105,12 @@ namespace RelatedRecords.Tests
                 );
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Root);
-            Assert.AreEqual(1, result.Root.Rows.Count);
+            Assert.IsNotNull(result.Root.Table);
+            Assert.AreEqual(1, result.Root.Table.Rows.Count);
             Assert.IsNotNull(result.Children);
             Assert.AreEqual(3, result.Children.Count());
-            Assert.AreEqual(1, result.Children[0].Rows.Count);
-            Assert.AreEqual(1, result.Children[1].Rows.Count);
+            Assert.AreEqual(1, result.Children[0].Table.Rows.Count);
+            Assert.AreEqual(1, result.Children[1].Table.Rows.Count);
         }
 
         [TestCleanup]

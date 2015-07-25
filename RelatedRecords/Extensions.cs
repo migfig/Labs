@@ -16,6 +16,43 @@ namespace RelatedRecords
 {
     public static class Extensions
     {
+        #region static selected items
+
+        private static CConfiguration _selectedConfiguration;
+        public static CConfiguration SelectedConfiguration
+        {
+            get { return _selectedConfiguration; }
+            set
+            {
+                _selectedConfiguration = value;
+                SelectedDataset = _selectedConfiguration.Dataset.First();
+            }
+        }
+
+        private static CDataset _selectedDataset;
+        public static CDataset SelectedDataset
+        {
+            get { return _selectedDataset; }
+            set
+            {
+                _selectedDataset = value;
+                SelectedDatasource = SelectedConfiguration
+                    .Datasource.First(x => x.name == _selectedDataset.dataSourceName);
+            }
+        }
+
+        private static CDatasource _selectedDatasource;
+        public static CDatasource SelectedDatasource
+        {
+            get { return _selectedDatasource; }
+            set
+            {
+                _selectedDatasource = value;
+            }
+        }
+
+        #endregion static selected items
+
         public static string ToSelectString(this CTable table, bool asStar = false)
         {
             var query = new StringBuilder();
@@ -102,16 +139,14 @@ namespace RelatedRecords
             return query.ToString().Trim();
         }
 
-        public static ObservableCollection<DataTable> QueryChildren(this DatatableEx parent,
-            CDataset dataset,
-            string connectionString, 
-            DataRow row)
+        public static void QueryChildren(this DatatableEx parent, DataRow row)
         {
-            var children = new ObservableCollection<DataTable>();
-            var table = dataset.Table.First(t => t.name == parent.Root.TableName);
-            var queries = table.RelatedTablesSelect(dataset, row);
+            parent.Children.Clear();
+            
+            var table = SelectedDataset.Table.First(t => t.name == parent.Root.Table.TableName);
+            var queries = table.RelatedTablesSelect(row);
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
             {
                 queries.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
                 .ToList()
@@ -120,11 +155,10 @@ namespace RelatedRecords
                     var rdr = connection.ExecuteReader(q);
                     var tbl = new DataTable(ParseTableName(q));
                     tbl.Load(rdr);
-                    children.Add(tbl);
+                    parent.Children.Add(
+                        new TableContainer(tbl, SelectedDataset.Table.First(x => x.name == tbl.TableName)));
                 });
             }
-
-            return children;
         }
 
         private static string ParseTableName(string query)
@@ -136,38 +170,32 @@ namespace RelatedRecords
         }
 
         public static DatatableEx Query(this CTable table,
-            CDataset dataset,
-            string connectionString,
             string[] operators, string[] andOrs,
             bool asStar = false, params IDbDataParameter[] pars)
         {
-            var result = new DatatableEx(new DataTable(table.name));
+            var result = new DatatableEx(new TableContainer(new DataTable(table.name), table));
             var query = table.ToSelectWhereString(operators, andOrs, asStar, pars);
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
             {
                 var reader = connection.ExecuteReader(query);
-                result.Root.Load(reader);
+                result.Root.Table.Load(reader);
 
-                var children = result.QueryChildren(dataset, connectionString, result.Root.Rows[0]);
-                foreach(var t in children)
-                {
-                    result.Children.Add(t);
-                }
+                result.QueryChildren(result.Root.Table.Rows[0]);
             }
 
             return result;
         }
 
         public static string RelatedTablesSelect(this CTable table, 
-            CDataset dataset, DataRow row)
+            DataRow row)
         {
             var query = new StringBuilder();
-            var rels = from r in dataset.Relationship
+            var rels = from r in SelectedDataset.Relationship
                        where r.fromTable.ToLower() == table.name.ToLower()
                        select new {
                            Relation = r,
-                           Table = dataset.Table
+                           Table = SelectedDataset.Table
                             .First(t => t.name.ToLower() == r.toTable.ToLower())
                        };
             rels.ToList().ForEach(r =>

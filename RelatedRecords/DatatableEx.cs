@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Linq;
@@ -11,19 +12,31 @@ namespace RelatedRecords
 {
     public class DatatableEx
     {
-        public DataTable Root { get; private set; }
-        public ObservableCollection<DataTable> Children { get; private set; }
+        public TableContainer Root { get; private set; }
+        public ObservableCollection<TableContainer> Children { get; private set; }
 
-        public DatatableEx(DataTable root, ObservableCollection<DataTable> children)
+        public DatatableEx(TableContainer root, ObservableCollection<TableContainer> children)
         {
             Root = root;
             Children = children;
         }
 
-        public DatatableEx(DataTable root, params DataTable[] children)
+        public DatatableEx(TableContainer root, params TableContainer[] children)
         {
             Root = root;
-            Children = new ObservableCollection<DataTable>(children);
+            Children = new ObservableCollection<TableContainer>(children);
+        }
+    }
+
+    public class TableContainer
+    {
+        public DataTable Table { get; set; }
+        public CTable ConfigTable { get; set; }
+
+        public TableContainer(DataTable table, CTable configTable)
+        {
+            Table = table;
+            ConfigTable = configTable;
         }
     }
 }

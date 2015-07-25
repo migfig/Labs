@@ -18,24 +18,22 @@ namespace RelatedRecords.Wpf
             get { return _instance; }
         }
 
-        private CConfiguration _selectedConfiguration;
         public CConfiguration SelectedConfiguration
         {
-            get { return _selectedConfiguration; }
+            get { return Extensions.SelectedConfiguration; }
             set
             {
-                _selectedConfiguration = value;
+                Extensions.SelectedConfiguration = value;
                 OnPropertyChanged();
             }
         }
 
-        private CDataset _selectedDataset;
         public CDataset SelectedDataset
         {
-            get { return _selectedDataset; }
+            get { return Extensions.SelectedDataset; }
             set
             {
-                _selectedDataset = value;
+                Extensions.SelectedDataset = value;
                 OnPropertyChanged();
             }
         }
@@ -60,14 +58,7 @@ namespace RelatedRecords.Wpf
                 _selectedRootDataRowView = value;
                 OnPropertyChanged();
 
-                var children = _selectedDataTable.QueryChildren(SelectedDataset,
-                    SelectedConfiguration.Datasource.First().ConnectionString,
-                    _selectedRootDataRowView.Row);
-                _selectedDataTable.Children.Clear();
-                foreach(var t in children)
-                {
-                    _selectedDataTable.Children.Add(t);
-                }
+                SelectedDataTable.QueryChildren(_selectedRootDataRowView.Row);
             }
         }
 
@@ -85,13 +76,8 @@ namespace RelatedRecords.Wpf
             var configuration = ConfigurationManager.AppSettings["ConfigurationFile"];
             SelectedConfiguration = XmlHelper<CConfiguration>.Load(configuration);
             //Helpers.CreateSampleTables(SelectedConfiguration);
-            SelectedDataset = SelectedConfiguration.Dataset.First();
             SelectedDataTable = SelectedDataset.Table.First()
-                .Query(SelectedDataset,
-                    SelectedConfiguration.Datasource.First().ConnectionString,
-                    "".ToArray(""),
-                    "".ToArray(""),
-                    true);
+                .Query("".ToArray(""), "".ToArray(""), true);
             _loaded = true;
         }
 
