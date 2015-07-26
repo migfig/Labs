@@ -17,15 +17,32 @@ namespace Reflector.Console
 
             var options = ParseCommandLine(string.Join(" ", args));
 
-            if(!options.Any() && (!Parser.IsFile(options["file"]) || !Parser.IsPath(options["path"])))
+            if(!options.Any() || !(options.ContainsKey("file") || options.ContainsKey("path")) 
+                || (options.ContainsKey("file") && !Parser.IsFile(options["file"]))
+                || (options.ContainsKey("path") && !Parser.IsPath(options["path"])))
             {
                 DisplayUsage();
                 return;
             }
 
-            var parser = new Parser(
-                options.ContainsKey("file") ? options["file"] : options["path"], 
-                options.ContainsKey("includeflag"));
+            IRenderable renderer = null;
+            switch(options["render"])
+            {
+                case "text":
+                    renderer = new CustomRenderer(
+                        options.ContainsKey("file") ? options["file"] : options["path"],
+                        options.ContainsKey("includeflag")
+                    );
+                    break;
+                default:
+                    renderer = new XmlRenderer(
+                        options.ContainsKey("file") ? options["file"] : options["path"],
+                        options.ContainsKey("includeflag")
+                    );
+                    break;
+            }
+
+            var parser = new Parser(renderer);
             System.Console.WriteLine(parser.Render(typeof(Parser)));
         }
 
@@ -33,6 +50,11 @@ namespace Reflector.Console
         {
             var options = AppConfig.CommandLineArguments;
             var dict = new Dictionary<string, string>();
+
+            if(!args.Contains("-r"))
+            {
+                args += " -r xml"; //default renderer
+            }
 
             foreach(var key in options.Keys)
             {
@@ -47,6 +69,11 @@ namespace Reflector.Console
                 }
             }
 
+            if(dict.Count == 1)
+            {
+                dict.Clear();
+            }
+
             return dict;
         }
                 
@@ -58,6 +85,8 @@ namespace Reflector.Console
             System.Console.WriteLine("{0}where options are:", "\t");
             System.Console.WriteLine("{0}-p <path>", "\t\t");
             System.Console.WriteLine("{0}specifies the path to process. example: is c:\\mybin\\ or .", "\t\t\t");
+            System.Console.WriteLine("{0}-r <option>", "\t\t");
+            System.Console.WriteLine("{0}where option can be xml or text", "\t\t\t");
             System.Console.WriteLine("{0}-i", "\t\t");
             System.Console.WriteLine("{0}include .NET System.Object methods", "\t\t\t");
             System.Console.WriteLine("{0}-t <type list>", "\t\t");

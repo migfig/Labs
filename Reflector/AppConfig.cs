@@ -31,7 +31,7 @@ namespace Reflector
             get
             {
                 var results = new Dictionary<string, string>();
-                var options = _config.Datasources
+                var options = Config.Datasources
                     .Where(d => d.Type == enSourceType.GroupedTextList)
                     .First(f => f.Name == "CommandLineArguments")
                     .Items.Cast<GroupSource>()
@@ -40,23 +40,35 @@ namespace Reflector
                     
                 foreach(var o in options.Text)
                 {
-                    results.Add(o.Name, o.Value);
+                    results.Add(o.Name, o.Value.Trim());
                 }
 
                 return results;
             }
         }
 
+        public static TextItem GetGroupTemplateItem(string itemName)
+        {
+            return Config.Datasources
+                    .Where(d => d.Type == enSourceType.GroupedTextList)
+                    .First(g => g.Name == "IODocumentation")
+                    .Items.Cast<GroupSource>()
+                    .Where(g => g.Name == "Templates")
+                    .First()
+                    .Text.Where(t => t.Name == itemName)
+                    .First();
+        }
+
         public static IEnumerable<string> IncludeNetObjectMethods
         {
             get
             {
-                return from t in _config.Datasources
+                return from t in Config.Datasources
                     .Where(d => d.Type == enSourceType.TextList)
                     .First(f => f.Name == "IgnoreObjectMethods")
                     .Items.Cast<TextSource>()
                     .First().Item
-                       select t.Value;
+                       select t.Value.Trim();
             }
         }
     }

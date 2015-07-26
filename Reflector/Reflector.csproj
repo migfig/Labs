@@ -41,9 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppConfig.cs" />
+    <Compile Include="BaseRenderer.cs" />
     <Compile Include="configuration.designer.cs" />
+    <Compile Include="CustomRenderer.cs" />
+    <Compile Include="IRenderable.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StrBuilder.cs" />
+    <Compile Include="XmlRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

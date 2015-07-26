@@ -46,6 +46,12 @@
           ((?<includeOption>[\-]i)[\s]*(?<includeflag>yes|no|true|false))
           ]]>
         </Text>
+
+        <Text Name="render">
+          <![CDATA[
+          ((?<renderOption>[\-]r)[\s]*(?<render>xml|text))
+          ]]>
+        </Text>
       </GroupedText>
     </Source>
     
@@ -62,35 +68,46 @@
       <GroupedText Name="Templates">
         <Text Name="Method">
           <![CDATA[
-          "{0}": {
+          "{0}": {{
             "description": "{1}"
-          }
+          }}
           ]]>
         </Text>
 
         <Text Name="Schema">
           <![CDATA[
-          "{0}": {
+          "{0}": {{
             "description": "{1}",
             "required": true,
             "location": "body"
-          }
+          }}
           ]]>
         </Text>
 
         <Text Name="Property">
           <![CDATA[
-          "{0}": {
-            "title": "{0}"
-          }
+          "{0}": {{
+            "type": "{1}"
+            "title": "{2}"
+          }}
           ]]>
         </Text>
 
         <Text Name="Parameter">
           <![CDATA[
-          "{0}": {
-            "description": "{0}"
-          }
+          "{0}": {{
+            "type": "{1}"
+            "description": "{2}"
+          }}
+          ]]>
+        </Text>
+        
+        <Text Name="Attribute">
+          <![CDATA[
+          "{0}": {{
+            "type": "{1}"
+            "description": "{2}"
+          }}
           ]]>
         </Text>
       </GroupedText>
