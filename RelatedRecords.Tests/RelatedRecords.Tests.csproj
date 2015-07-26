@@ -70,6 +70,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{4d5eca11-0727-485d-985a-7fcadcfb25c7}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RelatedRecords\RelatedRecords.csproj">
       <Project>{33bfd3da-4e0d-4e39-833a-13757b645d86}</Project>
       <Name>RelatedRecords</Name>

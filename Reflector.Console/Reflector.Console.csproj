@@ -53,10 +53,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{4d5eca11-0727-485d-985a-7fcadcfb25c7}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Reflector\Reflector.csproj">
       <Project>{23fc911a-61f6-4345-a0d2-aab6fce0043f}</Project>
       <Name>Reflector</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="configuration.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

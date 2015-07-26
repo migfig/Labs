@@ -107,8 +107,8 @@ namespace Reflector
             var methods = type.GetMethods();
             if(!_includeSystemObjects)
             {
-                var sysMethods = "ToString,Equals,GetHashCode,GetType".Split(',');
-                methods = methods.Where(m => !sysMethods.Contains(m.Name)).ToArray();
+                methods = methods.Where(m => !AppConfig.IncludeNetObjectMethods.Contains(m.Name))
+                    .ToArray();
             }
             if(null != onlyMethods && onlyMethods.Any())
             {

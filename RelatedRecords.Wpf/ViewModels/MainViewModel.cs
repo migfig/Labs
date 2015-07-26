@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RelatedRecords.Wpf.Annotations;
 using System.Configuration;
+using Common;
 
 namespace RelatedRecords.Wpf
 {

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Reflector.Console
 {
@@ -28,24 +25,14 @@ namespace Reflector.Console
 
             var parser = new Parser(
                 options.ContainsKey("file") ? options["file"] : options["path"], 
-                options.ContainsKey("include"));
+                options.ContainsKey("includeflag"));
             System.Console.WriteLine(parser.Render(typeof(Parser)));
         }
 
         private static Dictionary<string, string> ParseCommandLine(string args)
         {
-            var options = new Dictionary<string, string> { 
-                { "file",    @"(?<file>[a-zA-Z0-9:\\\-\.]*[\.]dll)" },
-                { "path",    @"((?<pathOption>[\-]p)[\s]*(?<path>[a-zA-Z0-9:\\\-\.]*))" },
-                { "types",   @"((?<typeOption>[\-]t)[\s]*(?<types>[a-zA-Z0-9,\.]*))" },
-                { "methods", @"((?<methodOption>[\-]m)[\s]*(?<methods>[a-zA-Z0-9,]*))" }
-            };
+            var options = AppConfig.CommandLineArguments;
             var dict = new Dictionary<string, string>();
-
-            if (args.Contains("-i"))
-            {
-                dict.Add("include", "true");
-            }
 
             foreach(var key in options.Keys)
             {

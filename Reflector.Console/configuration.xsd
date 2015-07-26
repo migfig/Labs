@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.megapanezote.com"
+            targetNamespace="http://www.megapanezote.com" elementFormDefault="qualified">
+  <xsd:element name="Configuration">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Datasources">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="Source" maxOccurs="unbounded" type="Datasource"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:complexType name="Datasource">
+    <xsd:choice>
+      <xsd:sequence>
+        <xsd:element name="Text" type="TextSource" minOccurs="0" maxOccurs="1" />
+        <xsd:element name="Setting" type="SettingSource" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="Dictionary" type="TupleSource" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="GroupedText" type="GroupSource" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:choice>
+    <xsd:attribute name="Name" use="required" type="xsd:string"/>
+    <xsd:attribute name="Type" type="enSourceType" use="required"/>
+    <xsd:attribute name="IsReserved" use="optional" type="xsd:boolean" default="false"/>
+    <xsd:attribute name="BasedOn" use="optional" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="TextSource">
+    <xsd:sequence>
+      <xsd:element name="Item" type="TextItem" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TextItem">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="Name" use="optional" type="xsd:string"/>
+        <xsd:attribute name="Tag" use="optional" type="xsd:string"/>
+        <xsd:attribute name="Enabled" use="optional" default="true" type="xsd:boolean"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="SettingSource">
+    <xsd:attribute name="Name" use="required" type="xsd:string"/>
+    <xsd:attribute name="Value" use ="required" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="TupleSource">
+    <xsd:attribute name="Key" type="xsd:string" use="required"/>
+    <xsd:attribute name="Value" use="required" type="xsd:string"/>
+    <xsd:attribute name="Item1" use="optional" type="xsd:string"/>
+    <xsd:attribute name="Item2" use="optional" type="xsd:string"/>
+    <xsd:attribute name="Item3" use="optional" type="xsd:string"/>
+    <xsd:attribute name="Item4" use="optional" type="xsd:string"/>
+    <xsd:attribute name="Item5" use="optional" type="xsd:string"/>
+    <xsd:attribute name="Item6" use="optional" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:simpleType name="enSourceType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="TextList"/>
+      <xsd:enumeration value="Settings"/>
+      <xsd:enumeration value="DictionaryTuple"/>
+      <xsd:enumeration value="GroupedTextList"/>
+    </xsd:restriction>
+  </xsd:simpleType>  
+  <xsd:complexType name="GroupSource">
+    <xsd:sequence>
+      <xsd:element name="Text" minOccurs="0" maxOccurs="unbounded" type="TextItem"/>
+      <xsd:element name="TextExpression" type="GroupExpression" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Name" type="xsd:string" use="required"/>
+  </xsd:complexType>
+  <xsd:complexType name="GroupExpression">
+    <xsd:sequence>
+      <xsd:element name="Expression" type="TextItem" minOccurs="0"/>
+      <xsd:element name="Text" maxOccurs="unbounded" type="TextItem"/>
+    </xsd:sequence>
+    <xsd:attribute name="Name"/>
+  </xsd:complexType>
+</xsd:schema>

@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Linq;
 using System.Data.SqlClient;
+using Common;
 
 namespace RelatedRecords.Tests
 {

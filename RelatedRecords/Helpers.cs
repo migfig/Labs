@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using Dapper;
+using Common;
 
 namespace RelatedRecords
 {
