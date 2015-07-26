@@ -19,7 +19,10 @@ namespace Reflector.Console
 
             if(!options.Any() || !(options.ContainsKey("file") || options.ContainsKey("path")) 
                 || (options.ContainsKey("file") && !Parser.IsFile(options["file"]))
-                || (options.ContainsKey("path") && !Parser.IsPath(options["path"])))
+                || (options.ContainsKey("path") && !Parser.IsPath(options["path"]))
+                || (options["render"] == "xslt" 
+                    && options.ContainsKey("xsltfile") && !Parser.IsFile(options["xsltfile"]))
+                )
             {
                 DisplayUsage();
                 return;
@@ -30,6 +33,13 @@ namespace Reflector.Console
             {
                 case "text":
                     renderer = new CustomRenderer(
+                        options.ContainsKey("file") ? options["file"] : options["path"],
+                        options.ContainsKey("includeflag")
+                    );
+                    break;
+                case "xslt":
+                    renderer = new XsltRenderer(
+                        options["xsltfile"],
                         options.ContainsKey("file") ? options["file"] : options["path"],
                         options.ContainsKey("includeflag")
                     );
@@ -61,7 +71,7 @@ namespace Reflector.Console
                 var value = Regex.Match(args, options[key]).Groups[key].Value;
                 if(!string.IsNullOrEmpty(value))
                 {
-                    if(key == "file" || key == "path")
+                    if(key == "file" || key == "path" || key == "xsltfile")
                     {
                         value = Parser.BuildPath(value);
                     }
@@ -85,6 +95,8 @@ namespace Reflector.Console
             System.Console.WriteLine("{0}where options are:", "\t");
             System.Console.WriteLine("{0}-p <path>", "\t\t");
             System.Console.WriteLine("{0}specifies the path to process. example: is c:\\mybin\\ or .", "\t\t\t");
+            System.Console.WriteLine("{0}-x <path>.xsl[t]", "\t\t");
+            System.Console.WriteLine("{0}specifies the xsl file path to process.", "\t\t\t");
             System.Console.WriteLine("{0}-r <option>", "\t\t");
             System.Console.WriteLine("{0}where option can be xml or text", "\t\t\t");
             System.Console.WriteLine("{0}-i", "\t\t");

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<type name="Reflector.Parser" source="C:\Code\RelatedRecords.Tests\Reflector.Console\bin\Debug\Reflector.dll">
+  <attributes />
+  <properties />
+  <methods>
+    <method name="Render" type="System.String" public="true" private="false" static="false">
+      <attributes>
+        <attribute type="System.ComponentModel.DescriptionAttribute">
+          <properties>
+            <property name="Description" type="System.String" value="Sample attribute" />
+            <property name="TypeId" type="System.Object" value="System.ComponentModel.DescriptionAttribute" />
+          </properties>
+        </attribute>
+      </attributes>
+      <parameters>
+        <parameter name="onlyTypes" type="System.Type[]" />
+        <parameter name="onlyMethods" type="System.String[]" />
+      </parameters>
+    </method>
+    <method name="Render" type="System.String" public="true" private="false" static="false">
+      <attributes />
+      <parameters>
+        <parameter name="type" type="System.Type" />
+      </parameters>
+    </method>
+    <method name="Render" type="System.String" public="true" private="false" static="false">
+      <attributes />
+      <parameters>
+        <parameter name="type" type="System.Type" />
+        <parameter name="onlyMethods" type="System.String[]" />
+      </parameters>
+    </method>
+    <method name="Render" type="System.String" public="true" private="false" static="false">
+      <attributes />
+      <parameters>
+        <parameter name="type" type="System.Type" />
+        <parameter name="onlyTypes" type="System.Type[]" />
+      </parameters>
+    </method>
+    <method name="IsFile" type="System.Boolean" public="true" private="false" static="true">
+      <attributes />
+      <parameters>
+        <parameter name="fileName" type="System.String" />
+      </parameters>
+    </method>
+    <method name="IsPath" type="System.Boolean" public="true" private="false" static="true">
+      <attributes />
+      <parameters>
+        <parameter name="path" type="System.String" />
+      </parameters>
+    </method>
+    <method name="BuildPath" type="System.String" public="true" private="false" static="true">
+      <attributes />
+      <parameters>
+        <parameter name="path" type="System.String" />
+      </parameters>
+    </method>
+  </methods>
+</type>
