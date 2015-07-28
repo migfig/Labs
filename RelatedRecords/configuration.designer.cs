@@ -263,13 +263,21 @@ namespace RelatedRecords {
     public partial class CTable {
         
         private ObservableCollection<CColumn> columnField;
-        
+        private ObservableCollection<CTable> childrenField;
         private string nameField;
         
         public CTable() {
             this.columnField = new ObservableCollection<CColumn>();
+            this.childrenField = new ObservableCollection<CTable>();
         }
         
+        [System.Xml.Serialization.XmlIgnore]
+        public ObservableCollection<CTable> Children
+        {
+            get { return this.childrenField; }
+            set { this.childrenField = value; }
+        }
+
         [System.Xml.Serialization.XmlElementAttribute("Column")]
         public ObservableCollection<CColumn> Column {
             get {

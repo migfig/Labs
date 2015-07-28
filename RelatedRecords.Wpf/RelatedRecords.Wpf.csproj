@@ -56,6 +56,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\IntToVisibilityConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
@@ -114,7 +115,51 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Alert.png" />
+    <Resource Include="Images\Application.png" />
+    <Resource Include="Images\arrow_left16.png" />
+    <Resource Include="Images\arrow_left24.png" />
+    <Resource Include="Images\arrow_left32.png" />
+    <Resource Include="Images\Back.png" />
+    <Resource Include="Images\Blue.png" />
+    <Resource Include="Images\BlueLarge.png" />
+    <Resource Include="Images\Brown.png" />
+    <Resource Include="Images\BrownLarge.png" />
+    <Resource Include="Images\clear.png" />
+    <Resource Include="Images\connect.png" />
+    <Resource Include="Images\counter.png" />
+    <Resource Include="Images\Database.png" />
+    <Resource Include="Images\disconnect.png" />
+    <Resource Include="Images\excel.png" />
+    <Resource Include="Images\Exit.png" />
+    <Resource Include="Images\export.png" />
+    <Resource Include="Images\Filter.png" />
+    <Resource Include="Images\Find.png" />
+    <Resource Include="Images\Fluent.ico" />
+    <Resource Include="Images\Gear.png" />
+    <Resource Include="Images\GraphLeftToRight.png" />
+    <Resource Include="Images\Gray.png" />
+    <Resource Include="Images\GrayLarge.png" />
+    <Resource Include="Images\Green.png" />
+    <Resource Include="Images\GreenLarge.png" />
+    <Resource Include="Images\html.png" />
+    <Resource Include="Images\key-solid.png" />
+    <Resource Include="Images\List.png" />
+    <Resource Include="Images\NavBack.png" />
+    <Resource Include="Images\Orange.png" />
+    <Resource Include="Images\OrangeLarge.png" />
+    <Resource Include="Images\pdf.png" />
+    <Resource Include="Images\Pink.png" />
+    <Resource Include="Images\PinkLarge.png" />
+    <Resource Include="Images\Red.png" />
+    <Resource Include="Images\RedLarge.png" />
+    <Resource Include="Images\sum.png" />
+    <Resource Include="Images\tables-relation.png" />
+    <Resource Include="Images\word.png" />
+    <Resource Include="Images\Yellow.png" />
+    <Resource Include="Images\YellowLarge.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

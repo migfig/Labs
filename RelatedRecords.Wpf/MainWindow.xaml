@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RelatedRecords.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Related Records" Height="350" Width="525" WindowState="Maximized">
+    <Window.Resources>
+        <local:IntToVisibilityConverter x:Key="IntConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,9 +18,21 @@
             <ColumnDefinition Width="0.5*"/>
             <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
-        
-        <TextBlock Text="{Binding SelectedDataTable.Root.Table.TableName}"
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Stretch">
+            <Button x:Name="btnGoBack"                                
+                                Tag="{Binding SelectedDataTable}"
+                                Click="btnGoBack_Click"
+                                Visibility="{Binding ParentVisibility}"
+                                Margin="2,0,2,0">
+                <ContentControl>
+                    <Image Source="Images\NavBack.png" Width="16" Height="16"/>
+                </ContentControl>
+            </Button>
+            <TextBlock Text="{Binding SelectedDataTable.Root.Table.TableName}"
                    HorizontalAlignment="Center"/>
+        </StackPanel>
         <DataGrid Grid.Row="1"
                   ItemsSource="{Binding SelectedDataTable.Root.Table}"
                   AutoGenerateColumns="True"
@@ -46,16 +61,21 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Content="Children" 
+                        <Button x:Name="btnDrillDown"
                                 Tag="{Binding}"
+                                Click="btnDrillDown_Click"
+                                Visibility="{Binding Root.ConfigTable.Children.Count, Converter={StaticResource IntConverter}}"
                                 Margin="2,0,0,0">
+                            <ContentControl>
+                                <Image Source="Images\GraphLeftToRight.png" Width="16" Height="16"/>
+                            </ContentControl>
                         </Button>
                         <TextBlock Grid.Column="2" 
-                            Text="{Binding Table.TableName}"
+                            Text="{Binding Root.Table.TableName}"
                             Margin="4,0,0,0"/>
                         
                         <DataGrid Grid.Row="1" Grid.ColumnSpan="2"
-                                  ItemsSource="{Binding Table}"
+                                  ItemsSource="{Binding Root.Table}"
                                   AutoGenerateColumns="True"
                                   AlternatingRowBackground="LightSeaGreen"
                                   IsReadOnly="True"

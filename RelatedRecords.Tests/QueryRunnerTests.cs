@@ -109,8 +109,8 @@ namespace RelatedRecords.Tests
             Assert.AreEqual(1, result.Root.Table.Rows.Count);
             Assert.IsNotNull(result.Children);
             Assert.AreEqual(3, result.Children.Count());
-            Assert.AreEqual(1, result.Children[0].Table.Rows.Count);
-            Assert.AreEqual(1, result.Children[1].Table.Rows.Count);
+            Assert.AreEqual(1, result.Children[0].Root.Table.Rows.Count);
+            Assert.AreEqual(1, result.Children[1].Root.Table.Rows.Count);
         }
 
         [TestCleanup]

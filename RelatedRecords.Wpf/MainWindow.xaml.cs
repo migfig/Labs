@@ -25,6 +25,21 @@ namespace RelatedRecords.Wpf
         {
             InitializeComponent();
             DataContext = MainViewModel.Instance;
-        }        
+        }
+
+        private void btnDrillDown_Click(object sender, RoutedEventArgs e)
+        {
+            var table = (sender as Button).Tag as DatatableEx;
+            if (null != table)
+            {
+                MainViewModel.Instance.TableNavigation.Push(MainViewModel.Instance.SelectedDataTable);
+                MainViewModel.Instance.SelectedDataTable = table;
+            }
+        }
+
+        private void btnGoBack_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance.SelectedDataTable = MainViewModel.Instance.TableNavigation.Pop();
+        }
     }
 }

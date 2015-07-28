@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using RelatedRecords.Wpf.Annotations;
 using System.Configuration;
 using Common;
+using System.Windows;
 
 namespace RelatedRecords.Wpf
 {
@@ -47,6 +48,8 @@ namespace RelatedRecords.Wpf
             {
                 _selectedDataTable = value;
                 OnPropertyChanged();
+                SelectedRootDataRowView = _selectedDataTable.Root.Table.AsDataView()[0];
+                OnPropertyChanged("ParentVisibility");
             }
         }
 
@@ -59,7 +62,10 @@ namespace RelatedRecords.Wpf
                 _selectedRootDataRowView = value;
                 OnPropertyChanged();
 
-                SelectedDataTable.QueryChildren(_selectedRootDataRowView.Row);
+                if (null != _selectedRootDataRowView)
+                {
+                    SelectedDataTable.QueryChildren(_selectedRootDataRowView.Row);
+                }
             }
         }
 
@@ -67,6 +73,11 @@ namespace RelatedRecords.Wpf
         public Stack<DatatableEx> TableNavigation
         {
             get { return _tableNavigation; }
+        }
+
+        public Visibility ParentVisibility
+        {
+            get { return TableNavigation.Count > 0 ? Visibility.Visible : Visibility.Collapsed;  }
         }
 
         private bool _loaded;

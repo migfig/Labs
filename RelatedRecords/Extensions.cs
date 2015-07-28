@@ -38,6 +38,11 @@ namespace RelatedRecords
                 _selectedDataset = value;
                 SelectedDatasource = SelectedConfiguration
                     .Datasource.First(x => x.name == _selectedDataset.dataSourceName);
+
+                foreach(var table in _selectedDataset.Table)
+                {
+                    table.AddChildren();
+                }
             }
         }
 
@@ -52,6 +57,15 @@ namespace RelatedRecords
         }
 
         #endregion static selected items
+
+        public static void AddChildren(this CTable table)
+        {
+            table.Children = new ObservableCollection<CTable>(
+                from r in SelectedDataset.Relationship
+                where r.fromTable == table.name
+                select SelectedDataset.Table.First(x => x.name == r.toTable) 
+                );
+        }
 
         public static string ToSelectString(this CTable table, bool asStar = false)
         {
@@ -145,19 +159,29 @@ namespace RelatedRecords
             
             var table = SelectedDataset.Table.First(t => t.name == parent.Root.Table.TableName);
             var queries = table.RelatedTablesSelect(row);
-
-            using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
+            if (!string.IsNullOrEmpty(queries))
             {
-                queries.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
-                .ToList()
-                .ForEach(q =>
+                using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
                 {
-                    var rdr = connection.ExecuteReader(q);
-                    var tbl = new DataTable(ParseTableName(q));
-                    tbl.Load(rdr);
-                    parent.Children.Add(
-                        new TableContainer(tbl, SelectedDataset.Table.First(x => x.name == tbl.TableName)));
-                });
+                    queries.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                    .ToList()
+                    .ForEach(q =>
+                    {
+                        var rdr = connection.ExecuteReader(q);
+                        var tbl = new DataTable(ParseTableName(q));
+                        tbl.Load(rdr);
+                       
+                        var newTable = new DatatableEx(
+                            new TableContainer(tbl, SelectedDataset.Table.First(x => x.name == tbl.TableName)));
+
+                        if (newTable.Root.ConfigTable.Children.Count > 0)
+                        {
+                            newTable.QueryChildren(tbl.Rows[0]);
+                        }
+
+                        parent.Children.Add(newTable);
+                    });
+                }
             }
         }
 

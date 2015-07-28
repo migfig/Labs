@@ -13,18 +13,18 @@ namespace RelatedRecords
     public class DatatableEx
     {
         public TableContainer Root { get; private set; }
-        public ObservableCollection<TableContainer> Children { get; private set; }
+        public ObservableCollection<DatatableEx> Children { get; private set; }
 
-        public DatatableEx(TableContainer root, ObservableCollection<TableContainer> children)
+        public DatatableEx(TableContainer root, ObservableCollection<DatatableEx> children)
         {
             Root = root;
             Children = children;
         }
 
-        public DatatableEx(TableContainer root, params TableContainer[] children)
+        public DatatableEx(TableContainer root, params DatatableEx[] children)
         {
             Root = root;
-            Children = new ObservableCollection<TableContainer>(children);
+            Children = new ObservableCollection<DatatableEx>(children);
         }
     }
 
