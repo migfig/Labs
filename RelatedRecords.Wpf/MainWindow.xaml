@@ -16,76 +16,137 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="3"/>
             <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Stretch">
-            <Button x:Name="btnGoBack"                                
+        <Border Grid.Row="1" 
+                Padding="4" 
+                CornerRadius="2" 
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch" 
+                BorderBrush="DarkGray" 
+                BorderThickness="1">
+            <DockPanel LastChildFill="True">
+                <StackPanel Orientation="Horizontal" 
+                            DockPanel.Dock="Top" 
+                            HorizontalAlignment="Stretch">
+                    <Button x:Name="btnGoBack"                                
                                 Tag="{Binding SelectedDataTable}"
                                 Click="btnGoBack_Click"
                                 Visibility="{Binding ParentVisibility}"
                                 Margin="2,0,2,0">
-                <ContentControl>
-                    <Image Source="Images\NavBack.png" Width="16" Height="16"/>
-                </ContentControl>
-            </Button>
-            <TextBlock Text="{Binding SelectedDataTable.Root.Table.TableName}"
-                   HorizontalAlignment="Center"/>
-        </StackPanel>
-        <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding SelectedDataTable.Root.Table}"
-                  AutoGenerateColumns="True"
-                  AlternatingRowBackground="Beige"
-                  IsReadOnly="True"
-                  SelectionMode="Single"
-                  SelectionUnit="FullRow"
-                  SelectedItem="{Binding SelectedRootDataRowView}"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"/>
+                        <ContentControl>
+                            <Image Source="Images\NavBack.png" Width="16" Height="16"/>
+                        </ContentControl>
+                    </Button>
+
+                    <TextBlock Text="{Binding SelectedDataTable.Root.Table.TableName}" FontWeight="DemiBold"/>
+                    <TextBlock Text=" - " Foreground="Green"/>
+                    <TextBlock Text="{Binding SelectedDataTable.Root.Table.Count}" Foreground="Green"/>
+                    <TextBlock Text=" Rows" Foreground="Green"/>
+                </StackPanel>
+                
+                <DataGrid ItemsSource="{Binding SelectedDataTable.Root.Table}"
+                          CanUserResizeRows="False" 
+                          SelectionMode="Single" 
+                          AlternatingRowBackground="LemonChiffon" 
+                          ClipboardCopyMode="IncludeHeader" 
+                          IsReadOnly="True" 
+                          IsTextSearchEnabled="True"
+                          AutoGenerateColumns="True"
+                          SelectionUnit="FullRow"
+                          SelectedItem="{Binding SelectedRootDataRowView}"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"/>
+            </DockPanel>
+        </Border>
+
+        <GridSplitter Grid.Row="1" 
+                      Grid.Column="1" 
+                      VerticalAlignment="Stretch" 
+                      HorizontalAlignment="Stretch" 
+                      BorderBrush="Gray" 
+                      BorderThickness="1"
+                      Style="{DynamicResource GridSplitterStyle}" 
+                      Background="LightBlue"/>
         
-        <HeaderedItemsControl Grid.RowSpan="2"
-                              Grid.Column="1"
-                              Header="Children Tables"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch"
-                              ItemsSource="{Binding SelectedDataTable.Children}">
-            <HeaderedItemsControl.ItemTemplate>                
-                <DataTemplate>
-                    <Grid Margin="0,8,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Button x:Name="btnDrillDown"
-                                Tag="{Binding}"
-                                Click="btnDrillDown_Click"
-                                Visibility="{Binding Root.ConfigTable.Children.Count, Converter={StaticResource IntConverter}}"
-                                Margin="2,0,0,0">
-                            <ContentControl>
-                                <Image Source="Images\GraphLeftToRight.png" Width="16" Height="16"/>
-                            </ContentControl>
-                        </Button>
-                        <TextBlock Grid.Column="2" 
-                            Text="{Binding Root.Table.TableName}"
-                            Margin="4,0,0,0"/>
-                        
-                        <DataGrid Grid.Row="1" Grid.ColumnSpan="2"
-                                  ItemsSource="{Binding Root.Table}"
-                                  AutoGenerateColumns="True"
-                                  AlternatingRowBackground="LightSeaGreen"
-                                  IsReadOnly="True"
-                                  SelectionMode="Single"
-                                  SelectionUnit="FullRow"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch"/>
-                    </Grid>
-                </DataTemplate>                    
-            </HeaderedItemsControl.ItemTemplate>                     
-        </HeaderedItemsControl>
+        <Border Grid.Row="1"
+                Grid.Column="2" 
+                Padding="4" 
+                CornerRadius="2"  
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch" 
+                BorderBrush="DarkGray" 
+                BorderThickness="1">
+            <ListBox ItemsSource="{Binding SelectedDataTable.Children}" 
+                         SelectionMode="Single">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border x:Name="OuterBackgroundBorder" BorderThickness="1" Margin="0,10,0,0">
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Offset="0" Color="#9CA0A3"/>
+                                    <GradientStop Offset="1" Color="#7F8384"/>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Offset="0" Color="#FFFBFF"/>
+                                    <GradientStop Offset="0.5" Color="#FDFFFE"/>
+                                    <GradientStop Offset="0.5" Color="#F3F4F6"/>
+                                    <GradientStop Offset="1" Color="#D1D6DC"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border x:Name="InnerBackgroundBorder" BorderThickness="1">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Offset="0" Color="#80EBEFF0"/>
+                                        <GradientStop Offset="1" Color="#60889ca3"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                        <Button x:Name="btnDrillDown"
+                                            Tag="{Binding}"
+                                            Click="btnDrillDown_Click"
+                                            Visibility="{Binding Root.ConfigTable.Children.Count, Converter={StaticResource IntConverter}}"
+                                            Margin="2,0,0,0">
+                                            <ContentControl>
+                                                <Image Source="Images\NavDown.png" Width="16" Height="16"/>
+                                            </ContentControl>
+                                        </Button>
+
+                                        <TextBlock Text="{Binding Root.Table.TableName}" Foreground="Black" FontWeight="DemiBold"/>
+                                        <TextBlock Text=" - " Foreground="Green"/>
+                                        <TextBlock Text="{Binding Root.Table.Count}" Foreground="Green"/>
+                                        <TextBlock Text=" Rows" Foreground="Green"/>
+                                    </StackPanel>
+
+                                    <DataGrid Grid.Row="1"
+                                      ItemsSource="{Binding Root.Table}"
+                                      AutoGenerateColumns="True"
+                                      IsReadOnly="True"
+                                      SelectionMode="Single"
+                                        AlternatingRowBackground="LightCyan" 
+                                        CanUserAddRows="False" 
+                                        CanUserDeleteRows="False" 
+                                        CanUserResizeRows="False" 
+                                        ClipboardCopyMode="IncludeHeader" 
+                                        IsTextSearchEnabled="True" 
+                                        SelectionUnit="CellOrRowHeader"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"/>
+                                </Grid>
+                            </Border>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
     </Grid>
 </Window>
