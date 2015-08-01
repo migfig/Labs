@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:RelatedRecords.Wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Office2010/Silver.xaml"/>
     </Application.Resources>
 </Application>

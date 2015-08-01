@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RelatedRecords.Wpf.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -17,7 +18,7 @@ namespace RelatedRecords.Wpf
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            MainViewModel.Instance.Load();
+            MainViewModel.ViewModel.Load();
         }
     }
 }

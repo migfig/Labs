@@ -1,45 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Fluent;
+using RelatedRecords.Wpf.ViewModels;
+using System;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RelatedRecords.Wpf
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : RibbonWindow
     {
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = MainViewModel.Instance;
+            DataContext = MainViewModel.ViewModel;
         }
 
         private void btnDrillDown_Click(object sender, RoutedEventArgs e)
         {
-            var table = (sender as Button).Tag as DatatableEx;
+            var table = (sender as Fluent.Button).Tag as DatatableEx;
             if (null != table)
             {
-                MainViewModel.Instance.TableNavigation.Push(MainViewModel.Instance.SelectedDataTable);
-                MainViewModel.Instance.SelectedDataTable = table;
+                MainViewModel.ViewModel.TableNavigation.Push(MainViewModel.ViewModel.SelectedDataTable);
+                MainViewModel.ViewModel.SelectedDataTable = table;
             }
         }
 
-        private void btnGoBack_Click(object sender, RoutedEventArgs e)
+        private void DataGrid_CurrentCellChanged(object sender, EventArgs e)
         {
-            MainViewModel.Instance.SelectedDataTable = MainViewModel.Instance.TableNavigation.Pop();
+            try {
+                var cell = (sender as DataGrid).CurrentCell;
+                var colName = cell.Column.Header.ToString();
+                MainViewModel.ViewModel.SelectedColumn = colName;
+                MainViewModel.ViewModel.SearchCriteria = (cell.Item as DataRowView)[colName].ToString();
+            } catch(Exception) {; }
         }
     }
 }

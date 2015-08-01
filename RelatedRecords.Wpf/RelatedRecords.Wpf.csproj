@@ -35,6 +35,33 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="antlr.runtime">
+      <HintPath>..\packages\Miscelaneous\antlr.runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\packages\Miscelaneous\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="ExportDLL">
+      <HintPath>..\packages\Miscelaneous\ExportDLL.dll</HintPath>
+    </Reference>
+    <Reference Include="ExportHierarchical">
+      <HintPath>..\packages\Miscelaneous\ExportHierarchical.dll</HintPath>
+    </Reference>
+    <Reference Include="Fluent">
+      <HintPath>..\packages\Fluent\Fluent.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\packages\Miscelaneous\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog">
+      <HintPath>..\packages\Serilog.1.5.7\lib\net45\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.FullNetFx">
+      <HintPath>..\packages\Serilog.1.5.7\lib\net45\Serilog.FullNetFx.dll</HintPath>
+    </Reference>
+    <Reference Include="StringTemplate">
+      <HintPath>..\packages\Miscelaneous\StringTemplate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -50,15 +77,21 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFSpark">
+      <HintPath>..\packages\WpfSpark\WPFSpark.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\IntToVisibilityConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModels\MainViewModel.Commands.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.Filters.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -71,6 +104,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="TableTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Resource Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -95,10 +132,27 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="templates\Collection\csv.st" />
+    <None Include="templates\Collection\csv_item.st" />
+    <None Include="templates\Collection\Excel2003XML.st" />
+    <None Include="templates\Collection\Excel2007.st" />
+    <None Include="templates\Collection\excel2007_item.st" />
+    <None Include="templates\Collection\excel_item.st" />
+    <None Include="templates\Collection\html.st" />
+    <None Include="templates\Collection\htmlfragment.st" />
+    <None Include="templates\Collection\html_item.st" />
+    <None Include="templates\Collection\html_tables.st" />
+    <None Include="templates\Collection\itextSharpXML.st" />
+    <None Include="templates\Collection\itextSharp_item.st" />
+    <None Include="templates\Collection\Word2003XML.st" />
+    <None Include="templates\Collection\Word2007.st" />
+    <None Include="templates\Collection\word_item.st" />
+    <None Include="templates\Collection\xml.st" />
+    <None Include="templates\Collection\xml_item.st" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

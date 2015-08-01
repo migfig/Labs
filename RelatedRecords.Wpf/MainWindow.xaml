@@ -1,53 +1,258 @@
-﻿<Window x:Class="RelatedRecords.Wpf.MainWindow"
+﻿<Fluent:RibbonWindow x:Class="RelatedRecords.Wpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+        xmlns:wpfspark="clr-namespace:WPFSpark;assembly=WPFSpark"                 
         xmlns:local="clr-namespace:RelatedRecords.Wpf"
         mc:Ignorable="d"
         Title="Related Records" Height="350" Width="525" WindowState="Maximized">
-    <Window.Resources>
-        <local:IntToVisibilityConverter x:Key="IntConverter"/>
-    </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*"/>
-            <ColumnDefinition Width="3"/>
-            <ColumnDefinition Width="0.5*"/>
-        </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="1" 
-                Padding="4" 
-                CornerRadius="2" 
-                VerticalAlignment="Stretch" 
-                HorizontalAlignment="Stretch" 
-                BorderBrush="DarkGray" 
-                BorderThickness="1">
-            <DockPanel LastChildFill="True">
-                <StackPanel Orientation="Horizontal" 
-                            DockPanel.Dock="Top" 
-                            HorizontalAlignment="Stretch">
-                    <Button x:Name="btnGoBack"                                
-                                Tag="{Binding SelectedDataTable}"
-                                Click="btnGoBack_Click"
-                                Visibility="{Binding ParentVisibility}"
-                                Margin="2,0,2,0">
-                        <ContentControl>
-                            <Image Source="Images\NavBack.png" Width="16" Height="16"/>
-                        </ContentControl>
+    <Fluent:RibbonWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary x:Key="tableTemplate" Source="TableTemplate.xaml"/>
+            <local:IntToVisibilityConverter x:Key="IntConverter"/>
+        </ResourceDictionary>
+    </Fluent:RibbonWindow.Resources>
+
+    <DockPanel LastChildFill="True">
+        <Fluent:Ribbon DockPanel.Dock="Top">
+            <!--Quick Access Toolbar Items-->
+            <Fluent:Ribbon.QuickAccessItems>
+                <Fluent:QuickAccessMenuItem Target="{Binding ElementName=buttonGreen}"/>
+            </Fluent:Ribbon.QuickAccessItems>
+
+            <!--Tabs-->
+            <Fluent:RibbonTabItem Header="Tab" ReduceOrder="(P),(P),(P),(P),(P)">
+                <Fluent:RibbonGroupBox Header="Navigation">
+                    <Button Command="{Binding GoBackCommand}">
+                        <Button.RenderTransform>
+                            <SkewTransform />
+                        </Button.RenderTransform>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#FF1F3B53"/>
+                                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                <Setter Property="Height" Value="48"/>
+                                <Setter Property="Width" Value="48"/>
+                                <Setter Property="Margin" Value="0,10,0,0"/>
+                                <Setter Property="Padding" Value="3"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Opacity" Value="0.995"/>
+                                <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                <Setter Property="BorderBrush">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                            <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                            <GradientStop Color="#FF718597" Offset="0.375"/>
+                                            <GradientStop Color="#FF617584" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid>
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup x:Name="CommonStates">
+                                                        <VisualState x:Name="Normal"/>
+                                                        <VisualState x:Name="MouseOver">
+                                                            <Storyboard>
+                                                                <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="ellipse" />
+                                                                <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                        <VisualState x:Name="Pressed"/>
+                                                        <VisualState x:Name="Disabled"/>
+                                                    </VisualStateGroup>
+                                                    <VisualStateGroup x:Name="FocusStates">
+                                                        <VisualState x:Name="Focused"/>
+                                                        <VisualState x:Name="Unfocused"/>
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+                                                <Ellipse x:Name="ellipse" Stroke="#66000000" StrokeThickness="4" Fill="#00000000"/>
+                                                <Path x:Name="path" Data="M62.285461,38.208038 L62.285461,46.520542 L27.04554,46.192837 L36.261051,57.094002 L36.189625,67.302391 L14.535425,41.780952 L37.249847,17.317707 L37.035561,26.828125 L27.071419,38 z" Margin="15.301,14.961,15.999,14.914" Stretch="Fill" StrokeThickness="4" UseLayoutRounding="False" Fill="#64000000"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
                     </Button>
+                </Fluent:RibbonGroupBox>
 
-                    <TextBlock Text="{Binding SelectedDataTable.Root.Table.TableName}" FontWeight="DemiBold"/>
-                    <TextBlock Text=" - " Foreground="Green"/>
-                    <TextBlock Text="{Binding SelectedDataTable.Root.Table.Count}" Foreground="Green"/>
-                    <TextBlock Text=" Rows" Foreground="Green"/>
-                </StackPanel>
-                
-                <DataGrid ItemsSource="{Binding SelectedDataTable.Root.Table}"
+                <!--Gallery with all tables-->
+                <Fluent:RibbonGroupBox Header="Datasets" Name="P">
+                    <Fluent:InRibbonGallery ItemWidth="100" ItemHeight="56" ResizeMode="Both"
+                                      MinItemsInRow="2" MaxItemsInRow="7"                             
+                                      ItemTemplate="{DynamicResource TableCardTemplate}"
+                                      ItemsSource="{Binding DataTablesList}"
+                                      SelectedItem="{Binding SelectedDataTable}">
+                    </Fluent:InRibbonGallery>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Search/Filters">
+                    <Fluent:DropDownButton SizeDefinition="Middle" Header="Column">
+                        <Fluent:DropDownButton.Icon>
+                            <Grid Width="12" Height="12">
+                                <Image Source="Images\key-solid.png"/>
+                            </Grid>
+                        </Fluent:DropDownButton.Icon>
+
+                        <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="100"
+                                        SelectedItem="{Binding Mode=TwoWay, Path=SelectedColumn}" SelectedValue="{Binding Mode=TwoWay, Path=SelectedColumn}"
+                                        ItemsSource="{Binding SelectedDataTableColumns}" 
+                                        ItemTemplate="{DynamicResource ColumnsTemplate}"/>
+                        <Fluent:MenuItem Header="Search" Command="{Binding SearchCommand}" Icon="Images\Find.png"/>
+                        <Fluent:MenuItem Header="Filter" Command="{Binding FilterCommand}" Icon="Images\Filter.png"/>
+                        <Fluent:MenuItem Header="Clear Filter" Command="{Binding ClearFilterCommand}" Icon="Images\clear.png"/>
+                    </Fluent:DropDownButton>
+
+                    <Fluent:DropDownButton Name="operator" SizeDefinition="Middle" Header="Operator" >
+                        <Fluent:DropDownButton.Icon>
+                            <Grid Width="12" Height="12">
+                                <Image Source="Images\sum.png"/>
+                            </Grid>
+                        </Fluent:DropDownButton.Icon>
+
+                        <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="100" 
+                                        SelectedItem="{Binding Mode=TwoWay, Path=SelectedOperator}" SelectedValue="{Binding Mode=TwoWay, Path=SelectedOperator}"
+                                        ItemsSource="{Binding SelectedColumnOperators}" 
+                                        ItemTemplate="{DynamicResource ColumnsTemplate}"/>
+                    </Fluent:DropDownButton>
+
+                    <Fluent:TextBox Name="searchFilterCriteria" 
+                                    Text="{Binding Mode=TwoWay, Path=SearchCriteria, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <Fluent:DropDownButton Name="searchValues" SizeDefinition="Middle" Header="Search History">
+                        <Fluent:DropDownButton.Icon>
+                            <Grid Width="12" Height="12">
+                                <Image Source="Images\Find.png"/>
+                            </Grid>
+                        </Fluent:DropDownButton.Icon>
+
+                        <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="100"
+                                        SelectedItem="{Binding Mode=TwoWay, Path=SelectedCriteria}"
+                                        ItemsSource="{Binding AppSettings.SearchValues}" 
+                                        ItemTemplate="{DynamicResource ColumnsTemplate}"/>
+                        <Fluent:MenuItem Header="Clear History" Command="{Binding ClearSearchHistoryCommand}" Icon="Images\clear.png"/>
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Settings">
+                    <Fluent:DropDownButton Name="rowCount" SizeDefinition="Middle" Header="Max Rows">
+                        <Fluent:DropDownButton.Icon>
+                            <Grid Width="16" Height="16">
+                                <Image Source="Images\counter.png"/>
+                            </Grid>
+                        </Fluent:DropDownButton.Icon>
+
+                        <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="100"
+                                        SelectedItem="{Binding Mode=TwoWay, Path=MaxRowCount}" SelectedValue="{Binding Mode=TwoWay, Path=MaxRowCount}"
+                                        ItemsSource="{Binding MaxRows}" 
+                                        ItemTemplate="{DynamicResource ColumnsTemplate}"/>
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Export">
+                    <Fluent:DropDownButton Name="export" SizeDefinition="Middle" Header="Format">
+                        <Fluent:DropDownButton.Icon>
+                            <Grid Width="16" Height="16">
+                                <Image Source="Images\export.png"/>
+                            </Grid>
+                        </Fluent:DropDownButton.Icon>
+
+                        <Fluent:MenuItem Header="Html" Command="{Binding Export2HtmlCommand}" Icon="Images\html.png"/>
+                        <Fluent:MenuItem Header="Excel" Command="{Binding Export2ExcelCommand}" Icon="Images\excel.png"/>
+                        <Fluent:MenuItem Header="Word" Command="{Binding Export2WordCommand}" Icon="Images\word.png"/>
+                        <Fluent:MenuItem Header="PDF" Command="{Binding Export2PDFCommand}" Icon="Images\pdf.png"/>
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Errors" Visibility="{Binding LastErrorsVisibility}" HorizontalAlignment="Right">
+                    <Fluent:DropDownButton Name="lastErrors" SizeDefinition="Middle" Header="Found Errors">
+                        <Fluent:DropDownButton.Icon>
+                            <Grid Width="12" Height="12">
+                                <Image Source="Images\Alert.png"/>
+                            </Grid>
+                        </Fluent:DropDownButton.Icon>
+
+                        <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="200"
+                                        ItemsSource="{Binding Mode=OneWay, Path=LastErrors}" 
+                                        ItemTemplate="{DynamicResource ColumnsTemplate}"/>
+                        <Fluent:MenuItem Header="Clear" Command="{Binding ClearLastErrorsCommand}" Icon="Images\clear.png"/>
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Wait" Visibility="{Binding SprocketVisibility}" HorizontalAlignment="Right">
+                    <Border Padding="1" CornerRadius="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="1">
+                        <Border.Background>
+                            <SolidColorBrush Color="Black"/>
+                        </Border.Background>
+                        <StackPanel>
+                            <wpfspark:SprocketControl 
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Top"
+                                  TickColor="Orange"
+                                  Width="40"
+                                  Height="40"
+                                  TickWidth="3"
+                                  TickCount="40"
+                                  StartAngle="-90"
+                                  IsIndeterminate="{Binding IsBusy}"
+                                  Interval="30" />
+                            <wpfspark:FluidStatusBar 
+                                 x:Name="customStatusBar"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 FadeOutDirection="Down"
+                                 FadeOutDistance="400"
+                                 FadeOutDuration="00:00:00.75"
+                                 MoveDuration="00:00:00.3"
+                                 Foreground="Orange"
+                                 Background="Transparent"
+                                 FontFamily="Segoe WP"
+                                 FontWeight="Light"
+                                 FontStyle="Italic"
+                                 FontSize="10"/>
+                        </StackPanel>
+                    </Border>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <!--Backstage Items-->
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage>
+                    <Fluent:BackstageTabControl>
+                        <Fluent:Button Header="Connect" Command="{Binding ConnectCommand}" Icon="Images\Database.png"/>
+                        <Fluent:Button Header="Work Offline" Command="{Binding WorkOfflineCommand}" Icon="Images\disconnect.png"/>
+                        <Fluent:Button Header="Clear Cache" Command="{Binding ClearCacheCommand}" Icon="Images\connect.png"/>
+                        <Fluent:Button Header="Setup Table Relationships" Command="{Binding SetTableRelationshipsCommand}" Icon="Images\Application.png"/>
+                        <Fluent:Button Header="Close" Command="{Binding ExitCommand}" Icon="Images\Exit.png"/>
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+        </Fluent:Ribbon>
+
+        <!--View Current table Details-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="3"/>
+                <ColumnDefinition Width="50*"/>
+            </Grid.ColumnDefinitions>
+            <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
+                <DockPanel LastChildFill="True">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
+                        
+                        <TextBlock Text="{Binding SelectedDataTable.Root.Table.TableName}" FontWeight="DemiBold"/>
+                        <TextBlock Text=" - " Foreground="Green"/>
+                        <TextBlock Text="{Binding SelectedDataTable.Root.Table.Count}" Foreground="Green"/>
+                        <TextBlock Text=" Rows" Foreground="Green"/>
+                    </StackPanel>
+                    <DataGrid ItemsSource="{Binding SelectedDataTable.Root.Table}"
                           CanUserResizeRows="False" 
                           SelectionMode="Single" 
                           AlternatingRowBackground="LemonChiffon" 
@@ -55,98 +260,81 @@
                           IsReadOnly="True" 
                           IsTextSearchEnabled="True"
                           AutoGenerateColumns="True"
-                          SelectionUnit="FullRow"
+                          CurrentCellChanged="DataGrid_CurrentCellChanged"
                           SelectedItem="{Binding SelectedRootDataRowView}"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"/>
-            </DockPanel>
-        </Border>
+                </DockPanel>
+            </Border>
 
-        <GridSplitter Grid.Row="1" 
-                      Grid.Column="1" 
-                      VerticalAlignment="Stretch" 
-                      HorizontalAlignment="Stretch" 
-                      BorderBrush="Gray" 
-                      BorderThickness="1"
-                      Style="{DynamicResource GridSplitterStyle}" 
-                      Background="LightBlue"/>
-        
-        <Border Grid.Row="1"
-                Grid.Column="2" 
-                Padding="4" 
-                CornerRadius="2"  
-                VerticalAlignment="Stretch" 
-                HorizontalAlignment="Stretch" 
-                BorderBrush="DarkGray" 
-                BorderThickness="1">
-            <ListBox ItemsSource="{Binding SelectedDataTable.Children}" 
+            <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
+                          Style="{DynamicResource GridSplitterStyle}" Background="LightBlue"/>
+            
+            <Border Grid.Column="2" Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
+                <ListBox ItemsSource="{Binding SelectedDataTable.Children}" 
                          SelectionMode="Single">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border x:Name="OuterBackgroundBorder" BorderThickness="1" Margin="0,10,0,0">
-                            <Border.BorderBrush>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                    <GradientStop Offset="0" Color="#9CA0A3"/>
-                                    <GradientStop Offset="1" Color="#7F8384"/>
-                                </LinearGradientBrush>
-                            </Border.BorderBrush>
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                    <GradientStop Offset="0" Color="#FFFBFF"/>
-                                    <GradientStop Offset="0.5" Color="#FDFFFE"/>
-                                    <GradientStop Offset="0.5" Color="#F3F4F6"/>
-                                    <GradientStop Offset="1" Color="#D1D6DC"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <Border x:Name="InnerBackgroundBorder" BorderThickness="1">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="OuterBackgroundBorder" BorderThickness="1" Margin="0,10,0,0">
                                 <Border.BorderBrush>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                        <GradientStop Offset="0" Color="#80EBEFF0"/>
-                                        <GradientStop Offset="1" Color="#60889ca3"/>
+                                        <GradientStop Offset="0" Color="#9CA0A3"/>
+                                        <GradientStop Offset="1" Color="#7F8384"/>
                                     </LinearGradientBrush>
                                 </Border.BorderBrush>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                                        <Button x:Name="btnDrillDown"
-                                            Tag="{Binding}"
-                                            Click="btnDrillDown_Click"
-                                            Visibility="{Binding Root.ConfigTable.Children.Count, Converter={StaticResource IntConverter}}"
-                                            Margin="2,0,0,0">
-                                            <ContentControl>
-                                                <Image Source="Images\NavDown.png" Width="16" Height="16"/>
-                                            </ContentControl>
-                                        </Button>
-
-                                        <TextBlock Text="{Binding Root.Table.TableName}" Foreground="Black" FontWeight="DemiBold"/>
-                                        <TextBlock Text=" - " Foreground="Green"/>
-                                        <TextBlock Text="{Binding Root.Table.Count}" Foreground="Green"/>
-                                        <TextBlock Text=" Rows" Foreground="Green"/>
-                                    </StackPanel>
-
-                                    <DataGrid Grid.Row="1"
-                                      ItemsSource="{Binding Root.Table}"
-                                      AutoGenerateColumns="True"
-                                      IsReadOnly="True"
-                                      SelectionMode="Single"
-                                        AlternatingRowBackground="LightCyan" 
-                                        CanUserAddRows="False" 
-                                        CanUserDeleteRows="False" 
-                                        CanUserResizeRows="False" 
-                                        ClipboardCopyMode="IncludeHeader" 
-                                        IsTextSearchEnabled="True" 
-                                        SelectionUnit="CellOrRowHeader"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"/>
-                                </Grid>
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Offset="0" Color="#FFFBFF"/>
+                                        <GradientStop Offset="0.5" Color="#FDFFFE"/>
+                                        <GradientStop Offset="0.5" Color="#F3F4F6"/>
+                                        <GradientStop Offset="1" Color="#D1D6DC"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border x:Name="InnerBackgroundBorder" BorderThickness="1">
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Offset="0" Color="#80EBEFF0"/>
+                                            <GradientStop Offset="1" Color="#60889ca3"/>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                            <Fluent:Button Height="32" Width="32"
+                                                           Click="btnDrillDown_Click"
+                                                           Visibility="{Binding Root.ConfigTable.Children.Count, Converter={StaticResource IntConverter}}"
+                                                           Tag="{Binding}"       
+                                                           Icon="Images\tables-relation.png" 
+                                                           LargeIcon="Images\tables-relation.png"/>
+                                            <TextBlock Text="{Binding Root.Table.TableName}" Foreground="Black" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                                            <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
+                                            <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <DataGrid Grid.Row="1"
+                                            ItemsSource="{Binding Root.Table}"
+                                            AutoGenerateColumns="True"
+                                            IsReadOnly="True"
+                                            SelectionMode="Single"
+                                            AlternatingRowBackground="LightCyan" 
+                                            CanUserAddRows="False" 
+                                            CanUserDeleteRows="False" 
+                                            CanUserResizeRows="False" 
+                                            ClipboardCopyMode="IncludeHeader" 
+                                            IsTextSearchEnabled="True" 
+                                            SelectionUnit="CellOrRowHeader"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"/>
+                                    </Grid>
+                                </Border>
                             </Border>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </Border>
-    </Grid>
-</Window>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Fluent:RibbonWindow>

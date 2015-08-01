@@ -26,6 +26,12 @@ namespace RelatedRecords
             Root = root;
             Children = new ObservableCollection<DatatableEx>(children);
         }
+
+        public override string ToString()
+        {
+            return null != Root && null != Root.Table ?
+                Root.Table.TableName : string.Empty;
+        }
     }
 
     public class TableContainer
