@@ -254,6 +254,15 @@ namespace RelatedRecords {
         
         /// <remarks/>
         binary,
+
+        /// <remarks/>
+        varchar,
+
+        /// <remarks/>
+        uniqueidentifier,
+
+        /// <remarks/>
+        bigint,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.4.0.32990")]

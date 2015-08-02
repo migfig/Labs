@@ -1,6 +1,110 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RelatedRecords.Wpf.Controls">
+
+    <Style x:Key="{ComponentResourceKey TypeInTargetAssembly=local:AppButton, ResourceId=ButtonFocusVisual}">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border>
+                        <Rectangle Margin="6,6,-2,-2"
+                                   StrokeThickness="2"
+                                   Stroke="Orange"
+                                   StrokeDashArray="1 2" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ToggleSwitch Template -->
+    <ControlTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly=local:AppButton, ResourceId=AppButtonTemplate}"
+                     TargetType="{x:Type local:AppButton}">
+        <Grid  Margin="8,8,0,0">
+            <!--<Border x:Name="Shadow"
+                    BorderThickness="0"
+                    Background="Black"
+                    CornerRadius="0"
+                    Opacity="0.5"
+                    Margin="8,8,-8,-8"></Border>-->
+            <Border x:Name="OuterBorder"
+                    BorderThickness="2"
+                    Background="DarkOrange"
+                    CornerRadius="0">
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0"
+                                         EndPoint="1,1">
+                        <GradientStop Color="#FFC125"
+                                      Offset="0.45"></GradientStop>
+                        <GradientStop Color="#8B5A00"
+                                      Offset="0.55"></GradientStop>
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+            </Border>
+            <StackPanel>
+                <TextBlock FontFamily="{TemplateBinding FontFamily}"
+                       FontSize="{TemplateBinding FontSize}"
+                       Margin="5"
+                       Foreground="{TemplateBinding Foreground}"
+                       FontWeight="{TemplateBinding FontWeight}"
+                       TextAlignment="Left"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Bottom"
+                       Text="{TemplateBinding Content}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect BlurRadius="2"
+                                      ShadowDepth="2"
+                                      Opacity="0.45"
+                                      Direction="-45"></DropShadowEffect>
+                    </TextBlock.Effect>
+                </TextBlock>
+                <TextBlock FontFamily="{TemplateBinding FontFamily}"
+                       FontSize="12"
+                       Margin="5"
+                       Foreground="{TemplateBinding Foreground}"
+                       FontWeight="{TemplateBinding FontWeight}"
+                       TextAlignment="Left"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Bottom"
+                       Text="[Default]"
+                       Visibility="{TemplateBinding IsDefaultVisibility}"/>
+            </StackPanel>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+                <Setter TargetName="OuterBorder"
+                        Property="Background"
+                        Value="Orange"></Setter>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type local:AppButton}">
+        <Setter Property="FocusVisualStyle"
+                Value="{StaticResource {ComponentResourceKey TypeInTargetAssembly=local:AppButton, ResourceId=ButtonFocusVisual}}" />
+        <!--<Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="12"
+                                  ShadowDepth="8"
+                                  Opacity="0.9"
+                                  Direction="-45"></DropShadowEffect>
+            </Setter.Value>
+        </Setter>-->
+        <Setter Property="FontFamily"
+                Value="Segoe WP"></Setter>
+        <Setter Property="FontWeight"
+                Value="Light"></Setter>
+        <Setter Property="FontSize"
+                Value="18"></Setter>
+        <Setter Property="Foreground"
+                Value="White"></Setter>
+        <Setter Property="Template"
+                Value="{StaticResource {ComponentResourceKey TypeInTargetAssembly=local:AppButton, ResourceId=AppButtonTemplate}}" />
+    </Style>
+
     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" x:Key="panelBackgroundBrush">
         <LinearGradientBrush.GradientStops>
             <GradientStop Color="#FFE3EFFF" Offset="0" />

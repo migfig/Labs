@@ -188,6 +188,63 @@ namespace RelatedRecords
             }
         }
 
+        public static XElement GetConfigurationFromConnectionString(string connectionString)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var xml = connection.ExecuteScalar(ConfigurationManager.AppSettings["schemaQuery"]
+                    .Replace("&quot;", "\""));
+                var doc = XDocument.Load(new StringReader(xml.ToString()));
+
+                var regEx = new Regex(ConfigurationManager.AppSettings["dataSourceNameRegEx"]
+                        .Replace("&lt;", "<")
+                        .Replace("&gt;", ">")
+                    , RegexOptions.IgnoreCase);
+                var dataSourceName = regEx.Match(connectionString).Groups["value"].Value;
+
+                return new XElement("Configuration",
+                    new XElement("Datasource",
+                        new XAttribute("name", dataSourceName),
+                        new XElement("ConnectionString", connectionString)),
+                    new XElement("Dataset",
+                        new XAttribute("name", dataSourceName.Split('\\').Last()),
+                        new XAttribute("dataSourceName", dataSourceName),
+
+                        from t in doc.Root.Elements("Table")
+                        select
+                            new XElement("Table", new XAttribute("name", t.Attribute("name").Value),
+                                from c in t.Elements("Column")
+                                select
+                                    new XElement("Column",
+                                        from a in c.Attributes()
+                                        select
+                                            new XAttribute(a.Name.LocalName,
+                                                a.Value
+                                                    .Replace("0", "false")
+                                                    .Replace("1", "true")
+                                                    .Replace("NO", "false")
+                                                    .Replace("YES", "true"))
+                                        )
+                                ),
+
+                        from t in doc.Root.Elements("Table")
+                        from c in t.Elements("Column")
+                        let isForeignKey = c.Attribute("isForeignKey").Value != "0"
+                        where isForeignKey
+                            && HasRelationships(doc.Root,
+                                t.Attribute("name").Value,
+                                c.Attribute("name").Value,
+                                isForeignKey)
+                        select
+                            BuildRelationship(doc.Root,
+                                t.Attribute("name").Value,
+                                c.Attribute("name").Value,
+                                isForeignKey)
+                        )
+                    );
+            }
+        }
+
         private static bool HasRelationships(XElement root,
             string tableName,
             string columnName,

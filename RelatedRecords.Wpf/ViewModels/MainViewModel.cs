@@ -11,6 +11,7 @@ using System.Windows;
 using System.Collections.ObjectModel;
 using System.IO;
 using Serilog;
+using RelatedRecords.Wpf.Controls;
 
 namespace RelatedRecords.Wpf.ViewModels
 {
@@ -74,6 +75,16 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }
 
+        public CDatasource SelectedDatasource
+        {
+            get { return Extensions.SelectedDatasource; }
+            set
+            {
+                Extensions.SelectedDatasource = value;
+                OnPropertyChanged();
+            }
+        }        
+
         private ObservableCollection<DatatableEx> _dataTablesList;
         public ObservableCollection<DatatableEx> DataTablesList
         {
@@ -133,6 +144,45 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 _selectedRootDataView = value;
                 OnPropertyChanged();
+            }
+        }
+
+        private string _selectedConnectionString;
+        public string SelectedConnectionString
+        {
+            get { return _selectedConnectionString; }
+            set
+            {
+                _selectedConnectionString = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private CConfiguration _selectedNewConfiguration;
+        public CConfiguration SelectedNewConfiguration
+        {
+            get { return _selectedNewConfiguration; }
+            set
+            {
+                _selectedNewConfiguration = value;
+                OnPropertyChanged();
+                OnPropertyChanged("SelectedNewConfigurationTables");
+                _saveDatasourceSchemaCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public ObservableCollection<CTable> SelectedNewConfigurationTables
+        {
+            get
+            {
+                if(null != _selectedNewConfiguration)
+                {
+                    return new ObservableCollection<CTable>(
+                        from t in _selectedNewConfiguration.Dataset.First().Table
+                           select t);
+                }
+
+                return new ObservableCollection<CTable>();
             }
         }
 

@@ -1,13 +1,12 @@
-﻿using RelatedRecords.Wpf.Commands;
+﻿using Common;
+using RelatedRecords.Wpf.Commands;
 using System;
-using System.Collections.Generic;
-using System.Data;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using www.serviciipeweb.ro.iafblog.ExportDLL;
@@ -16,6 +15,54 @@ namespace RelatedRecords.Wpf.ViewModels
 {
     public partial class MainViewModel
     {
+        #region load schema commands
+
+        RelayCommand _loadDatasourceSchemaCommand;
+        public ICommand LoadDatasourceSchemaCommand
+        {
+            get
+            {
+                if (_loadDatasourceSchemaCommand == null)
+                {
+                    _loadDatasourceSchemaCommand = new RelayCommand(
+                        x => {
+                            IsBusy = true;
+                            SelectedNewConfiguration = 
+                                XmlHelper<CConfiguration>.Load(
+                                    Helpers.GetConfigurationFromConnectionString(SelectedConnectionString)
+                                );
+                            IsBusy = false;
+                        },
+                        x => !string.IsNullOrEmpty(SelectedConnectionString));
+                }
+                return _loadDatasourceSchemaCommand;
+            }
+        }
+
+        RelayCommand _saveDatasourceSchemaCommand;
+        public ICommand SaveDatasourceSchemaCommand
+        {
+            get
+            {
+                if (_saveDatasourceSchemaCommand == null)
+                {
+                    _saveDatasourceSchemaCommand = new RelayCommand(
+                        x => {
+                            SelectedConfiguration.Datasource
+                                .Add(SelectedNewConfiguration.Datasource.First());
+                            SelectedConfiguration.Dataset
+                                .Add(SelectedNewConfiguration.Dataset.First());
+                            XmlHelper<CConfiguration>.Save(
+                                ConfigurationManager.AppSettings["ConfigurationFile"], SelectedConfiguration);
+                        },
+                        x => null != SelectedNewConfiguration);
+                }
+                return _saveDatasourceSchemaCommand;
+            }
+        }
+
+        #endregion
+
         #region drill down command
         RelayCommand _drillDown;
         /// <summary>
@@ -286,8 +333,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 {
                     _setTableRelationshipsCommand = new RelayCommand(
                         x => {
-                            /*if (null != OnSetupTableRelationships)
-                                OnSetupTableRelationships(this, EventArgs.Empty);*/
+                            SelectedConnectionString = SelectedDatasource.ConnectionString;
+                            new TableRelationships().ShowDialog();
                         });
                 }
                 return _setTableRelationshipsCommand;

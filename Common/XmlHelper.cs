@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace Common
@@ -11,6 +14,24 @@ namespace Common
             try
             {
                 using(var stream = File.OpenText(fileName))
+                {
+                    var ser = new XmlSerializer(typeof(T));
+                    return (T)ser.Deserialize(stream);
+                }
+            }
+            catch (Exception e)
+            {
+                LogError(e);
+            }
+
+            return Activator.CreateInstance<T>();
+        }
+
+        public static T Load(XElement source)
+        {
+            try
+            {
+                using (var stream = XmlReader.Create(new StringReader(source.ToString())))
                 {
                     var ser = new XmlSerializer(typeof(T));
                     return (T)ser.Deserialize(stream);
