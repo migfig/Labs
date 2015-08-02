@@ -163,8 +163,6 @@ namespace RelatedRecords
                                                     a.Value
                                                         .Replace("0", "false")
                                                         .Replace("1", "true")
-                                                        .Replace("2", "true")
-                                                        .Replace("3", "true")
                                                         .Replace("NO", "false")
                                                         .Replace("YES", "true"))
                                             )
@@ -230,8 +228,6 @@ namespace RelatedRecords
                                                 a.Value
                                                     .Replace("0", "false")
                                                     .Replace("1", "true")
-                                                    .Replace("2", "true")
-                                                    .Replace("3", "true")
                                                     .Replace("NO", "false")
                                                     .Replace("YES", "true"))
                                         )
