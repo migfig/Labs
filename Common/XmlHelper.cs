@@ -9,6 +9,8 @@ namespace Common
 {
     public class XmlHelper<T> where T: class
     {
+        public static object ErrorLog { get; private set; }
+
         public static T Load(string fileName)
         {
             try
@@ -21,7 +23,7 @@ namespace Common
             }
             catch (Exception e)
             {
-                LogError(e);
+                Extensions.ErrorLog.Error(e, "@ XmlHelper<T>.Load xml");
             }
 
             return Activator.CreateInstance<T>();
@@ -39,7 +41,7 @@ namespace Common
             }
             catch (Exception e)
             {
-                LogError(e);
+                Extensions.ErrorLog.Error(e, "@ XmlHelper<T>.Load xml");
             }
 
             return Activator.CreateInstance<T>();
@@ -64,15 +66,10 @@ namespace Common
             }
             catch (Exception e)
             {
-                LogError(e);
+                Extensions.ErrorLog.Error(e, "@ XmlHelper<T>.Save xml");
             }
 
             return false;
-        }
-
-        private static void LogError(Exception e)
-        {
-            System.Diagnostics.Debug.Write(e.Message);
-        }
+        }        
     }
 }

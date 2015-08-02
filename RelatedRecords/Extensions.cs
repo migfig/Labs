@@ -167,8 +167,12 @@ namespace RelatedRecords
                     .ToList()
                     .ForEach(q =>
                     {
+                        var tableName = ParseTableName(q);
+                        Common.Extensions.TraceLog.Information("Running query {q} for child table {tableName}", 
+                            q, tableName);
+
                         var rdr = connection.ExecuteReader(q);
-                        var tbl = new DataTable(ParseTableName(q));
+                        var tbl = new DataTable(tableName);
                         tbl.Load(rdr);
                        
                         var newTable = new DatatableEx(
@@ -199,6 +203,8 @@ namespace RelatedRecords
         {
             var result = new DatatableEx(new TableContainer(new DataTable(table.name), table));
             var query = table.ToSelectWhereString(operators, andOrs, asStar, pars);
+
+            Common.Extensions.TraceLog.Information("Running query {query} for table {name}", query, table.name);
 
             using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
             {
@@ -523,9 +529,23 @@ namespace RelatedRecords
             return query.ToString();
         }
 
+        public static bool AreEqual(this DataRowView row, DataRowView other)
+        {
+            if (null == other) return false;
+
+            for(var i=0; i<row.Row.ItemArray.Length; i++)
+            {
+                if (!row[i].Equals(other[i]))
+                    return false;
+            }
+
+            return true;
+        }
+
         public static string[] ToArray(this string value, params string[] parts)
         {
-            return parts;
+            var concat = value + "," + string.Join(",", parts);
+            return concat.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

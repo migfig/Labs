@@ -54,6 +54,11 @@ namespace RelatedRecords.Wpf.ViewModels
                                 .Add(SelectedNewConfiguration.Dataset.First());
                             XmlHelper<CConfiguration>.Save(
                                 ConfigurationManager.AppSettings["ConfigurationFile"], SelectedConfiguration);
+
+                            SelectedNewConfiguration = null;
+                            SelectedConnectionString = string.Empty;
+                            _loadDatasourceSchemaCommand.RaiseCanExecuteChanged();
+                            _setTableRelationshipsCommand.RaiseCanExecuteChanged();
                         },
                         x => null != SelectedNewConfiguration);
                 }
@@ -561,11 +566,19 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (!IsBusy)
                 {
                     IsBusy = true;
+
+                    Common.Extensions.TraceLog.Information("Searching data for table {name} with {SelectedColumn} {SelectedOperator} {SearchCriteria}",
+                        SelectedDataTable.Root.ConfigTable.name,
+                        SelectedColumn,
+                        SelectedOperator,
+                        SearchCriteria
+                        );
+
                     SelectedDataTable.Root.ConfigTable
                         .Query(SelectedOperator.ToArray(),
                             "".ToArray(),
                             true,
-                            new SqlParameter(SelectedColumn, SelectedCriteria));
+                            new SqlParameter(SelectedColumn, SearchCriteria));
 
                     OnPropertyChanged("SelectedRootDataView");
                     _searchCommand.RaiseCanExecuteChanged();
@@ -580,7 +593,7 @@ namespace RelatedRecords.Wpf.ViewModels
 
         private void exportTables(DatatableEx root, ExportToFormat format)
         {
-            Logger.Information("Exporting tables to " + format.ToString(), "Trace");
+            TraceLog.Information("Exporting tables to {format}", format.ToString());
 
             var fileExtension = ".xlsx";
             switch(format)
@@ -619,7 +632,7 @@ namespace RelatedRecords.Wpf.ViewModels
 
         public string exportTablesToHtml()
         {
-            Logger.Information("Exporting tables to Html", "Trace");
+            TraceLog.Information("Exporting tables to Html");
 
             string templatePath = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), 

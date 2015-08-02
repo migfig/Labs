@@ -9,9 +9,7 @@ using System.Configuration;
 using Common;
 using System.Windows;
 using System.Collections.ObjectModel;
-using System.IO;
 using Serilog;
-using RelatedRecords.Wpf.Controls;
 
 namespace RelatedRecords.Wpf.ViewModels
 {
@@ -19,13 +17,9 @@ namespace RelatedRecords.Wpf.ViewModels
     {
         public MainViewModel()
         {
-            Logger = new LoggerConfiguration()
-                .WriteTo.File(Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory, 
-                    GetType().ToString() + ".log"))
-                .CreateLogger();
-
             var configuration = ConfigurationManager.AppSettings["ConfigurationFile"];
+            TraceLog.Information("Running with {configuration} file", configuration);
+
             SelectedConfiguration = XmlHelper<CConfiguration>.Load(configuration);
         }
 
@@ -53,7 +47,15 @@ namespace RelatedRecords.Wpf.ViewModels
 
         #endregion //Events
 
-        private ILogger Logger;
+        public ILogger TraceLog
+        {
+            get { return Common.Extensions.TraceLog; }
+        }
+
+        public ILogger ErrorLog
+        {
+            get { return Common.Extensions.ErrorLog; }
+        }
 
         public CConfiguration SelectedConfiguration
         {
@@ -92,6 +94,7 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 if(null == _dataTablesList)
                 {
+                    Common.Extensions.TraceLog.Information("Loading Data Tables List @ DataTablesList");
                     _dataTablesList = new ObservableCollection<DatatableEx>(
                         from ds in SelectedConfiguration.Dataset
                         select ds.Table.First().Query("".ToArray(""), "".ToArray(""), true)
@@ -111,12 +114,15 @@ namespace RelatedRecords.Wpf.ViewModels
             get { return _selectedDataTable; }
             set
             {
-                _selectedDataTable = value;
-                OnPropertyChanged();
-                SelectedRootDataView = _selectedDataTable.Root.Table.AsDataView();
-                SelectedRootDataRowView = SelectedRootDataView[0];
-                OnPropertyChanged("ParentVisibility");
-                _goBackCommand.RaiseCanExecuteChanged();
+                if (_selectedDataTable != value)
+                {
+                    _selectedDataTable = value;
+                    OnPropertyChanged();
+                    SelectedRootDataView = _selectedDataTable.Root.Table.AsDataView();
+                    SelectedRootDataRowView = SelectedRootDataView[0];
+                    OnPropertyChanged("ParentVisibility");
+                    _goBackCommand.RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -126,12 +132,16 @@ namespace RelatedRecords.Wpf.ViewModels
             get { return _selectedRootDataRowView; }
             set
             {
-                _selectedRootDataRowView = value;
-                OnPropertyChanged();
-
-                if (null != _selectedRootDataRowView)
+                if (!value.AreEqual(_selectedRootDataRowView))
                 {
-                    SelectedDataTable.QueryChildren(_selectedRootDataRowView.Row);
+                    _selectedRootDataRowView = value;
+                    OnPropertyChanged();
+
+                    if (null != _selectedRootDataRowView)
+                    {
+                        Common.Extensions.TraceLog.Information("Loading Children tables @ SelectedRootDataRowView");
+                        SelectedDataTable.QueryChildren(_selectedRootDataRowView.Row);
+                    }
                 }
             }
         }
@@ -251,20 +261,6 @@ namespace RelatedRecords.Wpf.ViewModels
         public Visibility LastErrorsVisibility
         {
             get { return (LastErrors.Count > 0 ? Visibility.Visible : Visibility.Collapsed); }
-        }
-        
-        private bool _loaded;
-        public void Load()
-        {
-            if (_loaded) return;
-
-            //Helpers.CreateSampleTables(SelectedConfiguration);
-            if (null == SelectedDataTable)
-            {
-                SelectedDataTable = SelectedDataset.Table.First()
-                    .Query("".ToArray(""), "".ToArray(""), true);
-            }
-            _loaded = true;
         }
 
         #region property changed handler
