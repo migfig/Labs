@@ -42,6 +42,7 @@ namespace Common
             catch (Exception e)
             {
                 Extensions.ErrorLog.Error(e, "@ XmlHelper<T>.Load xml");
+                Extensions.TraceLog.Information("Tried to load {source}", source);
             }
 
             return Activator.CreateInstance<T>();

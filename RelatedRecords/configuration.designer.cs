@@ -233,36 +233,31 @@ namespace RelatedRecords {
         
         /// <remarks/>
         @int,
-        
-        /// <remarks/>
         @long,
-        
-        /// <remarks/>
         @float,
-        
-        /// <remarks/>
+        @decimal,
         @bool,
-        
-        /// <remarks/>
         @string,
-        
-        /// <remarks/>
         datetime,
-        
-        /// <remarks/>
+        date,
+        smalldatetime,
+        timestamp,
         guid,
-        
-        /// <remarks/>
         binary,
-
-        /// <remarks/>
         varchar,
-
-        /// <remarks/>
         uniqueidentifier,
-
-        /// <remarks/>
         bigint,
+        nchar,
+        bit,
+        varbinary,
+        smallint,
+        nvarchar,
+        text,
+        ntext,
+        xml,   
+        @char,
+        tinyint,
+        datetime2,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.4.0.32990")]
