@@ -23,6 +23,13 @@ namespace RelatedRecords.Tests
         #region configuration load/saving
 
         [TestMethod]
+        public void Xml_Configuration_Deserialize_Test()
+        {
+            var config = XmlHelper<CConfiguration>.Load(@"C:\code\ds.xml");
+            Assert.IsNotNull(config);
+        }
+
+        [TestMethod]
         public void Xml_Configuration_Loading_Test()
         {            
             Assert.IsNotNull(_config);

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Configuration>
+<Configuration defaultDatasource="local" defaultDataset="sample">
   <Datasource name="local">
     <ConnectionString>Data Source=localhost\development;Initial Catalog=development;Integrated Security=True</ConnectionString>
   </Datasource>
@@ -7,7 +7,7 @@
     <ConnectionString>Data Source=remote\development;Initial Catalog=development;Integrated Security=True</ConnectionString>
   </Datasource>
 
-  <Dataset name="sample" dataSourceName="local">
+  <Dataset name="sample" dataSourceName="local" defaultTable="Tickets">
     <Table name="Tickets">
       <Column name="Id" DbType="guid" isPrimaryKey="true" isForeignKey="false" isNullable="false" defaultValue=""/>
       <Column name="TicketNumber" DbType="long" isPrimaryKey="false" isForeignKey="false" isNullable="false" defaultValue=""/>
@@ -48,7 +48,7 @@
     <Relationship name="Groups->Departments" fromTable="Groups" toTable="Departments" fromColumn="DepartmentId" toColumn="DepartmentId"/>
   </Dataset>
 
-  <Dataset name="sample-remote" dataSourceName="remote">
+  <Dataset name="sample-remote" dataSourceName="remote" defaultTable="Tickets">
     <Table name="Tickets">
       <Column name="Id" DbType="guid" isPrimaryKey="true" isForeignKey="false" isNullable="false" defaultValue=""/>
       <Column name="TicketNumber" DbType="long" isPrimaryKey="false" isForeignKey="false" isNullable="false" defaultValue=""/>

@@ -64,6 +64,7 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 Extensions.SelectedConfiguration = value;
                 OnPropertyChanged();
+                Extensions.MaxRowCount = MaxRowCount;
             }
         }
 
@@ -97,7 +98,8 @@ namespace RelatedRecords.Wpf.ViewModels
                     Common.Extensions.TraceLog.Information("Loading Data Tables List @ DataTablesList");
                     _dataTablesList = new ObservableCollection<DatatableEx>(
                         from ds in SelectedConfiguration.Dataset
-                        select ds.Table.First().Query("".ToArray(""), "".ToArray(""), true)
+                        select ds.Table.First(x => x.name == ds.defaultTable)
+                            .Query("".ToArray(""), "".ToArray(""), true)
                     );
 
                     OnPropertyChanged();

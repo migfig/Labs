@@ -11,8 +11,7 @@ namespace RelatedRecords {
     using System.Collections;
     using System.Xml.Schema;
     using System.ComponentModel;
-    using System.Collections.ObjectModel;
-    
+    using System.Collections.ObjectModel;    
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.4.0.32990")]
     [System.SerializableAttribute()]
@@ -21,9 +20,10 @@ namespace RelatedRecords {
     public partial class CConfiguration {
         
         private ObservableCollection<CDatasource> datasourceField;
-        
         private ObservableCollection<CDataset> datasetField;
-        
+        private string defaultDatasetField;
+        private string defaultDatasourceField;
+
         public CConfiguration() {
             this.datasetField = new ObservableCollection<CDataset>();
             this.datasourceField = new ObservableCollection<CDatasource>();
@@ -46,6 +46,32 @@ namespace RelatedRecords {
             }
             set {
                 this.datasetField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string defaultDataset
+        {
+            get
+            {
+                return this.defaultDatasetField;
+            }
+            set
+            {
+                this.defaultDatasetField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string defaultDatasource
+        {
+            get
+            {
+                return this.defaultDatasourceField;
+            }
+            set
+            {
+                this.defaultDatasourceField = value;
             }
         }
     }
@@ -310,13 +336,12 @@ namespace RelatedRecords {
     public partial class CDataset {
         
         private ObservableCollection<CTable> tableField;
-        
         private ObservableCollection<CRelationship> relationshipField;
         
         private string nameField;
-        
         private string dataSourceNameField;
-        
+        private string defaultTableField;
+
         public CDataset() {
             this.relationshipField = new ObservableCollection<CRelationship>();
             this.tableField = new ObservableCollection<CTable>();
@@ -359,6 +384,19 @@ namespace RelatedRecords {
             }
             set {
                 this.dataSourceNameField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string defaultTable
+        {
+            get
+            {
+                return this.defaultTableField;
+            }
+            set
+            {
+                this.defaultTableField = value;
             }
         }
     }

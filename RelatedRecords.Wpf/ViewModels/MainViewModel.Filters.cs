@@ -109,6 +109,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 Properties.Settings.Default.DefaultMaxRowCount = value;
                 Properties.Settings.Default.Save();
                 OnPropertyChanged("MaxRowCount");
+                Extensions.MaxRowCount = value;
             }
         }
 

@@ -21,16 +21,16 @@ namespace RelatedRecords
             #region xml string
 
             var xml = @"<?xml version='1.0' encoding='utf-8' ?>
-<Configuration>
-  <Datasource name='local'>
+<Configuration defaultDatasource='local' defaultDataset='sample'>
+  < Datasource name='local'>
     <ConnectionString>Data Source=localhost\development;Initial Catalog=development;Integrated Security=True</ConnectionString>
   </Datasource>
   <Datasource name='remote'>
     <ConnectionString>Data Source=remote\development;Initial Catalog=development;Integrated Security=True</ConnectionString>
   </Datasource>
 
-  <Dataset name='sample' dataSourceName='local'>
-    <Table name='Tickets'>
+  <Dataset name='sample' dataSourceName='local' defaultTable='Tickets'>
+    < Table name='Tickets'>
       <Column name='Id' DbType='guid' isPrimaryKey='true' isForeignKey='false' isNullable='false' defaultValue=''/>
       <Column name='TicketNumber' DbType='long' isPrimaryKey='false' isForeignKey='false' isNullable='false' defaultValue=''/>
       <Column name='Title' DbType='string' isPrimaryKey='false' isForeignKey='false' isNullable='false' defaultValue=''/>
@@ -70,7 +70,7 @@ namespace RelatedRecords
     <Relationship name='Groups->Departments' fromTable='Groups' toTable='Departments' fromColumn='DepartmentId' toColumn='DepartmentId'/>
   </Dataset>
 
-  <Dataset name='sample-remote' dataSourceName='remote'>
+  <Dataset name='sample-remote' dataSourceName='remote' defaultTable='Tickets'>
     <Table name='Tickets'>
       <Column name='Id' DbType='guid' isPrimaryKey='true' isForeignKey='false' isNullable='false' defaultValue=''/>
       <Column name='TicketNumber' DbType='long' isPrimaryKey='false' isForeignKey='false' isNullable='false' defaultValue=''/>
@@ -141,12 +141,15 @@ namespace RelatedRecords
                 using (var stream = new XmlTextWriter(fileName, Encoding.UTF8))
                 {
                     var newDoc = new XElement("Configuration",
+                            new XAttribute("defaultDatasource",dataSourceName),
+                            new XAttribute("defaultDataset", dataSourceName.Split('\\').Last()),
                         new XElement("Datasource",
                             new XAttribute("name", dataSourceName),
                             new XElement("ConnectionString", connectionString)),
                         new XElement("Dataset",
                             new XAttribute("name", dataSourceName.Split('\\').Last()),
                             new XAttribute("dataSourceName", dataSourceName),
+                            new XAttribute("defaultTable", doc.Root.Elements("Table").First().Attribute("name").Value),
 
                             from t in doc.Root.Elements("Table")
                             select
@@ -160,6 +163,8 @@ namespace RelatedRecords
                                                     a.Value
                                                         .Replace("0", "false")
                                                         .Replace("1", "true")
+                                                        .Replace("2", "true")
+                                                        .Replace("3", "true")
                                                         .Replace("NO", "false")
                                                         .Replace("YES", "true"))
                                             )
@@ -203,12 +208,15 @@ namespace RelatedRecords
                 var dataSourceName = regEx.Match(connectionString).Groups["value"].Value;
 
                 return new XElement("Configuration",
+                        new XAttribute("defaultDatasource", dataSourceName),
+                        new XAttribute("defaultDataset", dataSourceName.Split('\\').Last()),
                     new XElement("Datasource",
                         new XAttribute("name", dataSourceName),
                         new XElement("ConnectionString", connectionString)),
                     new XElement("Dataset",
                         new XAttribute("name", dataSourceName.Split('\\').Last()),
                         new XAttribute("dataSourceName", dataSourceName),
+                        new XAttribute("defaultTable", doc.Root.Elements("Table").First().Attribute("name").Value),
 
                         from t in doc.Root.Elements("Table")
                         select
@@ -222,6 +230,8 @@ namespace RelatedRecords
                                                 a.Value
                                                     .Replace("0", "false")
                                                     .Replace("1", "true")
+                                                    .Replace("2", "true")
+                                                    .Replace("3", "true")
                                                     .Replace("NO", "false")
                                                     .Replace("YES", "true"))
                                         )
@@ -256,7 +266,7 @@ namespace RelatedRecords
                 toTable = (from t in root.Elements("Table")
                            from c in t.Elements("Column")
                            where c.Attribute("name").Value == columnName
-                                && c.Attribute("isPrimaryKey").Value == "1"
+                                && c.Attribute("isPrimaryKey").Value != "0"
                            select t.Attribute("name").Value).FirstOrDefault();
             }
 
@@ -276,7 +286,7 @@ namespace RelatedRecords
                 toTable = (from t in root.Elements("Table")
                            from c in t.Elements("Column")
                            where c.Attribute("name").Value == columnName
-                                && c.Attribute("isPrimaryKey").Value == "1"
+                                && c.Attribute("isPrimaryKey").Value != "0"
                            select t.Attribute("name").Value).FirstOrDefault();
             }
 

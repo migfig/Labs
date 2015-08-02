@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 using Dapper;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
@@ -25,7 +20,9 @@ namespace RelatedRecords
             set
             {
                 _selectedConfiguration = value;
-                SelectedDataset = _selectedConfiguration.Dataset.First();
+                SelectedDataset = _selectedConfiguration
+                    .Dataset
+                    .First(d => d.name == _selectedConfiguration.defaultDataset);
             }
         }
 
@@ -56,6 +53,16 @@ namespace RelatedRecords
             }
         }
 
+        private static int _maxRowCount = 100;
+        public static int MaxRowCount
+        {
+            get { return _maxRowCount; }
+            set
+            {
+                _maxRowCount = value;
+            }
+        }
+
         #endregion static selected items
 
         public static void AddChildren(this CTable table)
@@ -70,7 +77,7 @@ namespace RelatedRecords
         public static string ToSelectString(this CTable table, bool asStar = false)
         {
             var query = new StringBuilder();
-            query.Append("SELECT ");
+            query.AppendFormat("SELECT TOP {0} ", MaxRowCount);
             if(asStar)
             {
                 query.Append("*");
