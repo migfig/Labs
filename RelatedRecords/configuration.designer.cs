@@ -251,39 +251,50 @@ namespace RelatedRecords {
             }
         }
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.4.0.32990")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-    public enum eDbType {
-        
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+    public enum eDbType
+    {
         /// <remarks/>
+        bigint,
+        binary,
+        bit,
+        @bool,
+        @char,
+        date,
+        datetime,
+        datetime2,
+        datetimeoffset,
+        @decimal,
+        @float,
+        geography,
+        geometry,
+        guid,
+        hierarchyid,
+        image,
         @int,
         @long,
-        @float,
-        @decimal,
-        @bool,
-        @string,
-        datetime,
-        date,
-        smalldatetime,
-        timestamp,
-        guid,
-        binary,
-        varchar,
-        uniqueidentifier,
-        bigint,
+        money,
         nchar,
-        bit,
-        varbinary,
-        smallint,
-        nvarchar,
-        text,
         ntext,
-        xml,   
-        @char,
+        numeric,
+        nvarchar,
+        real,
+        smalldatetime,
+        smallint,
+        smallmoney,
+        sql_variant,
+        @string,
+        text,
+        time,
+        timestamp,
         tinyint,
-        datetime2,
+        uniqueidentifier,
+        varbinary,
+        varchar,
+        xml
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.4.0.32990")]

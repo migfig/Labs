@@ -99,7 +99,11 @@ namespace RelatedRecords.Wpf.ViewModels
                     _dataTablesList = new ObservableCollection<DatatableEx>(
                         from ds in SelectedConfiguration.Dataset
                         select ds.Table.First(x => x.name == ds.defaultTable)
-                            .Query("".ToArray(""), "".ToArray(""), true)
+                            .Query("".ToArray(""), 
+                            "".ToArray(""), 
+                            SelectedConfiguration.Datasource
+                                .First(x => x.name == ds.dataSourceName).ConnectionString, 
+                            true)
                     );
 
                     OnPropertyChanged();
@@ -121,7 +125,10 @@ namespace RelatedRecords.Wpf.ViewModels
                     _selectedDataTable = value;
                     OnPropertyChanged();
                     SelectedRootDataView = _selectedDataTable.Root.Table.AsDataView();
-                    SelectedRootDataRowView = SelectedRootDataView[0];
+                    if (_selectedDataTable.Root.Table.Rows.Count > 0)
+                    {
+                        SelectedRootDataRowView = SelectedRootDataView[0];
+                    }
                     OnPropertyChanged("ParentVisibility");
                     _goBackCommand.RaiseCanExecuteChanged();
                 }
@@ -142,7 +149,7 @@ namespace RelatedRecords.Wpf.ViewModels
                     if (null != _selectedRootDataRowView)
                     {
                         Common.Extensions.TraceLog.Information("Loading Children tables @ SelectedRootDataRowView");
-                        SelectedDataTable.QueryChildren(_selectedRootDataRowView.Row);
+                        SelectedDataTable.QueryChildren(_selectedRootDataRowView.Row, SelectedDatasource.ConnectionString);
                     }
                 }
             }

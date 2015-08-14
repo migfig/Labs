@@ -49,7 +49,7 @@
             <wpfspark:PivotHeaderControl>
                 <TextBlock Text="Data Source"/>
             </wpfspark:PivotHeaderControl>
-            <TextBox Text="{Binding Mode=TwoWay, Path=SelectedConnectionString}" 
+            <TextBox Text="{Binding Mode=TwoWay, Path=SelectedConnectionString, UpdateSourceTrigger=PropertyChanged}" 
                      FontSize="16"
                      MinLines="1"
                      MaxLines="4"                     

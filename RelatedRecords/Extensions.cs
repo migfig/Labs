@@ -160,7 +160,7 @@ namespace RelatedRecords
             return query.ToString().Trim();
         }
 
-        public static void QueryChildren(this DatatableEx parent, DataRow row)
+        public static void QueryChildren(this DatatableEx parent, DataRow row, string connStr = null)
         {
             parent.Children.Clear();
             
@@ -168,7 +168,7 @@ namespace RelatedRecords
             var queries = table.RelatedTablesSelect(row);
             if (!string.IsNullOrEmpty(queries))
             {
-                using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
+                using (var connection = new SqlConnection(connStr ?? SelectedDatasource.ConnectionString))
                 {
                     queries.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
                     .ToList()
@@ -178,19 +178,25 @@ namespace RelatedRecords
                         Common.Extensions.TraceLog.Information("Running query {q} for child table {tableName}", 
                             q, tableName);
 
-                        var rdr = connection.ExecuteReader(q);
-                        var tbl = new DataTable(tableName);
-                        tbl.Load(rdr);
-                       
-                        var newTable = new DatatableEx(
-                            new TableContainer(tbl, SelectedDataset.Table.First(x => x.name == tbl.TableName)));
+                        try {
+                            var rdr = connection.ExecuteReader(q);
+                            var tbl = new DataTable(tableName);
+                            tbl.Load(rdr);
 
-                        if (newTable.Root.ConfigTable.Children.Count > 0)
-                        {
-                            newTable.QueryChildren(tbl.Rows[0]);
+                            var newTable = new DatatableEx(
+                                new TableContainer(tbl, SelectedDataset.Table.First(x => x.name == tbl.TableName)));
+
+                            if (newTable.Root.ConfigTable.Children.Count > 0)
+                            {
+                                newTable.QueryChildren(tbl.Rows[0], connStr ?? SelectedDatasource.ConnectionString);
+                            }
+
+                            parent.Children.Add(newTable);
                         }
-
-                        parent.Children.Add(newTable);
+                        catch (Exception e)
+                        {
+                            Common.Extensions.ErrorLog.Error(e, "@ QueryChildren(DatatableEx) query: {q}, connStr: {connStr} ?? {ConnectionString}", q, connStr ?? SelectedDatasource.ConnectionString);
+                        }
                     });
                 }
             }
@@ -205,7 +211,7 @@ namespace RelatedRecords
         }
 
         public static DatatableEx Query(this CTable table,
-            string[] operators, string[] andOrs,
+            string[] operators, string[] andOrs, string connString = null,
             bool asStar = false, params IDbDataParameter[] pars)
         {
             var result = new DatatableEx(new TableContainer(new DataTable(table.name), table));
@@ -213,12 +219,18 @@ namespace RelatedRecords
 
             Common.Extensions.TraceLog.Information("Running query {query} for table {name}", query, table.name);
 
-            using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
+            using (var connection = new SqlConnection(connString ?? SelectedDatasource.ConnectionString))
             {
-                var reader = connection.ExecuteReader(query);
-                result.Root.Table.Load(reader);
+                try {
+                    var reader = connection.ExecuteReader(query);
+                    result.Root.Table.Load(reader);
 
-                result.QueryChildren(result.Root.Table.Rows[0]);
+                    result.QueryChildren(result.Root.Table.Rows[0], connString ?? SelectedDatasource.ConnectionString);
+                }
+                catch (Exception e)
+                {
+                    Common.Extensions.ErrorLog.Error(e, "@ Query(CTable) query: {query}, connStr: {connString} ?? {ConnectionString}", query, connString ?? SelectedDatasource.ConnectionString);
+                }
             }
 
             return result;

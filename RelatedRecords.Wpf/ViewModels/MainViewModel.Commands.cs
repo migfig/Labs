@@ -55,6 +55,8 @@ namespace RelatedRecords.Wpf.ViewModels
                             XmlHelper<CConfiguration>.Save(
                                 ConfigurationManager.AppSettings["ConfigurationFile"], SelectedConfiguration);
 
+                            OnPropertyChanged("SelectedConfiguration");
+
                             SelectedNewConfiguration = null;
                             SelectedConnectionString = string.Empty;
                             _loadDatasourceSchemaCommand.RaiseCanExecuteChanged();
@@ -577,6 +579,7 @@ namespace RelatedRecords.Wpf.ViewModels
                     SelectedDataTable.Root.ConfigTable
                         .Query(SelectedOperator.ToArray(),
                             "".ToArray(),
+                            SelectedDatasource.ConnectionString,
                             true,
                             new SqlParameter(SelectedColumn, SearchCriteria));
 

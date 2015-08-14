@@ -99,6 +99,8 @@ namespace RelatedRecords.Tests
             var result = _config.Dataset.First().Table.First()
                 .Query("".ToArray("=",">="),
                     "".ToArray("And"),
+                    _config.Datasource
+                        .First(x => x.name == _config.Dataset.First().dataSourceName).ConnectionString,
                     true,
                     new SqlParameter { ParameterName = "StatusCodeId", Value = 1 },
                     new SqlParameter { ParameterName = "PriorityId", Value = 1 }
