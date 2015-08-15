@@ -1,6 +1,7 @@
 ﻿using Common;
 using RelatedRecords.Wpf.Commands;
 using System;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
@@ -25,9 +26,10 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_loadDatasourceSchemaCommand == null)
                 {
                     _loadDatasourceSchemaCommand = new RelayCommand(
-                        x => {
+                        x =>
+                        {
                             IsBusy = true;
-                            SelectedNewConfiguration = 
+                            SelectedNewConfiguration =
                                 XmlHelper<CConfiguration>.Load(
                                     Helpers.GetConfigurationFromConnectionString(SelectedConnectionString)
                                 );
@@ -47,7 +49,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_saveDatasourceSchemaCommand == null)
                 {
                     _saveDatasourceSchemaCommand = new RelayCommand(
-                        x => {
+                        x =>
+                        {
                             SelectedConfiguration.Datasource
                                 .Add(SelectedNewConfiguration.Datasource.First());
                             SelectedConfiguration.Dataset
@@ -82,11 +85,12 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_drillDown == null)
                 {
                     _drillDown = new RelayCommand(
-                        x => {
+                        x =>
+                        {
                             MainViewModel.ViewModel.TableNavigation.Push(MainViewModel.ViewModel.SelectedDataTable);
                             MainViewModel.ViewModel.SelectedDataTable = x as DatatableEx;
                         },
-                        x => null != SelectedDataTable 
+                        x => null != SelectedDataTable
                             && SelectedDataTable.Root.ConfigTable.Children.Count > 0);
                 }
                 return _drillDown;
@@ -179,7 +183,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_export2HtmlCommand == null)
                 {
                     _export2HtmlCommand = new RelayCommand(
-                        x => {
+                        x =>
+                        {
                             exportTablesToHtml();
                         },
                         x => null != SelectedDataTable && SelectedDataTable.Root.Table.Rows.Count > 0);
@@ -253,12 +258,13 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_workOfflineCommand == null)
                 {
                     _workOfflineCommand = new RelayCommand(
-                        x => {
+                        x =>
+                        {
                             //dataViewModel.saveDataSetEntities();
                             _workOfflineCommand.RaiseCanExecuteChanged();
                             _clearCacheCommand.RaiseCanExecuteChanged();
                         },
-                        x => null != SelectedDataTable 
+                        x => null != SelectedDataTable
                             && SelectedDataTable.Root.Table.Rows.Count > 0
                             && !File.Exists(CacheFile));
                 }
@@ -319,7 +325,7 @@ namespace RelatedRecords.Wpf.ViewModels
 
         private void OnSetColumnRelationships()
         {
-            MessageBox.Show("Feature not yet Implemented!", "Information", 
+            MessageBox.Show("Feature not yet Implemented!", "Information",
                 MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -339,7 +345,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_setTableRelationshipsCommand == null)
                 {
                     _setTableRelationshipsCommand = new RelayCommand(
-                        x => {
+                        x =>
+                        {
                             SelectedConnectionString = SelectedDatasource.ConnectionString;
                             new TableRelationships().ShowDialog();
                         });
@@ -364,7 +371,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_goBackCommand == null)
                 {
                     _goBackCommand = new RelayCommand(
-                        x => {
+                        x =>
+                        {
                             if (TableNavigation.Count > 0)
                             {
                                 SelectedDataTable = TableNavigation.Pop();
@@ -432,7 +440,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 {
                     _clearFilterCommand = new RelayCommand(
                         x => clearFilterMasterData(),
-                        x => null != SelectedRootDataView 
+                        x => null != SelectedRootDataView
                             && !string.IsNullOrEmpty(SelectedRootDataView.RowFilter));
 
                 }
@@ -516,7 +524,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_clearSearchHistoryCommand == null)
                 {
                     _clearSearchHistoryCommand = new RelayCommand(
-                        x => {
+                        x =>
+                        {
                             AppSettings.SearchValues.Clear();
                             AppSettings.Save();
                             _clearSearchHistoryCommand.RaiseCanExecuteChanged();
@@ -553,7 +562,7 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }
 
-        void searchDataForRootTable()
+        async void searchDataForRootTable()
         {
             if (null != SelectedRootDataView)
             {
@@ -567,8 +576,6 @@ namespace RelatedRecords.Wpf.ViewModels
 
                 if (!IsBusy)
                 {
-                    IsBusy = true;
-
                     Common.Extensions.TraceLog.Information("Searching data for table {name} with {SelectedColumn} {SelectedOperator} {SearchCriteria}",
                         SelectedDataTable.Root.ConfigTable.name,
                         SelectedColumn,
@@ -576,16 +583,16 @@ namespace RelatedRecords.Wpf.ViewModels
                         SearchCriteria
                         );
 
-                    SelectedDataTable.Root.ConfigTable
+                    IsBusy = true;
+                    var table = await SelectedDataTable.Root.ConfigTable
                         .Query(SelectedOperator.ToArray(),
                             "".ToArray(),
-                            SelectedDatasource.ConnectionString,
                             true,
                             new SqlParameter(SelectedColumn, SearchCriteria));
 
-                    OnPropertyChanged("SelectedRootDataView");
-                    _searchCommand.RaiseCanExecuteChanged();
                     IsBusy = false;
+                    SelectedDataTable = table;
+                    _searchCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -599,7 +606,7 @@ namespace RelatedRecords.Wpf.ViewModels
             TraceLog.Information("Exporting tables to {format}", format.ToString());
 
             var fileExtension = ".xlsx";
-            switch(format)
+            switch (format)
             {
                 case ExportToFormat.Word2007:
                     fileExtension = ".docx";
@@ -638,7 +645,7 @@ namespace RelatedRecords.Wpf.ViewModels
             TraceLog.Information("Exporting tables to Html");
 
             string templatePath = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), 
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 @"templates\Collection\html_tables.st");
             string basePath = ExportPath;
 
@@ -675,5 +682,6 @@ namespace RelatedRecords.Wpf.ViewModels
         }
 
         #endregion //public export methods
+
     }
 }

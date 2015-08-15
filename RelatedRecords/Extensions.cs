@@ -6,6 +6,8 @@ using System.Text;
 using Dapper;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace RelatedRecords
 {
@@ -38,7 +40,8 @@ namespace RelatedRecords
 
                 foreach(var table in _selectedDataset.Table)
                 {
-                    table.AddChildren();
+                    if(table.Children.Count == 0)
+                        table.AddChildren();
                 }
             }
         }
@@ -160,48 +163,6 @@ namespace RelatedRecords
             return query.ToString().Trim();
         }
 
-        public static void QueryChildren(this DatatableEx parent, DataRow row, string connStr = null)
-        {
-            parent.Children.Clear();
-            
-            var table = SelectedDataset.Table.First(t => t.name == parent.Root.Table.TableName);
-            var queries = table.RelatedTablesSelect(row);
-            if (!string.IsNullOrEmpty(queries))
-            {
-                using (var connection = new SqlConnection(connStr ?? SelectedDatasource.ConnectionString))
-                {
-                    queries.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
-                    .ToList()
-                    .ForEach(q =>
-                    {
-                        var tableName = ParseTableName(q);
-                        Common.Extensions.TraceLog.Information("Running query {q} for child table {tableName}", 
-                            q, tableName);
-
-                        try {
-                            var rdr = connection.ExecuteReader(q);
-                            var tbl = new DataTable(tableName);
-                            tbl.Load(rdr);
-
-                            var newTable = new DatatableEx(
-                                new TableContainer(tbl, SelectedDataset.Table.First(x => x.name == tbl.TableName)));
-
-                            if (newTable.Root.ConfigTable.Children.Count > 0)
-                            {
-                                newTable.QueryChildren(tbl.Rows[0], connStr ?? SelectedDatasource.ConnectionString);
-                            }
-
-                            parent.Children.Add(newTable);
-                        }
-                        catch (Exception e)
-                        {
-                            Common.Extensions.ErrorLog.Error(e, "@ QueryChildren(DatatableEx) query: {q}, connStr: {connStr} ?? {ConnectionString}", q, connStr ?? SelectedDatasource.ConnectionString);
-                        }
-                    });
-                }
-            }
-        }
-
         private static string ParseTableName(string query)
         {
             return Regex.Match(query,
@@ -210,30 +171,82 @@ namespace RelatedRecords
                     .Groups["tablename"].Value;
         }
 
-        public static DatatableEx Query(this CTable table,
-            string[] operators, string[] andOrs, string connString = null,
+        public static async Task<DatatableEx> Query(this CTable table,
+            string[] operators, string[] andOrs,
             bool asStar = false, params IDbDataParameter[] pars)
         {
             var result = new DatatableEx(new TableContainer(new DataTable(table.name), table));
             var query = table.ToSelectWhereString(operators, andOrs, asStar, pars);
 
-            Common.Extensions.TraceLog.Information("Running query {query} for table {name}", query, table.name);
+            Common.Extensions.TraceLog.Information("Running query {query} for parent table {name}", query, table.name);
 
-            using (var connection = new SqlConnection(connString ?? SelectedDatasource.ConnectionString))
+            try
             {
-                try {
-                    var reader = connection.ExecuteReader(query);
-                    result.Root.Table.Load(reader);
-
-                    result.QueryChildren(result.Root.Table.Rows[0], connString ?? SelectedDatasource.ConnectionString);
-                }
-                catch (Exception e)
+                using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
                 {
-                    Common.Extensions.ErrorLog.Error(e, "@ Query(CTable) query: {query}, connStr: {connString} ?? {ConnectionString}", query, connString ?? SelectedDatasource.ConnectionString);
+                    var reader = await connection.ExecuteReaderAsync(query);
+                    result.Root.Table.Load(reader);
+                    reader.Close();
                 }
+
+                result.QueryChildren(result.Root.Table.Rows[0]);
+            }
+            catch (Exception e)
+            {
+                Common.Extensions.ErrorLog.Error(e, "@ Query(CTable) query: {query}, connectionString: {ConnectionString}", query, SelectedDatasource.ConnectionString);
             }
 
             return result;
+        }
+
+        public static void QueryChildren(this DatatableEx parent, DataRow row)
+        {
+            parent.Children.Clear();
+            var table = SelectedDataset.Table.First(t => t.name == parent.Root.Table.TableName);
+            var queries = table.RelatedTablesSelect(row);
+            if (!string.IsNullOrEmpty(queries))
+            {
+                queries.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                .ToList()
+                .ForEach(async q =>
+                {
+                    var tableName = ParseTableName(q);
+                    Common.Extensions.TraceLog.Information("Running query {q} for child table {tableName}",
+                        q, tableName);
+
+                    try
+                    {
+                        DatatableEx newTable = null;
+                        using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
+                        {
+                            var rdr = await connection.ExecuteReaderAsync(q);
+                            var tbl = new DataTable(tableName);
+                            tbl.Load(rdr);
+                            rdr.Close();
+
+                            newTable = new DatatableEx(
+                                    new TableContainer(tbl, SelectedDataset.Table.First(x => x.name == tbl.TableName))
+                                    );
+                        }
+
+                        if (null != newTable)
+                        {
+                            if (newTable.Root.ConfigTable.Children.Count > 0)
+                            {
+                                Common.Extensions.TraceLog.Information("Querying now for children children parent table {name}",
+                                    newTable.Root.ConfigTable.name);
+                                newTable.QueryChildren(newTable.Root.Table.Rows[0]);
+                            }
+
+                            parent.Children.Add(newTable);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Common.Extensions.ErrorLog.Error(e, "@ QueryChildren(DatatableEx) query: {q}, connectionString: {connStr} ?? {ConnectionString}", q, SelectedDatasource.ConnectionString);
+                    }
+                });
+            }
         }
 
         public static string RelatedTablesSelect(this CTable table, 
@@ -550,7 +563,7 @@ namespace RelatedRecords
 
         public static bool AreEqual(this DataRowView row, DataRowView other)
         {
-            if (null == other) return false;
+            if (null == other || null == row) return false;
 
             for(var i=0; i<row.Row.ItemArray.Length; i++)
             {
@@ -565,6 +578,6 @@ namespace RelatedRecords
         {
             var concat = value + "," + string.Join(",", parts);
             return concat.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
-        }
+        }        
     }
 }

@@ -88,8 +88,8 @@
                     <Fluent:InRibbonGallery ItemWidth="100" ItemHeight="56" ResizeMode="Both"
                                       MinItemsInRow="2" MaxItemsInRow="7"                             
                                       ItemTemplate="{DynamicResource TableCardTemplate}"
-                                      ItemsSource="{Binding DataTablesList}"
-                                      SelectedItem="{Binding SelectedDataTable}">
+                                      ItemsSource="{Binding SelectedConfiguration.Dataset}"
+                                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedDataset}">
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
 
@@ -165,9 +165,9 @@
                         </Fluent:DropDownButton.Icon>
 
                         <Fluent:MenuItem Header="Html" Command="{Binding Export2HtmlCommand}" Icon="Images\html.png"/>
-                        <Fluent:MenuItem Header="Excel" Command="{Binding Export2ExcelCommand}" Icon="Images\excel.png"/>
-                        <Fluent:MenuItem Header="Word" Command="{Binding Export2WordCommand}" Icon="Images\word.png"/>
-                        <Fluent:MenuItem Header="PDF" Command="{Binding Export2PDFCommand}" Icon="Images\pdf.png"/>
+                        <Fluent:MenuItem Visibility="Collapsed" Header="Excel" Command="{Binding Export2ExcelCommand}" Icon="Images\excel.png"/>
+                        <Fluent:MenuItem Visibility="Collapsed" Header="Word" Command="{Binding Export2WordCommand}" Icon="Images\word.png"/>
+                        <Fluent:MenuItem Visibility="Collapsed" Header="PDF" Command="{Binding Export2PDFCommand}" Icon="Images\pdf.png"/>
                     </Fluent:DropDownButton>
                 </Fluent:RibbonGroupBox>
 

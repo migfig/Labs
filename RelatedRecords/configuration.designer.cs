@@ -4,20 +4,45 @@
 //    <NameSpace>RelatedRecords</NameSpace><Collection>ObservableCollection</Collection><codeType>CSharp</codeType><EnableDataBinding>False</EnableDataBinding><EnableLazyLoading>False</EnableLazyLoading><TrackingChangesEnable>False</TrackingChangesEnable><GenTrackingClasses>False</GenTrackingClasses><HidePrivateFieldInIDE>False</HidePrivateFieldInIDE><EnableSummaryComment>False</EnableSummaryComment><VirtualProp>False</VirtualProp><IncludeSerializeMethod>False</IncludeSerializeMethod><UseBaseClass>False</UseBaseClass><GenBaseClass>False</GenBaseClass><GenerateCloneMethod>False</GenerateCloneMethod><GenerateDataContracts>False</GenerateDataContracts><CodeBaseTag>Net35</CodeBaseTag><SerializeMethodName>Serialize</SerializeMethodName><DeserializeMethodName>Deserialize</DeserializeMethodName><SaveToFileMethodName>SaveToFile</SaveToFileMethodName><LoadFromFileMethodName>LoadFromFile</LoadFromFileMethodName><GenerateXMLAttributes>True</GenerateXMLAttributes><OrderXMLAttrib>False</OrderXMLAttrib><EnableEncoding>False</EnableEncoding><AutomaticProperties>False</AutomaticProperties><GenerateShouldSerialize>False</GenerateShouldSerialize><DisableDebug>False</DisableDebug><PropNameSpecified>Default</PropNameSpecified><Encoder>UTF8</Encoder><CustomUsings></CustomUsings><ExcludeIncludedTypes>False</ExcludeIncludedTypes><EnableInitializeFields>True</EnableInitializeFields>
 //  </auto-generated>
 // ------------------------------------------------------------------------------
-namespace RelatedRecords {
-    using System;
-    using System.Diagnostics;
-    using System.Xml.Serialization;
-    using System.Collections;
-    using System.Xml.Schema;
+namespace RelatedRecords
+{
     using System.ComponentModel;
-    using System.Collections.ObjectModel;    
-    
+    using System.Collections.ObjectModel;
+    using System;
+    using System.Runtime.CompilerServices;
+
+    [AttributeUsage(AttributeTargets.Method)]
+    public sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
+    {
+        public NotifyPropertyChangedInvocatorAttribute() { }
+        public NotifyPropertyChangedInvocatorAttribute(string parameterName)
+        {
+            ParameterName = parameterName;
+        }
+
+        public string ParameterName { get; private set; }
+    }
+
+    public abstract class CBase : INotifyPropertyChanged
+    {
+        #region property changed handler
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion property changed handler    
+    }
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.4.0.32990")]
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute("Configuration", Namespace="", IsNullable=false)]
-    public partial class CConfiguration {
+    public partial class CConfiguration: CBase {
         
         private ObservableCollection<CDatasource> datasourceField;
         private ObservableCollection<CDataset> datasetField;
@@ -80,7 +105,7 @@ namespace RelatedRecords {
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
-    public partial class CDatasource {
+    public partial class CDatasource: CBase {
         
         private string connectionStringField;
         
@@ -110,7 +135,7 @@ namespace RelatedRecords {
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
-    public partial class CRelationship {
+    public partial class CRelationship: CBase {
         
         private string nameField;
         
@@ -177,7 +202,8 @@ namespace RelatedRecords {
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
-    public partial class CColumn {
+    public partial class CColumn : CBase
+    {
         
         private string nameField;
         
@@ -301,7 +327,7 @@ namespace RelatedRecords {
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
-    public partial class CTable {
+    public partial class CTable: CBase {
         
         private ObservableCollection<CColumn> columnField;
         private ObservableCollection<CTable> childrenField;
@@ -344,7 +370,8 @@ namespace RelatedRecords {
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
-    public partial class CDataset {
+    public partial class CDataset : CBase
+    {
         
         private ObservableCollection<CTable> tableField;
         private ObservableCollection<CRelationship> relationshipField;
@@ -385,6 +412,7 @@ namespace RelatedRecords {
             }
             set {
                 this.nameField = value;
+                OnPropertyChanged();
             }
         }
         
@@ -409,6 +437,11 @@ namespace RelatedRecords {
             {
                 this.defaultTableField = value;
             }
+        }
+
+        public override string ToString()
+        {
+            return this.name.ToUpper() + Environment.NewLine + Environment.NewLine + "Children: " + Table.Count.ToString();
         }
     }
 }

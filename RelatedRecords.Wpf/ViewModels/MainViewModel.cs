@@ -13,7 +13,7 @@ using Serilog;
 
 namespace RelatedRecords.Wpf.ViewModels
 {
-    public partial class MainViewModel : INotifyPropertyChanged
+    public partial class MainViewModel : CBase
     {
         public MainViewModel()
         {
@@ -75,6 +75,7 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 Extensions.SelectedDataset = value;
                 OnPropertyChanged();
+                LoadTableList();
             }
         }
 
@@ -88,29 +89,34 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }        
 
-        private ObservableCollection<DatatableEx> _dataTablesList;
-        public ObservableCollection<DatatableEx> DataTablesList
+        private ObservableCollection<DatatableEx> _dataTablesList = new ObservableCollection<DatatableEx>();
+        private void LoadTableList()
         {
-            get
+            DatatableEx defaultTable = _dataTablesList
+                .FirstOrDefault(x => x.Root.ConfigTable.name == SelectedDataset.defaultTable);
+
+            if (defaultTable != null)
             {
-                if(null == _dataTablesList)
+                SelectedDataTable = defaultTable;
+            }
+            else 
+            {
+                Common.Extensions.TraceLog.Information("Loading Data Tables @ LoadTableList");
+
+                IsBusy = true;
+                
+                var action = new Action(async () =>
                 {
-                    Common.Extensions.TraceLog.Information("Loading Data Tables List @ DataTablesList");
-                    _dataTablesList = new ObservableCollection<DatatableEx>(
-                        from ds in SelectedConfiguration.Dataset
-                        select ds.Table.First(x => x.name == ds.defaultTable)
-                            .Query("".ToArray(""), 
-                            "".ToArray(""), 
-                            SelectedConfiguration.Datasource
-                                .First(x => x.name == ds.dataSourceName).ConnectionString, 
-                            true)
-                    );
+                    var table = await SelectedDataset.Table.First(x => x.name == SelectedDataset.defaultTable)
+                        .Query("".ToArray(""),
+                            "".ToArray(""),
+                            true);
+                        _dataTablesList.Add(table);
 
-                    OnPropertyChanged();
-                    SelectedDataTable = _dataTablesList.First();
-                }
-
-                return _dataTablesList;
+                    IsBusy = false;
+                    SelectedDataTable = _dataTablesList.First(x => x.Root.ConfigTable.name == SelectedDataset.defaultTable);
+                });
+                action.Invoke();
             }
         }
 
@@ -127,10 +133,12 @@ namespace RelatedRecords.Wpf.ViewModels
                     SelectedRootDataView = _selectedDataTable.Root.Table.AsDataView();
                     if (_selectedDataTable.Root.Table.Rows.Count > 0)
                     {
-                        SelectedRootDataRowView = SelectedRootDataView[0];
+                        _selectedRootDataRowView = SelectedRootDataView[0];
                     }
                     OnPropertyChanged("ParentVisibility");
                     _goBackCommand.RaiseCanExecuteChanged();
+                    _export2HtmlCommand.RaiseCanExecuteChanged();
+                    OnPropertyChanged("SelectedDataTableColumns");
                 }
             }
         }
@@ -149,7 +157,10 @@ namespace RelatedRecords.Wpf.ViewModels
                     if (null != _selectedRootDataRowView)
                     {
                         Common.Extensions.TraceLog.Information("Loading Children tables @ SelectedRootDataRowView");
-                        SelectedDataTable.QueryChildren(_selectedRootDataRowView.Row, SelectedDatasource.ConnectionString);
+
+                        IsBusy = true;
+                        SelectedDataTable.QueryChildren(_selectedRootDataRowView.Row);
+                        IsBusy = false;
                     }
                 }
             }
@@ -271,17 +282,5 @@ namespace RelatedRecords.Wpf.ViewModels
         {
             get { return (LastErrors.Count > 0 ? Visibility.Visible : Visibility.Collapsed); }
         }
-
-        #region property changed handler
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion property changed handler
     }
 }

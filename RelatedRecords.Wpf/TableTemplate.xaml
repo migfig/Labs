@@ -7,7 +7,7 @@
         <TextBlock Text="{Binding}" FontStyle="Oblique" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal">
             <Label Content="Children " VerticalAlignment="Center"/>
-            <TextBlock Text="{Binding Mode=OneWay, Path=Root.ConfigTable.Children.Count}" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Table.Count}" VerticalAlignment="Center" />
         </StackPanel>
       </StackPanel>
     </StackPanel>
