@@ -37,6 +37,9 @@
   <PropertyGroup>
     <ApplicationIcon>Images\Fluent.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>RelatedRecords.Wpf.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="antlr.runtime">
       <HintPath>..\packages\Miscelaneous\antlr.runtime.dll</HintPath>

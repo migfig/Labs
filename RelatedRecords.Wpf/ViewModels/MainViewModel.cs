@@ -138,6 +138,7 @@ namespace RelatedRecords.Wpf.ViewModels
                     OnPropertyChanged("ParentVisibility");
                     _goBackCommand.RaiseCanExecuteChanged();
                     _export2HtmlCommand.RaiseCanExecuteChanged();
+                    _export2SqlInsertCommand.RaiseCanExecuteChanged();
                     OnPropertyChanged("SelectedDataTableColumns");
                 }
             }

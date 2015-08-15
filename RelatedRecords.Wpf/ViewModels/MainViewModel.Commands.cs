@@ -195,6 +195,32 @@ namespace RelatedRecords.Wpf.ViewModels
 
         #endregion //Export to Html
 
+        #region Export to sql insert
+
+        RelayCommand _export2SqlInsertCommand;
+
+        /// <summary>
+        /// Exit from the application
+        /// </summary>
+        public ICommand Export2SqlInsertCommand
+        {
+            get
+            {
+                if (_export2SqlInsertCommand == null)
+                {
+                    _export2SqlInsertCommand = new RelayCommand(
+                        x =>
+                        {
+                            exportTablesToSqlInsert();
+                        },
+                        x => null != SelectedDataTable && SelectedDataTable.Root.Table.Rows.Count > 0);
+                }
+                return _export2SqlInsertCommand;
+            }
+        }
+
+        #endregion //Export to sql insert
+
         #endregion //export support
 
         #region Exit
@@ -680,6 +706,19 @@ namespace RelatedRecords.Wpf.ViewModels
                 fillHtml(child, ref tables, ref level);
             --level;
         }
+
+        public string exportTablesToSqlInsert()
+        {
+            TraceLog.Information("Exporting tables to SQL Insert");
+
+            string sqlFile = Path.Combine(ExportPath, DateTime.Now.ToString("yyyy-MMM-dd.hh-mm-ss") + ".sql");
+            using(var stream = new StreamWriter(sqlFile))
+            {
+                stream.Write(new StringBuilder().SqlInsert(SelectedDataTable).ToString());
+            }
+
+            return sqlFile;
+        }        
 
         #endregion //public export methods
 

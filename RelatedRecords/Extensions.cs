@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace RelatedRecords
 {
@@ -38,9 +39,9 @@ namespace RelatedRecords
                 SelectedDatasource = SelectedConfiguration
                     .Datasource.First(x => x.name == _selectedDataset.dataSourceName);
 
-                foreach(var table in _selectedDataset.Table)
+                foreach (var table in _selectedDataset.Table)
                 {
-                    if(table.Children.Count == 0)
+                    if (table.Children.Count == 0)
                         table.AddChildren();
                 }
             }
@@ -73,7 +74,7 @@ namespace RelatedRecords
             table.Children = new ObservableCollection<CTable>(
                 from r in SelectedDataset.Relationship
                 where r.fromTable == table.name
-                select SelectedDataset.Table.First(x => x.name == r.toTable) 
+                select SelectedDataset.Table.First(x => x.name == r.toTable)
                 );
         }
 
@@ -81,7 +82,7 @@ namespace RelatedRecords
         {
             var query = new StringBuilder();
             query.AppendFormat("SELECT TOP {0} ", MaxRowCount);
-            if(asStar)
+            if (asStar)
             {
                 query.Append("*");
             }
@@ -119,20 +120,20 @@ namespace RelatedRecords
             return query.ToString();
         }
 
-        public static string ToWhereString(this CTable table, string[] operators, string[] andOrs, 
+        public static string ToWhereString(this CTable table, string[] operators, string[] andOrs,
             params IDbDataParameter[] pars)
         {
             var query = new StringBuilder();
             if (pars.Length > 0 && null != operators && operators.Length == pars.Length
-                && null != andOrs && andOrs.Length >= operators.Length-1 )
+                && null != andOrs && andOrs.Length >= operators.Length - 1)
             {
                 query.Append("WHERE ");
                 var idx = 0;
                 pars.ToList().ForEach(p =>
                 {
-                    query.AppendFormat("{0}{1} {2} {3}", 
-                        idx == 0 ? string.Empty : " " + andOrs[idx-1] + " ", 
-                        p.ParameterName, 
+                    query.AppendFormat("{0}{1} {2} {3}",
+                        idx == 0 ? string.Empty : " " + andOrs[idx - 1] + " ",
+                        p.ParameterName,
                         operators[idx++],
                         QuoteValue(p.Value));
                 });
@@ -249,7 +250,7 @@ namespace RelatedRecords
             }
         }
 
-        public static string RelatedTablesSelect(this CTable table, 
+        public static string RelatedTablesSelect(this CTable table,
             DataRow row)
         {
             var query = new StringBuilder();
@@ -287,7 +288,7 @@ namespace RelatedRecords
                 var row = dtable.NewRow();
                 table.Column.ToList().ForEach(c =>
                 {
-                    row[c.name] = GetDefaultValue(c, i+1, table.name);
+                    row[c.name] = GetDefaultValue(c, i + 1, table.name);
                 });
                 dtable.Rows.Add(row);
             }
@@ -312,8 +313,8 @@ namespace RelatedRecords
                 isFirst = true;
                 table.Column.ToList().ForEach(c =>
                 {
-                    query.AppendFormat("{0}{1}", 
-                        isFirst ? string.Empty : ",", 
+                    query.AppendFormat("{0}{1}",
+                        isFirst ? string.Empty : ",",
                         QuoteValue(dt.Rows[i][c.name]));
                     isFirst = false;
                 });
@@ -331,7 +332,7 @@ namespace RelatedRecords
                 var value = Activator.CreateInstance(type);
                 if (sequenceNum > 0)
                 {
-                    if(value is int)
+                    if (value is int)
                     {
                         value = sequenceNum;
                     }
@@ -348,7 +349,7 @@ namespace RelatedRecords
             }
             catch (Exception)
             {
-                if(type == typeof(string))
+                if (type == typeof(string))
                 {
                     return string.Format("{0} {1}", tableName, sequenceNum);
                 }
@@ -359,7 +360,7 @@ namespace RelatedRecords
 
         private static Type GetType(eDbType type)
         {
-            switch(type)
+            switch (type)
             {
                 case eDbType.guid:
                     return typeof(Guid);
@@ -375,7 +376,7 @@ namespace RelatedRecords
                     return typeof(float);
                 case eDbType.binary:
                     return typeof(byte[]);
-                //more types need to be added
+                    //more types need to be added
             }
 
             return typeof(string);
@@ -383,7 +384,7 @@ namespace RelatedRecords
 
         private static string QuoteValue(object value)
         {
-            if(value is string || value is Guid)
+            if (value is string || value is Guid)
             {
                 return "'" + value.ToString() + "'";
             }
@@ -516,7 +517,7 @@ namespace RelatedRecords
             return "Varchar(250)";
         }
 
-        public static string ToWhereString(this CColumn column, object value, bool isFirst = false, 
+        public static string ToWhereString(this CColumn column, object value, bool isFirst = false,
             string operatorValue = "=", string andOr = "And")
         {
             var query = new StringBuilder();
@@ -531,7 +532,7 @@ namespace RelatedRecords
             return query.ToString().Trim();
         }
 
-        public static string ToWhereString(this CColumn column, IDbDataParameter value, bool isFirst = false, 
+        public static string ToWhereString(this CColumn column, IDbDataParameter value, bool isFirst = false,
             string operatorValue = "=", string andOr = "And")
         {
             var query = new StringBuilder();
@@ -549,10 +550,10 @@ namespace RelatedRecords
         public static string ToConstraint(this CRelationship relationship)
         {
             var query = new StringBuilder();
-            query.AppendFormat("Alter Table [dbo].[{0}] Add Constraint {1} Foreign Key ({2}) References [dbo].[{3}]({4});", 
+            query.AppendFormat("Alter Table [dbo].[{0}] Add Constraint {1} Foreign Key ({2}) References [dbo].[{3}]({4});",
                 relationship.fromTable,
-                string.Format("FK_{0}_{1}", 
-                    relationship.toTable.Replace(" ", string.Empty), 
+                string.Format("FK_{0}_{1}",
+                    relationship.toTable.Replace(" ", string.Empty),
                     relationship.toColumn.Replace(" ", string.Empty)),
                 relationship.fromColumn,
                 relationship.toTable,
@@ -565,7 +566,7 @@ namespace RelatedRecords
         {
             if (null == other || null == row) return false;
 
-            for(var i=0; i<row.Row.ItemArray.Length; i++)
+            for (var i = 0; i < row.Row.ItemArray.Length; i++)
             {
                 if (!row[i].Equals(other[i]))
                     return false;
@@ -577,7 +578,81 @@ namespace RelatedRecords
         public static string[] ToArray(this string value, params string[] parts)
         {
             var concat = value + "," + string.Join(",", parts);
-            return concat.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
-        }        
+            return concat.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        public static StringBuilder SqlInsert(this StringBuilder value, DatatableEx table)
+        {
+            value.SqlInsert(table.Root.Table);
+            foreach (var child in table.Children)
+                value.SqlInsert(child);
+
+            return value;
+        }
+
+        public static StringBuilder SqlInsert(this StringBuilder value, DataTable table)
+        {
+            foreach (DataRow row in table.Rows)
+            {
+                value.SqlInsert(row);
+            }
+
+            value.Append(Environment.NewLine);
+
+            return value;
+        }
+
+        public static StringBuilder SqlInsert(this StringBuilder value, DataRow row)
+        {
+            value.AppendFormat("Insert Into [{0}] (", row.Table.TableName);
+            var columns = row.Table.Columns.Cast<DataColumn>();
+            var values = new StringBuilder("Values (");
+
+            foreach (DataColumn col in columns)
+            {
+                value.AppendFormat("[{0}]{1}", col.ColumnName, col != columns.Last() ? "," : string.Empty);
+                values.AppendFormat("{0}{1}", row.Value(col.ColumnName), col != columns.Last() ? "," : string.Empty);
+            }
+            values.Append(")");
+            value.Append(") ");
+            value.Append(values.ToString());
+            value.Append(";");
+            value.Append(Environment.NewLine);
+
+            return value;
+        }
+
+        public static string Value(this DataRow row, string columnName)
+        {
+            var value = "NULL";
+            switch (row.Table.Columns[columnName].DataType.ToString())
+            {
+                case "System.Boolean":
+                    return row[columnName].ToString() == "True" ? "1" : "0";
+                case "System.Byte[]":
+                    var bytes = (byte[])row[columnName];
+                    value = string.Empty;
+                    foreach (var b in bytes)
+                        value += "0x" + b;
+                    return value;
+                case "System.Int32":
+                case "System.Int64":
+                case "System.Decimal":
+                case "System.Double":
+                case "System.Single":
+                case "System.Int16":
+                case "System.Byte":
+                    return row[columnName].ToString();
+                case "System.String":
+                case "System.DateTime":
+                case "System.TimeSpan":
+                case "System.DateTimeOffset":
+                case "System.Guid":
+                case "System.Object":
+                    return string.Format("'{0}'", row[columnName]);
+            }
+
+            return value;
+        }
     }
 }
