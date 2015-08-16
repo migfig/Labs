@@ -383,6 +383,80 @@ namespace RelatedRecords.Wpf.ViewModels
 
         #endregion //Table Relationships
 
+        #region Add Table Relationship
+
+        RelayCommand _addTableRelationshipCommand;
+
+        /// <summary>
+        /// Exit from the application
+        /// </summary>
+        public ICommand AddTableRelationshipCommand
+        {
+            get
+            {
+                if (_addTableRelationshipCommand == null)
+                {
+                    _addTableRelationshipCommand = new RelayCommand(
+                        x =>
+                        {
+                            new AddTableRelationship().ShowDialog();
+                        });
+                }
+                return _addTableRelationshipCommand;
+            }
+        }
+
+        #endregion //Add Table Relationship
+
+        #region Save Relationship
+
+        RelayCommand _saveRelationshipCommand;
+
+        /// <summary>
+        /// Exit from the application
+        /// </summary>
+        public ICommand SaveRelationshipCommand
+        {
+            get
+            {
+                if (_saveRelationshipCommand == null)
+                {
+                    _saveRelationshipCommand = new RelayCommand(
+                        x =>
+                        {
+                            var relationship = new CRelationship
+                            {
+                                name = string.Format("{0}->{1}", SelectedParentTable.name, SelectedChildTable.name),
+                                fromTable = SelectedParentTable.name,
+                                toTable = SelectedChildTable.name,
+                                fromColumn = SelectedParentColumn.name,
+                                toColumn = SelectedChildColumn.name
+                            };
+                            if (!SelectedDataset.Relationship.Any(r => r.name == relationship.name))
+                            {
+                                SelectedDataset.Relationship.Add(relationship);
+                                XmlHelper<CConfiguration>.Save(ConfigurationManager.AppSettings["ConfigurationFile"],
+                                    SelectedConfiguration);
+                            }
+                            SelectedParentTable = null;
+                            SelectedParentColumn = null;
+                            SelectedChildTable = null;
+                            SelectedChildColumn = null;
+                        },
+                        x =>
+                        {
+                            return SelectedParentTable != null
+                                && SelectedParentColumn != null
+                                && SelectedChildTable != null
+                                && SelectedChildColumn != null;
+                        });
+                }
+                return _saveRelationshipCommand;
+            }
+        }
+
+        #endregion //Save Relationship
+
         #region Go Back
 
         RelayCommand _goBackCommand;

@@ -13,6 +13,7 @@
         <ResourceDictionary>
             <ResourceDictionary x:Key="tableTemplate" Source="TableTemplate.xaml"/>
             <local:IntToVisibilityConverter x:Key="IntConverter"/>
+            <local:CTableToVisibilityConverter x:Key="TableConverter"/>
         </ResourceDictionary>
     </Fluent:RibbonWindow.Resources>
 
@@ -247,11 +248,17 @@
             <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
                 <DockPanel LastChildFill="True">
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
-                        
-                        <TextBlock Text="{Binding SelectedDataTable.Root.Table.TableName}" FontWeight="DemiBold"/>
-                        <TextBlock Text=" - " Foreground="Green"/>
-                        <TextBlock Text="{Binding SelectedDataTable.Root.Table.Count}" Foreground="Green"/>
-                        <TextBlock Text=" Rows" Foreground="Green"/>
+                        <TextBlock Text="{Binding SelectedDataTable.Root.Table.TableName}" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                        <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding SelectedDataTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
+                        <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+                        <Fluent:Button Height="32" Width="32"
+                            VerticalAlignment="Center"
+                            Click="AddTableRelation_Click"
+                            Visibility="{Binding SelectedDataTable.Root.ConfigTable, Converter={StaticResource TableConverter}}"
+                            Tag="{Binding SelectedDataTable}"       
+                            Icon="Images\connect.png" 
+                            LargeIcon="Images\connect.png"/>
                     </StackPanel>
                     <DataGrid ItemsSource="{Binding SelectedDataTable.Root.Table}"
                           CanUserResizeRows="False" 
@@ -305,6 +312,7 @@
                                         </Grid.RowDefinitions>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                                             <Fluent:Button Height="32" Width="32"
+                                                           VerticalAlignment="Center"
                                                            Click="btnDrillDown_Click"
                                                            Visibility="{Binding Root.ConfigTable.Children.Count, Converter={StaticResource IntConverter}}"
                                                            Tag="{Binding}"       
@@ -314,6 +322,13 @@
                                             <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
                                             <TextBlock Text="{Binding Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
                                             <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+                                            <Fluent:Button Height="32" Width="32"
+                                                           VerticalAlignment="Center"
+                                                           Click="AddTableRelation_Click"
+                                                           Visibility="{Binding Root.ConfigTable, Converter={StaticResource TableConverter}}"
+                                                           Tag="{Binding}"       
+                                                           Icon="Images\connect.png" 
+                                                           LargeIcon="Images\connect.png"/>
                                         </StackPanel>
                                         <DataGrid Grid.Row="1"
                                             ItemsSource="{Binding Root.Table}"

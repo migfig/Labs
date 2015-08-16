@@ -27,4 +27,23 @@ namespace RelatedRecords.Wpf
             throw new NotImplementedException();
         }
     }
+
+    public class CTableToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (null != value && value is CTable)
+            {
+                var table = value as CTable;
+                return table.Column.Any(x => x.isForeignKey) ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -176,6 +176,85 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }
 
+        public IEnumerable<CTable> NonYetRelatedTables
+        {
+            get
+            {
+                if (SelectedDataset.Relationship.Count > 0)
+                {
+                    var tables = from t in SelectedDataset.Table
+                                 from r in SelectedDataset.Relationship
+                                    .Where(tr => tr.fromTable == SelectedParentTable.name)
+                                 let rt = r.toTable
+                                 where t.name != SelectedParentTable.name
+                                    && t.name != rt
+                                 select t;
+                    return tables.Distinct();
+                }
+                else
+                {
+                    var tables = from t in SelectedDataset.Table
+                                 where t.name != SelectedParentTable.name
+                                 select t;
+                    return tables.Distinct();
+                }
+            }
+        }
+
+        private CTable _selectedParentTable;
+        public CTable SelectedParentTable
+        {
+            get { return _selectedParentTable; }
+            set {
+                _selectedParentTable = value;
+                OnPropertyChanged();
+                if (value == null) return;
+
+                OnPropertyChanged("NonYetRelatedTables");
+                SelectedParentColumn = value.Column.First(x => x.isForeignKey);
+            }
+        }
+
+        private CTable _selectedChildTable;
+        public CTable SelectedChildTable
+        {
+            get { return _selectedChildTable; }
+            set
+            {
+                _selectedChildTable = value;
+                OnPropertyChanged();
+                if (value == null) return;
+
+                SelectedChildColumn = value.Column.First(x => x.isPrimaryKey);
+            }
+        }
+
+        private CColumn _selectedParentColumn;
+        public CColumn SelectedParentColumn
+        {
+            get { return _selectedParentColumn; }
+            set
+            {
+                _selectedParentColumn = value;
+                OnPropertyChanged();
+                var cmd = SaveRelationshipCommand;
+                _saveRelationshipCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private CColumn _selectedChildColumn;
+        public CColumn SelectedChildColumn
+        {
+            get { return _selectedChildColumn; }
+            set
+            {
+                _selectedChildColumn = value;
+                OnPropertyChanged();
+                var cmd = SaveRelationshipCommand;
+                _saveRelationshipCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         private string _selectedConnectionString;
         public string SelectedConnectionString
         {

@@ -37,5 +37,15 @@ namespace RelatedRecords.Wpf
                 MainViewModel.ViewModel.SearchCriteria = (cell.Item as DataRowView)[colName].ToString();
             } catch(Exception) {; }
         }
+
+        private void AddTableRelation_Click(object sender, RoutedEventArgs e)
+        {
+            var table = (sender as Fluent.Button).Tag as DatatableEx;
+            if (null != table)
+            {
+                MainViewModel.ViewModel.SelectedParentTable = table.Root.ConfigTable;
+                MainViewModel.ViewModel.AddTableRelationshipCommand.Execute(null);
+            }
+        }
     }
 }

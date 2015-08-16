@@ -103,6 +103,9 @@
     <Compile Include="ViewModels\MainViewModel.Commands.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.Filters.cs" />
+    <Compile Include="Views\AddTableRelationship.xaml.cs">
+      <DependentUpon>AddTableRelationship.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TableRelationships.xaml.cs">
       <DependentUpon>TableRelationships.xaml</DependentUpon>
     </Compile>
@@ -119,6 +122,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="TableTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddTableRelationship.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
