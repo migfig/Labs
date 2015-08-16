@@ -31,6 +31,7 @@ namespace RelatedRecords
     {
         public DataTable Table { get; set; }
         public CTable ConfigTable { get; set; }
+        public string Query { get; set; }
 
         public TableContainer(DataTable table, CTable configTable)
         {

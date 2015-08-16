@@ -113,7 +113,6 @@ namespace RelatedRecords
             {
                 var xml = connection.ExecuteScalar(ConfigurationManager.AppSettings["schemaQuery"]
                     .Replace("&quot;", "\""));
-                var doc = XDocument.Load(new StringReader(xml.ToString()));
 
                 var fileName = Helpers.XmlFile.Replace(".xml", "-generated.xml");
                 if (File.Exists(fileName))
@@ -132,58 +131,9 @@ namespace RelatedRecords
                     schemaStream.Write(xml.ToString());
                 }
 
-                var regEx = new Regex(ConfigurationManager.AppSettings["dataSourceNameRegEx"]
-                        .Replace("&lt;", "<")
-                        .Replace("&gt;", ">")
-                    , RegexOptions.IgnoreCase);
-                var dataSourceName = regEx.Match(connectionString).Groups["value"].Value;
-
                 using (var stream = new XmlTextWriter(fileName, Encoding.UTF8))
                 {
-                    var newDoc = new XElement("Configuration",
-                            new XAttribute("defaultDatasource",dataSourceName),
-                            new XAttribute("defaultDataset", dataSourceName.Split('\\').Last()),
-                        new XElement("Datasource",
-                            new XAttribute("name", dataSourceName),
-                            new XElement("ConnectionString", connectionString)),
-                        new XElement("Dataset",
-                            new XAttribute("name", dataSourceName.Split('\\').Last()),
-                            new XAttribute("dataSourceName", dataSourceName),
-                            new XAttribute("defaultTable", doc.Root.Elements("Table").First().Attribute("name").Value),
-
-                            from t in doc.Root.Elements("Table")
-                            select
-                                new XElement("Table", new XAttribute("name", t.Attribute("name").Value),
-                                    from c in t.Elements("Column")
-                                    select
-                                        new XElement("Column",
-                                            from a in c.Attributes()
-                                            select
-                                                new XAttribute(a.Name.LocalName,
-                                                    a.Value
-                                                        .Replace("0", "false")
-                                                        .Replace("1", "true")
-                                                        .Replace("NO", "false")
-                                                        .Replace("YES", "true"))
-                                            )
-                                    ),
-
-                            from t in doc.Root.Elements("Table")
-                            from c in t.Elements("Column")
-                            let isForeignKey = c.Attribute("isForeignKey").Value != "0"
-                            where isForeignKey
-                                && HasRelationships(doc.Root,
-                                    t.Attribute("name").Value,
-                                    c.Attribute("name").Value,
-                                    isForeignKey)
-                            select 
-                                BuildRelationship(doc.Root, 
-                                    t.Attribute("name").Value, 
-                                    c.Attribute("name").Value, 
-                                    isForeignKey)
-                            )
-                        );
-
+                    var newDoc = BuildElements(connectionString, XDocument.Load(new StringReader(xml.ToString()))); 
                     newDoc.WriteTo(stream);
                 }
 
@@ -197,15 +147,20 @@ namespace RelatedRecords
             {
                 var xml = connection.ExecuteScalar(ConfigurationManager.AppSettings["schemaQuery"]
                     .Replace("&quot;", "\""));
-                var doc = XDocument.Load(new StringReader(xml.ToString()));
 
-                var regEx = new Regex(ConfigurationManager.AppSettings["dataSourceNameRegEx"]
-                        .Replace("&lt;", "<")
-                        .Replace("&gt;", ">")
-                    , RegexOptions.IgnoreCase);
-                var dataSourceName = regEx.Match(connectionString).Groups["value"].Value;
+                return BuildElements(connectionString, XDocument.Load(new StringReader(xml.ToString())));
+            }
+        }
 
-                return new XElement("Configuration",
+        private static XElement BuildElements(string connectionString, XDocument doc)
+        {
+            var regEx = new Regex(ConfigurationManager.AppSettings["dataSourceNameRegEx"]
+                .Replace("&lt;", "<")
+                .Replace("&gt;", ">")
+                , RegexOptions.IgnoreCase);
+            var dataSourceName = regEx.Match(connectionString).Groups["value"].Value;
+
+            return new XElement("Configuration",
                         new XAttribute("defaultDatasource", dataSourceName),
                         new XAttribute("defaultDataset", dataSourceName.Split('\\').Last()),
                     new XElement("Datasource",
@@ -240,21 +195,23 @@ namespace RelatedRecords
                             && HasRelationships(doc.Root,
                                 t.Attribute("name").Value,
                                 c.Attribute("name").Value,
-                                isForeignKey)
+                                isForeignKey,
+                                c.Attribute("Constraint").Value)
                         select
                             BuildRelationship(doc.Root,
                                 t.Attribute("name").Value,
                                 c.Attribute("name").Value,
-                                isForeignKey)
+                                isForeignKey,
+                                c.Attribute("Constraint").Value)
                         )
                     );
-            }
         }
 
         private static bool HasRelationships(XElement root,
             string tableName,
             string columnName,
-            bool isForeignKey)
+            bool isForeignKey,
+            string constraint)
         {
             var toTable = tableName;
             if (isForeignKey)
@@ -264,6 +221,19 @@ namespace RelatedRecords
                            where c.Attribute("name").Value == columnName
                                 && c.Attribute("isPrimaryKey").Value != "0"
                            select t.Attribute("name").Value).FirstOrDefault();
+            }
+
+            if(null == toTable && !string.IsNullOrEmpty(constraint))
+            {
+                var parts = constraint.Split('_');
+                if(parts.Length == 2)
+                {
+                    toTable = parts.First();
+                }
+                else if(parts.Length == 3)
+                {
+                    toTable = parts.First() + "_" + parts[1];
+                }
             }
 
             return null != toTable;
@@ -272,10 +242,12 @@ namespace RelatedRecords
         private static XElement BuildRelationship(XElement root, 
             string tableName, 
             string columnName, 
-            bool isForeignKey)
+            bool isForeignKey,
+            string constraint)
         {
             var fromTable = tableName;
             var toTable = tableName;
+            var toColumn = columnName;
 
             if (isForeignKey)
             {
@@ -284,6 +256,21 @@ namespace RelatedRecords
                            where c.Attribute("name").Value == columnName
                                 && c.Attribute("isPrimaryKey").Value != "0"
                            select t.Attribute("name").Value).FirstOrDefault();
+
+                if (null == toTable && !string.IsNullOrEmpty(constraint))
+                {
+                    var parts = constraint.Split('_');
+                    if (parts.Length == 2)
+                    {
+                        toTable = parts.First();
+                        toColumn = parts.Last();
+                    }
+                    else if (parts.Length == 3)
+                    {
+                        toTable = parts.First() + "_" + parts[1];
+                        toColumn = parts.Last();
+                    }
+                }
             }
 
             if (null != fromTable && null != toTable)
@@ -293,7 +280,7 @@ namespace RelatedRecords
                     new XAttribute("fromTable", fromTable),
                     new XAttribute("toTable", toTable),
                     new XAttribute("fromColumn", columnName),
-                    new XAttribute("toColumn", columnName));
+                    new XAttribute("toColumn", toColumn));
             }
 
             return new XElement("void");

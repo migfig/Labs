@@ -187,6 +187,7 @@ namespace RelatedRecords
                 {
                     var reader = await connection.ExecuteReaderAsync(query);
                     result.Root.Table.Load(reader);
+                    result.Root.Query = query;
                     reader.Close();
                 }
 
@@ -228,6 +229,7 @@ namespace RelatedRecords
                             newTable = new DatatableEx(
                                     new TableContainer(tbl, SelectedDataset.Table.First(x => x.name == tbl.TableName))
                                     );
+                            newTable.Root.Query = q;
                         }
 
                         if (null != newTable)

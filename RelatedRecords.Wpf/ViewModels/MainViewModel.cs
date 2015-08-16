@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using RelatedRecords.Wpf.Annotations;
 using System.Configuration;
 using Common;
 using System.Windows;
@@ -135,11 +132,12 @@ namespace RelatedRecords.Wpf.ViewModels
                     {
                         _selectedRootDataRowView = SelectedRootDataView[0];
                     }
+
                     OnPropertyChanged("ParentVisibility");
+                    OnPropertyChanged("SelectedDataTableColumns");
                     _goBackCommand.RaiseCanExecuteChanged();
                     _export2HtmlCommand.RaiseCanExecuteChanged();
                     _export2SqlInsertCommand.RaiseCanExecuteChanged();
-                    OnPropertyChanged("SelectedDataTableColumns");
                 }
             }
         }
