@@ -6,6 +6,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:local="clr-namespace:RelatedRecords.Wpf.Controls"
+        xmlns:converters="clr-namespace:RelatedRecords.Wpf"
         Title="Add Table Relationship"
         FontFamily="Segoe WP"
         FontWeight="Light"
@@ -21,6 +22,9 @@
         InnerBorderBrush="White"
         InnerBorderThickness="1"
         WindowStartupLocation="CenterScreen">
+    <wpfspark:SparkWindow.Resources>
+        <converters:NegatedIntToVisibilityConverter x:Key="NegatedIntConverter"/>
+    </wpfspark:SparkWindow.Resources>
     <wpfspark:SparkWindow.TitleEffect>
         <DropShadowEffect BlurRadius="3"
                           Direction="-85"
@@ -50,7 +54,11 @@
         </Grid.ColumnDefinitions>
 
         <wpfspark:PivotHeaderControl>
-            <TextBlock Text="Tables"/>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Stretch">
+                <TextBlock Text="Tables" Visibility="{Binding Path=FilterTable.Length, Converter={StaticResource NegatedIntConverter}}"/>
+                <TextBox Text="{Binding Mode=TwoWay, Path=FilterTable, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
         </wpfspark:PivotHeaderControl>
 
         <wpfspark:PivotHeaderControl Grid.Column="1">
@@ -75,9 +83,9 @@
 
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="0.5*"/>
             </Grid.RowDefinitions>
 
             <ListView 

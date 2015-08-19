@@ -201,6 +201,16 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }
 
+        private string _filterTable;
+        public string FilterTable {
+            get { return _filterTable; }
+            set {
+                _filterTable = value;
+                OnPropertyChanged();
+                OnPropertyChanged("NonYetRelatedTables");
+            }
+        }
+
         private CTable _selectedParentTable;
         public CTable SelectedParentTable
         {
