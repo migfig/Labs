@@ -49,16 +49,20 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.4*"/>
+            <ColumnDefinition Width="0.6*"/>
         </Grid.ColumnDefinitions>
 
         <wpfspark:PivotHeaderControl>
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
                 <TextBlock Text="Tables" Visibility="{Binding Path=FilterTable.Length, Converter={StaticResource NegatedIntConverter}}"/>
-                <TextBox Text="{Binding Mode=TwoWay, Path=FilterTable, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
+                <TextBox Grid.Column="1" Margin="4,0,0,0" Background="Transparent" Foreground="Orange" Text="{Binding Mode=TwoWay, Path=FilterTable, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
         </wpfspark:PivotHeaderControl>
 
         <wpfspark:PivotHeaderControl Grid.Column="1">

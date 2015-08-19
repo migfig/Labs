@@ -180,24 +180,12 @@ namespace RelatedRecords.Wpf.ViewModels
         {
             get
             {
-                if (SelectedDataset.Relationship.Count > 0)
-                {
-                    var tables = from t in SelectedDataset.Table
-                                 from r in SelectedDataset.Relationship
-                                    .Where(tr => tr.fromTable == SelectedParentTable.name)
-                                 let rt = r.toTable
-                                 where t.name != SelectedParentTable.name
-                                    && t.name != rt
-                                 select t;
-                    return tables.Distinct();
-                }
-                else
-                {
-                    var tables = from t in SelectedDataset.Table
-                                 where t.name != SelectedParentTable.name
-                                 select t;
-                    return tables.Distinct();
-                }
+                var tables = from t in SelectedDataset.Table
+                             where t.name != SelectedParentTable.name
+                                && (!string.IsNullOrEmpty(_filterTable) 
+                                    ? t.name.ToLower().Contains(_filterTable.ToLower()) : true)
+                             select t;
+                return tables.Distinct();
             }
         }
 

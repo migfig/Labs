@@ -247,10 +247,22 @@ namespace RelatedRecords.Wpf.ViewModels
                         , this._selectedColumn
                         , "IS NOT NULL");
                 default:
-                    return string.Format("{0} {1} {2}"
-                        , this._selectedColumn
-                        , this._selectedOperator
-                        , string.Format("'{0}'", this._searchCriteria));
+                    if (null != SelectedRootDataRowView
+                        && null != SelectedRootDataRowView.Row
+                        && null != SelectedColumn)
+                    {
+                        return string.Format("{0} {1} {2}"
+                            , this._selectedColumn
+                            , this._selectedOperator
+                            , SelectedRootDataRowView.Row.Value(SelectedColumn));
+                    }
+                    else
+                    {
+                        return string.Format("{0} {1} {2}"
+                            , this._selectedColumn
+                            , this._selectedOperator
+                            , string.Format("'{0}'", this._searchCriteria));
+                    }
             }
         }
     }

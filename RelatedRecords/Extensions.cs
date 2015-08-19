@@ -585,41 +585,55 @@ namespace RelatedRecords
 
         public static StringBuilder SqlInsert(this StringBuilder value, DatatableEx table)
         {
-            value.SqlInsert(table.Root.Table);
-            foreach (var child in table.Children)
-                value.SqlInsert(child);
+            if (null != table
+                && table.Root.Table != null
+                && table.Root.Table.Rows.Count > 0)
+            {
+                value.SqlInsert(table.Root.Table);
+                foreach (var child in table.Children)
+                    value.SqlInsert(child);
+            }
 
             return value;
         }
 
         public static StringBuilder SqlInsert(this StringBuilder value, DataTable table)
         {
-            foreach (DataRow row in table.Rows)
+            if (null != table && table.Rows.Count > 0)
             {
-                value.SqlInsert(row);
-            }
+                foreach (DataRow row in table.Rows)
+                {
+                    value.SqlInsert(row);
+                }
 
-            value.Append(Environment.NewLine);
+                value.Append(Environment.NewLine);
+            }
 
             return value;
         }
 
         public static StringBuilder SqlInsert(this StringBuilder value, DataRow row)
         {
-            value.AppendFormat("Insert Into [{0}] (", row.Table.TableName);
-            var columns = row.Table.Columns.Cast<DataColumn>();
-            var values = new StringBuilder("Values (");
+            try {
+                value.AppendFormat("Insert Into [{0}] (", row.Table.TableName);
+                var columns = row.Table.Columns.Cast<DataColumn>();
+                var values = new StringBuilder("Values (");
 
-            foreach (DataColumn col in columns)
-            {
-                value.AppendFormat("[{0}]{1}", col.ColumnName, col != columns.Last() ? "," : string.Empty);
-                values.AppendFormat("{0}{1}", row.Value(col.ColumnName), col != columns.Last() ? "," : string.Empty);
+                foreach (DataColumn col in columns)
+                {
+                    value.AppendFormat("[{0}]{1}", col.ColumnName, col != columns.Last() ? "," : string.Empty);
+                    values.AppendFormat("{0}{1}", row.Value(col.ColumnName), col != columns.Last() ? "," : string.Empty);
+                }
+                values.Append(")");
+                value.Append(") ");
+                value.Append(values.ToString());
+                value.Append(";");
+                value.Append(Environment.NewLine);
             }
-            values.Append(")");
-            value.Append(") ");
-            value.Append(values.ToString());
-            value.Append(";");
-            value.Append(Environment.NewLine);
+            catch(Exception e)
+            {
+                Common.Extensions.ErrorLog.Error(e, "@ SqlInsert(row)");
+            }
 
             return value;
         }
@@ -635,7 +649,7 @@ namespace RelatedRecords
                     var bytes = (byte[])row[columnName];
                     value = string.Empty;
                     foreach (var b in bytes)
-                        value += "0x" + b;
+                        value += b;
                     return value;
                 case "System.Int32":
                 case "System.Int64":
