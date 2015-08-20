@@ -31,7 +31,7 @@ namespace RelatedRecords.Tests
             Assert.IsNotNull(_config);
 
             var generatedFile = Helpers.ConfigurationFromConnectionString(
-                _config.Datasource.First().ConnectionString);
+                _config.Datasource.First().ConnectionString).Result;
             Assert.IsTrue(!string.IsNullOrEmpty(generatedFile));
             Assert.IsTrue(File.Exists(generatedFile));
         }

@@ -26,12 +26,12 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_loadDatasourceSchemaCommand == null)
                 {
                     _loadDatasourceSchemaCommand = new RelayCommand(
-                        x =>
+                        async x =>
                         {
                             IsBusy = true;
                             SelectedNewConfiguration =
                                 XmlHelper<CConfiguration>.Load(
-                                    Helpers.GetConfigurationFromConnectionString(SelectedConnectionString)
+                                    await Helpers.GetConfigurationFromConnectionString(SelectedConnectionString)
                                 );
                             IsBusy = false;
                         },

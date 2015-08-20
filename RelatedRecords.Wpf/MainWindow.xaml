@@ -107,8 +107,6 @@
                                         ItemsSource="{Binding SelectedDataTableColumns}" 
                                         ItemTemplate="{DynamicResource ColumnsTemplate}"/>
                         <Fluent:MenuItem Header="Search" Command="{Binding SearchCommand}" Icon="Images\Find.png"/>
-                        <Fluent:MenuItem Header="Filter" Command="{Binding FilterCommand}" Icon="Images\Filter.png"/>
-                        <Fluent:MenuItem Header="Clear Filter" Command="{Binding ClearFilterCommand}" Icon="Images\clear.png"/>
                     </Fluent:DropDownButton>
 
                     <Fluent:DropDownButton Name="operator" SizeDefinition="Middle" Header="Operator" >
@@ -126,6 +124,8 @@
 
                     <Fluent:TextBox Name="searchFilterCriteria" 
                                     Text="{Binding Mode=TwoWay, Path=SearchCriteria, UpdateSourceTrigger=PropertyChanged}" />
+                    
+                    <Fluent:Button Header="Search" Command="{Binding SearchCommand}" Icon="Images\Find.png" LargeIcon="Images\Find.png"/>
 
                     <Fluent:DropDownButton Name="searchValues" SizeDefinition="Middle" Header="Search History">
                         <Fluent:DropDownButton.Icon>
@@ -228,9 +228,9 @@
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage>
                     <Fluent:BackstageTabControl>
-                        <Fluent:Button Header="Connect" Command="{Binding ConnectCommand}" Icon="Images\Database.png"/>
-                        <Fluent:Button Header="Work Offline" Command="{Binding WorkOfflineCommand}" Icon="Images\disconnect.png"/>
-                        <Fluent:Button Header="Clear Cache" Command="{Binding ClearCacheCommand}" Icon="Images\connect.png"/>
+                        <Fluent:Button Visibility="Collapsed" Header="Connect" Command="{Binding ConnectCommand}" Icon="Images\Database.png"/>
+                        <Fluent:Button Visibility="Collapsed" Header="Work Offline" Command="{Binding WorkOfflineCommand}" Icon="Images\disconnect.png"/>
+                        <Fluent:Button Visibility="Collapsed" Header="Clear Cache" Command="{Binding ClearCacheCommand}" Icon="Images\connect.png"/>
                         <Fluent:Button Header="Setup Table Relationships" Command="{Binding SetTableRelationshipsCommand}" Icon="Images\Application.png"/>
                         <Fluent:Button Header="Close" Command="{Binding ExitCommand}" Icon="Images\Exit.png"/>
                     </Fluent:BackstageTabControl>
@@ -278,12 +278,21 @@
             <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
                           Style="{DynamicResource GridSplitterStyle}" Background="LightBlue"/>
             
-            <Border Grid.Column="2" Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
+            <Border Grid.Column="2" 
+                    Padding="4" CornerRadius="2"  
+                    VerticalAlignment="Stretch" 
+                    HorizontalAlignment="Stretch" 
+                    BorderBrush="DarkGray" 
+                    BorderThickness="1">
                 <ListBox ItemsSource="{Binding SelectedDataTable.Children}" 
-                         SelectionMode="Single">
+                         SelectionMode="Single"
+                         VerticalAlignment="Stretch">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border x:Name="OuterBackgroundBorder" BorderThickness="1" Margin="0,10,0,0">
+                            <Border x:Name="OuterBackgroundBorder"
+                                    VerticalAlignment="Stretch"
+                                    BorderThickness="1" 
+                                    Margin="0,10,0,0">
                                 <Border.BorderBrush>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                         <GradientStop Offset="0" Color="#9CA0A3"/>
@@ -298,14 +307,17 @@
                                         <GradientStop Offset="1" Color="#D1D6DC"/>
                                     </LinearGradientBrush>
                                 </Border.Background>
-                                <Border x:Name="InnerBackgroundBorder" BorderThickness="1">
+                                <Border x:Name="InnerBackgroundBorder" 
+                                        BorderThickness="1"
+                                        VerticalAlignment="Stretch">
                                     <Border.BorderBrush>
                                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                             <GradientStop Offset="0" Color="#80EBEFF0"/>
                                             <GradientStop Offset="1" Color="#60889ca3"/>
                                         </LinearGradientBrush>
                                     </Border.BorderBrush>
-                                    <Grid>
+                                    <Grid VerticalAlignment="Stretch"
+                                          HorizontalAlignment="Stretch">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="*"/>
@@ -330,20 +342,22 @@
                                                            Icon="Images\connect.png" 
                                                            LargeIcon="Images\connect.png"/>
                                         </StackPanel>
-                                        <DataGrid Grid.Row="1"
-                                            ItemsSource="{Binding Root.Table}"
-                                            AutoGenerateColumns="True"
-                                            IsReadOnly="True"
-                                            SelectionMode="Single"
-                                            AlternatingRowBackground="LightCyan" 
-                                            CanUserAddRows="False" 
-                                            CanUserDeleteRows="False" 
-                                            CanUserResizeRows="False" 
-                                            ClipboardCopyMode="IncludeHeader" 
-                                            IsTextSearchEnabled="True" 
-                                            SelectionUnit="CellOrRowHeader"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Stretch"/>
+                                        <DataGrid Grid.Row="1" 
+                                                ItemsSource="{Binding Root.Table}"
+                                                    AutoGenerateColumns="True"
+                                                    IsReadOnly="True"
+                                                    SelectionMode="Single"
+                                                    AlternatingRowBackground="LightCyan" 
+                                                    CanUserAddRows="False" 
+                                                    CanUserDeleteRows="False" 
+                                                    CanUserResizeRows="False" 
+                                                    ClipboardCopyMode="IncludeHeader" 
+                                                    IsTextSearchEnabled="True" 
+                                                    SelectionUnit="CellOrRowHeader"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"
+                                                  MinHeight="50"  
+                                                  MaxHeight="400"/>
                                     </Grid>
                                 </Border>
                             </Border>

@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Dapper;
 using Common;
+using System.Threading.Tasks;
 
 namespace RelatedRecords
 {
@@ -107,11 +108,11 @@ namespace RelatedRecords
             File.Delete(XmlFile);
         }
 
-        public static string ConfigurationFromConnectionString(string connectionString)
+        public static async Task<string> ConfigurationFromConnectionString(string connectionString)
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var xml = connection.ExecuteScalar(ConfigurationManager.AppSettings["schemaQuery"]
+                var xml = await connection.ExecuteScalarAsync(ConfigurationManager.AppSettings["schemaQuery"]
                     .Replace("&quot;", "\""));
 
                 var fileName = Helpers.XmlFile.Replace(".xml", "-generated.xml");
@@ -141,14 +142,20 @@ namespace RelatedRecords
             }
         }
 
-        public static XElement GetConfigurationFromConnectionString(string connectionString)
+        public static async Task<XElement> GetConfigurationFromConnectionString(string connectionString)
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var xml = connection.ExecuteScalar(ConfigurationManager.AppSettings["schemaQuery"]
-                    .Replace("&quot;", "\""));
+                try {
+                    var xml = await connection.ExecuteScalarAsync(ConfigurationManager.AppSettings["schemaQuery"]
+                        .Replace("&quot;", "\""));
 
-                return BuildElements(connectionString, XDocument.Load(new StringReader(xml.ToString())));
+                    return BuildElements(connectionString, XDocument.Load(new StringReader(xml.ToString())));
+                } catch(Exception e)
+                {
+                    Common.Extensions.ErrorLog.Error(e, "@ Get config from connstr");
+                    return new XElement("void");
+                } 
             }
         }
 
@@ -228,11 +235,13 @@ namespace RelatedRecords
                 var parts = constraint.Split('_');
                 if(parts.Length == 2)
                 {
-                    toTable = parts.First();
+                    if(Extensions.SelectedDataset.Table.Any(x => x.name == parts.First()))
+                        toTable = parts.First();
                 }
                 else if(parts.Length == 3)
                 {
-                    toTable = parts.First() + "_" + parts[1];
+                    if (Extensions.SelectedDataset.Table.Any(x => x.name == parts.First() + "_" + parts[1]))
+                        toTable = parts.First() + "_" + parts[1];
                 }
             }
 
@@ -262,13 +271,22 @@ namespace RelatedRecords
                     var parts = constraint.Split('_');
                     if (parts.Length == 2)
                     {
-                        toTable = parts.First();
-                        toColumn = parts.Last();
+                        var table = Extensions.SelectedDataset.Table.First(x => x.name == parts.First());
+                        if (null != table && table.Column.Any(x => x.name == parts.Last()))
+                        {
+                            toTable = parts.First();
+                            toColumn = parts.Last();
+                        }
                     }
                     else if (parts.Length == 3)
                     {
-                        toTable = parts.First() + "_" + parts[1];
-                        toColumn = parts.Last();
+                        var table = Extensions.SelectedDataset.Table
+                            .First(x => x.name == parts.First() + "_" + parts[1]);
+                        if (null != table && table.Column.Any(x => x.name == parts.Last()))
+                        {
+                            toTable = parts.First() + "_" + parts[1];
+                            toColumn = parts.Last();
+                        }
                     }
                 }
             }
