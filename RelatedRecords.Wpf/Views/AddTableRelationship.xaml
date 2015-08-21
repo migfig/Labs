@@ -23,7 +23,7 @@
         InnerBorderThickness="1"
         WindowStartupLocation="CenterScreen">
     <wpfspark:SparkWindow.Resources>
-        <converters:NegatedIntToVisibilityConverter x:Key="NegatedIntConverter"/>
+            <converters:NegatedIntToVisibilityConverter x:Key="NegatedIntConverter"/>
     </wpfspark:SparkWindow.Resources>
     <wpfspark:SparkWindow.TitleEffect>
         <DropShadowEffect BlurRadius="3"
@@ -131,7 +131,9 @@
                            Icon="\Images\connect.png" 
                            LargeIcon="\Images\connect.png" />
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="3"
+                    Grid.ColumnSpan="2"
+                    Orientation="Horizontal">
             <wpfspark:SprocketControl 
                                   HorizontalAlignment="Left"
                                   Name="sprocWait"
@@ -148,9 +150,9 @@
                                   AlphaTicksPercentage="50"/>
 
             <wpfspark:FluidStatusBar 
-                                 x:Name="customStatusBar"
+                                 Content="{Binding LastErrorsString}"
                                  HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Stretch"
+                                 VerticalAlignment="Center"
                                  FadeOutDirection="Left"
                                  FadeOutDistance="400"
                                  FadeOutDuration="00:00:00.75"

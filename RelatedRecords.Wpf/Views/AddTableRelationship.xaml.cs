@@ -16,10 +16,5 @@ namespace RelatedRecords.Wpf
             InitializeComponent();
             DataContext = MainViewModel.ViewModel;
         }
-
-        void OnNotify(string message)
-        {
-            customStatusBar.SetStatus(message, true);
-        }
     }
 }

@@ -34,6 +34,9 @@ namespace RelatedRecords.Wpf.ViewModels
                                     await Helpers.GetConfigurationFromConnectionString(SelectedConnectionString)
                                 );
                             IsBusy = false;
+                            SelectedParentTable = SelectedNewConfiguration
+                                .Dataset.FirstOrDefault()
+                                .Table.FirstOrDefault();
                         },
                         x => !string.IsNullOrEmpty(SelectedConnectionString));
                 }
@@ -50,15 +53,16 @@ namespace RelatedRecords.Wpf.ViewModels
                 {
                     _saveDatasourceSchemaCommand = new RelayCommand(
                         x =>
-                        {
+                        {                            
+                            SelectedNewConfiguration.Dataset.FirstOrDefault().defaultTable = SelectedParentTable.name;
                             SelectedConfiguration.Datasource
                                 .Add(SelectedNewConfiguration.Datasource.First());
                             SelectedConfiguration.Dataset
                                 .Add(SelectedNewConfiguration.Dataset.First());
                             XmlHelper<CConfiguration>.Save(
                                 ConfigurationManager.AppSettings["ConfigurationFile"], SelectedConfiguration);
-
-                            OnPropertyChanged("SelectedConfiguration");
+                            SelectedConfiguration = XmlHelper<CConfiguration>.Load(
+                                ConfigurationManager.AppSettings["ConfigurationFile"]);
 
                             SelectedNewConfiguration = null;
                             SelectedConnectionString = string.Empty;
@@ -399,6 +403,8 @@ namespace RelatedRecords.Wpf.ViewModels
                     _addTableRelationshipCommand = new RelayCommand(
                         x =>
                         {
+                            LastErrors.Clear();
+                            OnPropertyChanged("LastErrorsString");
                             new AddTableRelationship().ShowDialog();
                         });
                 }
@@ -435,11 +441,24 @@ namespace RelatedRecords.Wpf.ViewModels
                             if (!SelectedDataset.Relationship.Any(r => r.name == relationship.name))
                             {
                                 SelectedDataset.Relationship.Add(relationship);
-                                XmlHelper<CConfiguration>.Save(ConfigurationManager.AppSettings["ConfigurationFile"],
+                                XmlHelper<CConfiguration>.Save(
+                                    ConfigurationManager.AppSettings["ConfigurationFile"],
                                     SelectedConfiguration);
+                                SelectedConfiguration = XmlHelper<CConfiguration>.Load(
+                                    ConfigurationManager.AppSettings["ConfigurationFile"]);
+
+                                LastErrors.Clear();
+                                LastErrors.Add("Relationship Saved");
                             }
-                            SelectedParentTable = null;
-                            SelectedParentColumn = null;
+                            else
+                            {
+                                LastErrors.Clear();
+                                LastErrors.Add(string.Format("Table {0} is already related to {1} on columns {2}->{3}", relationship.fromTable, 
+                                    relationship.toTable, 
+                                    relationship.fromColumn,
+                                    relationship.toColumn));
+                            }
+                            OnPropertyChanged("LastErrorsString");
                             SelectedChildTable = null;
                             SelectedChildColumn = null;
                         },

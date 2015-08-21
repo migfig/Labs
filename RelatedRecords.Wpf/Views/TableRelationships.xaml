@@ -63,6 +63,7 @@
         
         <ListView Grid.Row="1"                  
                   ItemsSource="{Binding SelectedNewConfigurationTables}"
+                  SelectedItem="{Binding Mode=TwoWay, Path=SelectedParentTable}"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Stretch"
                                  Background="Transparent">

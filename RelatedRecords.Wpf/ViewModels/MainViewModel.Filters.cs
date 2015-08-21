@@ -100,6 +100,18 @@ namespace RelatedRecords.Wpf.ViewModels
             return "System.String";
         }
 
+        public bool UseSchemaConstraints
+        {
+            get { return Properties.Settings.Default.UseSchemaConstraints; }
+            set
+            {
+                if (Properties.Settings.Default.UseSchemaConstraints == value) return;
+                Properties.Settings.Default.UseSchemaConstraints = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
         public int MaxRowCount
         {
             get { return Properties.Settings.Default.DefaultMaxRowCount; }
@@ -108,7 +120,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (Properties.Settings.Default.DefaultMaxRowCount == value) return;
                 Properties.Settings.Default.DefaultMaxRowCount = value;
                 Properties.Settings.Default.Save();
-                OnPropertyChanged("MaxRowCount");
+                OnPropertyChanged();
                 Extensions.MaxRowCount = value;
             }
         }

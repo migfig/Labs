@@ -37,6 +37,18 @@ namespace RelatedRecords.Wpf.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int DefaultMaxRowCount {
+            get {
+                return ((int)(this["DefaultMaxRowCount"]));
+            }
+            set {
+                this["DefaultMaxRowCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\n<ArrayOfString xmlns:xsi=\"http://www.w3.o" +
             "rg/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" />")]
         public global::System.Collections.Specialized.StringCollection SearchValues {
@@ -72,13 +84,13 @@ namespace RelatedRecords.Wpf.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public int DefaultMaxRowCount {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseSchemaConstraints {
             get {
-                return ((int)(this["DefaultMaxRowCount"]));
+                return ((bool)(this["UseSchemaConstraints"]));
             }
             set {
-                this["DefaultMaxRowCount"] = value;
+                this["UseSchemaConstraints"] = value;
             }
         }
     }

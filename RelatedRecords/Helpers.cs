@@ -165,16 +165,33 @@ namespace RelatedRecords
                 .Replace("&lt;", "<")
                 .Replace("&gt;", ">")
                 , RegexOptions.IgnoreCase);
-            var dataSourceName = regEx.Match(connectionString).Groups["value"].Value;
+            var pwdRegEx = new Regex(ConfigurationManager.AppSettings["passwordRegEx"]
+                .Replace("&lt;", "<")
+                .Replace("&gt;", ">")
+                , RegexOptions.IgnoreCase);
+
+            var dataSourceName = regEx.Match(connectionString).Groups["value"].Value.Split('\\').Last() 
+                + DateTime.Now.ToString("HHmmss");
+
+            connectionString += ";User Id=someone;Password=234900rikkd;";
+            var match = pwdRegEx.Match(connectionString);
+            if (null != match)
+            {
+                var passwordKey = match.Groups["passwordkey"].Value;
+                var passwordValue = match.Groups["passwordvalue"].Value;
+                connectionString = connectionString.Replace(
+                    string.Format("{0}={1}", passwordKey, passwordValue),
+                    string.Format("Password={0}", Common.Helpers.Flat.Deflate(passwordValue, "Whatever*(itConvains~!@#|=-+_()*&&^%$#@!~")));
+            }
 
             return new XElement("Configuration",
                         new XAttribute("defaultDatasource", dataSourceName),
-                        new XAttribute("defaultDataset", dataSourceName.Split('\\').Last()),
+                        new XAttribute("defaultDataset", dataSourceName),
                     new XElement("Datasource",
                         new XAttribute("name", dataSourceName),
                         new XElement("ConnectionString", connectionString)),
                     new XElement("Dataset",
-                        new XAttribute("name", dataSourceName.Split('\\').Last()),
+                        new XAttribute("name", dataSourceName),
                         new XAttribute("dataSourceName", dataSourceName),
                         new XAttribute("defaultTable", doc.Root.Elements("Table").First().Attribute("name").Value),
 

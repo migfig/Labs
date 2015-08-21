@@ -209,7 +209,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (value == null) return;
 
                 OnPropertyChanged("NonYetRelatedTables");
-                SelectedParentColumn = value.Column.First(x => x.isForeignKey);
+                SelectedParentColumn = value.Column.FirstOrDefault(x => x.isForeignKey);
             }
         }
 
@@ -329,6 +329,11 @@ namespace RelatedRecords.Wpf.ViewModels
         public ObservableCollection<string> LastErrors
         {
             get { return _lastErrors; }
+        }
+
+        public string LastErrorsString
+        {
+            get { return string.Join(". ", LastErrors.ToArray()); }
         }
 
         private bool _isBusy = false;

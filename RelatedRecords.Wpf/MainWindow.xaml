@@ -155,6 +155,8 @@
                                         ItemsSource="{Binding MaxRows}" 
                                         ItemTemplate="{DynamicResource ColumnsTemplate}"/>
                     </Fluent:DropDownButton>
+                    
+                    <Fluent:CheckBox Header="Use Constraints" IsChecked="{Binding Mode=TwoWay, Path=UseSchemaConstraints}"/>
                 </Fluent:RibbonGroupBox>
 
                 <Fluent:RibbonGroupBox Header="Export">

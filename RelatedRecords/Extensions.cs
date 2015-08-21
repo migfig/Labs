@@ -35,6 +35,8 @@ namespace RelatedRecords
             get { return _selectedDataset; }
             set
             {
+                if (value == null) return;
+
                 _selectedDataset = value;
                 SelectedDatasource = SelectedConfiguration
                     .Datasource.First(x => x.name == _selectedDataset.dataSourceName);

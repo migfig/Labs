@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RelatedRecords.Wpf.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -54,10 +55,32 @@ namespace RelatedRecords.Wpf
             if (null != value && value is CTable)
             {
                 var table = value as CTable;
-                return table.Column.Any(x => x.isForeignKey) ? Visibility.Visible : Visibility.Collapsed;
+                if (MainViewModel.ViewModel.UseSchemaConstraints)
+                    return table.Column.Any(x => x.isForeignKey) ? Visibility.Visible : Visibility.Collapsed;
+                else
+                    return Visibility.Visible;
             }
 
             return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class StringListToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (null != value && value is List<string>)
+            {
+                var list = value as List<string>;
+                return string.Join(".", list.ToArray());
+            }
+
+            return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
