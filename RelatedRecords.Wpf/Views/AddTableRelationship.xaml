@@ -23,7 +23,10 @@
         InnerBorderThickness="1"
         WindowStartupLocation="CenterScreen">
     <wpfspark:SparkWindow.Resources>
+        <ResourceDictionary>
+            <converters:DbTypeToStringConverter x:Key="DbTypeConverter"/>
             <converters:NegatedIntToVisibilityConverter x:Key="NegatedIntConverter"/>
+        </ResourceDictionary>
     </wpfspark:SparkWindow.Resources>
     <wpfspark:SparkWindow.TitleEffect>
         <DropShadowEffect BlurRadius="3"
@@ -57,11 +60,13 @@
             <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
-                <TextBlock Text="Tables" Visibility="{Binding Path=FilterTable.Length, Converter={StaticResource NegatedIntConverter}}"/>
-                <TextBox Grid.Column="1" Margin="4,0,0,0" Background="Transparent" Foreground="Orange" Text="{Binding Mode=TwoWay, Path=FilterTable, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Tables" Margin="0,0,4,0" Visibility="{Binding Path=FilterTable.Length, Converter={StaticResource NegatedIntConverter}}"/>
+                <Image Grid.Column="1" Source="\Images\Filter.png" Width="16" Height="16" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="2" Margin="4,0,0,0" Background="Transparent" Foreground="Orange" Text="{Binding Mode=TwoWay, Path=FilterTable, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </wpfspark:PivotHeaderControl>
 
@@ -71,19 +76,36 @@
                 <TextBlock Text="{Binding SelectedParentTable.name}" Foreground="Orange"/>
             </StackPanel>
         </wpfspark:PivotHeaderControl>
-       
-        <ListView Grid.Row="1"
-            ItemsSource="{Binding NonYetRelatedTables}"
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <ListView ItemsSource="{Binding AutoFilterTables}"
+                      SelectedItem="{Binding SelectedTableFilter}"
+                      Background="Transparent">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="14" Background="Transparent" Foreground="LightBlue"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+            <ListView Grid.Row="1"
+                ItemsSource="{Binding NonYetRelatedTables}"
                 SelectedItem="{Binding Mode=TwoWay, Path=SelectedChildTable}"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Background="Transparent">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding name}" FontSize="14" Foreground="Orange"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding name}" FontSize="14" Foreground="Orange"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
 
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
@@ -100,7 +122,15 @@
                       Background="Transparent">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding name}" FontSize="14" Foreground="Orange"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{Binding name}" FontSize="14" Foreground="Orange"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Path=DbType, Converter={StaticResource DbTypeConverter}}" FontSize="14" Foreground="GreenYellow"/>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -119,12 +149,20 @@
                       Background="Transparent">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding name}" FontSize="14" Foreground="Orange"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{Binding name}" FontSize="14" Foreground="Orange"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Path=DbType, Converter={StaticResource DbTypeConverter}}" FontSize="14" Foreground="GreenYellow"/>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        
+
         <Fluent:Button Grid.Row="2" Header="Save"
                            Foreground="Orange"
                            Command="{Binding SaveRelationshipCommand}" 

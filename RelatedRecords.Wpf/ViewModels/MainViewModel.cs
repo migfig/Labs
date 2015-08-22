@@ -176,16 +176,48 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }
 
+        private bool containsColumnName(CTable source, CTable target)
+        {
+            foreach (var c in source.Column)
+                if (target.Column.Any(x => x.name == c.name))
+                    return true;
+
+            return false;
+        }
+
         public IEnumerable<CTable> NonYetRelatedTables
         {
             get
             {
-                var tables = from t in SelectedDataset.Table
-                             where t.name != SelectedParentTable.name
-                                && (!string.IsNullOrEmpty(_filterTable) 
-                                    ? t.name.ToLower().Contains(_filterTable.ToLower()) : true)
-                             select t;
-                return tables.Distinct();
+                switch(SelectedTableFilter)
+                {
+                    case eAutoFilter.MatchingColumnNames:
+                        return (
+                            from t in SelectedDataset.Table
+                            where t.name != SelectedParentTable.name
+                                   && (!string.IsNullOrEmpty(_filterTable)
+                                       ? t.name.ToLower().Contains(_filterTable.ToLower()) : true)
+                                   && containsColumnName(t, SelectedParentTable)
+                            select t
+                                ).Distinct();
+                    case eAutoFilter.TablesWithPrimaryKey:
+                        return (
+                            from t in SelectedDataset.Table
+                            where t.name != SelectedParentTable.name
+                                   && (!string.IsNullOrEmpty(_filterTable)
+                                       ? t.name.ToLower().Contains(_filterTable.ToLower()) : true)
+                                   && t.Column.Any(x => x.isPrimaryKey)
+                            select t
+                                ).Distinct();
+                    default:
+                        return (
+                            from t in SelectedDataset.Table
+                            where t.name != SelectedParentTable.name
+                                   && (!string.IsNullOrEmpty(_filterTable)
+                                       ? t.name.ToLower().Contains(_filterTable.ToLower()) : true)
+                            select t
+                                ).Distinct();
+                }
             }
         }
 
@@ -223,7 +255,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 OnPropertyChanged();
                 if (value == null) return;
 
-                SelectedChildColumn = value.Column.First(x => x.isPrimaryKey);
+                SelectedChildColumn = value.Column.FirstOrDefault(x => x.isPrimaryKey);
             }
         }
 
@@ -362,6 +394,28 @@ namespace RelatedRecords.Wpf.ViewModels
         public Visibility LastErrorsVisibility
         {
             get { return (LastErrors.Count > 0 ? Visibility.Visible : Visibility.Collapsed); }
+        }
+
+        public IEnumerable<eAutoFilter> AutoFilterTables
+        {
+            get
+            {
+                yield return eAutoFilter.Everything;
+                yield return eAutoFilter.MatchingColumnNames;
+                yield return eAutoFilter.TablesWithPrimaryKey;
+            }
+        }
+
+        private eAutoFilter _selectedTableFilter = eAutoFilter.Everything;
+        public eAutoFilter SelectedTableFilter
+        {
+            get { return _selectedTableFilter; }
+            set
+            {
+                _selectedTableFilter = value;
+                OnPropertyChanged();
+                OnPropertyChanged("NonYetRelatedTables");
+            }
         }
     }
 }

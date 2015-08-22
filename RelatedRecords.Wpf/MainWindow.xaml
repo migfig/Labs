@@ -124,7 +124,7 @@
 
                     <Fluent:TextBox Name="searchFilterCriteria" 
                                     Text="{Binding Mode=TwoWay, Path=SearchCriteria, UpdateSourceTrigger=PropertyChanged}" />
-                    
+
                     <Fluent:Button Header="Search" Command="{Binding SearchCommand}" Icon="Images\Find.png" LargeIcon="Images\Find.png"/>
 
                     <Fluent:DropDownButton Name="searchValues" SizeDefinition="Middle" Header="Search History">
@@ -155,7 +155,7 @@
                                         ItemsSource="{Binding MaxRows}" 
                                         ItemTemplate="{DynamicResource ColumnsTemplate}"/>
                     </Fluent:DropDownButton>
-                    
+
                     <Fluent:CheckBox Header="Use Constraints" IsChecked="{Binding Mode=TwoWay, Path=UseSchemaConstraints}"/>
                 </Fluent:RibbonGroupBox>
 
@@ -260,7 +260,8 @@
                             Visibility="{Binding SelectedDataTable.Root.ConfigTable, Converter={StaticResource TableConverter}}"
                             Tag="{Binding SelectedDataTable}"       
                             Icon="Images\connect.png" 
-                            LargeIcon="Images\connect.png"/>
+                            LargeIcon="Images\connect.png" 
+                            Style="{DynamicResource FluentButtonStyle}"/>
                     </StackPanel>
                     <DataGrid ItemsSource="{Binding SelectedDataTable.Root.Table}"
                           CanUserResizeRows="False" 
@@ -279,7 +280,7 @@
 
             <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
                           Style="{DynamicResource GridSplitterStyle}" Background="LightBlue"/>
-            
+
             <Border Grid.Column="2" 
                     Padding="4" CornerRadius="2"  
                     VerticalAlignment="Stretch" 
@@ -342,7 +343,8 @@
                                                            Visibility="{Binding Root.ConfigTable, Converter={StaticResource TableConverter}}"
                                                            Tag="{Binding}"       
                                                            Icon="Images\connect.png" 
-                                                           LargeIcon="Images\connect.png"/>
+                                                           LargeIcon="Images\connect.png"
+                                                           Style="{DynamicResource FluentButtonStyle}"/>
                                         </StackPanel>
                                         <DataGrid Grid.Row="1" 
                                                 ItemsSource="{Binding Root.Table}"

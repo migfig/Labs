@@ -37,7 +37,7 @@ namespace RelatedRecords.Tests
                     new SqlParameter { ParameterName = "PriorityId", Value = 1 }
                 );
 
-            using (var connection = new SqlConnection(_config.Datasource.First().ConnectionString))
+            using (var connection = new SqlConnection(_config.Datasource.First().ConnectionString.Deflated()))
             {
                 var reader = connection.ExecuteReader(query);
                 Assert.IsNotNull(reader);
@@ -64,7 +64,7 @@ namespace RelatedRecords.Tests
                     new SqlParameter { ParameterName = "PriorityId", Value = 1 }
                 );
 
-            using (var connection = new SqlConnection(_config.Datasource.First().ConnectionString))
+            using (var connection = new SqlConnection(_config.Datasource.First().ConnectionString.Deflated()))
             {
                 var reader = connection.ExecuteReader(query);
                 Assert.IsNotNull(reader);

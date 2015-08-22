@@ -11,6 +11,13 @@ namespace RelatedRecords
     using System;
     using System.Runtime.CompilerServices;
 
+    public enum eAutoFilter
+    {
+        Everything,
+        TablesWithPrimaryKey,
+        MatchingColumnNames
+    }
+
     [AttributeUsage(AttributeTargets.Method)]
     public sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
     {

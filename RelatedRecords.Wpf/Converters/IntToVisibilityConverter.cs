@@ -88,4 +88,23 @@ namespace RelatedRecords.Wpf
             throw new NotImplementedException();
         }
     }
+
+    public class DbTypeToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (null != value && value is eDbType)
+            {
+                var dbType = (eDbType)value;
+                return dbType.ToString();
+            }
+
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

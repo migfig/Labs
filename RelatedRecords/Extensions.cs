@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.IO;
+using System.Configuration;
 
 namespace RelatedRecords
 {
@@ -185,7 +186,7 @@ namespace RelatedRecords
 
             try
             {
-                using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
+                using (var connection = new SqlConnection(SelectedDatasource.ConnectionString.Deflated()))
                 {
                     var reader = await connection.ExecuteReaderAsync(query);
                     result.Root.Table.Load(reader);
@@ -221,7 +222,7 @@ namespace RelatedRecords
                     try
                     {
                         DatatableEx newTable = null;
-                        using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
+                        using (var connection = new SqlConnection(SelectedDatasource.ConnectionString.Deflated()))
                         {
                             var rdr = await connection.ExecuteReaderAsync(q);
                             var tbl = new DataTable(tableName);
@@ -617,7 +618,7 @@ namespace RelatedRecords
         public static StringBuilder SqlInsert(this StringBuilder value, DataRow row)
         {
             try {
-                value.AppendFormat("Insert Into [{0}] (", row.Table.TableName);
+                value.AppendFormat("Insert Into {0} (", row.Table.TableName);
                 var columns = row.Table.Columns.Cast<DataColumn>();
                 var values = new StringBuilder("Values (");
 
@@ -668,6 +669,56 @@ namespace RelatedRecords
                 case "System.Guid":
                 case "System.Object":
                     return string.Format("'{0}'", row[columnName]);
+            }
+
+            return value;
+        }
+
+        public static string Inflated(this string value)
+        {
+            var pwdRegEx = new Regex(ConfigurationManager.AppSettings["passwordRegEx"]
+                .Replace("&lt;", "<")
+                .Replace("&gt;", ">")
+                .Replace("&amp;", "&")
+                .Replace("&quot;", "\"")
+                , RegexOptions.IgnoreCase);
+
+            var match = pwdRegEx.Match(value);
+            if (null != match && match.Success)
+            {
+                var passwordKey = match.Groups["passwordkey"].Value;
+                var passwordValue = match.Groups["passwordvalue"].Value;
+                if (!string.IsNullOrEmpty(passwordKey) && !string.IsNullOrEmpty(passwordValue))
+                {
+                    value = value.Replace(
+                    string.Format("{0}={1}", passwordKey, passwordValue),
+                    string.Format("Password={0}", Common.Helpers.Flat.Inflate(passwordValue, "Whatever*(itConvains~!@#|=-+_()*&&^%$#@!~")));
+                }
+            }
+
+            return value;
+        }
+
+        public static string Deflated(this string value)
+        {
+            var pwdRegEx = new Regex(ConfigurationManager.AppSettings["passwordRegEx"]
+                .Replace("&lt;", "<")
+                .Replace("&gt;", ">")
+                .Replace("&amp;", "&")
+                .Replace("&quot;", "\"")
+                , RegexOptions.IgnoreCase);
+
+            var match = pwdRegEx.Match(value);
+            if (null != match && match.Success)
+            {
+                var passwordKey = match.Groups["passwordkey"].Value;
+                var passwordValue = match.Groups["passwordvalue"].Value;
+                if (!string.IsNullOrEmpty(passwordKey) && !string.IsNullOrEmpty(passwordValue))
+                {
+                    value = value.Replace(
+                        string.Format("{0}={1}", passwordKey, passwordValue),
+                        string.Format("Password={0}", Common.Helpers.Flat.Deflate(passwordValue, "Whatever*(itConvains~!@#|=-+_()*&&^%$#@!~")));
+                }
             }
 
             return value;
