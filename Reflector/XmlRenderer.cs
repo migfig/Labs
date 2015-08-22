@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 
 namespace Reflector
@@ -31,7 +32,7 @@ namespace Reflector
                 File.Delete(fileName);
             }
 
-            var methods = type.GetMethods();
+            var methods = type.GetMethods().Where(x => x.CustomAttributes.Count() > 0);
             if (!_includeSystemObjects)
             {
                 methods = methods.Where(m => !AppConfig.IncludeNetObjectMethods.Contains(m.Name))
@@ -42,6 +43,8 @@ namespace Reflector
                 methods = methods.Where(m => onlyMethods.Contains(m.Name)).ToArray();
             }
 
+            Common.Extensions.TraceLog.Information("Rendering type {type} for file {fileName}", type, fileName);
+
             using (var writer = new StreamWriter(fileName))
             {
                 var root =
@@ -50,6 +53,7 @@ namespace Reflector
 
                         new XElement("attributes",
                         from ta in type.GetCustomAttributes(true)
+                        where ta != null
                         select
                             new XElement("attribute",
                                 new XAttribute("type", ta.GetType().FullName),
@@ -78,6 +82,7 @@ namespace Reflector
 
                         new XElement("attributes",
                         from ma in m.GetCustomAttributes(true)
+                        where ma != null
                         select
                                 new XElement("attribute",
                                     new XAttribute("type", ma.GetType().FullName),
@@ -87,6 +92,7 @@ namespace Reflector
 
                         new XElement("parameters",
                         from p in m.GetParameters()
+                        where p != null
                         select
                                 new XElement("parameter",
                                     new XAttribute("name", p.Name),

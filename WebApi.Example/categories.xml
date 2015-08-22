@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Categories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Items>
+    <Category>
+      <Id>1</Id>
+      <Name>Electronics</Name>
+    </Category>
+    <Category>
+      <Id>2</Id>
+      <Name>Outdoors</Name>
+    </Category>
+  </Items>
+</Categories>

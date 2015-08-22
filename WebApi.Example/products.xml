@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Products xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Items>
+    <Product>
+      <Id>1</Id>
+      <Name>TV</Name>
+      <Description>LET TV 24 inches</Description>
+      <Price>114.0</Price>
+      <Category>
+        <Id>1</Id>
+        <Name>Electronics</Name>
+      </Category>
+    </Product>
+    <Product>
+      <Id>2</Id>
+      <Name>TV Antenna</Name>
+      <Description>TV Tuner 23 feet</Description>
+      <Price>16.0</Price>
+      <Category>
+        <Id>1</Id>
+        <Name>Electronics</Name>
+      </Category>
+    </Product>
+    <Product>
+      <Id>3</Id>
+      <Name>Razor</Name>
+      <Description>Razor Machine</Description>
+      <Price>14.0</Price>
+      <Category>
+        <Id>1</Id>
+        <Name>Electronics</Name>
+      </Category>
+    </Product>
+    <Product>
+      <Id>4</Id>
+      <Name>Chair</Name>
+      <Description>Green camping Chair</Description>
+      <Price>16.0</Price>
+      <Category>
+        <Id>2</Id>
+        <Name>Outdoors</Name>
+      </Category>
+    </Product>
+  </Items>
+</Products>

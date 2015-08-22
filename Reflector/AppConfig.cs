@@ -18,7 +18,7 @@ namespace Reflector
                 if(_config == null)
                 {
                     _config = XmlHelper<Configuration>.Load(
-                        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "configuration.xml")
+                        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "reflector.configuration.xml")
                         );
                 }
 

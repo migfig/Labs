@@ -16,8 +16,7 @@ namespace Reflector
             _renderer = renderer;
         }
 
-        [Description("Sample attribute")]
-        public string Render(Type[] onlyTypes = null, string[] onlyMethods = null)
+        public string Render(string[] onlyTypes = null, string[] onlyMethods = null)
         {
             if(string.IsNullOrEmpty(_renderer.SourcePath))
             {
@@ -43,8 +42,21 @@ namespace Reflector
 
             return string.Empty;
         }
+
+        private bool isAssignable(Assembly asm, Type t, string[] types)
+        {
+            foreach (var type in types)
+            {
+                if (t.Name.Contains(type))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
        
-        private string renderFile(string fileName, Type[] onlyTypes = null, string[] onlyMethods = null)
+        private string renderFile(string fileName, string[] onlyTypes = null, string[] onlyMethods = null)
         {
             try
             {
@@ -52,21 +64,22 @@ namespace Reflector
                 var types = asm.GetTypes();
                 if (onlyTypes != null && onlyTypes.Any())
                 {
-                    types = types.Where(t => onlyTypes.Contains(t)).ToArray();
+                    types = types.Where(t => isAssignable(asm, t, onlyTypes)).ToArray();
                 }
 
                 var files = new StringBuilder();
                 foreach (var t in types)
                 {
                     files.AppendFormat("{0}{1}", files.Length > 0 ? ";" : string.Empty,
-                        render(t, onlyTypes, onlyMethods));
+                        render(t, null, onlyMethods));
                 }
 
                 return files.ToString();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return string.Empty;
+                Common.Extensions.ErrorLog.Error(e, "@ render {fileName}", fileName);
+                return e.Message + (e.InnerException != null ? e.InnerException.Message : string.Empty);
             }
         }
 

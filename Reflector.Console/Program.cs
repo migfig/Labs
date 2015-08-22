@@ -9,7 +9,10 @@ namespace Reflector.Console
     {
         static void Main(string[] args)
         {
-            if(null == args && !args.Any())
+#if DEBUG
+            args = new string[] { "WebApi.Example.dll", "-t", "Controller" };
+#endif
+            if(null == args || !args.Any())
             {
                 DisplayUsage();
                 return;
@@ -53,7 +56,10 @@ namespace Reflector.Console
             }
 
             var parser = new Parser(renderer);
-            System.Console.WriteLine(parser.Render(typeof(Parser)));
+            System.Console.WriteLine(parser.Render(
+                options.ContainsKey("types") ? options["types"].Split(',') : null,
+                options.ContainsKey("methods") ? options["methods"].Split(','): null
+                ));
         }
 
         private static Dictionary<string, string> ParseCommandLine(string args)
@@ -98,7 +104,7 @@ namespace Reflector.Console
             System.Console.WriteLine("{0}-x <path>.xsl[t]", "\t\t");
             System.Console.WriteLine("{0}specifies the xsl file path to process.", "\t\t\t");
             System.Console.WriteLine("{0}-r <option>", "\t\t");
-            System.Console.WriteLine("{0}where option can be xml or text", "\t\t\t");
+            System.Console.WriteLine("{0}where option can be xml or text. Default xml", "\t\t\t");
             System.Console.WriteLine("{0}-i", "\t\t");
             System.Console.WriteLine("{0}include .NET System.Object methods", "\t\t\t");
             System.Console.WriteLine("{0}-t <type list>", "\t\t");

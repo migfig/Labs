@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.megapanezote.com configuration.xsd" xmlns="http://www.megapanezote.com">
+  <Datasources>
+    <Source Name="genericSettings" Type="Settings" IsReserved="true">
+      <Setting Name="fileExplorer" Value="C:\Windows\explorer.exe"/>
+    </Source>
+
+    <Source Name="IgnoreObjectMethods" Type="TextList" IsReserved="true">
+      <Text>
+        <Item>ToString</Item>
+        <Item>Equals</Item>
+        <Item>GetHashCode</Item>
+        <Item>GetType</Item>
+      </Text>
+    </Source>
+
+    <Source Name="CommandLineArguments" Type="GroupedTextList">
+      <GroupedText Name="RegularExpressions">
+        <Text Name="file">
+          <![CDATA[
+          (?<file>[a-zA-Z0-9:\\\-\.]*[\.](dll|xml))
+          ]]>
+        </Text>
+
+        <Text Name="path">
+          <![CDATA[
+          ((?<pathOption>[\-]p)[\s]*(?<path>[a-zA-Z0-9:\\\-\.]*))
+          ]]>
+        </Text>
+
+        <Text Name="types">
+          <![CDATA[
+          ((?<typeOption>[\-]t)[\s]*(?<types>[a-zA-Z0-9,\.]*))
+          ]]>
+        </Text>
+
+        <Text Name="methods">
+          <![CDATA[
+          ((?<methodOption>[\-]m)[\s]*(?<methods>[a-zA-Z0-9,]*))
+          ]]>
+        </Text>
+
+        <Text Name="includeflag">
+          <![CDATA[
+          ((?<includeOption>[\-]i)[\s]*(?<includeflag>yes|no|true|false))
+          ]]>
+        </Text>
+
+        <Text Name="render">
+          <![CDATA[
+          ((?<renderOption>[\-]r)[\s]*(?<render>xml|text|xslt))
+          ]]>
+        </Text>
+
+        <Text Name="xsltfile">
+          <![CDATA[
+          ((?<xlstfileOption>[\-]x)[\s]*(?<xsltfile>[a-zA-Z0-9:\\\-\.]*[\.]xsl[t]?))
+          ]]>
+        </Text>
+      </GroupedText>
+    </Source>
+    
+    <Source Name="IODocumentation" Type="GroupedTextList">
+      <GroupedText Name="Header">
+        <Text Name="Header">
+          <![CDATA[
+          {
+            "schemas": {
+          ]]>
+        </Text>
+      </GroupedText>
+
+      <GroupedText Name="Templates">
+        <Text Name="Method">
+          <![CDATA[
+          "{0}": {{
+            "description": "{1}"
+          }}
+          ]]>
+        </Text>
+
+        <Text Name="Schema">
+          <![CDATA[
+          "{0}": {{
+            "description": "{1}",
+            "required": true,
+            "location": "body"
+          }}
+          ]]>
+        </Text>
+
+        <Text Name="Property">
+          <![CDATA[
+          "{0}": {{
+            "type": "{1}"
+            "title": "{2}"
+          }}
+          ]]>
+        </Text>
+
+        <Text Name="Parameter">
+          <![CDATA[
+          "{0}": {{
+            "type": "{1}"
+            "description": "{2}"
+          }}
+          ]]>
+        </Text>
+        
+        <Text Name="Attribute">
+          <![CDATA[
+          "{0}": {{
+            "type": "{1}"
+            "description": "{2}"
+          }}
+          ]]>
+        </Text>
+      </GroupedText>
+
+      <GroupedText Name="Foother">
+        <Text Name="Foother">
+          <![CDATA[
+            }
+          }
+          ]]>
+        </Text>
+      </GroupedText>
+    </Source>
+  </Datasources>
+</Configuration>
