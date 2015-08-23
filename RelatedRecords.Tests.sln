@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Data", "Common.Data\Common.Data.csproj", "{7E864A0D-402F-4D90-8A9D-A2D309E8BA08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTester", "ApiTester\ApiTester.csproj", "{80BC2F72-3596-4F15-970C-F1012EE074D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTester.Wpf", "ApiTester.Wpf\ApiTester.Wpf.csproj", "{47EFEE67-305A-4672-BAAA-165BA8EBFC39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,14 @@ Global
 		{7E864A0D-402F-4D90-8A9D-A2D309E8BA08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E864A0D-402F-4D90-8A9D-A2D309E8BA08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E864A0D-402F-4D90-8A9D-A2D309E8BA08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80BC2F72-3596-4F15-970C-F1012EE074D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80BC2F72-3596-4F15-970C-F1012EE074D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80BC2F72-3596-4F15-970C-F1012EE074D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80BC2F72-3596-4F15-970C-F1012EE074D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47EFEE67-305A-4672-BAAA-165BA8EBFC39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47EFEE67-305A-4672-BAAA-165BA8EBFC39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47EFEE67-305A-4672-BAAA-165BA8EBFC39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47EFEE67-305A-4672-BAAA-165BA8EBFC39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

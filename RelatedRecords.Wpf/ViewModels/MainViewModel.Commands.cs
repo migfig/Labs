@@ -1,5 +1,5 @@
 ﻿using Common;
-using RelatedRecords.Wpf.Commands;
+using Common.Commands;
 using System;
 using System.ComponentModel;
 using System.Configuration;

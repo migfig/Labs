@@ -18,7 +18,7 @@ using System.Windows.Threading;
 using System.Diagnostics;
 using System.Windows;
 
-namespace RelatedRecords.Wpf.Commands
+namespace Common.Commands
 {
     /// <summary>
     /// Represents base command

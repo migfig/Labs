@@ -10,7 +10,7 @@ using Serilog;
 
 namespace RelatedRecords.Wpf.ViewModels
 {
-    public partial class MainViewModel : CBase
+    public partial class MainViewModel : BaseModel
     {
         public MainViewModel()
         {

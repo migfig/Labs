@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<apiConfiguration xmlns:utils="urn:schemas-reflector-com:xslt">
+  <setup baseAddress="http://localhost:60264" commandLine="curl.exe" source="C:\Code\RelatedRecords.Tests\Binaries\WebApi.Example.dll">
+    <header name="Content-Type" value="application/json" />
+    <buildHeader name="Authorization">
+      <workflow>
+        <task name="Authenticate" pattern="auth/authenticate">
+          <inValue name="User" value="me" />
+          <inValue name="Password" value="pwd" />
+          <outValue name="code" />
+        </task>
+        <task name="GetToken" pattern="auth/token">
+          <inValue name="code" valueFromTask="Authenticate" />
+          <outValue name="token" />
+        </task>
+      </workflow>
+    </buildHeader>
+    <method name="GetCategories" httpMethod="GET" url="/categories/" type="System.Collections.Generic.IEnumerable`1[Common.Data.Models.Category]" description="Get Categories" />
+    <method name="GetCategory" httpMethod="GET" url="/categories/{id:int}" type="Common.Data.Models.Category" description="Get Category">
+      <parameter name="id" type="System.Int32" location="query" />
+    </method>
+    <method name="AddCategory" httpMethod="POST" url="/categories/add" type="Common.Data.Models.Category" description="Add Category">
+      <parameter name="request" type="Common.Data.Models.Requests.CategoryRequest" location="body" />
+    </method>
+    <method name="UpdateCategory" httpMethod="PUT" url="/categories/update/{id:int}" type="Common.Data.Models.Category" description="Update Category">
+      <parameter name="id" type="System.Int32" location="query" />
+      <parameter name="request" type="Common.Data.Models.Requests.CategoryRequest" location="body" />
+    </method>
+    <method name="DeleteCategory" httpMethod="DELETE" url="/categories/delete/{id:int}" type="Common.Data.Models.Category" description="Delete Category">
+      <parameter name="id" type="System.Int32" location="query" />
+    </method>
+  </setup>
+</apiConfiguration>
