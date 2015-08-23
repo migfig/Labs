@@ -58,6 +58,12 @@
           ((?<xlstfileOption>[\-]x)[\s]*(?<xsltfile>[a-zA-Z0-9:\\\-\.]*[\.]xsl[t]?))
           ]]>
         </Text>
+
+        <Text Name="outext">
+          <![CDATA[
+          ((?<outextOption>[\-]o)[\s]*(?<outext>[a-zA-Z0-9]{3,4}))
+          ]]>
+        </Text>
       </GroupedText>
     </Source>
     

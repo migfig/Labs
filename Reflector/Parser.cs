@@ -60,21 +60,32 @@ namespace Reflector
         {
             try
             {
-                var asm = Assembly.LoadFrom(fileName);
-                var types = asm.GetTypes();
-                if (onlyTypes != null && onlyTypes.Any())
+                if (IsDllFile(fileName))
                 {
-                    types = types.Where(t => isAssignable(asm, t, onlyTypes)).ToArray();
-                }
+                    var asm = Assembly.LoadFrom(fileName);
+                    var types = asm.GetTypes();
+                    if (onlyTypes != null && onlyTypes.Any())
+                    {
+                        types = types.Where(t => isAssignable(asm, t, onlyTypes)).ToArray();
+                    }
 
-                var files = new StringBuilder();
-                foreach (var t in types)
+                    var files = new StringBuilder();
+                    foreach (var t in types)
+                    {
+                        files.AppendFormat("{0}{1}", files.Length > 0 ? ";" : string.Empty,
+                            render(t, null, onlyMethods));
+                    }
+
+                    return files.ToString();
+                }
+                else if(IsXmlFile(fileName))
                 {
-                    files.AppendFormat("{0}{1}", files.Length > 0 ? ";" : string.Empty,
-                        render(t, null, onlyMethods));
+                    return _renderer.Render(this.GetType(), null, null);
                 }
-
-                return files.ToString();
+                else
+                {
+                    return "Unsupported filename " + fileName;
+                }
             }
             catch (Exception e)
             {
@@ -106,8 +117,27 @@ namespace Reflector
         public static bool IsFile(string fileName)
         {
             return File.Exists(fileName)
-                && ".dll,.xml,.xslt".Split(',')
+                && ".dll,.xml,.xslt,.xsl".Split(',')
                     .Contains(Path.GetExtension(fileName).ToLower());
+        }
+         
+        public static bool IsXmlFile(string fileName)
+        {
+            return File.Exists(fileName)
+                && Path.GetExtension(fileName).ToLower() == ".xml";
+        }
+
+        public static bool IsXslFile(string fileName)
+        {
+            return File.Exists(fileName)
+                && (Path.GetExtension(fileName).ToLower() == ".xsl"
+                    || Path.GetExtension(fileName).ToLower() == ".xslt");
+        }
+
+        public static bool IsDllFile(string fileName)
+        {
+            return File.Exists(fileName)
+                && Path.GetExtension(fileName).ToLower() == ".dll";
         }
 
         public static bool IsPath(string path)

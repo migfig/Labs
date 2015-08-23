@@ -1,9 +1,11 @@
 ﻿using Common.Data;
 using Common.Data.Models;
+using Common.Data.Models.Requests;
 using Common.Data.Repositories;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Linq;
 
 namespace WebApi.Example.Controllers
 {
@@ -62,13 +64,17 @@ namespace WebApi.Example.Controllers
         /// <summary>
         /// Add Category
         /// </summary>
-        /// <param name="categoryValues">Category values</param>
+        /// <param name="request">Category values</param>
         /// <returns>added Category</returns>
         [Route("add"), HttpPost]
         [ResponseType(typeof(Category))]
-        public IHttpActionResult AddCategory([FromBody] Category categoryValues)
+        public IHttpActionResult AddCategory([FromBody] CategoryRequest request)
         {
-            var category = _repository.Add(categoryValues);
+            var category = _repository.Add(new Category
+            {
+                Id = _repository.GetAll().Max(x => x.Id) + 1,
+                Name = request.Name 
+            });
             if (null == category) return BadRequest("Invalid values provided");
 
             return Created<Category>("", category);
@@ -78,14 +84,15 @@ namespace WebApi.Example.Controllers
         /// Update Category
         /// </summary>
         /// <param name="id">Category id</param>
-        /// <param name="categoryValues">Category values</param>
+        /// <param name="request">Category values</param>
         /// <returns>updated Category</returns>
         [Route("update/{id:int}"), HttpPut]
         [ResponseType(typeof(Category))]
-        public IHttpActionResult UpdateCategory(int id, [FromBody] Category categoryValues)
+        public IHttpActionResult UpdateCategory(int id, [FromBody] CategoryRequest request)
         {
             var category = _repository.GetById(id);
             if (null == category) return BadRequest("Category not found or invalid values provided");
+            category.Name = request.Name;
 
             return Ok<Category>(_repository.Update(category));
         }

@@ -10,9 +10,11 @@ namespace Reflector.Console
         static void Main(string[] args)
         {
 #if DEBUG
-            args = new string[] { "WebApi.Example.dll", "-t", "Controller" };
+            //args = new string[] { "WebApi.Example.dll", "-t", "Controller" };
+            //args = new string[] { "WebApi.Example.Controllers.ProductsController.xml", "-r", "xslt", "-x", "iodocuments.xslt", "-o", "json" };
+            //args = new string[] { "WebApi.Example.Controllers.ProductsController.xml", "-r", "xslt", "-x", "apitester.xslt", "-o", "xml" };
 #endif
-            if(null == args || !args.Any())
+            if (null == args || !args.Any())
             {
                 DisplayUsage();
                 return;
@@ -43,6 +45,7 @@ namespace Reflector.Console
                 case "xslt":
                     renderer = new XsltRenderer(
                         options["xsltfile"],
+                        options.ContainsKey("outext") ? options["outext"] : "json",
                         options.ContainsKey("file") ? options["file"] : options["path"],
                         options.ContainsKey("includeflag")
                     );
@@ -103,8 +106,10 @@ namespace Reflector.Console
             System.Console.WriteLine("{0}specifies the path to process. example: is c:\\mybin\\ or .", "\t\t\t");
             System.Console.WriteLine("{0}-x <path>.xsl[t]", "\t\t");
             System.Console.WriteLine("{0}specifies the xsl file path to process.", "\t\t\t");
+            System.Console.WriteLine("{0}-o ext", "\t\t");
+            System.Console.WriteLine("{0}specifies the file extension for the xslt transformation.", "\t\t\t");
             System.Console.WriteLine("{0}-r <option>", "\t\t");
-            System.Console.WriteLine("{0}where option can be xml or text. Default xml", "\t\t\t");
+            System.Console.WriteLine("{0}where option can be xml. xslt or text. Default xml", "\t\t\t");
             System.Console.WriteLine("{0}-i", "\t\t");
             System.Console.WriteLine("{0}include .NET System.Object methods", "\t\t\t");
             System.Console.WriteLine("{0}-t <type list>", "\t\t");

@@ -11,10 +11,13 @@ namespace Reflector
     public class XsltRenderer : BaseRenderer, IRenderable
     {
         private readonly string _xsltFile;
-        public XsltRenderer(string xsltFile, string sourcePath = "", bool includeSystemObjects = false)
+        private readonly string _outExt;
+
+        public XsltRenderer(string xsltFile, string outExt = "json", string sourcePath = "", bool includeSystemObjects = false)
             : base(sourcePath, includeSystemObjects)
         {
             _xsltFile = xsltFile;
+            _outExt = outExt;
         }
 
         public bool IncludeSystemObjects
@@ -34,7 +37,7 @@ namespace Reflector
 
         public string Render(Type type, Type[] onlyTypes, string[] onlyMethods)
         {
-            var fileName = _xsltFile.ToLower().Replace(".xslt", ".json");
+            var fileName = _xsltFile.ToLower().Replace(".xslt", "." + _outExt);
             if (File.Exists(fileName))
             {
                 File.Delete(fileName);
@@ -46,9 +49,9 @@ namespace Reflector
                 xslt.Load(_xsltFile);
                 xslt.Transform(_sourcePath, fileName);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                ;
+                Common.Extensions.ErrorLog.Error(e, "@ Render type {type}", type);
             }
 
             return fileName;
