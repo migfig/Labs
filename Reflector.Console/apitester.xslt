@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
-    <xsl:output method="xml" indent="yes"/>
-    
-    <xsl:template match="/type">
-      <xsl:call-template name="renderSetup"/>
-    </xsl:template>
+    xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"
+                xmlns:utils="urn:schemas-reflector-com:xslt">
+  <xsl:output method="xml" indent="yes"/>
+
+  <xsl:template match="/type">
+    <xsl:call-template name="renderSetup"/>
+  </xsl:template>
 
   <xsl:template name="renderSetup" match="type">
     <xsl:variable name="urlPrefix" select="concat('/', attributes/attribute[@type='System.Web.Http.RoutePrefixAttribute']/properties/property[@name='Prefix']/@value, '/')"/>
@@ -47,9 +48,12 @@
       </xsl:attribute>
 
       <xsl:attribute name="httpMethod">
-        <xsl:if test="count(attributes/attribute[@type='System.Web.Http.HttpGetAttribute']/properties)">
-          <xsl:value-of select="GET"/>
-        </xsl:if>
+        <xsl:value-of select="utils:HttpMethod(attributes/attribute/@type='System.Web.Http.HttpGetAttribute',
+                          attributes/attribute/@type='System.Web.Http.HttpPostAttribute',
+                          attributes/attribute/@type='System.Web.Http.HttpPutAttribute',
+                          attributes/attribute/@type='System.Web.Http.HttpPatchAttribute',
+                          attributes/attribute/@type='System.Web.Http.HttpDeleteAttribute',
+                          attributes/attribute/@type='System.Web.Http.HttpOptionsAttribute')"/>
       </xsl:attribute>
 
       <xsl:attribute name="url">
@@ -57,7 +61,11 @@
       </xsl:attribute>
 
       <xsl:attribute name="type">
-        <xsl:value-of select="@type"/>
+        <xsl:value-of select="attributes/attribute[@type='System.Web.Http.Description.ResponseTypeAttribute']/properties/property[@name='ResponseType']/@value"/>
+      </xsl:attribute>
+
+      <xsl:attribute name="description">
+        <xsl:value-of select="utils:CapitalizeWords(@name)"/>
       </xsl:attribute>
 
       <xsl:for-each select="parameters/parameter">
@@ -78,7 +86,7 @@
     </property>
   </xsl:template>
 
-  
+
   <xsl:template name="renderParameter" match="parameter">
     <parameter>
       <xsl:attribute name="name">
@@ -87,6 +95,10 @@
 
       <xsl:attribute name="type">
         <xsl:value-of select="@type"/>
+      </xsl:attribute>
+
+      <xsl:attribute name="location">
+        <xsl:value-of select="utils:Iif(attributes/attribute/@type='System.Web.Http.FromBodyAttribute', 'body', 'query')"/>
       </xsl:attribute>
     </parameter>
   </xsl:template>

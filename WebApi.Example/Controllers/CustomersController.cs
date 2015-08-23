@@ -1,9 +1,11 @@
 ﻿using Common.Data;
 using Common.Data.Models;
+using Common.Data.Models.Requests;
 using Common.Data.Repositories;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Linq;
 
 namespace WebApi.Example.Controllers
 {
@@ -62,13 +64,17 @@ namespace WebApi.Example.Controllers
         /// <summary>
         /// Add customer
         /// </summary>
-        /// <param name="customerValues">customer values</param>
+        /// <param name="request">customer values</param>
         /// <returns>added customer</returns>
         [Route("add"), HttpPost]
         [ResponseType(typeof(Customer))]
-        public IHttpActionResult AddCustomer([FromBody] Customer customerValues)
+        public IHttpActionResult AddCustomer([FromBody] CustomerRequest request)
         {
-            var customer = _repository.Add(customerValues);
+            var customer = _repository.Add(new Customer
+            {
+                Id = _repository.GetAll().Max(x => x.Id) + 1,
+                Name = request.Name
+            });
             if (null == customer) return BadRequest("Invalid values provided");
 
             return Created<Customer>("", customer);
@@ -78,14 +84,15 @@ namespace WebApi.Example.Controllers
         /// Update customer
         /// </summary>
         /// <param name="id">customer id</param>
-        /// <param name="customerValues">customer values</param>
+        /// <param name="request">customer values</param>
         /// <returns>updated customer</returns>
         [Route("update/{id:int}"), HttpPut]
         [ResponseType(typeof(Customer))]
-        public IHttpActionResult UpdateCustomer(int id, [FromBody] Customer customerValues)
+        public IHttpActionResult UpdateCustomer(int id, [FromBody] CustomerRequest request)
         {
             var customer = _repository.GetById(id);
             if (null == customer) return BadRequest("Customer not found or invalid values provided");
+            customer.Name = request.Name;
 
             return Ok<Customer>(_repository.Update(customer));
         }

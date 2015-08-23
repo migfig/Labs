@@ -62,6 +62,7 @@
     <Compile Include="StrBuilder.cs" />
     <Compile Include="XmlRenderer.cs" />
     <Compile Include="XsltRenderer.cs" />
+    <Compile Include="XslUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

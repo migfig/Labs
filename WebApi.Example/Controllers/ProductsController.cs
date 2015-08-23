@@ -4,6 +4,8 @@ using Common.Data.Repositories;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Linq;
+using Common.Data.Models.Requests;
 
 namespace WebApi.Example.Controllers
 {
@@ -62,13 +64,19 @@ namespace WebApi.Example.Controllers
         /// <summary>
         /// Add Product
         /// </summary>
-        /// <param name="productValues">Product values</param>
+        /// <param name="request">Product values</param>
         /// <returns>added Product</returns>
         [Route("add"), HttpPost]
         [ResponseType(typeof(Product))]
-        public IHttpActionResult AddProduct([FromBody] Product productValues)
+        public IHttpActionResult AddProduct([FromBody] ProductRequest request)
         {
-            var product = _repository.Add(productValues);
+            var product = _repository.Add(new Product
+            {
+                Id = _repository.GetAll().Max(x => x.Id) + 1,
+                Name = request.Name,
+                Description = request.Description,
+                Price = request.Price
+            });
             if (null == product) return BadRequest("Invalid values provided");
 
             return Created<Product>("", product);
@@ -78,14 +86,17 @@ namespace WebApi.Example.Controllers
         /// Update Product
         /// </summary>
         /// <param name="id">Product id</param>
-        /// <param name="productValues">Product values</param>
+        /// <param name="request">Product values</param>
         /// <returns>updated Product</returns>
         [Route("update/{id:int}"), HttpPut]
         [ResponseType(typeof(Product))]
-        public IHttpActionResult UpdateProduct(int id, [FromBody] Product productValues)
+        public IHttpActionResult UpdateProduct(int id, [FromBody] ProductRequest request)
         {
             var product = _repository.GetById(id);
             if (null == product) return BadRequest("Product not found or invalid values provided");
+            product.Name = request.Name;
+            product.Description = request.Description;
+            product.Price = request.Price;
 
             return Ok<Product>(_repository.Update(product));
         }

@@ -96,7 +96,17 @@ namespace Reflector
                         select
                                 new XElement("parameter",
                                     new XAttribute("name", p.Name),
-                                    new XAttribute("type", p.ParameterType.FullName)
+                                    new XAttribute("type", p.ParameterType.FullName),
+
+                                    new XElement("attributes",
+                                    from pa in p.GetCustomAttributes(true)
+                                    where pa != null
+                                    select
+                                        new XElement("attribute",
+                                            new XAttribute("type", pa.GetType().FullName),
+                                            GetAttributeValues(pa)
+                                        )
+                                    )
                                 )
                             )
                         )

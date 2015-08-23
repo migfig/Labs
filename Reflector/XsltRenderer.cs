@@ -46,8 +46,14 @@ namespace Reflector
             try
             {
                 var xslt = new XslCompiledTransform(true);
+                var args = new XsltArgumentList();
+                args.AddExtensionObject("urn:schemas-reflector-com:xslt", new XslUtils());
+
                 xslt.Load(_xsltFile);
-                xslt.Transform(_sourcePath, fileName);
+
+                using (var stream = new StreamWriter(fileName)) {
+                    xslt.Transform(_sourcePath, args, stream);
+                }
             }
             catch (Exception e)
             {
