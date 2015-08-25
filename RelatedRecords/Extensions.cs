@@ -688,11 +688,14 @@ namespace RelatedRecords
             {
                 var passwordKey = match.Groups["passwordkey"].Value;
                 var passwordValue = match.Groups["passwordvalue"].Value;
-                if (!string.IsNullOrEmpty(passwordKey) && !string.IsNullOrEmpty(passwordValue))
+                if (!string.IsNullOrEmpty(passwordKey) 
+                    && !string.IsNullOrEmpty(passwordValue))
                 {
-                    value = value.Replace(
-                    string.Format("{0}={1}", passwordKey, passwordValue),
-                    string.Format("Password={0}", Common.Helpers.Flat.Inflate(passwordValue, "Whatever*(itConvains~!@#|=-+_()*&&^%$#@!~")));
+                    try {
+                        value = value.Replace(
+                            string.Format("{0}={1}", passwordKey, passwordValue),
+                            string.Format("Password={0}", Common.Helpers.Flat.Inflate(passwordValue, "Whatever*(itConvains~!@#|=-+_()*&&^%$#@!~")));
+                    } catch(Exception) {; }
                 }
             }
 
@@ -715,9 +718,11 @@ namespace RelatedRecords
                 var passwordValue = match.Groups["passwordvalue"].Value;
                 if (!string.IsNullOrEmpty(passwordKey) && !string.IsNullOrEmpty(passwordValue))
                 {
-                    value = value.Replace(
-                        string.Format("{0}={1}", passwordKey, passwordValue),
-                        string.Format("Password={0}", Common.Helpers.Flat.Deflate(passwordValue, "Whatever*(itConvains~!@#|=-+_()*&&^%$#@!~")));
+                    try {
+                        value = value.Replace(
+                            string.Format("{0}={1}", passwordKey, passwordValue),
+                            string.Format("Password={0}", Common.Helpers.Flat.Deflate(passwordValue, "Whatever*(itConvains~!@#|=-+_()*&&^%$#@!~")));
+                    } catch(Exception) {; }
                 }
             }
 
