@@ -394,8 +394,13 @@ namespace ApiTester.Models
 
         private string descriptionField;
 
+        private bool isSelectedField;
+        private bool isValidTestField;
+
         public Method()
         {
+            isSelectedField = true;
+            isValidTestField = false;
             parameterField = new ObservableCollection<Parameter>();
         }
         
@@ -479,6 +484,34 @@ namespace ApiTester.Models
             set
             {
                 this.descriptionField = value;
+            }
+        }
+
+        [XmlAttributeAttribute()]
+        public bool isSelected
+        {
+            get
+            {
+                return this.isSelectedField;
+            }
+            set
+            {
+                this.isSelectedField = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [XmlAttributeAttribute()]
+        public bool isValidTest
+        {
+            get
+            {
+                return this.isValidTestField;
+            }
+            set
+            {
+                this.isValidTestField = value;
+                OnPropertyChanged();
             }
         }
     }

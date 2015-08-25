@@ -25,7 +25,7 @@
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Tab" ReduceOrder="(P),(P),(P),(P),(P)">
                 <Fluent:RibbonGroupBox Header="Navigation">
-                    <Button Command="{Binding GoBackCommand}">
+                    <Button Command="{Binding RunTests}">
                         <Button.RenderTransform>
                             <SkewTransform />
                         </Button.RenderTransform>
@@ -147,8 +147,8 @@
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage>
                     <Fluent:BackstageTabControl>
-                        <Fluent:Button Header="Add API Configuration" Command="{Binding SetTableRelationshipsCommand}" Icon="Images\Application.png"/>
-                        <Fluent:Button Header="Close" Command="{Binding ExitCommand}" Icon="Images\Exit.png"/>
+                        <Fluent:Button Header="Add API Configuration" Command="{Binding LoadConfiguration}" Icon="Images\Application.png"/>
+                        <Fluent:Button Header="Close" Command="{Binding ExitApplication}" Icon="Images\Exit.png"/>
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>

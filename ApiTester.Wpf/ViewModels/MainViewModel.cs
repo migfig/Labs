@@ -12,7 +12,7 @@ using System.Windows;
 
 namespace ApiTester.Wpf.ViewModels
 {
-    public class MainViewModel: BaseModel
+    public partial class MainViewModel: BaseModel
     {
         private static MainViewModel _viewModel = new MainViewModel();
         public static MainViewModel ViewModel {
