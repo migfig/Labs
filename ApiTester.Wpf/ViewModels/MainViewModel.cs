@@ -46,6 +46,8 @@ namespace ApiTester.Wpf.ViewModels
             set
             {
                 _selectedConfiguration = value;
+                if (_selectedConfiguration != null)
+                    SelectedHost = _selectedConfiguration.setup.host.FirstOrDefault();
                 OnPropertyChanged();
                 OnPropertyChanged("HeadersTable");
                 OnPropertyChanged("MethodsTable");
@@ -91,7 +93,7 @@ namespace ApiTester.Wpf.ViewModels
 
         public DataTable MethodsTable
         {
-            get { return SelectedConfiguration.setup.ToTable(); }
+            get { return SelectedConfiguration.ToTable(); }
         }
 
         private DataRowView _selectedDataRowView;
@@ -104,7 +106,7 @@ namespace ApiTester.Wpf.ViewModels
                 OnPropertyChanged();
                 if(null != _selectedDataRowView)
                 {
-                    SelectedMethod = SelectedConfiguration.setup.method
+                    SelectedMethod = SelectedConfiguration.method
                         .First(x => x.name == _selectedDataRowView["name"].ToString());
                 }
             }
@@ -128,6 +130,17 @@ namespace ApiTester.Wpf.ViewModels
                     return  SelectedMethod.ToTable();
 
                 return null;
+            }
+        }
+
+        private Host _selectedHost;
+        public Host SelectedHost
+        {
+            get { return _selectedHost; }
+            set
+            {
+                _selectedHost = value;
+                OnPropertyChanged();
             }
         }
 

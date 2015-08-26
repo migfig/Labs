@@ -63,6 +63,7 @@ namespace Reflector
                 if (IsDllFile(fileName))
                 {
                     var asm = Assembly.LoadFrom(fileName);
+                    _renderer.AssemblySource = asm;
                     var types = asm.GetTypes();
                     if (onlyTypes != null && onlyTypes.Any())
                     {

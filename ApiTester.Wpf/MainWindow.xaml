@@ -176,8 +176,17 @@
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
                         
-						<TextBlock Text="Base Address" />
-                        <TextBlock Grid.Column="1" Text="{Binding SelectedConfiguration.setup.baseAddress}" FontWeight="DemiBold" VerticalAlignment="Center"/>
+						<TextBlock Text="Host Name" />
+                        <ComboBox Grid.Column="1"  
+                                  ItemsSource="{Binding SelectedConfiguration.setup.host}"
+                                  SelectedItem="{Binding SelectedHost}"
+                                  VerticalAlignment="Center">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding name}" FontWeight="DemiBold"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <TextBlock Grid.Row="1" Text="Source" />
 						<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedConfiguration.setup.source}" VerticalAlignment="Center"/>
                     </Grid>

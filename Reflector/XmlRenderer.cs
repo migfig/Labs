@@ -8,6 +8,8 @@ namespace Reflector
 {
     public class XmlRenderer : BaseRenderer, IRenderable
     {
+        private Assembly _assemblySource;
+
         public XmlRenderer(string sourcePath = "", bool includeSystemObjects = false)
             : base(sourcePath, includeSystemObjects)
         {
@@ -21,6 +23,14 @@ namespace Reflector
         public string SourcePath
         {
             get { return _sourcePath; }
+        }
+
+        public Assembly AssemblySource
+        {
+            set
+            {
+                _assemblySource = value;
+            }
         }
 
         public string Render(Type type, Type[] onlyTypes, string[] onlyMethods)
@@ -63,6 +73,7 @@ namespace Reflector
 
                         new XElement("properties",
                         from prop in type.GetProperties()
+                            .Where(x => !AppConfig.IncludeNetObjectProperties.Contains(x.Name))
                         select
                             new XElement("property",
                                 new XAttribute("name", prop.Name),
@@ -98,6 +109,8 @@ namespace Reflector
                                     new XAttribute("name", p.Name),
                                     new XAttribute("type", p.ParameterType.FullName),
 
+                                    GetTypeProperties(p.ParameterType),
+
                                     new XElement("attributes",
                                     from pa in p.GetCustomAttributes(true)
                                     where pa != null
@@ -129,14 +142,54 @@ namespace Reflector
             return
                 new XElement("properties",
                         from prop in attribute.GetType().GetProperties()
-                        let value = prop.GetValue(attribute) ?? ""
+                            .Where(x => !AppConfig.IncludeNetObjectProperties.Contains(x.Name))
+                        let value = prop.GetValue(attribute) ?? string.Empty
                         select
                             new XElement("property",
                                 new XAttribute("name", prop.Name),
                                 new XAttribute("type", prop.PropertyType.FullName),
-                                new XAttribute("value", value.ToString())
+                                new XAttribute("value", value.ToString()),
+
+                                GetAttributeValueProperties(prop.Name, value)
                             )
                          );
+        }
+
+        public object GetAttributeValueProperties(string properyName, object value)
+        {
+            if (properyName != "ResponseType"
+                || null == value 
+                || string.IsNullOrEmpty(value.ToString()) 
+                || value.ToString().Split('.').Length <= 1) return null;
+
+            return GetTypeProperties((Type)value);
+        }
+
+        public XElement GetTypeProperties(Type type)
+        {
+            if (type.IsPrimitive) return null;
+
+            return new XElement("properties",
+                    from prop in type.GetProperties()
+                    select
+                        new XElement("property",
+                            new XAttribute("name", prop.Name),
+                            new XAttribute("type", prop.PropertyType.FullName),
+                            new XAttribute("defaultValue", GetInstanceValue(prop.PropertyType))
+                        )
+                     );
+        }
+
+        public string GetInstanceValue(Type type)
+        {
+            try
+            {
+                return Activator.CreateInstance(type).ToString();
+            }
+            catch(Exception)
+            {
+                return string.Empty;
+            }
         }
     }
 }

@@ -25,6 +25,12 @@ namespace ApiTester.Models
     public partial class apiConfiguration: BaseModel
     {
         private Setup setupField;
+        private ObservableCollection<Method> methodField;
+
+        public apiConfiguration()
+        {
+            methodField = new ObservableCollection<Method>();
+        }
 
         [XmlElementAttribute("setup", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public Setup setup
@@ -39,6 +45,19 @@ namespace ApiTester.Models
             }
         }
 
+        [XmlElementAttribute("method", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ObservableCollection<Method> method
+        {
+            get
+            {
+                return this.methodField;
+            }
+            set
+            {
+                this.methodField = value;
+            }
+        }
+
         public override string ToString()
         {
             return Path.GetFileNameWithoutExtension(setup.source);
@@ -48,14 +67,9 @@ namespace ApiTester.Models
     [XmlTypeAttribute(AnonymousType = true)]
     public partial class Setup: BaseModel
     {
-
         private ObservableCollection<Header> headerField;
-
         private ObservableCollection<BuildHeader> buildHeaderField;
-
-        private ObservableCollection<Method> methodField;
-
-        private string baseAddressField;
+        private ObservableCollection<Host> hostField;
 
         private string commandLineField;
 
@@ -65,9 +79,8 @@ namespace ApiTester.Models
         {
             headerField = new ObservableCollection<Header>();
             buildHeaderField = new ObservableCollection<BuildHeader>();
-            methodField = new ObservableCollection<Method>();
+            hostField = new ObservableCollection<Host>();
         }
-
         
         [XmlElementAttribute("header", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ObservableCollection<Header> header
@@ -81,7 +94,6 @@ namespace ApiTester.Models
                 this.headerField = value;
             }
         }
-
         
         [XmlElementAttribute("buildHeader", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ObservableCollection<BuildHeader> buildHeader
@@ -96,30 +108,16 @@ namespace ApiTester.Models
             }
         }
 
-        
-        [XmlElementAttribute("method", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public ObservableCollection<Method> method
+        [XmlElementAttribute("host", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ObservableCollection<Host> host
         {
             get
             {
-                return this.methodField;
+                return this.hostField;
             }
             set
             {
-                this.methodField = value;
-            }
-        }
-
-        [XmlAttributeAttribute()]
-        public string baseAddress
-        {
-            get
-            {
-                return this.baseAddressField;
-            }
-            set
-            {
-                this.baseAddressField = value;
+                this.hostField = value;
             }
         }
 
@@ -146,6 +144,39 @@ namespace ApiTester.Models
             set
             {
                 this.sourceField = value;
+            }
+        }
+    }
+
+    [XmlTypeAttribute(AnonymousType = true)]
+    public partial class Host : BaseModel
+    {
+        private string nameField;
+        private string baseAddressField;
+
+        [XmlAttributeAttribute()]
+        public string name
+        {
+            get
+            {
+                return this.nameField;
+            }
+            set
+            {
+                this.nameField = value;
+            }
+        }
+
+        [XmlTextAttribute()]
+        public string baseAddress
+        {
+            get
+            {
+                return this.baseAddressField;
+            }
+            set
+            {
+                this.baseAddressField = value;
             }
         }
     }
@@ -518,15 +549,15 @@ namespace ApiTester.Models
 
     public static class ConfigurationExtensions
     {
-        public static DataTable ToTable(this Setup setup)
+        public static DataTable ToTable(this apiConfiguration configuration)
         {
-            var table = new DataTable("Setup");
-            foreach (var p in setup.method.First().GetType().GetProperties())
+            var table = new DataTable("Configuration");
+            foreach (var p in configuration.method.First().GetType().GetProperties())
             {
                 table.Columns.Add(new DataColumn(p.Name, p.PropertyType));
             }
 
-            foreach (var m in setup.method)
+            foreach (var m in configuration.method)
             {
                 table.Rows.Add(m.ToRow(table));
             }
@@ -580,7 +611,7 @@ namespace ApiTester.Models
         private string typeField;
 
         private string locationField;
-
+        private string jsonObjectField;
         
         [XmlAttributeAttribute()]
         public string name
@@ -622,5 +653,19 @@ namespace ApiTester.Models
                 this.locationField = value;
             }
         }
+
+        [XmlElementAttribute()]
+        public string jsonObject
+        {
+            get
+            {
+                return this.jsonObjectField;
+            }
+            set
+            {
+                this.jsonObjectField = value;
+            }
+        }
+
     }
 }

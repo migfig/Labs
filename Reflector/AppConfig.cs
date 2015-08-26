@@ -71,5 +71,18 @@ namespace Reflector
                        select t.Value.Trim();
             }
         }
+
+        public static IEnumerable<string> IncludeNetObjectProperties
+        {
+            get
+            {
+                return from t in Config.Datasources
+                    .Where(d => d.Type == enSourceType.TextList)
+                    .First(f => f.Name == "IgnoreObjectProperties")
+                    .Items.Cast<TextSource>()
+                    .First().Item
+                       select t.Value.Trim();
+            }
+        }
     }
 }

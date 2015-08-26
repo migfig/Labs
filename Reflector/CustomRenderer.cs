@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common;
+using System.Reflection;
 
 namespace Reflector
 {
     public class CustomRenderer : BaseRenderer, IRenderable
     {
+        private Assembly _assemblySource;
+
         public CustomRenderer(string sourcePath = "", bool includeSystemObjects = false)
             : base(sourcePath, includeSystemObjects)
         {
@@ -23,6 +26,14 @@ namespace Reflector
         public string SourcePath
         {
             get { return _sourcePath; }
+        }
+
+        public Assembly AssemblySource
+        {
+            set
+            {
+                _assemblySource = value;
+            }
         }
 
         public string Render(Type type, Type[] onlyTypes, string[] onlyMethods)

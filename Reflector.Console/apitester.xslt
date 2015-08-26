@@ -11,11 +11,13 @@
   <xsl:template name="renderSetup" match="type">
     <xsl:variable name="urlPrefix" select="concat('/', attributes/attribute[@type='System.Web.Http.RoutePrefixAttribute']/properties/property[@name='Prefix']/@value, '/')"/>
     <apiConfiguration>
-      <setup baseAddress="http://localhost:60264" commandLine="curl.exe">
+      <setup commandLine="C:\Program Files (x86)\Git\bin\curl.exe">
         <xsl:attribute name="source">
           <xsl:value-of select="@source"/>
         </xsl:attribute>
 
+        <host name="localhost">http://localhost:60264</host>
+        <host name="remotehost">http://remote:60264</host>
         <header name="Content-Type" value="application/json" />
         <buildHeader name="Authorization">
           <workflow>
@@ -30,13 +32,12 @@
             </task>
           </workflow>
         </buildHeader>
-
-        <xsl:for-each select="methods/method">
-          <xsl:call-template name="renderMethod">
-            <xsl:with-param name="urlPrefix" select="$urlPrefix"/>
-          </xsl:call-template>
-        </xsl:for-each>
       </setup>
+      <xsl:for-each select="methods/method">
+        <xsl:call-template name="renderMethod">
+          <xsl:with-param name="urlPrefix" select="$urlPrefix"/>
+        </xsl:call-template>
+      </xsl:for-each>
     </apiConfiguration>
   </xsl:template>
 
@@ -86,6 +87,20 @@
     </property>
   </xsl:template>
 
+  <xsl:template name="renderPropertyAsJson" match="property">
+    <xsl:param name="isLast"/>
+    "<xsl:value-of select="@name"/>": <xsl:choose>
+      <xsl:when test="@type = 'System.String'">
+        <xsl:value-of select="concat('&quot;',@name, @defaultValue,' {0}&quot;')" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@defaultValue"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:if test="not($isLast)">
+      <xsl:value-of select="string(',')"/>
+    </xsl:if>
+  </xsl:template>
 
   <xsl:template name="renderParameter" match="parameter">
     <parameter>
@@ -100,6 +115,18 @@
       <xsl:attribute name="location">
         <xsl:value-of select="utils:Iif(attributes/attribute/@type='System.Web.Http.FromBodyAttribute', 'body', 'query')"/>
       </xsl:attribute>
+
+      <xsl:if test ="attributes/attribute/@type='System.Web.Http.FromBodyAttribute'">
+        <jsonObject>
+          &lt;![CDATA[
+          {<xsl:for-each select="properties/property">
+            <xsl:call-template name="renderPropertyAsJson">
+              <xsl:with-param name="isLast" select="position() = last()"/>
+            </xsl:call-template>
+          </xsl:for-each>
+          }]]&gt;
+        </jsonObject>
+      </xsl:if>
     </parameter>
   </xsl:template>
 </xsl:stylesheet>

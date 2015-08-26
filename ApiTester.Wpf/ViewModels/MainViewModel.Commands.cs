@@ -41,7 +41,7 @@ namespace ApiTester.Wpf.ViewModels
             {
                 return _toggleSelection ?? new RelayCommand(
                     (parameter) => {
-                        foreach(var m in SelectedConfiguration.setup.method)
+                        foreach(var m in SelectedConfiguration.method)
                         {
                             m.isSelected = !m.isSelected;
                         }

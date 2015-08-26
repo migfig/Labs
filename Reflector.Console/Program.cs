@@ -10,9 +10,9 @@ namespace Reflector.Console
         static void Main(string[] args)
         {
 #if DEBUG
-            //args = new string[] { "WebApi.Example.dll", "-t", "Controller" };
-            //args = new string[] { "WebApi.Example.Controllers.ProductsController.xml", "-r", "xslt", "-x", "iodocuments.xslt", "-o", "json" };
-            //args = new string[] { "WebApi.Example.Controllers.ProductsController.xml", "-r", "xslt", "-x", "apitester.xslt", "-o", "xml" };
+            //args = "WebApi.Example.dll -t Controller".Split(' ');
+            //args = "WebApi.Example.Controllers.ProductsController.xml -r xslt -x iodocuments.xslt -o json".Split(' ');
+            //args = "WebApi.Example.Controllers.ProductsController.xml -r xslt -x apitester.xslt -o xml".Split(' ');
 #endif
             if (null == args || !args.Any())
             {

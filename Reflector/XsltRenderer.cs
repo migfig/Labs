@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Xsl;
@@ -12,6 +13,7 @@ namespace Reflector
     {
         private readonly string _xsltFile;
         private readonly string _outExt;
+        private Assembly _assemblySource;
 
         public XsltRenderer(string xsltFile, string outExt = "json", string sourcePath = "", bool includeSystemObjects = false)
             : base(sourcePath, includeSystemObjects)
@@ -28,6 +30,14 @@ namespace Reflector
         public string SourcePath
         {
             get { return _sourcePath; }
+        }
+
+        public Assembly AssemblySource
+        {
+            set
+            {
+                _assemblySource = value;
+            }
         }
 
         public object GetAttributeValues(object attribute)

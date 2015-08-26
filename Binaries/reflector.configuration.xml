@@ -15,6 +15,20 @@
       </Text>
     </Source>
 
+    <Source Name="IgnoreObjectProperties" Type="TextList" IsReserved="true">
+      <Text>
+        <Item>TypeId</Item>
+        <Item>Configuration</Item>
+        <Item>ControllerContext</Item>
+        <Item>ActionContext</Item>
+        <Item>ModelState</Item>
+        <Item>Request</Item>
+        <Item>RequestContext</Item>
+        <Item>Url</Item>
+        <Item>User</Item>
+      </Text>
+    </Source>
+
     <Source Name="CommandLineArguments" Type="GroupedTextList">
       <GroupedText Name="RegularExpressions">
         <Text Name="file">
