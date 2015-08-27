@@ -110,6 +110,7 @@ namespace Reflector
                                 new XElement("parameter",
                                     new XAttribute("name", p.Name),
                                     new XAttribute("type", p.ParameterType.FullName),
+                                    new XAttribute("defaultValue", GetInstanceValue(p.ParameterType)),
 
                                     GetTypeProperties(p.ParameterType),
 
@@ -169,10 +170,9 @@ namespace Reflector
 
         public XElement GetTypeProperties(Type type, bool ignoreInnerProps = false)
         {
-            if (type == null || type.IsPrimitive) return null;
+            if (type == null || type.IsPrimitive || type == typeof(string)) return null;
 
             return new XElement("properties",
-                        //new XAttribute("for", type.FullName),
 
                     from prop in type.GetProperties()
                     let ptype = prop.PropertyType

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,6 +47,34 @@ namespace Reflector
             }
 
             return capitalized;
+        }
+
+        public string Guid()
+        {
+            return System.Guid.NewGuid().ToString();
+        }
+
+        private Dictionary<string, string> _guids = new Dictionary<string, string>();
+        public string Guid(string key)
+        {
+            if (string.IsNullOrEmpty(key)) return string.Empty;
+
+            if(!_guids.ContainsKey(key))
+            {
+                _guids.Add(key, Guid());
+            }
+
+            return _guids[key];
+        }
+
+        public string TimeStamp()
+        {
+            return DateTime.Now.Ticks.ToString();
+        }
+
+        public string FileName(string fileName)
+        {
+            return Path.GetFileNameWithoutExtension(fileName);
         }
     }
 }

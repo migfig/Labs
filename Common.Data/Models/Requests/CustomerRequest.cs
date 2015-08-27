@@ -16,6 +16,7 @@ namespace Common.Data.Models.Requests
         public string Name { get; set; }
         public virtual List<ContactRequest> Contacts { get; set; }
         public virtual List<OrderRequest> Orders { get; set; }
+        public virtual List<string> Locations { get; set; }
     }
 
     public class ContactRequest
