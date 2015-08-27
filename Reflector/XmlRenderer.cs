@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -162,20 +164,35 @@ namespace Reflector
                 || string.IsNullOrEmpty(value.ToString()) 
                 || value.ToString().Split('.').Length <= 1) return null;
 
-            return GetTypeProperties((Type)value);
+            return GetTypeProperties((Type)value, true);
         }
 
-        public XElement GetTypeProperties(Type type)
+        public XElement GetTypeProperties(Type type, bool ignoreInnerProps = false)
         {
-            if (type.IsPrimitive) return null;
+            if (type == null || type.IsPrimitive) return null;
 
             return new XElement("properties",
+                        //new XAttribute("for", type.FullName),
+
                     from prop in type.GetProperties()
+                    let ptype = prop.PropertyType
                     select
                         new XElement("property",
                             new XAttribute("name", prop.Name),
+                            new XAttribute("isArray", type.IsArray 
+                                || prop.PropertyType.FullName.Contains("System.Collections")
+                            ),
                             new XAttribute("type", prop.PropertyType.FullName),
-                            new XAttribute("defaultValue", GetInstanceValue(prop.PropertyType))
+                            new XAttribute("defaultValue", GetInstanceValue(prop.PropertyType)),
+                            
+                            ignoreInnerProps 
+                                ? null
+                                :
+                            prop.PropertyType.IsClass 
+                                    && prop.PropertyType.FullName != "System.String"
+                                    && !prop.PropertyType.FullName.Contains("System.Collections")
+                                ? GetTypeProperties(prop.PropertyType)
+                                : GetTypeProperties(prop.PropertyType.GenericTypeArguments.FirstOrDefault())
                         )
                      );
         }

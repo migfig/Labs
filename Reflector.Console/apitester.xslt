@@ -75,8 +75,8 @@
     </method>
   </xsl:template>
 
-  <xsl:template name="renderProperty" match="property">
-    <property>
+  <xsl:template name="renderParameter" match="parameter">
+    <parameter>
       <xsl:attribute name="name">
         <xsl:value-of select="@name"/>
       </xsl:attribute>
@@ -84,7 +84,46 @@
       <xsl:attribute name="type">
         <xsl:value-of select="@type"/>
       </xsl:attribute>
-    </property>
+
+      <xsl:attribute name="location">
+        <xsl:value-of select="utils:Iif(attributes/attribute/@type='System.Web.Http.FromBodyAttribute', 'body', 'query')"/>
+      </xsl:attribute>
+
+      <xsl:if test ="attributes/attribute/@type='System.Web.Http.FromBodyAttribute'">
+        <jsonObject>
+          <xsl:value-of select="string('&lt;![CDATA[')" disable-output-escaping="yes"/>
+          {<xsl:for-each select="properties/property">
+            <xsl:call-template name="renderProperty">
+              <xsl:with-param name="isLast" select="position() = last()"/>
+            </xsl:call-template>
+          </xsl:for-each>
+          }
+          <xsl:value-of select="string(']]&gt;')" disable-output-escaping="yes"/>
+        </jsonObject>
+      </xsl:if>
+    </parameter>
+  </xsl:template>
+
+  <xsl:template name="renderProperty" match="property">
+    <xsl:param name="isLast"/>
+
+    <xsl:choose>
+      <xsl:when test="@isArray = 'true'">
+        <xsl:call-template name="renderPropertyAsJsonArray">
+          <xsl:with-param name="isLast" select="$isLast"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:when test="properties/property">
+        <xsl:call-template name="renderPropertyAsJsonObject">
+          <xsl:with-param name="isLast" select="$isLast"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="renderPropertyAsJson">
+          <xsl:with-param name="isLast" select="$isLast"/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="renderPropertyAsJson" match="property">
@@ -102,31 +141,31 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template name="renderParameter" match="parameter">
-    <parameter>
-      <xsl:attribute name="name">
-        <xsl:value-of select="@name"/>
-      </xsl:attribute>
+  <xsl:template name="renderPropertyAsJsonArray" match="property">
+    <xsl:param name="isLast"/>
+    "<xsl:value-of select="@name"/>":
+    [<xsl:for-each select="properties/property">
+      <xsl:call-template name="renderProperty">
+        <xsl:with-param name="isLast" select="position() = last()"/>
+      </xsl:call-template>
+    </xsl:for-each>
+    ]<xsl:if test="not($isLast)">
+      <xsl:value-of select="string(',')"/>
+    </xsl:if>
+  </xsl:template>
 
-      <xsl:attribute name="type">
-        <xsl:value-of select="@type"/>
-      </xsl:attribute>
-
-      <xsl:attribute name="location">
-        <xsl:value-of select="utils:Iif(attributes/attribute/@type='System.Web.Http.FromBodyAttribute', 'body', 'query')"/>
-      </xsl:attribute>
-
-      <xsl:if test ="attributes/attribute/@type='System.Web.Http.FromBodyAttribute'">
-        <jsonObject>
-          &lt;![CDATA[
-          {<xsl:for-each select="properties/property">
-            <xsl:call-template name="renderPropertyAsJson">
-              <xsl:with-param name="isLast" select="position() = last()"/>
-            </xsl:call-template>
-          </xsl:for-each>
-          }]]&gt;
-        </jsonObject>
-      </xsl:if>
-    </parameter>
+  <xsl:template name="renderPropertyAsJsonObject" match="property">
+    <xsl:param name="isLast"/>
+    "<xsl:value-of select="@name"/>":
+    {
+    <xsl:for-each select="properties/property">
+      <xsl:call-template name="renderProperty">
+        <xsl:with-param name="isLast" select="position() = last()"/>
+      </xsl:call-template>
+    </xsl:for-each>
+    }
+    <xsl:if test="not($isLast)">
+      <xsl:value-of select="string(',')"/>
+    </xsl:if>
   </xsl:template>
 </xsl:stylesheet>

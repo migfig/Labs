@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Linq;
+using System;
 
 namespace WebApi.Example.Controllers
 {
@@ -70,12 +71,88 @@ namespace WebApi.Example.Controllers
         [ResponseType(typeof(Customer))]
         public IHttpActionResult AddCustomer([FromBody] CustomerRequest request)
         {
+            if (null == request) return BadRequest("Invalid values provided");
+
             var customer = _repository.Add(new Customer
             {
                 Id = _repository.GetAll().Max(x => x.Id) + 1,
                 Name = request.Name
             });
-            if (null == customer) return BadRequest("Invalid values provided");
+            if (null == customer) return BadRequest("Invalid customer");
+
+            return Created<Customer>("", customer);
+        }
+
+        /// <summary>
+        /// Add customer
+        /// </summary>
+        /// <param name="request">customer values</param>
+        /// <returns>added customer</returns>
+        [Route("add/complete"), HttpPost]
+        [ResponseType(typeof(Customer))]
+        public IHttpActionResult AddCustomerCompleteRequest([FromBody] CustomerCompleteRequest request)
+        {
+            if (null == request) return BadRequest("Invalid values provided");
+            var customers = _repository.GetAll();
+
+            var customer = _repository.Add(new Customer
+            {
+                Id = customers.Max(x => x.Id) + 1,
+                Name = request.Name
+            });
+
+            if(request.Contacts != null)
+            {
+                foreach(var c in request.Contacts)
+                {
+                    customer.Contacts.Add(new Contact
+                    {
+                        Id = (from cust in customers
+                              select cust.Contacts.Max(x => x.Id)).Max(x => x) + 1,
+                        FirstName = c.FirstName,
+                        LastName = c.LastName,
+                        PhoneNumber = c.PhoneNumber
+                    });
+                }
+            }
+
+            if(request.Orders != null)
+            {
+                foreach(var o in request.Orders)
+                {
+                    customer.Orders.Add(new Order
+                    {
+                        Id = (from cust in customers
+                              select cust.Orders.Max(x => x.Id)).Max(x => x) + 1,
+                         RequestedBy = 1,
+                         DateCreated = DateTime.Now,
+                         DateDelivered = DateTime.Now
+                    });
+
+                    var order = customer.Orders.Last();
+                    foreach(var item in o.Items)
+                    {
+                        order.Items.Add(new OrderItem
+                        {
+                            Id = (from cust in customers
+                                  from ord in cust.Orders
+                                  select ord.Items.Max(x => x.Id)).Max(x => x) + 1,
+                            Product = new Product
+                            {
+                                Id = (from cust in customers
+                                  from ord in cust.Orders
+                                  select ord.Items.Max(x => x.Product.Id)).Max(x => x) + 1,
+                                 Name = item.Product.Name,
+                                 Description = item.Product.Description,
+                                 Price = item.Product.Price
+                            },
+                             Quantity = item.Quantity
+                        });
+                    }
+                }
+            }
+            
+            if (null == customer) return BadRequest("Invalid customer");
 
             return Created<Customer>("", customer);
         }
@@ -90,6 +167,8 @@ namespace WebApi.Example.Controllers
         [ResponseType(typeof(Customer))]
         public IHttpActionResult UpdateCustomer(int id, [FromBody] CustomerRequest request)
         {
+            if (null == request) return BadRequest("Invalid values provided");
+
             var customer = _repository.GetById(id);
             if (null == customer) return BadRequest("Customer not found or invalid values provided");
             customer.Name = request.Name;
