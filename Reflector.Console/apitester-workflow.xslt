@@ -9,7 +9,7 @@
   </xsl:template>
 
   <xsl:template name="renderWorkflow" match="type">
-    <workflowDefinition>
+    <workflow>
       <xsl:attribute name="name">
         <xsl:value-of select="utils:FileName(@source)"/>
       </xsl:attribute>
@@ -17,7 +17,7 @@
       <xsl:for-each select="methods/method">
         <xsl:call-template name="renderTask"/>
       </xsl:for-each>
-    </workflowDefinition>
+    </workflow>
   </xsl:template>
 
   <xsl:template name="renderTask" match="method">
@@ -29,7 +29,6 @@
       <xsl:for-each select="parameters/parameter">
         <xsl:call-template name="renderParameter"/>
       </xsl:for-each>
-      <results></results>
     </task>
   </xsl:template>
 
@@ -120,16 +119,12 @@
 
   <xsl:template name="renderPropertyAsJsonObject" match="property">
     <xsl:param name="isLast"/>
-    "<xsl:value-of select="@name"/>":
-    {
+    "<xsl:value-of select="@name"/>": {
     <xsl:for-each select="properties/property">
       <xsl:call-template name="renderProperty">
         <xsl:with-param name="isLast" select="position() = last()"/>
       </xsl:call-template>
     </xsl:for-each>
-    }
-    <xsl:if test="not($isLast)">
-      <xsl:value-of select="string(',')"/>
-    </xsl:if>
+    }<xsl:if test="not($isLast)"><xsl:value-of select="string(',')"/></xsl:if>
   </xsl:template>
 </xsl:stylesheet>

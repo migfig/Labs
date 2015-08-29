@@ -20,18 +20,15 @@
         <host name="remotehost">http://remote:60264</host>
         <header name="Content-Type" value="application/json" />
         <buildHeader name="Authorization">
-          <workflow>
-            <task name="Authenticate" pattern="auth/authenticate">
-              <inValue name="User" value="me"/>
-              <inValue name="Password" value="pwd"/>
-              <outValue name="code"/>
-            </task>
+          <task name="Authenticate" pattern="auth/authenticate">
+            <parameter name="User" defaultValue="me"/>
+            <parameter name="Password" defaultValue="pwd"/>
             <task name="GetToken" pattern="auth/token">
-              <inValue name="code" valueFromTask="Authenticate"/>
-              <outValue name="token"/>
+              <parameter name="code" />
             </task>
-          </workflow>
+          </task>
         </buildHeader>
+        <workflow name="apitester-workflow.xml"/>
       </setup>
       <xsl:for-each select="methods/method">
         <xsl:call-template name="renderMethod">

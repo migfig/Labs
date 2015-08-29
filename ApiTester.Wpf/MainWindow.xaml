@@ -92,6 +92,12 @@
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
 
+                <Fluent:RibbonGroupBox Header="Commands">
+                    <Fluent:Button Header="Toggle Selection" Command="{Binding ToggleSelection}" Icon="Images\Filter.png" LargeIcon="Images\Filter.png"/>
+                    <Fluent:Button Header="Build Headers" Command="{Binding BuildHeaders}" Icon="Images\html.png" LargeIcon="Images\html.png"/>
+                    <Fluent:Button Header="View Results" Command="{Binding ViewTestResults}" Icon="Images\List.png" LargeIcon="Images\List.png"/>
+                </Fluent:RibbonGroupBox>
+
                 <Fluent:RibbonGroupBox Header="Errors" Visibility="{Binding LastErrorsVisibility}" HorizontalAlignment="Right">
                     <Fluent:DropDownButton Name="lastErrors" SizeDefinition="Middle" Header="Found Errors">
                         <Fluent:DropDownButton.Icon>
@@ -172,14 +178,17 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="150"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
+							<ColumnDefinition Width="15*"/>
+							<ColumnDefinition Width="35*"/>
+                            <ColumnDefinition Width="15*"/>
+                            <ColumnDefinition Width="35*"/>
+                        </Grid.ColumnDefinitions>
                         
 						<TextBlock Text="Host Name" />
                         <ComboBox Grid.Column="1"  
                                   ItemsSource="{Binding SelectedConfiguration.setup.host}"
-                                  SelectedItem="{Binding SelectedHost}"
+                                  SelectedItem="{Binding Mode=TwoWay, Path=SelectedHost}"
+                                  Margin="0,0,4,0"
                                   VerticalAlignment="Center">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -187,8 +196,21 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+                        
+                        <TextBlock Text="Workflow" Grid.Column="2" />
+                        <ComboBox Grid.Column="3"  
+                                  ItemsSource="{Binding SelectedConfiguration.setup.workflow}"
+                                  SelectedItem="{Binding Mode=TwoWay, Path=SelectedWorkflow}"
+                                  VerticalAlignment="Center">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding name}" FontWeight="DemiBold"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
                         <TextBlock Grid.Row="1" Text="Source" />
-						<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedConfiguration.setup.source}" VerticalAlignment="Center"/>
+						<TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding SelectedConfiguration.setup.source}" VerticalAlignment="Center"/>
                     </Grid>
                     <DataGrid ItemsSource="{Binding HeadersTable}"
                           CanUserResizeRows="False" 

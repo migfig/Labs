@@ -1,33 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apiConfiguration xmlns:utils="urn:schemas-reflector-com:xslt">
-  <setup baseAddress="http://localhost:60264" commandLine="curl.exe" source="C:\Code\RelatedRecords.Tests\Binaries\WebApi.Example.dll">
+  <setup commandLine="C:\Program Files (x86)\Git\bin\curl.exe" source="C:\Code\RelatedRecords.Tests\Binaries\WebApi.Example.dll">
+    <host name="localhost">http://localhost:60264</host>
+    <host name="remotehost">http://remote:60264</host>
     <header name="Content-Type" value="application/json" />
     <buildHeader name="Authorization">
-      <workflow>
-        <task name="Authenticate" pattern="auth/authenticate">
-          <inValue name="User" value="me" />
-          <inValue name="Password" value="pwd" />
-          <outValue name="code" />
-        </task>
-        <task name="GetToken" pattern="auth/token">
-          <inValue name="code" valueFromTask="Authenticate" />
-          <outValue name="token" />
-        </task>
-      </workflow>
+      <task name="Authenticate" pattern="auth/authenticate">
+        <inValue name="User" value="me" />
+        <inValue name="Password" value="pwd" />
+        <outValue name="code" />
+      </task>
+      <task name="GetToken" pattern="auth/token">
+        <inValue name="code" valueFromTask="Authenticate" />
+        <outValue name="token" />
+      </task>
     </buildHeader>
-    <method name="GetCategories" httpMethod="GET" url="/categories/" type="System.Collections.Generic.IEnumerable`1[Common.Data.Models.Category]" description="Get Categories" />
-    <method name="GetCategory" httpMethod="GET" url="/categories/{id:int}" type="Common.Data.Models.Category" description="Get Category">
-      <parameter name="id" type="System.Int32" location="query" />
-    </method>
-    <method name="AddCategory" httpMethod="POST" url="/categories/add" type="Common.Data.Models.Category" description="Add Category">
-      <parameter name="request" type="Common.Data.Models.Requests.CategoryRequest" location="body" />
-    </method>
-    <method name="UpdateCategory" httpMethod="PUT" url="/categories/update/{id:int}" type="Common.Data.Models.Category" description="Update Category">
-      <parameter name="id" type="System.Int32" location="query" />
-      <parameter name="request" type="Common.Data.Models.Requests.CategoryRequest" location="body" />
-    </method>
-    <method name="DeleteCategory" httpMethod="DELETE" url="/categories/delete/{id:int}" type="Common.Data.Models.Category" description="Delete Category">
-      <parameter name="id" type="System.Int32" location="query" />
-    </method>
+    <workflow name="apitester-workflow.xml"/>
   </setup>
+  <method name="GetCustomers" httpMethod="GET" url="/customers/" type="System.Collections.Generic.IEnumerable`1[Common.Data.Models.Customer]" description="Get Customers" />
+  <method name="GetCustomer" httpMethod="GET" url="/customers/{id:int}" type="Common.Data.Models.Customer" description="Get Customer">
+    <parameter name="id" type="System.Int32" location="query" />
+  </method>
+  <method name="AddCustomer" httpMethod="POST" url="/customers/add" type="Common.Data.Models.Customer" description="Add Customer">
+    <parameter name="request" type="Common.Data.Models.Requests.CustomerRequest" location="body">
+      <jsonObject>
+        <![CDATA[
+          {
+    "Name": "Name {0}"
+          }
+          ]]>
+      </jsonObject>
+    </parameter>
+  </method>
+  <method name="AddCustomerCompleteRequest" httpMethod="POST" url="/customers/add/complete" type="Common.Data.Models.Customer" description="Add Customer Complete Request">
+    <parameter name="request" type="Common.Data.Models.Requests.CustomerCompleteRequest" location="body">
+      <jsonObject>
+        <![CDATA[
+          {
+    "Name": "Name {0}",
+    "Contacts":
+    [
+    "FirstName": "FirstName {0}",
+    "LastName": "LastName {0}",
+    "PhoneNumber": "PhoneNumber {0}"
+    ],
+    "Orders":
+    [
+    "RequestedBy": 0,
+    "DateCreated": 1/1/0001 12:00:00 AM,
+    "DateDelivered": 1/1/0001 12:00:00 AM,
+    "Items":
+    [
+    "Product":
+    {
+    
+    "Name": "Name {0}",
+    "Description": "Description {0}",
+    "Price": 0
+    }
+    ,
+    "Quantity": 0
+    ]
+    ],
+    "Locations":
+    [
+    ]
+          }
+          ]]>
+      </jsonObject>
+    </parameter>
+  </method>
+  <method name="UpdateCustomer" httpMethod="PUT" url="/customers/update/{id:int}" type="Common.Data.Models.Customer" description="Update Customer">
+    <parameter name="id" type="System.Int32" location="query" />
+    <parameter name="request" type="Common.Data.Models.Requests.CustomerRequest" location="body">
+      <jsonObject>
+        <![CDATA[
+          {
+    "Name": "Name {0}"
+          }
+          ]]>
+      </jsonObject>
+    </parameter>
+  </method>
+  <method name="DeleteCustomer" httpMethod="DELETE" url="/customers/delete/{id:int}" type="Common.Data.Models.Customer" description="Delete Customer">
+    <parameter name="id" type="System.Int32" location="query" />
+  </method>
 </apiConfiguration>

@@ -47,7 +47,10 @@ namespace ApiTester.Wpf.ViewModels
             {
                 _selectedConfiguration = value;
                 if (_selectedConfiguration != null)
+                {
                     SelectedHost = _selectedConfiguration.setup.host.FirstOrDefault();
+                    SelectedWorkflow = _selectedConfiguration.setup.workflow.FirstOrDefault();
+                }
                 OnPropertyChanged();
                 OnPropertyChanged("HeadersTable");
                 OnPropertyChanged("MethodsTable");
@@ -144,6 +147,17 @@ namespace ApiTester.Wpf.ViewModels
             }
         }
 
+        private workflow _selectedWorkflow;
+        public workflow SelectedWorkflow
+        {
+            get { return _selectedWorkflow; }
+            set
+            {
+                _selectedWorkflow = value;
+                OnPropertyChanged();
+            }
+        }
+
         private ObservableCollection<string> _lastErrors = new ObservableCollection<string>();
         public ObservableCollection<string> LastErrors
         {
@@ -176,12 +190,6 @@ namespace ApiTester.Wpf.ViewModels
         public Visibility LastErrorsVisibility
         {
             get { return (LastErrors.Count > 0 ? Visibility.Visible : Visibility.Collapsed); }
-        }
-
-
-        private int runMethod(Method method)
-        {
-            return 0;
         }
     }
 }

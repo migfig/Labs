@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<workflow name="WebApi.Example" xmlns:utils="urn:schemas-reflector-com:xslt">
+  <task name="GetCustomers" />
+  <task name="GetCustomer">
+    <parameter name="id" type="System.Int32" location="query" defaultValue="0" />
+  </task>
+  <task name="AddCustomer">
+    <parameter name="request" type="Common.Data.Models.Requests.CustomerRequest" location="body">
+      <jsonObject><![CDATA[
+          {
+    "Name": "Name {0}"
+          }
+          ]]></jsonObject>
+    </parameter>
+  </task>
+  <task name="AddCustomerCompleteRequest">
+    <parameter name="request" type="Common.Data.Models.Requests.CustomerCompleteRequest" location="body">
+      <jsonObject><![CDATA[
+          {
+    "Name": "Name {0}",
+    "Contacts":
+    [
+    "FirstName": "FirstName {0}",
+    "LastName": "LastName {0}",
+    "PhoneNumber": "PhoneNumber {0}"
+    ],
+    "Orders":
+    [
+    "RequestedBy": 0,
+    "DateCreated": 1/1/0001 12:00:00 AM,
+    "DateDelivered": 1/1/0001 12:00:00 AM,
+    "Items":
+    [
+    "Product": {
+    
+    "Name": "Name {0}",
+    "Description": "Description {0}",
+    "Price": 0
+    },
+    "Quantity": 0
+    ]
+    ],
+    "Locations":
+    [
+    ]
+          }
+          ]]></jsonObject>
+    </parameter>
+  </task>
+  <task name="UpdateCustomer">
+    <parameter name="id" type="System.Int32" location="query" defaultValue="0" />
+    <parameter name="request" type="Common.Data.Models.Requests.CustomerRequest" location="body">
+      <jsonObject><![CDATA[
+          {
+    "Name": "Name {0}"
+          }
+          ]]></jsonObject>
+    </parameter>
+  </task>
+  <task name="DeleteCustomer">
+    <parameter name="id" type="System.Int32" location="query" defaultValue="0" />
+  </task>
+</workflow>
