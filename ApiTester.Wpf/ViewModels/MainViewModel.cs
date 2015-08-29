@@ -117,6 +117,11 @@ namespace ApiTester.Wpf.ViewModels
             get { return SelectedConfiguration.ToTable(); }
         }
 
+        public DataTable ResultsTable
+        {
+            get { return null != ExecutedWorkflow ? ExecutedWorkflow.ToTable() : null; }
+        }
+
         private DataRowView _selectedDataRowView;
         public DataRowView SelectedDataRowView
         {
@@ -208,6 +213,24 @@ namespace ApiTester.Wpf.ViewModels
         public Visibility LastErrorsVisibility
         {
             get { return (LastErrors.Count > 0 ? Visibility.Visible : Visibility.Collapsed); }
+        }
+
+        private workflow _executedWorkflow;
+        public workflow ExecutedWorkflow
+        {
+            get { return _executedWorkflow; }
+            set
+            {
+                _executedWorkflow = value;
+                OnPropertyChanged();
+                OnPropertyChanged("ResultsVisibility");
+                OnPropertyChanged("ResultsTable");
+            }
+        }
+
+        public Visibility ResultsVisibility
+        {
+            get { return null != ExecutedWorkflow ? Visibility.Visible: Visibility.Collapsed; }
         }
     }
 }

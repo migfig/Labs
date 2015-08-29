@@ -93,9 +93,8 @@
                 </Fluent:RibbonGroupBox>
 
                 <Fluent:RibbonGroupBox Header="Commands">
-                    <Fluent:Button Header="Toggle Selection" Command="{Binding ToggleSelection}" Icon="Images\Filter.png" LargeIcon="Images\Filter.png"/>
+                    <Fluent:Button Header="Toggle Selection" Command="{Binding ToggleSelection}" Icon="Images\List.png" LargeIcon="Images\List.png"/>
                     <Fluent:Button Header="Build Headers" Command="{Binding BuildHeaders}" Icon="Images\html.png" LargeIcon="Images\html.png"/>
-                    <Fluent:Button Header="View Results" Command="{Binding ViewTestResults}" Icon="Images\List.png" LargeIcon="Images\List.png"/>
                 </Fluent:RibbonGroupBox>
 
                 <Fluent:RibbonGroupBox Header="Errors" Visibility="{Binding LastErrorsVisibility}" HorizontalAlignment="Right">
@@ -148,7 +147,6 @@
                     </Border>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-
             <!--Backstage Items-->
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage>
@@ -161,58 +159,60 @@
         </Fluent:Ribbon>
 
         <!--View Current configuration Details-->
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20*"/>
-                <RowDefinition Height="3"/>
-                <RowDefinition Height="60*"/>
-                <RowDefinition Height="3"/>
-                <RowDefinition Height="20*"/>
-            </Grid.RowDefinitions>
-            
-            <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
-                <DockPanel LastChildFill="True">
-                    <Grid DockPanel.Dock="Top" HorizontalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="15*"/>
-							<ColumnDefinition Width="35*"/>
-                            <ColumnDefinition Width="15*"/>
-                            <ColumnDefinition Width="35*"/>
-                        </Grid.ColumnDefinitions>
-                        
-						<TextBlock Text="Host Name" />
-                        <ComboBox Grid.Column="1"  
+        <TabControl>
+            <TabItem Header="Configuration">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20*"/>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="60*"/>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="20*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
+                        <DockPanel LastChildFill="True">
+                            <Grid DockPanel.Dock="Top" HorizontalAlignment="Stretch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="15*"/>
+                                    <ColumnDefinition Width="35*"/>
+                                    <ColumnDefinition Width="15*"/>
+                                    <ColumnDefinition Width="35*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Host Name" />
+                                <ComboBox Grid.Column="1"  
                                   ItemsSource="{Binding SelectedConfiguration.setup.host}"
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedHost}"
                                   Margin="0,0,4,0"
                                   VerticalAlignment="Center">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding name}" FontWeight="DemiBold"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        
-                        <TextBlock Text="Workflow" Grid.Column="2" />
-                        <ComboBox Grid.Column="3"  
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding name}" FontWeight="DemiBold"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+
+                                <TextBlock Text="Workflow" Grid.Column="2" />
+                                <ComboBox Grid.Column="3"  
                                   ItemsSource="{Binding SelectedConfiguration.setup.workflow}"
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedWorkflow}"
                                   VerticalAlignment="Center">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding name}" FontWeight="DemiBold"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding name}" FontWeight="DemiBold"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
 
-                        <TextBlock Grid.Row="1" Text="Source" />
-						<TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding SelectedConfiguration.setup.source}" VerticalAlignment="Center"/>
-                    </Grid>
-                    <DataGrid ItemsSource="{Binding HeadersTable}"
+                                <TextBlock Grid.Row="1" Text="Source" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding SelectedConfiguration.setup.source}" VerticalAlignment="Center"/>
+                            </Grid>
+                            <DataGrid ItemsSource="{Binding HeadersTable}"
                           CanUserResizeRows="False" 
                           SelectionMode="Single" 
                           AlternatingRowBackground="LemonChiffon" 
@@ -222,19 +222,19 @@
                           AutoGenerateColumns="True"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"/>
-                </DockPanel>
-            </Border>
+                        </DockPanel>
+                    </Border>
 
-            <GridSplitter Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
+                    <GridSplitter Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
                           Style="{DynamicResource GridSplitterStyle}" Background="LightBlue"/>
 
-            <Border Grid.Row="2" 
+                    <Border Grid.Row="2" 
                     Padding="4" CornerRadius="2"  
                     VerticalAlignment="Stretch" 
                     HorizontalAlignment="Stretch" 
                     BorderBrush="DarkGray" 
                     BorderThickness="1">
-                    <DataGrid ItemsSource="{Binding MethodsTable}"
+                        <DataGrid ItemsSource="{Binding MethodsTable}"
                           SelectedItem="{Binding Mode=TwoWay, Path=SelectedDataRowView}"
                           CanUserResizeRows="False" 
                           SelectionMode="Single" 
@@ -245,18 +245,18 @@
                           AutoGenerateColumns="True"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"/>
-            </Border>
+                    </Border>
 
-            <GridSplitter Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
+                    <GridSplitter Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
                           Style="{DynamicResource GridSplitterStyle}" Background="LightBlue"/>
 
-            <Border Grid.Row="4" 
+                    <Border Grid.Row="4" 
                     Padding="4" CornerRadius="2"  
                     VerticalAlignment="Stretch" 
                     HorizontalAlignment="Stretch" 
                     BorderBrush="DarkGray" 
                     BorderThickness="1">
-                <DataGrid ItemsSource="{Binding ParametersTable}"
+                        <DataGrid ItemsSource="{Binding ParametersTable}"
                           CanUserResizeRows="False" 
                           SelectionMode="Single" 
                           AlternatingRowBackground="LemonChiffon" 
@@ -266,7 +266,31 @@
                           AutoGenerateColumns="True"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"/>
-            </Border>
-        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Results" Visibility="{Binding ResultsVisibility}">
+                <Grid>
+                    <Border
+                        Padding="4" CornerRadius="2"  
+                        VerticalAlignment="Stretch" 
+                        HorizontalAlignment="Stretch" 
+                        BorderBrush="DarkGray" 
+                        BorderThickness="1">
+
+                        <DataGrid ItemsSource="{Binding ResultsTable}"
+                          CanUserResizeRows="False" 
+                          SelectionMode="Single" 
+                          AlternatingRowBackground="LemonChiffon" 
+                          ClipboardCopyMode="IncludeHeader" 
+                          IsReadOnly="True" 
+                          IsTextSearchEnabled="True"
+                          AutoGenerateColumns="True"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"/>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </DockPanel>
 </Fluent:RibbonWindow>

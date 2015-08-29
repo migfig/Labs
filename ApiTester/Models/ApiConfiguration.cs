@@ -10,6 +10,7 @@
     using System.Text.RegularExpressions;
     using System.Configuration;
     using Newtonsoft.Json;
+    using ApiTester.Attributes;
 
     [XmlTypeAttribute(AnonymousType = true)]
     [XmlRootAttribute(Namespace = "", IsNullable = false)]
@@ -352,6 +353,7 @@
             }
         }
         
+        [ColumnIgnore]
         [XmlAttributeAttribute()]
         public string pattern
         {
@@ -365,6 +367,7 @@
             }
         }
 
+        [ColumnIgnore]
         [XmlElementAttribute("parameter", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ObservableCollection<Parameter> parameter
         {
@@ -464,6 +467,7 @@
             }
         }
 
+        [ColumnIgnore]
         [XmlElementAttribute("parameter", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ObservableCollection<Parameter> parameter
         {
@@ -552,7 +556,7 @@
         {
             var table = new DataTable("Configuration");
             foreach (var p in configuration.method.First().GetType().GetProperties()
-                .Where(x => x.Name != "parameter"))
+                .Where(x => x.GetCustomAttributes(typeof(ColumnIgnoreAttribute), false).Count() == 0))
             {
                 table.Columns.Add(new DataColumn(p.Name, p.PropertyType));
             }
@@ -579,6 +583,36 @@
             return table;
         }
 
+        public static DataTable ToTable(this workflow workflow)
+        {
+            var table = new DataTable(workflow.name);
+            foreach (var p in workflow.task.First().GetType().GetProperties()
+                .Where(x => x.GetCustomAttributes(
+                    typeof(ColumnIgnoreAttribute), false).Count() == 0))
+            {
+                table.Columns.Add(new DataColumn(p.Name, p.PropertyType));
+            }
+
+            foreach (var p in workflow.task)
+            {
+                table.Rows.Add(p.ToRow(table));
+            }
+            return table;
+        }
+
+        public static DataRow ToRow(this Task task, DataTable table)
+        {
+            var row = table.NewRow();
+            foreach (var p in task.GetType().GetProperties()
+                .Where(x => x.GetCustomAttributes(
+                    typeof(ColumnIgnoreAttribute), false).Count() == 0))
+            {
+                row[p.Name] = p.GetValue(task);
+            }
+
+            return row;
+        }
+
         public static DataRow ToRow(this Parameter parameter, DataTable table)
         {
             var row = table.NewRow();
@@ -594,7 +628,7 @@
         {
             var row = table.NewRow();
             foreach (var p in method.GetType().GetProperties()
-                .Where(x => x.Name != "parameter"))
+                .Where(x => x.GetCustomAttributes(typeof(ColumnIgnoreAttribute), false).Count() == 0))
             {
                 row[p.Name] = p.GetValue(method);
             }

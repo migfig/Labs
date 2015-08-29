@@ -4,6 +4,7 @@ using Common.Commands;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -75,15 +76,14 @@ namespace ApiTester.Wpf.ViewModels
             }
         }
 
-        RelayCommand _viewTestResults;
-        public ICommand ViewTestResults 
+        RelayCommand _goBack;
+        public ICommand GoBack
         {
             get
             {
-                return _viewTestResults ?? new RelayCommand(
-                    (parameter) => {
-                    },
-                    x => true);
+                return _goBack ?? new RelayCommand(
+                    (parameter) => System.Windows.Application.Current.Shutdown()
+                    , x => true);
             }
         }
 
@@ -105,36 +105,46 @@ namespace ApiTester.Wpf.ViewModels
         {
             Common.Extensions.TraceLog.Information("Running workflow {name}", SelectedWorkflow.name);
 
-            try {
+            var workflow = XmlHelper<workflow>.Load(SelectedWorkflow.name);
+            var worker = new BackgroundWorker();
+            worker.DoWork += (o, s) =>
+            {
                 IsBusy = true;
 
-                var workflow = XmlHelper<workflow>.Load(SelectedWorkflow.name);
-                foreach (var task in workflow.task)
+                try
                 {
-                    try {
-                        var method = SelectedConfiguration.method.First(m => m.name == task.name);
-                        if (null != method && method.isSelected)
-                        {
-                            executeMethod(method, task);
-                        }
-                    } catch(Exception ex)
+                    foreach (var task in workflow.task)
                     {
-                        Common.Extensions.ErrorLog.Error(ex, "@ runWorkflowForSelectedMethods");
+                        try
+                        {
+                            var method = SelectedConfiguration.method.First(m => m.name == task.name);
+                            if (null != method && method.isSelected)
+                            {
+                                executeMethod(method, task);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.Extensions.ErrorLog.Error(ex, "@ runWorkflowForSelectedMethods workflow {name}", SelectedWorkflow.name);
+                        }
                     }
                 }
+                catch (Exception e)
+                {
+                    Common.Extensions.ErrorLog.Error(e, "@ runWorkflowForSelectedMethods");
+                }
+            };
+            worker.RunWorkerCompleted += (o, s) =>
+            {
+                ExecutedWorkflow = workflow;
 
-                if(SelectedConfiguration.method.Any(m => m.isValidTest))
+                if (SelectedConfiguration.method.Any(m => m.isValidTest))
                 {
                     OnPropertyChanged("MethodsTable");
                 }
-            } catch(Exception e)
-            {
-                Common.Extensions.ErrorLog.Error(e, "@ runWorkflowForSelectedMethods");
-            }
-            finally
-            {
                 IsBusy = false;
-            }
+            };
+            worker.RunWorkerAsync();
         }
 
         private void executeMethod(Method method, Models.Task task)
@@ -144,15 +154,13 @@ namespace ApiTester.Wpf.ViewModels
 
             var exitCode = runProcess(SelectedConfiguration.setup.commandLine,
                 string.Format(method.ToArgs(task), SelectedHost.baseAddress));
-
             if (File.Exists(outFile))
             {
                 var type = getAssemblyType(method.type);
                 if (type == null) return;
 
                 task.Results = loadResults(type, outFile);
-                if (!(task.Results is Exception))
-                    method.isValidTest = true;
+                method.isValidTest = !(task.Results is Exception);
             }
         }
 
@@ -162,7 +170,9 @@ namespace ApiTester.Wpf.ViewModels
             {
                 try
                 {
-                    return JsonConvert.DeserializeObject(stream.ReadToEnd(), type);
+                    return JsonConvert.SerializeObject(
+                        JsonConvert.DeserializeObject(stream.ReadToEnd(), type), 
+                        Formatting.Indented);
                 }
                 catch (Exception e)
                 {
