@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,6 +28,9 @@ namespace ApiTester.Wpf.ViewModels
             SelectedConfiguration = XmlHelper<apiConfiguration>.Load(configuration);
             OnPropertyChanged("Configurations");
         }
+
+        private Dictionary<string, Assembly> _assemblies = new Dictionary<string, Assembly>();
+        private Dictionary<string, Type> _assemblyTypes = new Dictionary<string, Type>();
 
         public IEnumerable<apiConfiguration> Configurations
         {
@@ -50,11 +54,25 @@ namespace ApiTester.Wpf.ViewModels
                 {
                     SelectedHost = _selectedConfiguration.setup.host.FirstOrDefault();
                     SelectedWorkflow = _selectedConfiguration.setup.workflow.FirstOrDefault();
+                    if(!_assemblies.ContainsKey(_selectedConfiguration.setup.source))
+                    {
+                        loadAssembly(_selectedConfiguration.setup.source);
+                        foreach(var asm in _selectedConfiguration.assembly)
+                        {
+                            loadAssembly(asm.name);
+                        }
+                    }
                 }
                 OnPropertyChanged();
                 OnPropertyChanged("HeadersTable");
                 OnPropertyChanged("MethodsTable");
             }
+        }
+
+        private void loadAssembly(string source)
+        {
+            var asm = Assembly.LoadFrom(source);
+            _assemblies.Add(source, asm);
         }
 
         public DataTable HeadersTable

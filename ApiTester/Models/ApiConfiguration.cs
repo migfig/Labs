@@ -9,6 +9,7 @@
     using System;
     using System.Text.RegularExpressions;
     using System.Configuration;
+    using Newtonsoft.Json;
 
     [XmlTypeAttribute(AnonymousType = true)]
     [XmlRootAttribute(Namespace = "", IsNullable = false)]
@@ -16,10 +17,12 @@
     {
         private Setup setupField;
         private ObservableCollection<Method> methodField;
+        private ObservableCollection<assembly> assemblyField;
 
         public apiConfiguration()
         {
             methodField = new ObservableCollection<Method>();
+            assemblyField = new ObservableCollection<assembly>();
         }
 
         [XmlElementAttribute("setup", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -45,6 +48,19 @@
             set
             {
                 this.methodField = value;
+            }
+        }
+
+        [XmlElementAttribute("assembly", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ObservableCollection<assembly> assembly
+        {
+            get
+            {
+                return this.assemblyField;
+            }
+            set
+            {
+                this.assemblyField = value;
             }
         }
 
@@ -316,6 +332,7 @@
         private string nameField;
         private string patternField;
         private ObservableCollection<Parameter> parameterField;
+        private object resultsField;
 
         public Task()
         {
@@ -360,12 +377,43 @@
                 this.parameterField = value;
             }
         }
+
+        [XmlIgnore]
+        public object Results
+        {
+            get
+            {
+                return this.resultsField;
+            }
+            set
+            {
+                this.resultsField = value;
+            }
+        }
     }
-    
+
+    [XmlTypeAttribute(AnonymousType = true)]
+    public partial class assembly : BaseModel
+    {
+        private string nameField;
+
+        [XmlAttributeAttribute()]
+        public string name
+        {
+            get
+            {
+                return this.nameField;
+            }
+            set
+            {
+                this.nameField = value;
+            }
+        }
+    }
+
     [XmlTypeAttribute(AnonymousType = true)]
     public partial class Method: BaseModel
     {
-
         private ObservableCollection<Parameter> parameterField;
 
         private string nameField;
@@ -428,7 +476,6 @@
                 this.parameterField = value;
             }
         }
-
         
         [XmlAttributeAttribute()]
         public string name
@@ -442,7 +489,6 @@
                 this.nameField = value;
             }
         }
-
         
         [XmlAttributeAttribute()]
         public string httpMethod
@@ -563,14 +609,22 @@
                 string.Format("{0}{1}", "{0}", task.QueryUrl(method.url)),
                 method.name + ".json",
                 method.httpMethod.ToUpper() != "GET" 
-                    ? string.Format("-d {0}", task.Json()) 
+                    ? task.Json().Length > 0 ? string.Format("-d {0}", task.Json()) : string.Empty 
                     : string.Empty);
         }
 
         public static string Json(this Task task)
         {
-            return task.parameter.FirstOrDefault(p => p.location.ToLower() == "body")
-                .jsonObject;
+            var parameter = task.parameter.FirstOrDefault(p => p.location.ToLower() == "body");
+            if(null != parameter && !string.IsNullOrEmpty(parameter.jsonObject))
+                    return parameter.jsonObject
+                        .Replace(Environment.NewLine, string.Empty)
+                        .Replace("\n", string.Empty)
+                        .Replace("{", "{{")
+                        .Replace("}", "}}")
+                        .Trim();
+
+            return string.Empty;
         }
 
         public static string QueryUrl(this Task task, string url)

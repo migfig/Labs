@@ -19,7 +19,7 @@
         <host name="localhost">http://localhost:60264</host>
         <host name="remotehost">http://remote:60264</host>
         <header name="Content-Type" value="application/json" />
-        <buildHeader name="Authorization">
+        <buildHeader name="Authorization" provider="ApiTester.Providers.Default">
           <task name="Authenticate" pattern="auth/authenticate">
             <parameter name="User" defaultValue="me"/>
             <parameter name="Password" defaultValue="pwd"/>
@@ -35,7 +35,18 @@
           <xsl:with-param name="urlPrefix" select="$urlPrefix"/>
         </xsl:call-template>
       </xsl:for-each>
+      <xsl:for-each select="assemblies/assembly">
+        <xsl:call-template name="renderAssembly"/>
+      </xsl:for-each>
     </apiConfiguration>
+  </xsl:template>
+
+  <xsl:template name="renderAssembly" match="assembly">
+    <assembly>
+      <xsl:attribute name="name">
+        <xsl:value-of select="@name"/>
+      </xsl:attribute>
+    </assembly>
   </xsl:template>
 
   <xsl:template name="renderMethod" match="method">
@@ -59,7 +70,14 @@
       </xsl:attribute>
 
       <xsl:attribute name="type">
-        <xsl:value-of select="attributes/attribute[@type='System.Web.Http.Description.ResponseTypeAttribute']/properties/property[@name='ResponseType']/@value"/>
+        <xsl:choose>
+          <xsl:when test="@itemType">
+            <xsl:value-of select="concat(@itemType,'[]')"/>            
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="attributes/attribute[@type='System.Web.Http.Description.ResponseTypeAttribute']/properties/property[@name='ResponseType']/@value"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:attribute>
 
       <xsl:attribute name="description">
@@ -127,7 +145,7 @@
     <xsl:param name="isLast"/>
     "<xsl:value-of select="@name"/>": <xsl:choose>
       <xsl:when test="@type = 'System.String'">
-        <xsl:value-of select="concat('&quot;',@name, @defaultValue,' {0}&quot;')" />
+        <xsl:value-of select="concat('&quot;',@name, @defaultValue,'&quot;')" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="@defaultValue"/>
@@ -140,12 +158,14 @@
 
   <xsl:template name="renderPropertyAsJsonArray" match="property">
     <xsl:param name="isLast"/>
-    "<xsl:value-of select="@name"/>":
-    [<xsl:for-each select="properties/property">
+    "<xsl:value-of select="@name"/>": 
+    [
+    {<xsl:for-each select="properties/property">
       <xsl:call-template name="renderProperty">
         <xsl:with-param name="isLast" select="position() = last()"/>
       </xsl:call-template>
     </xsl:for-each>
+    }
     ]<xsl:if test="not($isLast)">
       <xsl:value-of select="string(',')"/>
     </xsl:if>

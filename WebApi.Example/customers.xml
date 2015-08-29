@@ -2,63 +2,6 @@
 <Customers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Items>
     <Customer>
-      <Id>1</Id>
-      <Name>ACME Services</Name>
-      <Contacts>
-        <Contact>
-          <Id>1</Id>
-          <FirstName>Marie</FirstName>
-          <LastName>Curie</LastName>
-          <PhoneNumber>+52 123234345</PhoneNumber>
-        </Contact>
-        <Contact>
-          <Id>2</Id>
-          <FirstName>Joseph</FirstName>
-          <LastName>Bellevue</LastName>
-          <PhoneNumber>+52 321234345</PhoneNumber>
-        </Contact>
-      </Contacts>
-      <Orders>
-        <Order>
-          <Id>1</Id>
-          <RequestedBy>1</RequestedBy>
-          <Amount>130.0</Amount>
-          <DateCreated>2015-08-14T11:27:05.5064264-05:00</DateCreated>
-          <DateDelivered>2015-08-20T11:27:05.5064264-05:00</DateDelivered>
-          <Items>
-            <OrderItem>
-              <Id>1</Id>
-              <Product>
-                <Id>1</Id>
-                <Name>TV</Name>
-                <Description>LET TV 24 inches</Description>
-                <Price>114.0</Price>
-                <Category>
-                  <Id>1</Id>
-                  <Name>Electronics</Name>
-                </Category>
-              </Product>
-              <Quantity>0</Quantity>
-            </OrderItem>
-            <OrderItem>
-              <Id>2</Id>
-              <Product>
-                <Id>2</Id>
-                <Name>TV Antenna</Name>
-                <Description>TV Tuner 23 feet</Description>
-                <Price>16.0</Price>
-                <Category>
-                  <Id>1</Id>
-                  <Name>Electronics</Name>
-                </Category>
-              </Product>
-              <Quantity>0</Quantity>
-            </OrderItem>
-          </Items>
-        </Order>
-      </Orders>
-    </Customer>
-    <Customer>
       <Id>2</Id>
       <Name>Retro Supplies</Name>
       <Contacts>
@@ -114,6 +57,76 @@
           </Items>
         </Order>
       </Orders>
+    </Customer>
+    <Customer>
+      <Id>3</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>4</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>5</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>6</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>7</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>8</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>9</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>10</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>11</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>12</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>13</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>14</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>15</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>16</Id>
+      <Contacts />
+      <Orders />
     </Customer>
   </Items>
 </Customers>

@@ -1,9 +1,11 @@
 ﻿using ApiTester.Models;
 using Common;
 using Common.Commands;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -103,37 +105,100 @@ namespace ApiTester.Wpf.ViewModels
         {
             Common.Extensions.TraceLog.Information("Running workflow {name}", SelectedWorkflow.name);
 
-            var workflow = XmlHelper<workflow>.Load(SelectedWorkflow.name);
-            foreach(var task in workflow.task)
-            {
-                var method = SelectedConfiguration.method.First(m => m.name == task.name);
-                if(null != method && method.isSelected)
+            try {
+                IsBusy = true;
+
+                var workflow = XmlHelper<workflow>.Load(SelectedWorkflow.name);
+                foreach (var task in workflow.task)
                 {
-                    executeMethod(method, task);
+                    try {
+                        var method = SelectedConfiguration.method.First(m => m.name == task.name);
+                        if (null != method && method.isSelected)
+                        {
+                            executeMethod(method, task);
+                        }
+                    } catch(Exception ex)
+                    {
+                        Common.Extensions.ErrorLog.Error(ex, "@ runWorkflowForSelectedMethods");
+                    }
                 }
+
+                if(SelectedConfiguration.method.Any(m => m.isValidTest))
+                {
+                    OnPropertyChanged("MethodsTable");
+                }
+            } catch(Exception e)
+            {
+                Common.Extensions.ErrorLog.Error(e, "@ runWorkflowForSelectedMethods");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
         private void executeMethod(Method method, Models.Task task)
         {
-            var exitCode = runProcess(SelectedConfiguration.setup.commandLine, buildArguments(method, task));
-            if(exitCode == 0)
+            var outFile = method.name + ".json";
+            if (File.Exists(outFile)) File.Delete(outFile);
+
+            var exitCode = runProcess(SelectedConfiguration.setup.commandLine,
+                string.Format(method.ToArgs(task), SelectedHost.baseAddress));
+
+            if (File.Exists(outFile))
             {
-                method.isValidTest = true;
+                var type = getAssemblyType(method.type);
+                if (type == null) return;
+
+                task.Results = loadResults(type, outFile);
+                if (!(task.Results is Exception))
+                    method.isValidTest = true;
             }
         }
 
-        private string buildArguments(Method method, Models.Task task)
+        private object loadResults(Type type, string fileName)
         {
-            var args = new StringBuilder();
-            args.AppendFormat(method.ToArgs(task), 
-                SelectedHost.baseAddress);
+            using (var stream = new StreamReader(fileName))
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject(stream.ReadToEnd(), type);
+                }
+                catch (Exception e)
+                {
+                    return e;
+                }
+            }
+        }
 
-            return args.ToString();
+        private Type getAssemblyType(string typeName)
+        {
+            Type type = null;
+
+            if (_assemblyTypes.ContainsKey(typeName))
+            {
+                type = _assemblyTypes[typeName];
+            }
+            if (null == type)
+            {
+                foreach (var asm in _assemblies.Values)
+                {
+                    type = asm.GetType(typeName);
+                    if (type != null)
+                    {
+                        _assemblyTypes.Add(typeName, type);
+                        break;
+                    }
+                }
+            }
+
+            return type;
         }
 
         private int runProcess(string program, string args)
         {
+            Common.Extensions.TraceLog.Information("Running method with args {program} {args}", program, args);
+
             var p = new Process();
             p.StartInfo = new ProcessStartInfo
             {

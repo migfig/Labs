@@ -93,7 +93,7 @@
     <xsl:param name="isLast"/>
     "<xsl:value-of select="@name"/>": <xsl:choose>
       <xsl:when test="@type = 'System.String'">
-        <xsl:value-of select="concat('&quot;',@name, @defaultValue,' {0}&quot;')" />
+        <xsl:value-of select="concat('&quot;',@name, @defaultValue,'&quot;')" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="@defaultValue"/>
@@ -107,11 +107,13 @@
   <xsl:template name="renderPropertyAsJsonArray" match="property">
     <xsl:param name="isLast"/>
     "<xsl:value-of select="@name"/>":
-    [<xsl:for-each select="properties/property">
+    [
+    {<xsl:for-each select="properties/property">
       <xsl:call-template name="renderProperty">
         <xsl:with-param name="isLast" select="position() = last()"/>
       </xsl:call-template>
     </xsl:for-each>
+    }
     ]<xsl:if test="not($isLast)">
       <xsl:value-of select="string(',')"/>
     </xsl:if>

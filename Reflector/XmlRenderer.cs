@@ -11,10 +11,12 @@ namespace Reflector
     public class XmlRenderer : BaseRenderer, IRenderable
     {
         private Assembly _assemblySource;
+        private List<Assembly> _assemblyTypes;
 
         public XmlRenderer(string sourcePath = "", bool includeSystemObjects = false)
             : base(sourcePath, includeSystemObjects)
         {
+            _assemblyTypes = new List<Assembly>();
         }
 
         public bool IncludeSystemObjects
@@ -56,7 +58,7 @@ namespace Reflector
             }
 
             Common.Extensions.TraceLog.Information("Rendering type {type} for file {fileName}", type, fileName);
-
+            
             using (var writer = new StreamWriter(fileName))
             {
                 var root =
@@ -89,9 +91,10 @@ namespace Reflector
                                 new XElement("method",
                                     new XAttribute("name", m.Name),
                                     new XAttribute("type", m.ReturnType.FullName),
-                                    new XAttribute("public", m.IsPublic),
-                                    new XAttribute("private", m.IsPrivate),
-                                    new XAttribute("static", m.IsStatic),
+
+                                    m.ReturnType.FullName.Contains("System.Collections")
+                                        ? new XAttribute("itemType", m.ReturnType.GenericTypeArguments.First().FullName)
+                                        : null,
 
                         new XElement("attributes",
                         from ma in m.GetCustomAttributes(true)
@@ -132,6 +135,14 @@ namespace Reflector
                 if (!string.IsNullOrEmpty(_sourcePath))
                 {
                     root.Add(new XAttribute("source", _sourcePath));
+                    root.Add(new XElement("assemblies",
+                        from asm in _assemblyTypes
+                            .Where(x => x.FullName != type.Assembly.FullName)
+                            .Distinct()
+                        select new XElement("assembly",
+                            new XAttribute("name", asm.Location)
+                        )
+                    ));
                 }
 
                 root.Save(writer);
@@ -172,6 +183,11 @@ namespace Reflector
         {
             if (type == null || type.IsPrimitive || type == typeof(string)) return null;
 
+            if (!_assemblyTypes.Contains(type.Assembly))
+            {
+                _assemblyTypes.Add(type.Assembly);
+            }
+
             return new XElement("properties",
 
                     from prop in type.GetProperties()
@@ -201,6 +217,9 @@ namespace Reflector
         {
             try
             {
+                if (type == typeof(DateTime))
+                    return DateTime.Now.Ticks.ToString();
+
                 return Activator.CreateInstance(type).ToString();
             }
             catch(Exception)
