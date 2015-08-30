@@ -163,5 +163,10 @@
       <Contacts />
       <Orders />
     </Customer>
+    <Customer>
+      <Id>24</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
   </Items>
 </Customers>

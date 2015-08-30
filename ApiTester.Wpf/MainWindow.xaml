@@ -61,6 +61,7 @@
                                                             <Storyboard>
                                                                 <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="ellipse" />
                                                                 <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                                <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="arrow" />
                                                             </Storyboard>
                                                         </VisualState>
                                                         <VisualState x:Name="Pressed"/>
@@ -71,8 +72,18 @@
                                                         <VisualState x:Name="Unfocused"/>
                                                     </VisualStateGroup>
                                                 </VisualStateManager.VisualStateGroups>
-                                                <Ellipse x:Name="ellipse" Stroke="#66000000" StrokeThickness="4" Fill="#00000000"/>
-                                                <Path x:Name="path" Data="M62.285461,38.208038 L62.285461,46.520542 L27.04554,46.192837 L36.261051,57.094002 L36.189625,67.302391 L14.535425,41.780952 L37.249847,17.317707 L37.035561,26.828125 L27.071419,38 z" Margin="15.301,14.961,15.999,14.914" Stretch="Fill" StrokeThickness="4" UseLayoutRounding="False" Fill="#64000000"/>
+                                                <Ellipse x:Name="ellipse" Stroke="#66000000" StrokeThickness="2" Fill="#00000000"/>
+                                                <Path x:Name="path" Data="M50.5,4.7500001C25.232973,4.75 4.75,25.232973 4.7500001,50.5 4.75,75.767029 25.232973,96.25 50.5,96.25 75.767029,96.25 96.25,75.767029 96.25,50.5 96.25,25.232973 75.767029,4.75 50.5,4.7500001z M50.5,0C78.390381,0 101,22.609621 101,50.5 101,78.390381 78.390381,101 50.5,101 22.609621,101 0,78.390381 0,50.5 0,22.609621 22.609621,0 50.5,0z" Stretch="Fill" Fill="#FFDADADA" />
+                                                <Path x:Name="arrow" Data="F1M1188.2,1715.23L1169.93,1728.57 1151.66,1741.9 1151.66,1715.23 1151.66,1688.57 1169.93,1701.9 1188.2,1715.23z" Stretch="Uniform" Fill="#FFDADADA" Width="30" Height="30" Margin="8,0,0,0" RenderTransformOrigin="0.5,0.5">
+                                                    <Path.RenderTransform>
+                                                        <TransformGroup>
+                                                            <TransformGroup.Children>
+                                                                <RotateTransform Angle="0" />
+                                                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                            </TransformGroup.Children>
+                                                        </TransformGroup>
+                                                    </Path.RenderTransform>
+                                                </Path>
                                             </Grid>
                                         </ControlTemplate>
                                     </Setter.Value>

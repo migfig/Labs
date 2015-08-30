@@ -333,11 +333,13 @@
         private string nameField;
         private string patternField;
         private ObservableCollection<Parameter> parameterField;
+        private ObservableCollection<Task> taskField;
         private object resultsField;
 
         public Task()
         {
             parameterField = new ObservableCollection<Parameter>();
+            taskField = new ObservableCollection<Task>();
         }
         
         [XmlAttributeAttribute()]
@@ -378,6 +380,20 @@
             set
             {
                 this.parameterField = value;
+            }
+        }
+
+        [ColumnIgnore]
+        [XmlElementAttribute("task", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ObservableCollection<Task> task
+        {
+            get
+            {
+                return this.taskField;
+            }
+            set
+            {
+                this.taskField = value;
             }
         }
 

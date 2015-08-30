@@ -115,18 +115,7 @@ namespace ApiTester.Wpf.ViewModels
                 {
                     foreach (var task in workflow.task)
                     {
-                        try
-                        {
-                            var method = SelectedConfiguration.method.First(m => m.name == task.name);
-                            if (null != method && method.isSelected)
-                            {
-                                executeMethod(method, task);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Common.Extensions.ErrorLog.Error(ex, "@ runWorkflowForSelectedMethods workflow {name}", SelectedWorkflow.name);
-                        }
+                        runTask(task);
                     }
                 }
                 catch (Exception e)
@@ -145,6 +134,27 @@ namespace ApiTester.Wpf.ViewModels
                 IsBusy = false;
             };
             worker.RunWorkerAsync();
+        }
+
+        private void runTask(Models.Task task)
+        {
+            try
+            {
+                var method = SelectedConfiguration.method.First(m => m.name == task.name);
+                if (null != method && method.isSelected)
+                {
+                    executeMethod(method, task);
+                }
+
+                foreach(var t in task.task)
+                {
+                    runTask(t);
+                }
+            }
+            catch (Exception e)
+            {
+                Common.Extensions.ErrorLog.Error(e, "@ runWorkflowForSelectedMethods workflow {name}", SelectedWorkflow.name);
+            }
         }
 
         private void executeMethod(Method method, Models.Task task)
