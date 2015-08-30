@@ -140,13 +140,13 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_selectedDataTable != value)
                 {
                     _selectedDataTable = value;
-                    OnPropertyChanged();
                     SelectedRootDataView = _selectedDataTable.Root.Table.AsDataView();
                     if (_selectedDataTable.Root.Table.Rows.Count > 0)
                     {
-                        _selectedRootDataRowView = SelectedRootDataView[0];
+                        SelectedRootDataRowView = SelectedRootDataView[GetDataRowViewIndex()];
                     }
 
+                    OnPropertyChanged();
                     OnPropertyChanged("ParentVisibility");
                     OnPropertyChanged("SelectedDataTableColumns");
                     _goBackCommand.RaiseCanExecuteChanged();
@@ -156,25 +156,45 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }
 
+        private int GetDataRowViewIndex()
+        {
+            var filter = _selectedDataTable.Root.Table.DefaultView.RowFilter;
+            if (!string.IsNullOrEmpty(filter))
+            {
+                var rows = _selectedDataTable.Root.Table.Select(filter);
+                if(null != rows && rows.Any())
+                {
+                    var parts = filter.Split('=');
+                    for(var i=0; i<_selectedDataTable.Root.Table.Rows.Count; i++)
+                    {
+                        var r = _selectedDataTable.Root.Table.Rows[i];
+                        if(r[parts[0]].ToString() == parts[1])
+                            return i;
+                    }
+                }
+            }
+
+            return 0;
+        }
+
         private DataRowView _selectedRootDataRowView;
         public DataRowView SelectedRootDataRowView
         {
             get { return _selectedRootDataRowView; }
             set
             {
-                if (!value.AreEqual(_selectedRootDataRowView))
+                if (null != value && !value.AreEqual(_selectedRootDataRowView))
                 {
+                    var loadChildren = _selectedRootDataRowView != null;
                     _selectedRootDataRowView = value;
-                    OnPropertyChanged();
 
-                    if (null != _selectedRootDataRowView)
+                    if (loadChildren && null != _selectedRootDataRowView)
                     {
-                        Common.Extensions.TraceLog.Information("Loading Children tables @ SelectedRootDataRowView");
-
                         IsBusy = true;
                         SelectedDataTable.QueryChildren(_selectedRootDataRowView.Row);
                         IsBusy = false;
                     }
+                    OnPropertyChanged();
                 }
             }
         }
