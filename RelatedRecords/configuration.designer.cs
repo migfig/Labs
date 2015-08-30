@@ -80,6 +80,22 @@ namespace RelatedRecords
                 this.defaultDatasourceField = value;
             }
         }
+
+        public void Inflate()
+        {
+            foreach(var source in Datasource)
+            {
+                source.ConnectionString = source.ConnectionString.Inflated();
+            }
+        }
+
+        public void Deflate()
+        {
+            foreach (var source in Datasource)
+            {
+                source.ConnectionString = source.ConnectionString.Deflated();
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.4.0.32990")]

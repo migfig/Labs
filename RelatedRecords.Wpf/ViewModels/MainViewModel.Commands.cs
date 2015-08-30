@@ -59,11 +59,12 @@ namespace RelatedRecords.Wpf.ViewModels
                                 .Add(SelectedNewConfiguration.Datasource.First());
                             SelectedConfiguration.Dataset
                                 .Add(SelectedNewConfiguration.Dataset.First());
+                            SelectedConfiguration.Inflate();
                             XmlHelper<CConfiguration>.Save(
                                 ConfigurationManager.AppSettings["ConfigurationFile"], SelectedConfiguration);
                             SelectedConfiguration = XmlHelper<CConfiguration>.Load(
                                 ConfigurationManager.AppSettings["ConfigurationFile"]);
-
+                            SelectedConfiguration.Deflate();
                             SelectedNewConfiguration = null;
                             SelectedConnectionString = string.Empty;
                             _loadDatasourceSchemaCommand.RaiseCanExecuteChanged();
@@ -441,12 +442,13 @@ namespace RelatedRecords.Wpf.ViewModels
                             if (!SelectedDataset.Relationship.Any(r => r.name == relationship.name))
                             {
                                 SelectedDataset.Relationship.Add(relationship);
+                                SelectedConfiguration.Inflate();
                                 XmlHelper<CConfiguration>.Save(
                                     ConfigurationManager.AppSettings["ConfigurationFile"],
                                     SelectedConfiguration);
                                 SelectedConfiguration = XmlHelper<CConfiguration>.Load(
                                     ConfigurationManager.AppSettings["ConfigurationFile"]);
-
+                                SelectedConfiguration.Deflate();
                                 LastErrors.Clear();
                                 LastErrors.Add("Relationship Saved");
                             }

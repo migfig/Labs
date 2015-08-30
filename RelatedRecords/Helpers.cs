@@ -110,7 +110,7 @@ namespace RelatedRecords
 
         public static async Task<string> ConfigurationFromConnectionString(string connectionString)
         {
-            using (var connection = new SqlConnection(connectionString.Deflated()))
+            using (var connection = new SqlConnection(connectionString))
             {
                 var xml = await connection.ExecuteScalarAsync(ConfigurationManager.AppSettings["schemaQuery"]
                     .Replace("&quot;", "\""));
@@ -144,7 +144,7 @@ namespace RelatedRecords
 
         public static async Task<XElement> GetConfigurationFromConnectionString(string connectionString)
         {
-            using (var connection = new SqlConnection(connectionString.Deflated()))
+            using (var connection = new SqlConnection(connectionString))
             {
                 try {
                     var xml = await connection.ExecuteScalarAsync(ConfigurationManager.AppSettings["schemaQuery"]
@@ -174,7 +174,7 @@ namespace RelatedRecords
                         new XAttribute("defaultDataset", dataSourceName),
                     new XElement("Datasource",
                         new XAttribute("name", dataSourceName),
-                        new XElement("ConnectionString", connectionString.Inflated())),
+                        new XElement("ConnectionString", connectionString)),
                     new XElement("Dataset",
                         new XAttribute("name", dataSourceName),
                         new XAttribute("dataSourceName", dataSourceName),
@@ -308,7 +308,7 @@ namespace RelatedRecords
 
         public static int CreateSampleTables(CConfiguration configuration)
         {
-            using (var connection = new SqlConnection(configuration.Datasource.First().ConnectionString.Deflated()))
+            using (var connection = new SqlConnection(configuration.Datasource.First().ConnectionString))
             {
                 var rows = connection.Execute(configuration.Dataset.First().ToSchemaString());
                 return connection.Execute(configuration.Dataset.First().ToInsertString(3));
@@ -317,7 +317,7 @@ namespace RelatedRecords
 
         public static int RemoveSampleTables(CConfiguration configuration)
         {
-            using (var connection = new SqlConnection(configuration.Datasource.First().ConnectionString.Deflated()))
+            using (var connection = new SqlConnection(configuration.Datasource.First().ConnectionString))
             {
                 return connection.Execute(configuration.Dataset.First().ToSchemaDropString());
             }

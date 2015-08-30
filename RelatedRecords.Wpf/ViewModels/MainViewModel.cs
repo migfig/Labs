@@ -18,6 +18,7 @@ namespace RelatedRecords.Wpf.ViewModels
             TraceLog.Information("Running with {configuration} file", configuration);
 
             SelectedConfiguration = XmlHelper<CConfiguration>.Load(configuration);
+            SelectedConfiguration.Deflate();
         }
 
         private static MainViewModel _instance = new MainViewModel();
@@ -83,8 +84,21 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 Extensions.SelectedDatasource = value;
                 OnPropertyChanged();
+                SelectedDatasourceFilter = value;
             }
-        }        
+        }
+
+        private CDatasource _selectedDatasourceFilter;
+        public CDatasource SelectedDatasourceFilter {
+            get { return _selectedDatasourceFilter; }
+            set
+            {
+                _selectedDatasourceFilter = value;
+                OnPropertyChanged();
+                if(null != _selectedDatasourceFilter)
+                    SelectedConnectionString = _selectedDatasourceFilter.ConnectionString;
+            }
+        }
 
         private ObservableCollection<DatatableEx> _dataTablesList = new ObservableCollection<DatatableEx>();
         private void LoadTableList()

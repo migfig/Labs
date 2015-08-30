@@ -46,8 +46,18 @@
         </Grid.RowDefinitions>
         
         <StackPanel>
+            <ListView ItemsSource="{Binding SelectedConfiguration.Datasource}"
+                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedDatasourceFilter}"
+                      Background="Transparent">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding name}" FontSize="14" Background="Transparent" Foreground="LightBlue"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
             <wpfspark:PivotHeaderControl>
-                <TextBlock Text="Data Source"/>
+                <TextBlock Text="Data Source" FontSize="18"/>
             </wpfspark:PivotHeaderControl>
             <TextBox Text="{Binding Mode=TwoWay, Path=SelectedConnectionString, UpdateSourceTrigger=PropertyChanged}" 
                      FontSize="16"

@@ -186,7 +186,7 @@ namespace RelatedRecords
 
             try
             {
-                using (var connection = new SqlConnection(SelectedDatasource.ConnectionString.Deflated()))
+                using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
                 {
                     var reader = await connection.ExecuteReaderAsync(query);
                     result.Root.Table.Load(reader);
@@ -198,7 +198,7 @@ namespace RelatedRecords
             }
             catch (Exception e)
             {
-                Common.Extensions.ErrorLog.Error(e, "@ Query(CTable) query: {query}, connectionString: {ConnectionString}", query, SelectedDatasource.ConnectionString);
+                Common.Extensions.ErrorLog.Error(e, "@ Query(CTable) query: {query}, connectionString: {ConnectionString}", query, SelectedDatasource.ConnectionString.Trimmed());
             }
 
             return result;
@@ -222,7 +222,7 @@ namespace RelatedRecords
                     try
                     {
                         DatatableEx newTable = null;
-                        using (var connection = new SqlConnection(SelectedDatasource.ConnectionString.Deflated()))
+                        using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
                         {
                             var rdr = await connection.ExecuteReaderAsync(q);
                             var tbl = new DataTable(tableName);
@@ -249,7 +249,7 @@ namespace RelatedRecords
                     }
                     catch (Exception e)
                     {
-                        Common.Extensions.ErrorLog.Error(e, "@ QueryChildren(DatatableEx) query: {q}, connectionString: {connStr} ?? {ConnectionString}", q, SelectedDatasource.ConnectionString);
+                        Common.Extensions.ErrorLog.Error(e, "@ QueryChildren(DatatableEx) query: {q}, connectionString: {connStr} ?? {ConnectionString}", q, SelectedDatasource.ConnectionString.Trimmed());
                     }
                 });
             }
@@ -723,6 +723,35 @@ namespace RelatedRecords
                             string.Format("{0}={1}", passwordKey, passwordValue),
                             string.Format("Password={0}", Common.Helpers.Flat.Deflate(passwordValue, "Whatever*(itConvains~!@#|=-+_()*&&^%$#@!~")));
                     } catch(Exception) {; }
+                }
+            }
+
+            return value;
+        }
+
+        public static string Trimmed(this string value)
+        {
+            var pwdRegEx = new Regex(ConfigurationManager.AppSettings["passwordRegEx"]
+                .Replace("&lt;", "<")
+                .Replace("&gt;", ">")
+                .Replace("&amp;", "&")
+                .Replace("&quot;", "\"")
+                , RegexOptions.IgnoreCase);
+
+            var match = pwdRegEx.Match(value);
+            if (null != match && match.Success)
+            {
+                var passwordKey = match.Groups["passwordkey"].Value;
+                var passwordValue = match.Groups["passwordvalue"].Value;
+                if (!string.IsNullOrEmpty(passwordKey) && !string.IsNullOrEmpty(passwordValue))
+                {
+                    try
+                    {
+                        value = value.Replace(
+                            string.Format("{0}={1}", passwordKey, passwordValue),
+                            string.Empty);
+                    }
+                    catch (Exception) {; }
                 }
             }
 
