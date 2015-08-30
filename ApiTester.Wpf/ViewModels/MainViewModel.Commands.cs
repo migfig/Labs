@@ -136,19 +136,19 @@ namespace ApiTester.Wpf.ViewModels
             worker.RunWorkerAsync();
         }
 
-        private void runTask(Models.Task task)
+        private void runTask(Models.Task task, Models.Task parentTask = null)
         {
             try
             {
                 var method = SelectedConfiguration.method.First(m => m.name == task.name);
                 if (null != method && method.isSelected)
                 {
-                    executeMethod(method, task);
+                    executeMethod(method, task, parentTask);
                 }
 
                 foreach(var t in task.task)
                 {
-                    runTask(t);
+                    runTask(t, task);
                 }
             }
             catch (Exception e)
@@ -157,20 +157,20 @@ namespace ApiTester.Wpf.ViewModels
             }
         }
 
-        private void executeMethod(Method method, Models.Task task)
+        private void executeMethod(Method method, Models.Task task, Models.Task parentTask)
         {
             var outFile = method.name + ".json";
             if (File.Exists(outFile)) File.Delete(outFile);
 
             var exitCode = runProcess(SelectedConfiguration.setup.commandLine,
-                string.Format(method.ToArgs(task), SelectedHost.baseAddress));
+                string.Format(method.ToArgs(task, parentTask), SelectedHost.baseAddress));
             if (File.Exists(outFile))
             {
                 var type = getAssemblyType(method.type);
                 if (type == null) return;
 
-                task.Results = loadResults(type, outFile);
-                method.isValidTest = !(task.Results is Exception);
+                task.ResultsObject = loadResults(type, outFile);
+                method.isValidTest = !(task.ResultsObject is Exception);
             }
         }
 
@@ -180,9 +180,7 @@ namespace ApiTester.Wpf.ViewModels
             {
                 try
                 {
-                    return JsonConvert.SerializeObject(
-                        JsonConvert.DeserializeObject(stream.ReadToEnd(), type), 
-                        Formatting.Indented);
+                    return JsonConvert.DeserializeObject(stream.ReadToEnd(), type);
                 }
                 catch (Exception e)
                 {

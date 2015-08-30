@@ -14,6 +14,9 @@
           ]]>
       </jsonObject>
     </parameter>
+    <task name="DeleteCustomer">
+      <parameter name="id" type="System.Int32" location="query" defaultValue="1" valueFromObject="" valueFromProperty="Id" />
+    </task>
   </task>
   <task name="AddCustomerCompleteRequest">
     <parameter name="request" type="Common.Data.Models.Requests.CustomerCompleteRequest" location="body">
@@ -50,20 +53,17 @@
           ]]>
       </jsonObject>
     </parameter>
-  </task>
-  <task name="UpdateCustomer">
-    <parameter name="id" type="System.Int32" location="query" defaultValue="1" />
-    <parameter name="request" type="Common.Data.Models.Requests.CustomerRequest" location="body">
-      <jsonObject>
-        <![CDATA[
+    <task name="UpdateCustomer">
+      <parameter name="id" type="System.Int32" location="query" defaultValue="1" />
+      <parameter name="request" type="Common.Data.Models.Requests.CustomerRequest" location="body">
+        <jsonObject>
+          <![CDATA[
           {
     "Name": "Name"
           }
           ]]>
-      </jsonObject>
-    </parameter>
-  </task>
-  <task name="DeleteCustomer">
-    <parameter name="id" type="System.Int32" location="query" defaultValue="1" />
+        </jsonObject>
+      </parameter>
+    </task>
   </task>
 </workflow>

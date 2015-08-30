@@ -334,7 +334,8 @@
         private string patternField;
         private ObservableCollection<Parameter> parameterField;
         private ObservableCollection<Task> taskField;
-        private object resultsField;
+        private string resultsField;
+        private object resultsObjectField;
 
         public Task()
         {
@@ -398,7 +399,7 @@
         }
 
         [XmlIgnore]
-        public object Results
+        public string Results
         {
             get
             {
@@ -409,6 +410,22 @@
                 this.resultsField = value;
             }
         }
+
+        [ColumnIgnore]
+        [XmlIgnore]
+        public object ResultsObject
+        {
+            get
+            {
+                return this.resultsObjectField;
+            }
+            set
+            {
+                this.resultsObjectField = value;
+                this.Results = JsonConvert.SerializeObject(value, Formatting.Indented);
+            }
+        }
+
     }
 
     [XmlTypeAttribute(AnonymousType = true)]
@@ -609,11 +626,20 @@
                 table.Columns.Add(new DataColumn(p.Name, p.PropertyType));
             }
 
-            foreach (var p in workflow.task)
+            foreach (var t in workflow.task)
             {
-                table.Rows.Add(p.ToRow(table));
+                AddRow(t, table);
             }
             return table;
+        }
+
+        private static void AddRow(Task task, DataTable table)
+        {
+            table.Rows.Add(task.ToRow(table));
+            foreach (var t in task.task)
+            {
+                AddRow(t, table);
+            }
         }
 
         public static DataRow ToRow(this Task task, DataTable table)
@@ -652,11 +678,11 @@
             return row;
         }
 
-        public static string ToArgs(this Method method, Task task)
+        public static string ToArgs(this Method method, Task task, Task parentTask)
         {
             return string.Format("-X {0} {1} -o {2} {3}",
                 method.httpMethod.ToUpper(),
-                string.Format("{0}{1}", "{0}", task.QueryUrl(method.url)),
+                string.Format("{0}{1}", "{0}", task.QueryUrl(method.url, parentTask)),
                 method.name + ".json",
                 method.httpMethod.ToUpper() != "GET" 
                     ? task.Json().Length > 0 ? string.Format("-d {0}", task.Json()) : string.Empty 
@@ -677,7 +703,7 @@
             return string.Empty;
         }
 
-        public static string QueryUrl(this Task task, string url)
+        public static string QueryUrl(this Task task, string url, Task parentTask)
         {
             var query = url;
             foreach(var p in task.parameter.Where(p => p.location.ToLower() == "query"))
@@ -694,7 +720,14 @@
                     {
                         if(p.name == name)
                         {
-                            query = query.Replace(parameter, p.defaultValue);
+                            if (!string.IsNullOrEmpty(p.valueFromProperty) && parentTask != null)
+                            {
+                                query = query.Replace(parameter, getDefaultValue(p, parentTask.ResultsObject));
+                            }
+                            else
+                            {
+                                query = query.Replace(parameter, p.defaultValue);
+                            }
                         }
                     }
                 }
@@ -706,6 +739,18 @@
 
             return query;
         }
+
+        private static string getDefaultValue(Parameter p, object source)
+        {
+            if (source == null || source is Exception) return p.defaultValue;
+
+            var prop = source.GetType().GetProperties()
+                .Where(x => x.Name == p.valueFromProperty).FirstOrDefault();
+
+            if (null == prop) return p.defaultValue;
+
+            return prop.GetValue(source).ToString();
+        }
     }
 
     [XmlTypeAttribute(AnonymousType = true)]
@@ -716,6 +761,8 @@
         private string locationField;
         private string jsonObjectField;
         private string defaultValueField;
+        private string valueFromObjectField;
+        private string valueFromPropertyField;
 
         [XmlAttributeAttribute()]
         public string name
@@ -781,6 +828,32 @@
             set
             {
                 this.defaultValueField = value;
+            }
+        }
+
+        [XmlAttributeAttribute()]
+        public string valueFromProperty
+        {
+            get
+            {
+                return this.valueFromPropertyField;
+            }
+            set
+            {
+                this.valueFromPropertyField = value;
+            }
+        }
+
+        [XmlAttributeAttribute()]
+        public string valueFromObject
+        {
+            get
+            {
+                return this.valueFromObjectField;
+            }
+            set
+            {
+                this.valueFromObjectField = value;
             }
         }
 

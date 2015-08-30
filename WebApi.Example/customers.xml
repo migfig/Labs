@@ -168,5 +168,15 @@
       <Contacts />
       <Orders />
     </Customer>
+    <Customer>
+      <Id>25</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>26</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
   </Items>
 </Customers>
