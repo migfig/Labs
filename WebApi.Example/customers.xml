@@ -178,5 +178,35 @@
       <Contacts />
       <Orders />
     </Customer>
+    <Customer>
+      <Id>27</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>28</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>29</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>30</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>31</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
+    <Customer>
+      <Id>32</Id>
+      <Contacts />
+      <Orders />
+    </Customer>
   </Items>
 </Customers>

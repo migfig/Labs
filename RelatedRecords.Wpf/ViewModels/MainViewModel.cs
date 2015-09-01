@@ -164,11 +164,9 @@ namespace RelatedRecords.Wpf.ViewModels
                 var rows = _selectedDataTable.Root.Table.Select(filter);
                 if(null != rows && rows.Any())
                 {
-                    var parts = filter.Split('=');
                     for(var i=0; i<_selectedDataTable.Root.Table.Rows.Count; i++)
                     {
-                        var r = _selectedDataTable.Root.Table.Rows[i];
-                        if(r[parts[0]].ToString() == parts[1])
+                        if(rows[0].Equals(_selectedDataTable.Root.Table.Rows[i]))
                             return i;
                     }
                 }

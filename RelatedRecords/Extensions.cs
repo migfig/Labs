@@ -222,7 +222,7 @@ namespace RelatedRecords
                     {
                         if(null != child)
                         {
-                            var filter = string.Format("{0}={1}", relationship.toColumn, row.Value(relationship.toColumn));
+                            var filter = string.Format("{0}={1}", relationship.toColumn, row.Value(relationship.fromColumn));
                             var rows = child.Root.Table.Select(filter);
                             child.Root.Table.DefaultView.RowFilter = filter;
                             skipLoadingData = rows != null && rows.Any();

@@ -163,7 +163,9 @@ namespace ApiTester.Wpf.ViewModels
             if (File.Exists(outFile)) File.Delete(outFile);
 
             var exitCode = runProcess(SelectedConfiguration.setup.commandLine,
-                string.Format(method.ToArgs(task, parentTask), SelectedHost.baseAddress));
+                string.Format(method.ToArgs(task, parentTask), 
+                    SelectedHost.baseAddress,
+                    SelectedConfiguration.setup.ToHeaders()));
             if (File.Exists(outFile))
             {
                 var type = getAssemblyType(method.type);

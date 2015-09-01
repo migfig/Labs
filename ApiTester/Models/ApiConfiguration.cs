@@ -11,6 +11,7 @@
     using System.Configuration;
     using Newtonsoft.Json;
     using ApiTester.Attributes;
+    using System.Text;
 
     [XmlTypeAttribute(AnonymousType = true)]
     [XmlRootAttribute(Namespace = "", IsNullable = false)]
@@ -680,10 +681,11 @@
 
         public static string ToArgs(this Method method, Task task, Task parentTask)
         {
-            return string.Format("-X {0} {1} -o {2} {3}",
+            return string.Format("-X {0} {1} -o {2} {3} {4}",
                 method.httpMethod.ToUpper(),
-                string.Format("{0}{1}", "{0}", task.QueryUrl(method.url, parentTask)),
+                string.Format("{0}{1}", "{0}", task.QueryUrl(method.url, parentTask)), //for baseAddress
                 method.name + ".json",
+                "{1}", //for headers
                 method.httpMethod.ToUpper() != "GET" 
                     ? task.Json().Length > 0 ? string.Format("-d {0}", task.Json()) : string.Empty 
                     : string.Empty);
@@ -738,6 +740,17 @@
             }
 
             return query;
+        }
+
+        public static string ToHeaders(this Setup setup)
+        {
+            var headers = new StringBuilder();
+            foreach (var h in setup.header)
+            {
+                headers.AppendFormat("-H \"{0}:{1}\" ", h.name, h.value);
+            }
+
+            return headers.ToString();
         }
 
         private static string getDefaultValue(Parameter p, object source)
