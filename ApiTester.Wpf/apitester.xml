@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apiConfiguration xmlns:utils="urn:schemas-reflector-com:xslt">
   <setup commandLine="C:\Program Files (x86)\Git\bin\curl.exe" source="C:\Code\RelatedRecords.Tests\Binaries\WebApi.Example.dll">
-    <host name="localhost">http://localhost:60264</host>
-    <host name="remotehost">http://remote:60264</host>
+    <host name="localhost" baseAddress="http://localhost:60264">
+      <header name="X-Header" value="0" />
+    </host>
+    <host name="remotehost" baseAddress="http://remote:60264">
+      <header name="X-Header" value="1" />
+    </host>
     <header name="Content-Type" value="application/json" />
     <buildHeader name="Authorization" provider="ApiTester.Providers.Default">
       <task name="Authenticate" pattern="auth/authenticate">
@@ -36,19 +40,23 @@
         <![CDATA[
           {
     "Name": "Name",
-    "Contacts":
+    "Contacts": 
     [
+    {
     "FirstName": "FirstName",
     "LastName": "LastName",
     "PhoneNumber": "PhoneNumber"
+    }
     ],
-    "Orders":
+    "Orders": 
     [
+    {
     "RequestedBy": 0,
-    "DateCreated": 635764491608218166,
-    "DateDelivered": 635764491608218166,
-    "Items":
+    "DateCreated": 635767321732750614,
+    "DateDelivered": 635767321732750614,
+    "Items": 
     [
+    {
     "Product":
     {
     
@@ -58,10 +66,14 @@
     }
     ,
     "Quantity": 0
+    }
     ]
+    }
     ],
-    "Locations":
+    "Locations": 
     [
+    {
+    }
     ]
           }
           ]]>

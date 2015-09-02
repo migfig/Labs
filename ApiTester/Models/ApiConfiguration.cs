@@ -12,6 +12,7 @@
     using Newtonsoft.Json;
     using ApiTester.Attributes;
     using System.Text;
+    using System.Reflection;
 
     [XmlTypeAttribute(AnonymousType = true)]
     [XmlRootAttribute(Namespace = "", IsNullable = false)]
@@ -180,6 +181,12 @@
     {
         private string nameField;
         private string baseAddressField;
+        private ObservableCollection<Header> headerField;
+
+        public Host()
+        {
+            headerField = new ObservableCollection<Header>();
+        }
 
         [XmlAttributeAttribute()]
         public string name
@@ -194,7 +201,7 @@
             }
         }
 
-        [XmlTextAttribute()]
+        [XmlAttributeAttribute()]
         public string baseAddress
         {
             get
@@ -204,6 +211,19 @@
             set
             {
                 this.baseAddressField = value;
+            }
+        }
+
+        [XmlElementAttribute("header", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ObservableCollection<Header> header
+        {
+            get
+            {
+                return this.headerField;
+            }
+            set
+            {
+                this.headerField = value;
             }
         }
     }
@@ -337,6 +357,7 @@
         private ObservableCollection<Task> taskField;
         private string resultsField;
         private object resultsObjectField;
+        private Task parentTaskField;
 
         public Task()
         {
@@ -427,6 +448,16 @@
             }
         }
 
+        [ColumnIgnore]
+        [XmlIgnore]
+        public Task ParentTask
+        {
+            get { return parentTaskField; }
+            set
+            {
+                parentTaskField = value;
+            }
+        }
     }
 
     [XmlTypeAttribute(AnonymousType = true)]
@@ -679,15 +710,15 @@
             return row;
         }
 
-        public static string ToArgs(this Method method, Task task, Task parentTask)
+        public static string ToArgs(this Method method, Task task)
         {
             return string.Format("-X {0} {1} -o {2} {3} {4}",
                 method.httpMethod.ToUpper(),
-                string.Format("{0}{1}", "{0}", task.QueryUrl(method.url, parentTask)), //for baseAddress
+                string.Format("{0}{1}", "{0}", task.QueryUrl(method.url)), //for baseAddress
                 method.name + ".json",
-                "{1}", //for headers
+                "{1} {2}", //for headers
                 method.httpMethod.ToUpper() != "GET" 
-                    ? task.Json().Length > 0 ? string.Format("-d {0}", task.Json()) : string.Empty 
+                    ? task.Json().Length > 0 ? string.Format("-d \"{0}\"", task.Json()) : string.Empty 
                     : string.Empty);
         }
 
@@ -700,12 +731,13 @@
                         .Replace("\n", string.Empty)
                         .Replace("{", "{{")
                         .Replace("}", "}}")
+                        .Replace("\"", "\\\"")
                         .Trim();
 
             return string.Empty;
         }
 
-        public static string QueryUrl(this Task task, string url, Task parentTask)
+        public static string QueryUrl(this Task task, string url)
         {
             var query = url;
             foreach(var p in task.parameter.Where(p => p.location.ToLower() == "query"))
@@ -722,9 +754,9 @@
                     {
                         if(p.name == name)
                         {
-                            if (!string.IsNullOrEmpty(p.valueFromProperty) && parentTask != null)
+                            if (!string.IsNullOrEmpty(p.valueFromProperty) && task.ParentTask != null)
                             {
-                                query = query.Replace(parameter, getDefaultValue(p, parentTask.ResultsObject));
+                                query = query.Replace(parameter, getDefaultValue(p, task.ParentTask));
                             }
                             else
                             {
@@ -753,16 +785,37 @@
             return headers.ToString();
         }
 
-        private static string getDefaultValue(Parameter p, object source)
+        public static string ToHeaders(this Host host)
         {
-            if (source == null || source is Exception) return p.defaultValue;
+            var headers = new StringBuilder();
+            foreach (var h in host.header)
+            {
+                headers.AppendFormat("-H \"{0}:{1}\" ", h.name, h.value);
+            }
 
-            var prop = source.GetType().GetProperties()
-                .Where(x => x.Name == p.valueFromProperty).FirstOrDefault();
+            return headers.ToString();
+        }
 
-            if (null == prop) return p.defaultValue;
+        private static string getDefaultValue(Parameter p, Task parentTask)
+        {
+            if (parentTask == null || parentTask.ResultsObject is Exception) return p.defaultValue;
 
-            return prop.GetValue(source).ToString();
+            var value = getPropertyValue(parentTask, p.valueFromProperty);
+            if (null == value) return p.defaultValue;
+
+            return value.ToString();
+        }
+
+        private static object getPropertyValue(Task parent, string propertyName)
+        {
+            if (null == parent) return null;
+
+            var prop = parent.ResultsObject.GetType().GetProperties()
+                .Where(x => x.Name == propertyName).FirstOrDefault();
+
+            if (null != prop) return prop.GetValue(parent.ResultsObject);
+
+            return getPropertyValue(parent.ParentTask, propertyName);
         }
     }
 

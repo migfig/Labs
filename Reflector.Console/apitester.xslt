@@ -16,8 +16,12 @@
           <xsl:value-of select="@source"/>
         </xsl:attribute>
 
-        <host name="localhost">http://localhost:60264</host>
-        <host name="remotehost">http://remote:60264</host>
+        <host name="localhost" baseAddress="http://localhost:60264">
+          <header name="X-Header" value="0"/>
+        </host>
+        <host name="remotehost" baseAddress="http://remote:60264">
+          <header name="X-Header" value="1"/>
+        </host>
         <header name="Content-Type" value="application/json" />
         <buildHeader name="Authorization" provider="ApiTester.Providers.Default">
           <task name="Authenticate" pattern="auth/authenticate">

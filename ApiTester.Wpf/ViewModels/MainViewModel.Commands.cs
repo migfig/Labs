@@ -136,19 +136,20 @@ namespace ApiTester.Wpf.ViewModels
             worker.RunWorkerAsync();
         }
 
-        private void runTask(Models.Task task, Models.Task parentTask = null)
+        private void runTask(Models.Task task)
         {
             try
             {
                 var method = SelectedConfiguration.method.First(m => m.name == task.name);
                 if (null != method && method.isSelected)
                 {
-                    executeMethod(method, task, parentTask);
+                    executeMethod(method, task);
                 }
 
                 foreach(var t in task.task)
                 {
-                    runTask(t, task);
+                    t.ParentTask = task;
+                    runTask(t);
                 }
             }
             catch (Exception e)
@@ -157,15 +158,16 @@ namespace ApiTester.Wpf.ViewModels
             }
         }
 
-        private void executeMethod(Method method, Models.Task task, Models.Task parentTask)
+        private void executeMethod(Method method, Models.Task task)
         {
             var outFile = method.name + ".json";
             if (File.Exists(outFile)) File.Delete(outFile);
 
             var exitCode = runProcess(SelectedConfiguration.setup.commandLine,
-                string.Format(method.ToArgs(task, parentTask), 
+                string.Format(method.ToArgs(task), 
                     SelectedHost.baseAddress,
-                    SelectedConfiguration.setup.ToHeaders()));
+                    SelectedConfiguration.setup.ToHeaders(),
+                    SelectedHost.ToHeaders()));
             if (File.Exists(outFile))
             {
                 var type = getAssemblyType(method.type);
@@ -218,6 +220,7 @@ namespace ApiTester.Wpf.ViewModels
         private int runProcess(string program, string args)
         {
             Common.Extensions.TraceLog.Information("Running method with args {program} {args}", program, args);
+            System.Diagnostics.Debug.WriteLine(program + " " + args);
 
             var p = new Process();
             p.StartInfo = new ProcessStartInfo

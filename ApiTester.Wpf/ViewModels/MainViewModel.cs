@@ -90,7 +90,15 @@ namespace ApiTester.Wpf.ViewModels
                     table.Rows.Add(row);
                 }
 
-                foreach(var h in SelectedConfiguration.setup.buildHeader)
+                foreach (var h in SelectedHost.header)
+                {
+                    var row = table.NewRow();
+                    row["Name"] = h.name;
+                    row["Value"] = h.value;
+                    table.Rows.Add(row);
+                }
+
+                foreach (var h in SelectedConfiguration.setup.buildHeader)
                 {
                     table.Rows.Add(buildHeaderRow(h, table));
                 }
@@ -167,6 +175,7 @@ namespace ApiTester.Wpf.ViewModels
             {
                 _selectedHost = value;
                 OnPropertyChanged();
+                OnPropertyChanged("HeadersTable");
             }
         }
 
