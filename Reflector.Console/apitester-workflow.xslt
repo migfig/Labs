@@ -13,7 +13,7 @@
       <xsl:attribute name="name">
         <xsl:value-of select="utils:FileName(@source)"/>
       </xsl:attribute>
-      
+
       <xsl:for-each select="methods/method">
         <xsl:call-template name="renderTask"/>
       </xsl:for-each>
@@ -29,6 +29,21 @@
       <xsl:for-each select="parameters/parameter">
         <xsl:call-template name="renderParameter"/>
       </xsl:for-each>
+
+      <result>
+        <value>
+          <or>
+            <and>
+              <equals object="" propertyName="Id">20</equals>
+              <equals object="" propertyName="Name">Name</equals>
+            </and>
+            <and>
+              <greaterAndEqual object="" property="Price">0.0</greaterAndEqual>
+              <equals object="" propertyName="CustomerName" property="Length">25</equals>
+            </and>
+          </or>
+        </value>
+      </result>
     </task>
   </xsl:template>
 
@@ -127,6 +142,8 @@
         <xsl:with-param name="isLast" select="position() = last()"/>
       </xsl:call-template>
     </xsl:for-each>
-    }<xsl:if test="not($isLast)"><xsl:value-of select="string(',')"/></xsl:if>
+    }<xsl:if test="not($isLast)">
+      <xsl:value-of select="string(',')"/>
+    </xsl:if>
   </xsl:template>
 </xsl:stylesheet>
