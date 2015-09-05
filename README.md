@@ -15,7 +15,9 @@ The projects created up to this moment are:
 > Web Api Example
 
 
-
+**Disclaimer**:
+This projects are WIP (Work in Progress), and because of this they may not behave completely as (crashes are) expected, they will be soon.
+Some code parts also may need some re-factoring in classes and its methods, please be aware this code has been developed in a rush manner.
 
 They have been created from scratch using **MS Visual Studio**  on a **Microsoft Surface 3** with its corresponding **Type Cover**.
 Also using **ReSharper** add-in.
@@ -92,7 +94,7 @@ Sample code in **Spanish**:
         }
 
 **What's missing** in this project:
-This is just a placeholder to start up building a very robust fluent testing light framework helper on top of any Testing Framework like **NUnit** or other of the well know frameworks, but useful enough for being used in real daily code testing.
+This is just a placeholder to start up building a very robust fluent testing light framework helper on top of any Testing Framework like **NUnit** or other of the well know frameworks, but useful enough for being used in real daily code testing. More methods need to be added to support testing property values like: GreaterThan, Equals, etc. This latest missing methods will be used by the WebApi tester project.
 
 ## Related Records Project ##
 The **Related Records** project is about making easy for a business developer/analyst to see given a database schema what table records are related to each other table records and let the developer/analyst navigate back and forth and drilling down as much as possible through the data entities. This is a **WPF** Windows application.
@@ -101,7 +103,7 @@ This application works around the **XML** configuration for tables and its relat
 
 Related data may be exported as a JSON, XML or HTML string/file, etc. Currently supports exporting to **HTML** and as **SQL** inserts script. It has the potential to be used as an Evidence of the results after applying a series of test cases, from the Testing documentation process.
 
-**What's missing**: This is just the start up for building a business data oriented application utility for the data review tasks we developers/analysts need to do in a daily basis. This code also needs further more coding to properly handle/log exceptions.
+**What's missing**: This is just the start up for building a business data oriented application utility for the data review tasks we developers/analysts need to do in a daily basis. This code also needs further more coding to properly handle/log exceptions. Also a lot of testing against all of the available SQL column types. Exporting data also needs to export only those records being displayed by the Filter string.
 
 ## Api Tester Project ##
 The **Api Tester** project is about making easy to test Web Api **REST** services with a single click of the mouse. This application can be used as a typical case when you already have your Api methods in place and from them through **Reflection** generate all needed XML configuration artifacts to automate the process of testing how well your services are doing. This is a WPF Windows application using also **Curl.exe** to query the Api.
@@ -169,7 +171,9 @@ A future project could be the automation of the generation of all of this softwa
 
 **What's missing**: This is just the start up for building a powerful Web Api services testing tool. It needs a visual workflow designer, since for now only default workflow is automatically created via **XSLT** and through the Reflector (builder) console application.
 
-Also needs some coding to visually include another Api configurations and its workflows and displaying image icons instead of checkboxes for passed tests.
+Also needs some coding to visually include another Api configurations and its workflows and displaying image icons instead of checkboxes for passed tests, allow single selection for running tests.
+
+One important feature also missing is the verification of results to check against property values using the Fluent Testing project. This is the current task being developed now.
 
 ## Reflector Project ##
 The **Reflector** project (builder) is about reflecting a given assembly to an **XML** definition through **Reflection**. Does not reflects everything, but what's needed for the **Api Tester** project. It can generate XML definitions for a single assembly of for a complete path containing as much assemblies as wished. This is a Windows **Console** application.
@@ -204,7 +208,7 @@ This application works around the **XML** configuration for methods and the **wo
 
 **What's missing**: This is just the start up for building a powerful yet simple **Assembly to XML** reflector tool. It needs a simplified command line arguments handler like the command line **nuget** package.
 
-Also needs extra coding to properly handle exceptions/logging.
+Also needs extra coding to properly handle exceptions/logging, and many more types/attributes support.
 
 ## Web Api Example Project ##
 The **Web Api Example** project is just a quick Web Api example with some dummy methods and an XML repository to provide some Customer/Products/Categories objects. Is the basis to be Reflected by the **Reflector** project in order to generate the **Api Tester** XML definitions. This is an **ASP.NET WEB API** application.
@@ -228,4 +232,4 @@ Notice Controllers and its methods are decorated with some **Attributes** to ful
             return Ok<Customer>(customer);
         }
 
-**What's missing**: For its purpose is fine what is being coded, some extra objects/data types may need to be included to fully help with the **ApiTester** project.
+**What's missing**: For its purpose is fine what is being coded, some extra objects/data types may need to be included to fully help with the **ApiTester** project. Xml repository needs to be well coded to be really consistent for implementing full/good testing.
