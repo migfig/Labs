@@ -69,7 +69,7 @@
 
         public override string ToString()
         {
-            return Path.GetFileNameWithoutExtension(setup.source) 
+            return setup.name.Split('.').Last() 
                 + Environment.NewLine
                 + Environment.NewLine
                 + methodField.Count.ToString()
@@ -86,8 +86,8 @@
         private ObservableCollection<workflow> workflowField;
 
         private string commandLineField;
-
         private string sourceField;
+        private string nameField;
 
         public Setup()
         {
@@ -172,6 +172,19 @@
             set
             {
                 this.sourceField = value;
+            }
+        }
+
+        [XmlAttributeAttribute()]
+        public string name
+        {
+            get
+            {
+                return this.nameField;
+            }
+            set
+            {
+                this.nameField = value;
             }
         }
     }

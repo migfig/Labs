@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -22,10 +23,6 @@ namespace ApiTester.Wpf.ViewModels
 
         public MainViewModel()
         {
-            var configuration = ConfigurationManager.AppSettings["DefaultConfiguration"];
-            Common.Extensions.TraceLog.Information("Running with {configuration} file", configuration);
-
-            SelectedConfiguration = XmlHelper<apiConfiguration>.Load(configuration);
             OnPropertyChanged("Configurations");
         }
 
@@ -36,10 +33,18 @@ namespace ApiTester.Wpf.ViewModels
         {
             get
             {
-                return new List<apiConfiguration>
+                var files = Directory.GetFiles(ConfigurationManager.AppSettings["ConfigurationPath"], "*.xml")
+                    .Where(f => f.EndsWith("apitester.xml"));
+                var list = new List<apiConfiguration>();
+                
+                foreach(var file in files)
                 {
-                    SelectedConfiguration
-                };
+                    list.Add(XmlHelper<apiConfiguration>.Load(file));
+                }
+
+                SelectedConfiguration = list.FirstOrDefault();
+
+                return list;
             }
         }
 

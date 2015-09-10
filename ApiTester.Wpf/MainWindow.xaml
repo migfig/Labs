@@ -24,7 +24,7 @@
 
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Tab" ReduceOrder="(P),(P),(P),(P),(P)">
-                <Fluent:RibbonGroupBox Header="Navigation">
+                <Fluent:RibbonGroupBox Header="Run">
                     <Button Command="{Binding RunTests}">
                         <Button.RenderTransform>
                             <SkewTransform />

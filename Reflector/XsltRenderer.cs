@@ -47,7 +47,10 @@ namespace Reflector
 
         public string Render(Type type, Type[] onlyTypes, string[] onlyMethods)
         {
-            var fileName = _xsltFile.ToLower().Replace(".xslt", "." + _outExt);
+            var fileName = Path.Combine(Path.GetDirectoryName(_sourcePath),
+                Path.GetFileNameWithoutExtension(_sourcePath) + "-" +
+                Path.GetFileName(_xsltFile).ToLower().Replace(".xslt", "." + _outExt));
+
             if (File.Exists(fileName))
             {
                 File.Delete(fileName);

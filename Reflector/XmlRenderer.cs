@@ -39,8 +39,11 @@ namespace Reflector
 
         public string Render(Type type, Type[] onlyTypes, string[] onlyMethods)
         {
-            string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                type.FullName) + ".xml";
+            var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output");
+            if (!Directory.Exists(basePath))
+                Directory.CreateDirectory(basePath);
+
+            var fileName = Path.Combine(basePath, type.FullName.Split('.').Last().Replace("Controller",string.Empty)) + ".xml";
             if (File.Exists(fileName))
             {
                 File.Delete(fileName);

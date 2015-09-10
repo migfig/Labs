@@ -76,5 +76,10 @@ namespace Reflector
         {
             return Path.GetFileNameWithoutExtension(fileName);
         }
+
+        public string TypeName(string value)
+        {
+            return value.Split('.').Last().Replace("Controller", string.Empty);
+        }
     }
 }

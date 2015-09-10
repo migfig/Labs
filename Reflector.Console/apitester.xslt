@@ -12,6 +12,10 @@
     <xsl:variable name="urlPrefix" select="concat('/', attributes/attribute[@type='System.Web.Http.RoutePrefixAttribute']/properties/property[@name='Prefix']/@value, '/')"/>
     <apiConfiguration>
       <setup commandLine="C:\Program Files (x86)\Git\bin\curl.exe">
+        <xsl:attribute name="name">
+          <xsl:value-of select="@name"/>
+        </xsl:attribute>
+
         <xsl:attribute name="source">
           <xsl:value-of select="@source"/>
         </xsl:attribute>
@@ -32,7 +36,11 @@
             </task>
           </task>
         </buildHeader>
-        <workflow name="apitester-workflow.xml"/>
+        <workflow>
+          <xsl:attribute name="name">
+            <xsl:value-of select="concat(utils:TypeName(@name),'-apitester-workflow.xml')"/>
+          </xsl:attribute>
+        </workflow>          
       </setup>
       <xsl:for-each select="methods/method">
         <xsl:call-template name="renderMethod">
