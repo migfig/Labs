@@ -76,8 +76,12 @@ namespace ApiTester.Wpf.ViewModels
 
         private void loadAssembly(string source)
         {
-            var asm = Assembly.LoadFrom(source);
-            _assemblies.Add(source, asm);
+            _assemblies.Add(source, getAssembly(source));
+        }
+
+        private Assembly getAssembly(string source)
+        {
+            return Assembly.LoadFrom(source);
         }
 
         public DataTable HeadersTable
@@ -195,6 +199,94 @@ namespace ApiTester.Wpf.ViewModels
             }
         }
 
+        private List<Assembly> _availableAssemblies;
+        public IEnumerable<Assembly> AvailableAssemblies
+        {
+            get
+            {
+                if(null == _availableAssemblies)
+                {
+                    _availableAssemblies = new List<Assembly>();
+                    foreach(var file in Directory.GetFiles(
+                        ConfigurationManager.AppSettings["BinariesPath"], "*.dll"))
+                    {
+                        if(!string.IsNullOrEmpty(FilterAssemblies) 
+                                && file.ToLower().Contains(FilterAssemblies.ToLower()))
+                            _availableAssemblies.Add(getAssembly(file));
+                        else
+                            _availableAssemblies.Add(getAssembly(file));
+                    }
+
+                    SelectedAssembly = _availableAssemblies.FirstOrDefault();
+                }
+
+                return _availableAssemblies;
+            }
+        }
+
+        private Assembly _selectedAssembly;
+        public Assembly SelectedAssembly
+        {
+            get { return _selectedAssembly; }
+            set
+            {
+                _selectedAssembly = value;
+                OnPropertyChanged();
+                OnPropertyChanged("AvailableTypes");
+            }
+        }
+
+        public IEnumerable<Type> AvailableTypes
+        {
+            get
+            {
+                if (null != SelectedAssembly)
+                {
+                    var types = SelectedAssembly.GetTypes().Where(x => x.Name.Contains("Controller"));
+                    SelectedType = types.FirstOrDefault();
+                    return types;
+                }
+
+                return null;
+            }
+        }
+
+        private Type _selectedType;
+        public Type SelectedType
+        {
+            get { return _selectedType; }
+            set
+            {
+                _selectedType = value;
+                OnPropertyChanged();
+                OnPropertyChanged("AvailableMethods");
+            }
+        }
+
+        public IEnumerable<MethodInfo> AvailableMethods
+        {
+            get {
+                if(null != SelectedType)
+                {
+                    return SelectedType.GetMethods();
+                }
+
+                return null;
+            }
+        }
+
+        private string _filterAssemblies;
+        public string FilterAssemblies
+        {
+            get { return _filterAssemblies; }
+            set
+            {
+                _filterAssemblies = value;
+                OnPropertyChanged();
+                OnPropertyChanged("AvailableAssemblies");
+            }
+        }
+
         private ObservableCollection<string> _lastErrors = new ObservableCollection<string>();
         public ObservableCollection<string> LastErrors
         {
@@ -246,5 +338,5 @@ namespace ApiTester.Wpf.ViewModels
         {
             get { return null != ExecutedWorkflow ? Visibility.Visible: Visibility.Collapsed; }
         }
-    }
+    }    
 }

@@ -41,8 +41,22 @@ namespace ApiTester.Wpf.ViewModels
             {
                 return _loadConfiguration ?? new RelayCommand(
                     (parameter) => {
+                        new LoadAssembly().ShowDialog();
                     },
                     x => true);
+            }
+        }
+
+        RelayCommand _saveLoadedConfiguration;
+        public ICommand SaveLoadedConfiguration
+        {
+            get
+            {
+                return _saveLoadedConfiguration ?? new RelayCommand(
+                    (parameter) => {
+                        //
+                    },
+                    x => SelectedAssembly != null);
             }
         }
 
