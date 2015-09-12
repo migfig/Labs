@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<buildWorkflow name="Build reflector">
+  <taskItem name="Reflect Assembly" commandLine="C:\Code\RelatedRecords.Tests\Binaries\builder.exe">
+    <taskParameter>{0}</taskParameter>
+    <taskParameter>-t</taskParameter>
+    <taskParameter>Controller</taskParameter>
+    <taskItem name="Generate Api Definition">
+      <taskParameter>{0}</taskParameter>
+      <taskParameter>-r</taskParameter>
+      <taskParameter>xslt</taskParameter>
+      <taskParameter>-x</taskParameter>
+      <taskParameter>apitester.xslt</taskParameter>
+      <taskParameter>-o</taskParameter>
+      <taskParameter>xml</taskParameter>
+    </taskItem>
+    <taskItem name="Generate Api Workflow Definition">
+      <taskParameter>{0}</taskParameter>
+      <taskParameter>-r</taskParameter>
+      <taskParameter>xslt</taskParameter>
+      <taskParameter>-x</taskParameter>
+      <taskParameter>apitester-workflow.xslt</taskParameter>
+      <taskParameter>-o</taskParameter>
+      <taskParameter>xml</taskParameter>
+    </taskItem>
+    <taskItem name="Generate I/O Docs Definition">
+      <taskParameter>{0}</taskParameter>
+      <taskParameter>-r</taskParameter>
+      <taskParameter>xslt</taskParameter>
+      <taskParameter>-x</taskParameter>
+      <taskParameter>iodocuments.xslt</taskParameter>
+      <taskParameter>-o</taskParameter>
+      <taskParameter>json</taskParameter>
+    </taskItem>
+    <taskItem name="Generate Swagger Definition">
+      <taskParameter>{0}</taskParameter>
+      <taskParameter>-r</taskParameter>
+      <taskParameter>xslt</taskParameter>
+      <taskParameter>-x</taskParameter>
+      <taskParameter>swagger.xslt</taskParameter>
+      <taskParameter>-o</taskParameter>
+      <taskParameter>yaml</taskParameter>
+    </taskItem>
+    <taskItem name="Generate Postman Definition">
+      <taskParameter>{0}</taskParameter>
+      <taskParameter>-r</taskParameter>
+      <taskParameter>xslt</taskParameter>
+      <taskParameter>-x</taskParameter>
+      <taskParameter>postman.xslt</taskParameter>
+      <taskParameter>-o</taskParameter>
+      <taskParameter>json</taskParameter>
+    </taskItem>
+  </taskItem>
+</buildWorkflow>

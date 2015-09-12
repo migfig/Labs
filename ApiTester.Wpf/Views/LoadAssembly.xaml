@@ -111,10 +111,6 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
                             <TextBlock Text="{Binding Name}" FontSize="14" Foreground="Orange"/>
                         </Grid>
                     </DataTemplate>

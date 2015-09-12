@@ -54,10 +54,16 @@ namespace ApiTester.Wpf.ViewModels
             {
                 return _saveLoadedConfiguration ?? new RelayCommand(
                     (parameter) => {
-                        //
+                        reflectAndLoadAssembly();
                     },
                     x => SelectedAssembly != null);
             }
+        }
+
+
+        private void reflectAndLoadAssembly()
+        {
+
         }
 
         RelayCommand _toggleSelection;

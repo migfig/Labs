@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Attributes\ColumnIgnoreAttribute.cs" />
     <Compile Include="Models\ApiConfiguration.cs" />
+    <Compile Include="Models\buildworkflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\IHeaderBuilder.cs" />
   </ItemGroup>

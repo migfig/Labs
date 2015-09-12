@@ -204,23 +204,29 @@ namespace ApiTester.Wpf.ViewModels
         {
             get
             {
-                if(null == _availableAssemblies)
+                var list = _availableAssemblies;
+
+                if (null == list)
                 {
                     _availableAssemblies = new List<Assembly>();
-                    foreach(var file in Directory.GetFiles(
+                    foreach (var file in Directory.GetFiles(
                         ConfigurationManager.AppSettings["BinariesPath"], "*.dll"))
                     {
-                        if(!string.IsNullOrEmpty(FilterAssemblies) 
-                                && file.ToLower().Contains(FilterAssemblies.ToLower()))
-                            _availableAssemblies.Add(getAssembly(file));
-                        else
-                            _availableAssemblies.Add(getAssembly(file));
+                        _availableAssemblies.Add(getAssembly(file));
                     }
 
-                    SelectedAssembly = _availableAssemblies.FirstOrDefault();
+                    list = _availableAssemblies;
+
+                } else if (!string.IsNullOrEmpty(FilterAssemblies))
+                {
+                    list = _availableAssemblies
+                        .Where(x => x.Location.ToLower().Contains(FilterAssemblies.ToLower().Trim()))
+                        .ToList();
                 }
 
-                return _availableAssemblies;
+                SelectedAssembly = list.FirstOrDefault();
+
+                return list;
             }
         }
 
@@ -260,6 +266,7 @@ namespace ApiTester.Wpf.ViewModels
                 _selectedType = value;
                 OnPropertyChanged();
                 OnPropertyChanged("AvailableMethods");
+                //_loadConfiguration.RaiseCanExecuteChanged();
             }
         }
 
