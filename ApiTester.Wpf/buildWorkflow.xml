@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<buildWorkflow name="Build reflector">
-  <taskItem name="Reflect Assembly" commandLine="C:\Code\RelatedRecords.Tests\Binaries\builder.exe">
+<buildWorkflow name="Build reflector" commandLine="C:\Code\RelatedRecords.Tests\Binaries\builder.exe">
+  <taskItem name="Reflect Assembly">
     <taskParameter>{0}</taskParameter>
     <taskParameter>-t</taskParameter>
     <taskParameter>Controller</taskParameter>
-    <taskItem name="Generate Api Definition">
+    <taskItem name="Generate Api Definition" foreachType="true">
       <taskParameter>{0}</taskParameter>
       <taskParameter>-r</taskParameter>
       <taskParameter>xslt</taskParameter>
@@ -13,7 +13,7 @@
       <taskParameter>-o</taskParameter>
       <taskParameter>xml</taskParameter>
     </taskItem>
-    <taskItem name="Generate Api Workflow Definition">
+    <taskItem name="Generate Api Workflow Definition" foreachType="true">
       <taskParameter>{0}</taskParameter>
       <taskParameter>-r</taskParameter>
       <taskParameter>xslt</taskParameter>
@@ -22,7 +22,7 @@
       <taskParameter>-o</taskParameter>
       <taskParameter>xml</taskParameter>
     </taskItem>
-    <taskItem name="Generate I/O Docs Definition">
+    <taskItem name="Generate I/O Docs Definition" foreachType="true">
       <taskParameter>{0}</taskParameter>
       <taskParameter>-r</taskParameter>
       <taskParameter>xslt</taskParameter>
@@ -31,7 +31,7 @@
       <taskParameter>-o</taskParameter>
       <taskParameter>json</taskParameter>
     </taskItem>
-    <taskItem name="Generate Swagger Definition">
+    <taskItem name="Generate Swagger Definition" foreachType="true">
       <taskParameter>{0}</taskParameter>
       <taskParameter>-r</taskParameter>
       <taskParameter>xslt</taskParameter>
@@ -40,12 +40,12 @@
       <taskParameter>-o</taskParameter>
       <taskParameter>yaml</taskParameter>
     </taskItem>
-    <taskItem name="Generate Postman Definition">
+    <taskItem name="Generate Postman Definition" foreachType="true">
       <taskParameter>{0}</taskParameter>
       <taskParameter>-r</taskParameter>
       <taskParameter>xslt</taskParameter>
       <taskParameter>-x</taskParameter>
-      <taskParameter>postman.xslt</taskParameter>
+      <taskParameter>postman-collection.xslt</taskParameter>
       <taskParameter>-o</taskParameter>
       <taskParameter>json</taskParameter>
     </taskItem>

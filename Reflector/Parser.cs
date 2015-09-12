@@ -118,7 +118,7 @@ namespace Reflector
         public static bool IsFile(string fileName)
         {
             return File.Exists(fileName)
-                && ".dll,.xml,.xslt,.xsl".Split(',')
+                && ".dll,.xml,.xslt,.xsl,.yaml".Split(',')
                     .Contains(Path.GetExtension(fileName).ToLower());
         }
          
@@ -139,6 +139,12 @@ namespace Reflector
         {
             return File.Exists(fileName)
                 && Path.GetExtension(fileName).ToLower() == ".dll";
+        }
+
+        public static bool IsYamlFile(string fileName)
+        {
+            return File.Exists(fileName)
+                && Path.GetExtension(fileName).ToLower() == ".yaml";
         }
 
         public static bool IsPath(string path)

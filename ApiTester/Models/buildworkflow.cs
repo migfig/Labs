@@ -1,5 +1,6 @@
 ﻿using Common;
 using System.Collections.ObjectModel;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace ApiTester.Models
@@ -11,6 +12,7 @@ namespace ApiTester.Models
 
         private ObservableCollection<TaskItem> taskItemField;
         private string nameField;
+        private string commandLineField;
 
         public buildWorkflow()
         {
@@ -42,6 +44,19 @@ namespace ApiTester.Models
                 this.nameField = value;
             }
         }
+
+        [XmlAttributeAttribute()]
+        public string commandLine
+        {
+            get
+            {
+                return this.commandLineField;
+            }
+            set
+            {
+                this.commandLineField = value;
+            }
+        }
     }
 
     [XmlTypeAttribute(AnonymousType=true)]
@@ -52,6 +67,7 @@ namespace ApiTester.Models
         private ObservableCollection<TaskItem> taskItemField;        
         private string nameField;        
         private string commandLineField;
+        private bool foreachTypeField;
 
         public TaskItem()
         {
@@ -98,8 +114,21 @@ namespace ApiTester.Models
                 this.commandLineField = value;
             }
         }
+
+        [XmlAttributeAttribute()]
+        public bool foreachType
+        {
+            get
+            {
+                return this.foreachTypeField;
+            }
+            set
+            {
+                this.foreachTypeField = value;
+            }
+        }
     }
-    
+
     [XmlTypeAttribute(AnonymousType=true)]
     public partial class TaskParameter {
         
@@ -113,6 +142,20 @@ namespace ApiTester.Models
             set {
                 this.valueField = value;
             }
+        }
+    }
+    
+    public static class BuildWorkflowExtensions
+    {
+        public static string ToArgs(this TaskItem task, params string[] values)
+        {
+            var value = new StringBuilder();
+            foreach(var p in task.taskParameter)
+            {
+                value.AppendFormat(" " + p.Value, values);
+            }
+
+            return value.ToString();
         }
     }    
 }

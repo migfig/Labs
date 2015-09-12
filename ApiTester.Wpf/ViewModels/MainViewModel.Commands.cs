@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -42,6 +43,7 @@ namespace ApiTester.Wpf.ViewModels
                 return _loadConfiguration ?? new RelayCommand(
                     (parameter) => {
                         new LoadAssembly().ShowDialog();
+                        OnPropertyChanged("Configurations");
                     },
                     x => true);
             }
@@ -58,12 +60,6 @@ namespace ApiTester.Wpf.ViewModels
                     },
                     x => SelectedAssembly != null);
             }
-        }
-
-
-        private void reflectAndLoadAssembly()
-        {
-
         }
 
         RelayCommand _toggleSelection;
@@ -121,6 +117,96 @@ namespace ApiTester.Wpf.ViewModels
 
         #region command methods
 
+        #region reflect and load assembly
+
+        private void reflectAndLoadAssembly()
+        {
+            var buildWorkflowFile = ConfigurationManager.AppSettings["DefaultBuildWorkflow"];
+            Common.Extensions.TraceLog.Information("Running build workflow {buildWorkflowFile}", buildWorkflowFile);
+
+            SelectedBuildWorkflow = XmlHelper<buildWorkflow>.Load(buildWorkflowFile);
+            var worker = new BackgroundWorker();
+            worker.DoWork += (o, s) =>
+            {
+                IsBusy = true;
+
+                try
+                {
+                    foreach (var task in SelectedBuildWorkflow.taskItem)
+                    {
+                        runTaskItem(task);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Common.Extensions.ErrorLog.Error(e, "@ reflectAndLoadAssembly");
+                }
+            };
+            worker.RunWorkerCompleted += (o, s) =>
+            {
+                IsBusy = false;
+                SelectedAssembly = null;
+                //_saveLoadedConfiguration.RaiseCanExecuteChanged();
+            };
+            worker.RunWorkerAsync();
+        }
+
+        private void runTaskItem(TaskItem task)
+        {
+            try
+            {
+                if (!task.foreachType)
+                {
+                    executeTaskItem(task);
+                }
+                else
+                {
+                    var types = SelectedAssembly.GetTypes().Where(x => x.Name.Contains("Controller"));
+                    foreach (var type in types)
+                    {
+                        executeTaskItem(task, type.FullName
+                            .Split('.')
+                            .Last()
+                            .Replace("Controller", string.Empty));
+                    }
+                }
+
+                foreach (var t in task.taskItem)
+                {
+                    runTaskItem(t);
+                }
+            }
+            catch (Exception e)
+            {
+                Common.Extensions.ErrorLog.Error(e, "@ runTaskItem {name}", task.name);
+            }
+        }
+
+        private void executeTaskItem(TaskItem task, string type = "")
+        {
+            if(!string.IsNullOrEmpty(type))
+            {
+                type = Path.Combine(Path.Combine(Path.GetDirectoryName(
+                        !string.IsNullOrEmpty(task.commandLine) 
+                            ? task.commandLine 
+                            : SelectedBuildWorkflow.commandLine), "output"),
+                    type + ".xml");
+            }
+            else
+            {
+                type = SelectedAssembly.Location;
+            }
+
+            var exitCode = runProcess(!string.IsNullOrEmpty(task.commandLine)
+                    ? task.commandLine
+                    : SelectedBuildWorkflow.commandLine,
+                string.Format(task.ToArgs(type)));
+        }
+
+        #endregion reflect and load assembly
+
+        #region run workflow
+
         private void runWorkflowForSelectedMethods()
         {
             Common.Extensions.TraceLog.Information("Running workflow {name}", SelectedWorkflow.name);
@@ -174,7 +260,7 @@ namespace ApiTester.Wpf.ViewModels
             }
             catch (Exception e)
             {
-                Common.Extensions.ErrorLog.Error(e, "@ runWorkflowForSelectedMethods workflow {name}", SelectedWorkflow.name);
+                Common.Extensions.ErrorLog.Error(e, "@ runTask {name}", task.name);
             }
         }
 
@@ -236,6 +322,8 @@ namespace ApiTester.Wpf.ViewModels
 
             return type;
         }
+
+        #endregion run workflow
 
         private int runProcess(string program, string args)
         {

@@ -39,7 +39,9 @@ namespace ApiTester.Wpf.ViewModels
                 
                 foreach(var file in files)
                 {
-                    list.Add(XmlHelper<apiConfiguration>.Load(file));
+                    var configuration = XmlHelper<apiConfiguration>.Load(file);
+                    if(!list.Any(x => x.ToString() == configuration.ToString()))
+                        list.Add(configuration);
                 }
 
                 SelectedConfiguration = list.FirstOrDefault();
@@ -195,6 +197,17 @@ namespace ApiTester.Wpf.ViewModels
             set
             {
                 _selectedWorkflow = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private buildWorkflow _selectedBuildWorkflow;
+        public buildWorkflow SelectedBuildWorkflow
+        {
+            get { return _selectedBuildWorkflow; }
+            set
+            {
+                _selectedBuildWorkflow = value;
                 OnPropertyChanged();
             }
         }
