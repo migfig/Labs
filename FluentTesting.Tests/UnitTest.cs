@@ -18,6 +18,7 @@ namespace FluentTesting.Tests
 
             "Test fluent interface building up"
                 .On(item)
+                
                 .Call("Append")
                 .WithParams("Hello")
                 .ThenVerifyProps(new NameValue("Length", 5))
@@ -28,6 +29,23 @@ namespace FluentTesting.Tests
                 .WithOtherParams("!")
                 .ThenVerifyProps(new NameValue("Length",
                     new Func<object, object, object>((len, result) => 12 == (int)len), MemberTypes.Custom))
+                ;
+        }
+
+        [TestMethod]
+        public void Instance_Buildup_Test()
+        {
+            var item = "Hello World!";
+            var result =
+            "Test fluent interface for instance build up"
+                .With(item)
+                .VerifyProperty("Length")
+                .IsEqualTo(item.Length)
+                .OrIsGreatherThan(10)
+                .OrIsNotEqualTo(2)
+                .AndIsGreatherThanOrEqual(9)
+                .VerifyResults()
+                .ResultsPassed
                 ;
         }
 #endif

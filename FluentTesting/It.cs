@@ -11,7 +11,7 @@ using Serilog;
 namespace FluentTesting
 {
     /// <summary>
-    /// Fluent parent testing class for a cleanear testing strategy
+    /// Fluent parent testing class for a cleaner testing strategy
     /// </summary>
     public class It
     {
@@ -278,7 +278,7 @@ namespace FluentTesting
         /// <summary>
         /// Placeholder on wich call the method name
         /// </summary>
-        public class OnIt : BaseIt
+        public class OnIt : BaseIt<It>
         {
             public OnIt(It parent)
                 : base(parent)
@@ -322,7 +322,7 @@ namespace FluentTesting
         /// <summary>
         /// Placeholder to provide the parameters to be used in the method call
         /// </summary>
-        public class CallIt : BaseIt
+        public class CallIt : BaseIt<It>
         {
             public CallIt(It parent)
                 : base(parent)
@@ -366,7 +366,7 @@ namespace FluentTesting
         /// <summary>
 /// Placeholder to provide the properties to verify
 /// </summary>
-public class WithParamsIt : BaseIt
+public class WithParamsIt : BaseIt<It>
         {
             public WithParamsIt(It parent)
                 :base(parent)

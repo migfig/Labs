@@ -9,14 +9,14 @@ namespace FluentTesting
     /// <summary>
     /// Base class for all fluent items
     /// </summary>
-    public abstract class BaseIt
+    public abstract class BaseIt<T> where T : class
     {
         /// <summary>
         /// Fluent parent instance
         /// </summary>
-        protected It Parent { get; private set; }
+        protected T Parent { get; private set; }
 
-        protected BaseIt(It parent)
+        protected BaseIt(T parent)
         {
             Parent = parent;
         }

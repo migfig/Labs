@@ -22,6 +22,11 @@ namespace FluentTesting
             return new It(description)
                 .On(target);
         }
+
+        public static Instance With(this string description, object target)
+        {
+            return new Instance(description, target);
+        }
 #endif
 
 #if SPANISH_LANGUAGE
