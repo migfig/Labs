@@ -253,7 +253,8 @@ namespace RelatedRecords
 
                     if (null != child)
                     {
-                        if (child.Root.ConfigTable.Children.Count > 0)
+                        if (child.Root.ConfigTable.Children.Count > 0
+                            && child.Root.Table.Rows.Count > 0)
                         {
                             child.QueryChildren(child.Root.Table.Rows[0]);
                         }
