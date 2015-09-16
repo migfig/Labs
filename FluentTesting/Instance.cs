@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common;
 
 namespace FluentTesting
 {
@@ -50,6 +51,69 @@ namespace FluentTesting
         protected void CheckResults()
         {
             ResultsPassed = true;
+            foreach(var propertyName in Properties.Keys)
+            {
+                var value = Target.GetType().GetProperty(propertyName).GetValue(Target);
+
+                foreach(var item in Properties[propertyName])
+                {
+                    switch(item.Condition)
+                    {
+                        case eCondition.And:
+                            switch(item.Operator)
+                            {
+                                case eOperator.Equals:
+                                    ResultsPassed = ResultsPassed && value.IsEqual(item.Value);
+                                    break;
+                                case eOperator.NotEquals:
+                                    ResultsPassed = ResultsPassed && value.IsNotEqual(item.Value);
+                                    break;
+                                case eOperator.GreatherThan:
+                                    ResultsPassed = ResultsPassed && value.IsGreaterThan(item.Value);
+                                    break;
+                                case eOperator.LessThan:
+                                    ResultsPassed = ResultsPassed && value.IsLessThan(item.Value);
+                                    break;
+                                case eOperator.GreatherThanOrEquals:
+                                    ResultsPassed = ResultsPassed && value.IsGreaterThanOrEqual(item.Value);
+                                    break;
+                                case eOperator.LessThanOrEquals:
+                                    ResultsPassed = ResultsPassed && value.IsLessThanOrEqual(item.Value);
+                                    break;
+                            }
+                            break;
+                        case eCondition.Or:
+                            switch (item.Operator)
+                            {
+                                case eOperator.Equals:
+                                    ResultsPassed = ResultsPassed || value.IsEqual(item.Value);
+                                    break;
+                                case eOperator.NotEquals:
+                                    ResultsPassed = ResultsPassed || value.IsNotEqual(item.Value);
+                                    break;
+                                case eOperator.GreatherThan:
+                                    ResultsPassed = ResultsPassed || value.IsGreaterThan(item.Value);
+                                    break;
+                                case eOperator.LessThan:
+                                    ResultsPassed = ResultsPassed || value.IsLessThan(item.Value);
+                                    break;
+                                case eOperator.GreatherThanOrEquals:
+                                    ResultsPassed = ResultsPassed || value.IsGreaterThanOrEqual(item.Value);
+                                    break;
+                                case eOperator.LessThanOrEquals:
+                                    ResultsPassed = ResultsPassed || value.IsLessThanOrEqual(item.Value);
+                                    break;
+                            }
+                            break;
+                    }
+
+                    if (!ResultsPassed)
+                        break;
+                }
+
+                if (!ResultsPassed)
+                    break;
+            }
         }
 
         public VerifyProp VerifyProperty(string properyName)

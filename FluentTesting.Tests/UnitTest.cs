@@ -47,6 +47,39 @@ namespace FluentTesting.Tests
                 .VerifyResults()
                 .ResultsPassed
                 ;
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void Instance_Buildup_Object_Test()
+        {
+            var item = new TestClass
+            {
+                BoolProperty = true,
+                IntProperty = 10,
+                DateTimeProperty = DateTime.Now,
+                StringProperty = "Sample"
+            };
+
+            var results =
+            "Test fluent interface for class instance build up"
+                .With(item)
+                .VerifyProperty("IntProperty")
+                .IsEqualTo(10)
+                .VerifyResults()
+                .VerifyProperty("BoolProperty")
+                .IsNotEqualTo(false)
+                .VerifyResults()
+                .VerifyProperty("DateTimeProperty")
+                .IsLessThanOrEqual(DateTime.Now)
+                .VerifyResults()
+                .VerifyProperty("StringProperty")
+                .IsEqualTo("Sample")
+                .VerifyResults()
+                .ResultsPassed;
+
+            Assert.IsTrue(results);
         }
 #endif
 
@@ -73,5 +106,13 @@ namespace FluentTesting.Tests
 
 #endif
 
+    }
+
+    public class TestClass
+    {
+        public int IntProperty { get; set; }
+        public string StringProperty { get; set; }
+        public bool BoolProperty { get; set; }
+        public DateTime DateTimeProperty { get; set; }
     }
 }
