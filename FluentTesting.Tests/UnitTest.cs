@@ -72,7 +72,7 @@ namespace FluentTesting.Tests
                 .IsNotEqualTo(false)
                 .VerifyResults()
                 .VerifyProperty("DateTimeProperty")
-                .IsLessThanOrEqual(DateTime.Now)
+                ._IsLessThanOrEqual(DateTime.Now)
                 .VerifyResults()
                 .VerifyProperty("StringProperty")
                 .IsEqualTo("Sample")

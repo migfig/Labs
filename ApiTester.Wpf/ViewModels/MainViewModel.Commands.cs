@@ -280,7 +280,7 @@ namespace ApiTester.Wpf.ViewModels
                 if (type == null) return;
 
                 task.ResultsObject = loadResults(type, outFile);
-                method.isValidTest = !(task.ResultsObject is Exception);
+                method.isValidTest = task.IsValid;
             }
         }
 

@@ -13,6 +13,7 @@
     using ApiTester.Attributes;
     using System.Text;
     using System.Reflection;
+    using FluentTesting;
 
     [XmlTypeAttribute(AnonymousType = true)]
     [XmlRootAttribute(Namespace = "", IsNullable = false)]
@@ -368,6 +369,7 @@
         private string patternField;
         private ObservableCollection<Parameter> parameterField;
         private ObservableCollection<Task> taskField;
+        private ObservableCollection<ResultValue> resultValueField;
         private string resultsField;
         private object resultsObjectField;
         private Task parentTaskField;
@@ -376,6 +378,7 @@
         {
             parameterField = new ObservableCollection<Parameter>();
             taskField = new ObservableCollection<Task>();
+            resultValueField = new ObservableCollection<ResultValue>();
         }
         
         [XmlAttributeAttribute()]
@@ -433,6 +436,19 @@
             }
         }
 
+        [XmlElementAttribute("resultValue", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ObservableCollection<ResultValue> resultValue
+        {
+            get
+            {
+                return this.resultValueField;
+            }
+            set
+            {
+                this.resultValueField = value;
+            }
+        }
+
         [XmlIgnore]
         public string Results
         {
@@ -471,6 +487,156 @@
                 parentTaskField = value;
             }
         }
+
+        [XmlIgnore]
+        public bool IsValid
+        {
+            get
+            {
+                if (ResultsObject is Exception) return false;
+
+                var result = true;
+                if(resultValue.Any())
+                {
+                    foreach(var val in resultValue)
+                    {
+                        var instance = new Instance(val.propertyName, ResultsObject)
+                            .VerifyProperty(val.propertyName);
+                        switch(val.condition)
+                        {
+                            case eCondition.And:
+                                switch(val.@operator)
+                                {
+                                    case eOperator.isEqualTo:
+                                        result = result && instance.IsEqual(val.value);
+                                        break;
+                                    case eOperator.isNotEqualTo:
+                                        result = result && instance.IsNotEqual(val.value);
+                                        break;
+                                    case eOperator.isGreaterThan:
+                                        result = result && instance.IsGreaterThan(val.value);
+                                        break;
+                                    case eOperator.isLessThan:
+                                        result = result && instance.IsLessThan(val.value);
+                                        break;
+                                    case eOperator.isGreaterThanOrEqual:
+                                        result = result && instance.IsGreaterThanOrEqual(val.value);
+                                        break;
+                                    case eOperator.isLessThanOrEqual:
+                                        result = result && instance.IsLessThanOrEqual(val.value);
+                                        break;
+                                }
+                                break;
+                            case eCondition.Or:
+                                switch (val.@operator)
+                                {
+                                    case eOperator.isEqualTo:
+                                        result = result || instance.IsEqual(val.value);
+                                        break;
+                                    case eOperator.isNotEqualTo:
+                                        result = result || instance.IsNotEqual(val.value);
+                                        break;
+                                    case eOperator.isGreaterThan:
+                                        result = result || instance.IsGreaterThan(val.value);
+                                        break;
+                                    case eOperator.isLessThan:
+                                        result = result || instance.IsLessThan(val.value);
+                                        break;
+                                    case eOperator.isGreaterThanOrEqual:
+                                        result = result || instance.IsGreaterThanOrEqual(val.value);
+                                        break;
+                                    case eOperator.isLessThanOrEqual:
+                                        result = result || instance.IsLessThanOrEqual(val.value);
+                                        break;
+                                }
+                                break;
+                        }
+
+                        if (!result)
+                            break;
+                    }
+                }
+
+                return result;
+            }
+        }
+    }
+
+    [XmlTypeAttribute(AnonymousType = true)]
+    public partial class ResultValue: BaseModel
+    {
+        private string propertyNameField;
+        private eCondition conditionField;
+        private eOperator operatorField;
+        private string valueField;
+
+        [XmlAttributeAttribute()]
+        public string propertyName
+        {
+            get
+            {
+                return this.propertyNameField;
+            }
+            set
+            {
+                this.propertyNameField = value;
+            }
+        }
+
+        [XmlAttributeAttribute()]
+        public eCondition condition
+        {
+            get
+            {
+                return this.conditionField;
+            }
+            set
+            {
+                this.conditionField = value;
+            }
+        }
+
+        [XmlAttributeAttribute()]
+        public eOperator @operator
+        {
+            get
+            {
+                return this.operatorField;
+            }
+            set
+            {
+                this.operatorField = value;
+            }
+        }
+
+        [XmlAttributeAttribute()]
+        public string value
+        {
+            get
+            {
+                return this.valueField;
+            }
+            set
+            {
+                this.valueField = value;
+            }
+        }
+    }
+
+    public enum eCondition
+    {
+        And,
+        Or
+    }
+
+    public enum eOperator
+    {
+        isEqualTo,
+        isNotEqualTo,
+        isGreaterThan,
+        isLessThan,
+        isGreaterThanOrEqual,
+        isLessThanOrEqual
     }
 
     [XmlTypeAttribute(AnonymousType = true)]

@@ -30,20 +30,7 @@
         <xsl:call-template name="renderParameter"/>
       </xsl:for-each>
 
-      <result>
-        <value>
-          <or>
-            <and>
-              <equals object="" propertyName="Id">20</equals>
-              <equals object="" propertyName="Name">Name</equals>
-            </and>
-            <and>
-              <greaterAndEqual object="" property="Price">0.0</greaterAndEqual>
-              <equals object="" propertyName="CustomerName" property="Length">25</equals>
-            </and>
-          </or>
-        </value>
-      </result>
+      <resultValue condition="And" propertyName="Id" operator="isEqualTo" value="1"/>
     </task>
   </xsl:template>
 

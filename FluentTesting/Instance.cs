@@ -168,7 +168,7 @@ namespace FluentTesting
             {
                 return new Item(Parent, value, condition, eOperator.GreatherThan);
             }
-            public Item IsLessThan(object value, eCondition condition = eCondition.And)
+            public Item _IsLessThan(object value, eCondition condition = eCondition.And)
             {
                 return new Item(Parent, value, condition, eOperator.LessThan);
             }
@@ -176,7 +176,7 @@ namespace FluentTesting
             {
                 return new Item(Parent, value, condition, eOperator.GreatherThanOrEquals);
             }
-            public Item IsLessThanOrEqual(object value, eCondition condition = eCondition.And)
+            public Item _IsLessThanOrEqual(object value, eCondition condition = eCondition.And)
             {
                 return new Item(Parent, value, condition, eOperator.LessThanOrEquals);
             }
@@ -224,7 +224,7 @@ namespace FluentTesting
             public Item OrIsLessThan(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    .IsLessThan(value, eCondition.Or);
+                    ._IsLessThan(value, eCondition.Or);
             }
             public Item OrIsGreatherThanOrEqual(object value)
             {
@@ -234,7 +234,7 @@ namespace FluentTesting
             public Item OrIsLessThanOrEqual(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    .IsLessThanOrEqual(value, eCondition.Or);
+                    ._IsLessThanOrEqual(value, eCondition.Or);
             }
 
             //ands
@@ -256,7 +256,7 @@ namespace FluentTesting
             public Item AndIsLessThan(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    .IsLessThan(value);
+                    ._IsLessThan(value);
             }
             public Item AndIsGreatherThanOrEqual(object value)
             {
@@ -266,7 +266,7 @@ namespace FluentTesting
             public Item AndIsLessThanOrEqual(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    .IsLessThanOrEqual(value);
+                    ._IsLessThanOrEqual(value);
             }
 
             public Instance VerifyResults()
