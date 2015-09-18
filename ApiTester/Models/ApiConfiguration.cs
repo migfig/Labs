@@ -495,69 +495,39 @@
             {
                 if (ResultsObject is Exception) return false;
 
-                var result = true;
-                if(resultValue.Any())
+                if (resultValue.Any())
                 {
-                    foreach(var val in resultValue)
+                    var instance = new Instance("Verifying results", ResultsObject);
+                    foreach (var val in resultValue)
                     {
-                        var instance = new Instance(val.propertyName, ResultsObject)
-                            .VerifyProperty(val.propertyName);
-                        switch(val.condition)
+                        var item = instance.VerifyProperty(val.propertyName);
+                        switch (val.@operator)
                         {
-                            case eCondition.And:
-                                switch(val.@operator)
-                                {
-                                    case eOperator.isEqualTo:
-                                        result = result && instance.IsEqual(val.value);
-                                        break;
-                                    case eOperator.isNotEqualTo:
-                                        result = result && instance.IsNotEqual(val.value);
-                                        break;
-                                    case eOperator.isGreaterThan:
-                                        result = result && instance.IsGreaterThan(val.value);
-                                        break;
-                                    case eOperator.isLessThan:
-                                        result = result && instance.IsLessThan(val.value);
-                                        break;
-                                    case eOperator.isGreaterThanOrEqual:
-                                        result = result && instance.IsGreaterThanOrEqual(val.value);
-                                        break;
-                                    case eOperator.isLessThanOrEqual:
-                                        result = result && instance.IsLessThanOrEqual(val.value);
-                                        break;
-                                }
+                            case eOperator.isEqualTo:
+                                item.IsEqualTo(val.value, val.condition);
                                 break;
-                            case eCondition.Or:
-                                switch (val.@operator)
-                                {
-                                    case eOperator.isEqualTo:
-                                        result = result || instance.IsEqual(val.value);
-                                        break;
-                                    case eOperator.isNotEqualTo:
-                                        result = result || instance.IsNotEqual(val.value);
-                                        break;
-                                    case eOperator.isGreaterThan:
-                                        result = result || instance.IsGreaterThan(val.value);
-                                        break;
-                                    case eOperator.isLessThan:
-                                        result = result || instance.IsLessThan(val.value);
-                                        break;
-                                    case eOperator.isGreaterThanOrEqual:
-                                        result = result || instance.IsGreaterThanOrEqual(val.value);
-                                        break;
-                                    case eOperator.isLessThanOrEqual:
-                                        result = result || instance.IsLessThanOrEqual(val.value);
-                                        break;
-                                }
+                            case eOperator.isNotEqualTo:
+                                item.IsNotEqualTo(val.value, val.condition);
+                                break;
+                            case eOperator.isGreaterThan:
+                                item.IsGreaterThan(val.value, val.condition);
+                                break;
+                            case eOperator.isLessThan:
+                                item.IsLessThan(val.value, val.condition);
+                                break;
+                            case eOperator.isGreaterThanOrEqual:
+                                item.IsGreaterThanOrEqual(val.value, val.condition);
+                                break;
+                            case eOperator.isLessThanOrEqual:
+                                item.IsLessThanOrEqual(val.value, val.condition);
                                 break;
                         }
-
-                        if (!result)
-                            break;
                     }
+
+                    return instance.GetResults().ResultsPassed;
                 }
 
-                return result;
+                return true;
             }
         }
     }
@@ -623,22 +593,6 @@
         }
     }
 
-    public enum eCondition
-    {
-        And,
-        Or
-    }
-
-    public enum eOperator
-    {
-        isEqualTo,
-        isNotEqualTo,
-        isGreaterThan,
-        isLessThan,
-        isGreaterThanOrEqual,
-        isLessThanOrEqual
-    }
-
     [XmlTypeAttribute(AnonymousType = true)]
     public partial class assembly : BaseModel
     {
@@ -678,7 +632,7 @@
 
         public Method()
         {
-            isSelectedField = true;
+            isSelectedField = false;
             isValidTestField = false;
             parameterField = new ObservableCollection<Parameter>();
         }

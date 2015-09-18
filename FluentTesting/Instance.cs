@@ -42,7 +42,7 @@ namespace FluentTesting
             Properties = new Dictionary<string, List<PropertyItem>>();
         }
 
-        protected Instance GetResults()
+        public Instance GetResults()
         {
             CheckResults();
             return this;
@@ -62,46 +62,46 @@ namespace FluentTesting
                         case eCondition.And:
                             switch(item.Operator)
                             {
-                                case eOperator.Equals:
-                                    ResultsPassed = ResultsPassed && value.IsEqual(item.Value);
+                                case eOperator.isEqualTo:
+                                    ResultsPassed = ResultsPassed && value._IsEqualTo(item.Value);
                                     break;
-                                case eOperator.NotEquals:
-                                    ResultsPassed = ResultsPassed && value.IsNotEqual(item.Value);
+                                case eOperator.isNotEqualTo:
+                                    ResultsPassed = ResultsPassed && value._IsNotEqualTo(item.Value);
                                     break;
-                                case eOperator.GreatherThan:
-                                    ResultsPassed = ResultsPassed && value.IsGreaterThan(item.Value);
+                                case eOperator.isGreaterThan:
+                                    ResultsPassed = ResultsPassed && value._IsGreaterThan(item.Value);
                                     break;
-                                case eOperator.LessThan:
-                                    ResultsPassed = ResultsPassed && value.IsLessThan(item.Value);
+                                case eOperator.isLessThan:
+                                    ResultsPassed = ResultsPassed && value._IsLessThan(item.Value);
                                     break;
-                                case eOperator.GreatherThanOrEquals:
-                                    ResultsPassed = ResultsPassed && value.IsGreaterThanOrEqual(item.Value);
+                                case eOperator.isGreaterThanOrEqual:
+                                    ResultsPassed = ResultsPassed && value._IsGreaterThanOrEqual(item.Value);
                                     break;
-                                case eOperator.LessThanOrEquals:
-                                    ResultsPassed = ResultsPassed && value.IsLessThanOrEqual(item.Value);
+                                case eOperator.isLessThanOrEqual:
+                                    ResultsPassed = ResultsPassed && value._IsLessThanOrEqual(item.Value);
                                     break;
                             }
                             break;
                         case eCondition.Or:
                             switch (item.Operator)
                             {
-                                case eOperator.Equals:
-                                    ResultsPassed = ResultsPassed || value.IsEqual(item.Value);
+                                case eOperator.isEqualTo:
+                                    ResultsPassed = ResultsPassed || value._IsEqualTo(item.Value);
                                     break;
-                                case eOperator.NotEquals:
-                                    ResultsPassed = ResultsPassed || value.IsNotEqual(item.Value);
+                                case eOperator.isNotEqualTo:
+                                    ResultsPassed = ResultsPassed || value._IsNotEqualTo(item.Value);
                                     break;
-                                case eOperator.GreatherThan:
-                                    ResultsPassed = ResultsPassed || value.IsGreaterThan(item.Value);
+                                case eOperator.isGreaterThan:
+                                    ResultsPassed = ResultsPassed || value._IsGreaterThan(item.Value);
                                     break;
-                                case eOperator.LessThan:
-                                    ResultsPassed = ResultsPassed || value.IsLessThan(item.Value);
+                                case eOperator.isLessThan:
+                                    ResultsPassed = ResultsPassed || value._IsLessThan(item.Value);
                                     break;
-                                case eOperator.GreatherThanOrEquals:
-                                    ResultsPassed = ResultsPassed || value.IsGreaterThanOrEqual(item.Value);
+                                case eOperator.isGreaterThanOrEqual:
+                                    ResultsPassed = ResultsPassed || value._IsGreaterThanOrEqual(item.Value);
                                     break;
-                                case eOperator.LessThanOrEquals:
-                                    ResultsPassed = ResultsPassed || value.IsLessThanOrEqual(item.Value);
+                                case eOperator.isLessThanOrEqual:
+                                    ResultsPassed = ResultsPassed || value._IsLessThanOrEqual(item.Value);
                                     break;
                             }
                             break;
@@ -130,22 +130,6 @@ namespace FluentTesting
             public object Value { get; set; }
         }
 
-        public enum eCondition
-        {
-            And,
-            Or
-        }
-
-        public enum eOperator
-        {
-            Equals, //==
-            NotEquals, //!=
-            GreatherThan, //>
-            LessThan, //<
-            GreatherThanOrEquals, //>=
-            LessThanOrEquals //<=
-        }
-
         public class VerifyProp : BaseIt<Instance>
         {
             public VerifyProp(Instance parent, string propertyName)
@@ -157,28 +141,28 @@ namespace FluentTesting
 
             public Item IsEqualTo(object value, eCondition condition = eCondition.And)
             {
-                return new Item(Parent, value, condition, eOperator.Equals);
+                return new Item(Parent, value, condition, eOperator.isEqualTo);
             }
 
             public Item IsNotEqualTo(object value, eCondition condition = eCondition.And)
             {
-                return new Item(Parent, value, condition, eOperator.NotEquals);
+                return new Item(Parent, value, condition, eOperator.isNotEqualTo);
             }
-            public Item IsGreatherThan(object value, eCondition condition = eCondition.And)
+            public Item IsGreaterThan(object value, eCondition condition = eCondition.And)
             {
-                return new Item(Parent, value, condition, eOperator.GreatherThan);
+                return new Item(Parent, value, condition, eOperator.isGreaterThan);
             }
-            public Item _IsLessThan(object value, eCondition condition = eCondition.And)
+            public Item IsLessThan(object value, eCondition condition = eCondition.And)
             {
-                return new Item(Parent, value, condition, eOperator.LessThan);
+                return new Item(Parent, value, condition, eOperator.isLessThan);
             }
-            public Item IsGreatherThanOrEqual(object value, eCondition condition = eCondition.And)
+            public Item IsGreaterThanOrEqual(object value, eCondition condition = eCondition.And)
             {
-                return new Item(Parent, value, condition, eOperator.GreatherThanOrEquals);
+                return new Item(Parent, value, condition, eOperator.isGreaterThanOrEqual);
             }
-            public Item _IsLessThanOrEqual(object value, eCondition condition = eCondition.And)
+            public Item IsLessThanOrEqual(object value, eCondition condition = eCondition.And)
             {
-                return new Item(Parent, value, condition, eOperator.LessThanOrEquals);
+                return new Item(Parent, value, condition, eOperator.isLessThanOrEqual);
             }
         }
 
@@ -219,22 +203,22 @@ namespace FluentTesting
             public Item OrIsGreatherThan(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    .IsGreatherThan(value, eCondition.Or);
+                    .IsGreaterThan(value, eCondition.Or);
             }
             public Item OrIsLessThan(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    ._IsLessThan(value, eCondition.Or);
+                    .IsLessThan(value, eCondition.Or);
             }
             public Item OrIsGreatherThanOrEqual(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    .IsGreatherThanOrEqual(value, eCondition.Or);
+                    .IsGreaterThanOrEqual(value, eCondition.Or);
             }
             public Item OrIsLessThanOrEqual(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    ._IsLessThanOrEqual(value, eCondition.Or);
+                    .IsLessThanOrEqual(value, eCondition.Or);
             }
 
             //ands
@@ -251,22 +235,22 @@ namespace FluentTesting
             public Item AndIsGreatherThan(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    .IsGreatherThan(value);
+                    .IsGreaterThan(value);
             }
             public Item AndIsLessThan(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    ._IsLessThan(value);
+                    .IsLessThan(value);
             }
             public Item AndIsGreatherThanOrEqual(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    .IsGreatherThanOrEqual(value);
+                    .IsGreaterThanOrEqual(value);
             }
             public Item AndIsLessThanOrEqual(object value)
             {
                 return new VerifyProp(Parent, Parent.Properties.Last().Key)
-                    ._IsLessThanOrEqual(value);
+                    .IsLessThanOrEqual(value);
             }
 
             public Instance VerifyResults()
@@ -276,5 +260,21 @@ namespace FluentTesting
         }
 
         #endregion inner classes
+    }
+
+    public enum eCondition
+    {
+        And,
+        Or
+    }
+
+    public enum eOperator
+    {
+        isEqualTo, //==
+        isNotEqualTo, //!=
+        isGreaterThan, //>
+        isLessThan, //<
+        isGreaterThanOrEqual, //>=
+        isLessThanOrEqual //<=
     }
 }

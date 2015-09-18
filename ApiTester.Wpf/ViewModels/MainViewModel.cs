@@ -73,6 +73,7 @@ namespace ApiTester.Wpf.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged("HeadersTable");
                 OnPropertyChanged("MethodsTable");
+                _runTests.RaiseCanExecuteChanged();
             }
         }
 

@@ -24,7 +24,7 @@ namespace ApiTester.Wpf.ViewModels
         {
             get
             {
-                return _runTests ?? new RelayCommand(
+                _runTests = _runTests ?? new RelayCommand(
                     (parameter) => {
                         runWorkflowForSelectedMethods();
                     }, 
@@ -32,6 +32,7 @@ namespace ApiTester.Wpf.ViewModels
                         && SelectedWorkflow != null
                         && SelectedConfiguration.method.Any(m => m.isSelected)
                         && !IsBusy);
+                return _runTests;
             }
         }
 
@@ -40,12 +41,13 @@ namespace ApiTester.Wpf.ViewModels
         {
             get
             {
-                return _loadConfiguration ?? new RelayCommand(
+                _loadConfiguration = _loadConfiguration ?? new RelayCommand(
                     (parameter) => {
                         new LoadAssembly().ShowDialog();
                         OnPropertyChanged("Configurations");
                     },
                     x => true);
+                return _loadConfiguration;
             }
         }
 
@@ -54,11 +56,13 @@ namespace ApiTester.Wpf.ViewModels
         {
             get
             {
-                return _saveLoadedConfiguration ?? new RelayCommand(
+                _saveLoadedConfiguration = _saveLoadedConfiguration ?? new RelayCommand(
                     (parameter) => {
                         reflectAndLoadAssembly();
                     },
                     x => SelectedAssembly != null);
+
+                return _saveLoadedConfiguration;
             }
         }
 
@@ -67,16 +71,19 @@ namespace ApiTester.Wpf.ViewModels
         {
             get
             {
-                return _toggleSelection ?? new RelayCommand(
+                _toggleSelection = _toggleSelection ?? new RelayCommand(
                     (parameter) => {
                         foreach(var m in SelectedConfiguration.method)
                         {
-                            m.isSelected = !m.isSelected;
+                            m.isSelected = null != parameter ? Convert.ToBoolean(parameter) : !m.isSelected;
                         }
 
                         OnPropertyChanged("MethodsTable");
+                        _runTests.RaiseCanExecuteChanged();
                     },
                     x => SelectedConfiguration != null);
+
+                return _toggleSelection;
             }
         }
 
@@ -85,10 +92,12 @@ namespace ApiTester.Wpf.ViewModels
         {
             get
             {
-                return _buildHeaders ?? new RelayCommand(
+                _buildHeaders = _buildHeaders ?? new RelayCommand(
                     (parameter) => {
                     },
                     x => true);
+
+                return _buildHeaders;
             }
         }
 
@@ -97,9 +106,10 @@ namespace ApiTester.Wpf.ViewModels
         {
             get
             {
-                return _goBack ?? new RelayCommand(
+                _goBack = _goBack ?? new RelayCommand(
                     (parameter) => System.Windows.Application.Current.Shutdown()
                     , x => true);
+                return _goBack;
             }
         }
 
@@ -108,9 +118,10 @@ namespace ApiTester.Wpf.ViewModels
         {
             get
             {
-                return _exitApplication ?? new RelayCommand(
+                _exitApplication = _exitApplication ?? new RelayCommand(
                     (parameter) => System.Windows.Application.Current.Shutdown()
                     ,x => !IsBusy);
+                return _exitApplication;
             }
         }
         #endregion commands
@@ -211,7 +222,8 @@ namespace ApiTester.Wpf.ViewModels
         {
             Common.Extensions.TraceLog.Information("Running workflow {name}", SelectedWorkflow.name);
 
-            var workflow = XmlHelper<workflow>.Load(SelectedWorkflow.name);
+            var workflow = XmlHelper<workflow>.Load(
+                Path.Combine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output"), SelectedWorkflow.name));
             var worker = new BackgroundWorker();
             worker.DoWork += (o, s) =>
             {

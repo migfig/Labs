@@ -51,13 +51,9 @@ namespace Common
 
     public static class ObjectExtensions
     {
-        public static bool IsEqual(this object _source, object _target)
+        public static bool _IsEqualTo(this object _source, object _target)
         {
-            var _sourceType = _source.GetType();
-            var _targetType = _target.GetType();
-            if (_sourceType != _targetType) return false;
-
-            switch (_sourceType.ToString())
+            switch (_source.GetType().ToString())
             {
                 case "System.Boolean":
                     return Convert.ToBoolean(_source) == Convert.ToBoolean(_target);
@@ -90,13 +86,9 @@ namespace Common
             return _source == _target;
         }
 
-        public static bool IsNotEqual(this object _source, object _target)
+        public static bool _IsNotEqualTo(this object _source, object _target)
         {
-            var _sourceType = _source.GetType();
-            var _targetType = _target.GetType();
-            if (_sourceType != _targetType) return true;
-
-            switch (_sourceType.ToString())
+            switch (_source.GetType().ToString())
             {
                 case "System.Boolean":
                     return Convert.ToBoolean(_source) != Convert.ToBoolean(_target);
@@ -129,13 +121,9 @@ namespace Common
             return _source == _target;
         }
 
-        public static bool IsGreaterThan(this object _source, object _target)
+        public static bool _IsGreaterThan(this object _source, object _target)
         {
-            var _sourceType = _source.GetType();
-            var _targetType = _target.GetType();
-            if (_sourceType != _targetType) return false;
-
-            switch (_sourceType.ToString())
+            switch (_source.GetType().ToString())
             {
                 case "System.Boolean":
                     return Convert.ToBoolean(_source) != Convert.ToBoolean(_target);
@@ -168,13 +156,9 @@ namespace Common
             return _source != _target;
         }
 
-        public static bool IsLessThan(this object _source, object _target)
+        public static bool _IsLessThan(this object _source, object _target)
         {
-            var _sourceType = _source.GetType();
-            var _targetType = _target.GetType();
-            if (_sourceType != _targetType) return false;
-
-            switch (_sourceType.ToString())
+            switch (_source.GetType().ToString())
             {
                 case "System.Boolean":
                     return Convert.ToBoolean(_source) != Convert.ToBoolean(_target);
@@ -207,13 +191,9 @@ namespace Common
             return _source != _target;
         }
 
-        public static bool IsGreaterThanOrEqual(this object _source, object _target)
+        public static bool _IsGreaterThanOrEqual(this object _source, object _target)
         {
-            var _sourceType = _source.GetType();
-            var _targetType = _target.GetType();
-            if (_sourceType != _targetType) return false;
-
-            switch (_sourceType.ToString())
+            switch (_source.GetType().ToString())
             {
                 case "System.Boolean":
                     return Convert.ToBoolean(_source) != Convert.ToBoolean(_target);
@@ -246,13 +226,9 @@ namespace Common
             return _source != _target;
         }
 
-        public static bool IsLessThanOrEqual(this object _source, object _target)
+        public static bool _IsLessThanOrEqual(this object _source, object _target)
         {
-            var _sourceType = _source.GetType();
-            var _targetType = _target.GetType();
-            if (_sourceType != _targetType) return false;
-
-            switch (_sourceType.ToString())
+            switch (_source.GetType().ToString())
             {
                 case "System.Boolean":
                     return Convert.ToBoolean(_source) != Convert.ToBoolean(_target);
