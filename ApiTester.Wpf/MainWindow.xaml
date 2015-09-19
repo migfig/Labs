@@ -6,12 +6,14 @@
         xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         xmlns:wpfspark="clr-namespace:WPFSpark;assembly=WPFSpark"                 
         xmlns:local="clr-namespace:ApiTester.Wpf"
+        xmlns:converters="clr-namespace:RelatedRecords.Wpf"
         mc:Ignorable="d"
         Title="API Tester" Height="350" Width="525" WindowState="Maximized">
 
     <Fluent:RibbonWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary x:Key="itemTemplate" Source="ConfigTemplate.xaml"/>
+            <converters:StringToUriConverter x:Key="UriConverter"/>
         </ResourceDictionary>
     </Fluent:RibbonWindow.Resources>
 
@@ -277,6 +279,47 @@
                           AutoGenerateColumns="True"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"/>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Swagger">
+                <Grid>
+                    <Border
+                        Padding="4" CornerRadius="2"  
+                        VerticalAlignment="Stretch" 
+                        HorizontalAlignment="Stretch" 
+                        BorderBrush="DarkGray" 
+                        BorderThickness="1">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="Url"/>
+                            <TextBox Grid.Column="1" 
+                                     x:Name="txtUrl"
+                                     Text="{Binding Mode=TwoWay, Path=SelectedConfiguration.documentationUrl, UpdateSourceTrigger=Explicit}"
+                                     TextChanged="txtUrl_TextChanged"/>
+
+                            <Border Grid.Row="1" Grid.ColumnSpan="2"
+                                Padding="4" CornerRadius="2"  
+                                VerticalAlignment="Stretch" 
+                                HorizontalAlignment="Stretch" 
+                                BorderBrush="DarkGray" 
+                                BorderThickness="1">
+
+                                <WebBrowser 
+                                    x:Name="webBrowser"                            
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"/>
+                            </Border>
+                        </Grid>
                     </Border>
                 </Grid>
             </TabItem>

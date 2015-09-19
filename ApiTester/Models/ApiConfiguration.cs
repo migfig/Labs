@@ -22,6 +22,7 @@
         private Setup setupField;
         private ObservableCollection<Method> methodField;
         private ObservableCollection<assembly> assemblyField;
+        private string documentationUrlField;
 
         public apiConfiguration()
         {
@@ -65,6 +66,19 @@
             set
             {
                 this.assemblyField = value;
+            }
+        }
+
+        [XmlAttributeAttribute()]
+        public string documentationUrl
+        {
+            get
+            {
+                return this.documentationUrlField;
+            }
+            set
+            {
+                this.documentationUrlField = value;
             }
         }
 

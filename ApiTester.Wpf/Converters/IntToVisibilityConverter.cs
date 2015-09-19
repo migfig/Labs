@@ -86,4 +86,23 @@ namespace RelatedRecords.Wpf
             throw new NotImplementedException();
         }
     }
+
+    public class StringToUriConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if(value != null)
+            {
+                var url = value.ToString();
+                return new Uri(url, UriKind.RelativeOrAbsolute);
+            }
+
+            return new Uri("http://localhost", UriKind.RelativeOrAbsolute);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

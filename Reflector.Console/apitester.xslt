@@ -11,6 +11,9 @@
   <xsl:template name="renderSetup" match="type">
     <xsl:variable name="urlPrefix" select="concat('/', attributes/attribute[@type='System.Web.Http.RoutePrefixAttribute']/properties/property[@name='Prefix']/@value, '/')"/>
     <apiConfiguration>
+      <xsl:attribute name="documentationUrl">
+        <xsl:value-of select="concat('http://localhost:1010/',utils:ToLower(utils:TypeName(@name)),'-swagger')"/>
+      </xsl:attribute>
       <setup commandLine="C:\Program Files (x86)\Git\bin\curl.exe">
         <xsl:attribute name="name">
           <xsl:value-of select="@name"/>

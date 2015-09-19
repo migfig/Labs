@@ -27,5 +27,13 @@ namespace ApiTester.Wpf
             InitializeComponent();
             DataContext = MainViewModel.ViewModel;
         }
+
+        private void txtUrl_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtUrl.Text))
+            {
+                webBrowser.Navigate(txtUrl.Text);
+            }
+        }
     }
 }
