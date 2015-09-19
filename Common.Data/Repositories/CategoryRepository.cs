@@ -41,6 +41,7 @@ namespace Common.Data.Repositories
 
         public bool Load()
         {
+            Common.Extensions.TraceLog.Information("Xml repository: {XmlFile}", XmlFile);
             if(File.Exists(XmlFile))
             {
                 _categories = XmlHelper<Categories>.Load(XmlFile).Items;

@@ -76,6 +76,7 @@ namespace ApiTester.Wpf.ViewModels
                         foreach(var m in SelectedConfiguration.method)
                         {
                             m.isSelected = null != parameter ? Convert.ToBoolean(parameter) : !m.isSelected;
+                            m.isValidTest = false;
                         }
 
                         OnPropertyChanged("MethodsTable");

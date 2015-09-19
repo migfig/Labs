@@ -51,12 +51,16 @@ namespace FluentTesting
         protected void CheckResults()
         {
             ResultsPassed = true;
+            var log = new StringBuilder(Description);
+
             foreach(var propertyName in Properties.Keys)
             {
                 var value = Target.GetType().GetProperty(propertyName).GetValue(Target);
 
                 foreach(var item in Properties[propertyName])
                 {
+                    log.AppendFormat(" {0} {1} = [{2}] {3} [{4}]", 
+                        item.Condition, propertyName, value, item.Operator, item.Value);
                     switch(item.Condition)
                     {
                         case eCondition.And:
@@ -114,6 +118,9 @@ namespace FluentTesting
                 if (!ResultsPassed)
                     break;
             }
+
+            log.AppendFormat(" : {0}", ResultsPassed);
+            Common.Extensions.TraceLog.Information("{log}", log);
         }
 
         public VerifyProp VerifyProperty(string properyName)

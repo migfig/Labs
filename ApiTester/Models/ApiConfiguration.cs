@@ -380,7 +380,50 @@
             taskField = new ObservableCollection<Task>();
             resultValueField = new ObservableCollection<ResultValue>();
         }
-        
+
+        [XmlIgnore]
+        public bool IsValid
+        {
+            get
+            {
+                if (ResultsObject is Exception) return false;
+
+                if (resultValue.Any())
+                {
+                    var instance = new Instance("Verifying results for Task [" + this.name + "] ", ResultsObject);
+                    foreach (var val in resultValue)
+                    {
+                        var item = instance.VerifyProperty(val.propertyName);
+                        switch (val.@operator)
+                        {
+                            case eOperator.isEqualTo:
+                                item.IsEqualTo(val.value, val.condition);
+                                break;
+                            case eOperator.isNotEqualTo:
+                                item.IsNotEqualTo(val.value, val.condition);
+                                break;
+                            case eOperator.isGreaterThan:
+                                item.IsGreaterThan(val.value, val.condition);
+                                break;
+                            case eOperator.isLessThan:
+                                item.IsLessThan(val.value, val.condition);
+                                break;
+                            case eOperator.isGreaterThanOrEqual:
+                                item.IsGreaterThanOrEqual(val.value, val.condition);
+                                break;
+                            case eOperator.isLessThanOrEqual:
+                                item.IsLessThanOrEqual(val.value, val.condition);
+                                break;
+                        }
+                    }
+
+                    return instance.GetResults().ResultsPassed;
+                }
+
+                return true;
+            }
+        }
+
         [XmlAttributeAttribute()]
         public string name
         {
@@ -436,6 +479,7 @@
             }
         }
 
+        [ColumnIgnore]
         [XmlElementAttribute("resultValue", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ObservableCollection<ResultValue> resultValue
         {
@@ -485,49 +529,6 @@
             set
             {
                 parentTaskField = value;
-            }
-        }
-
-        [XmlIgnore]
-        public bool IsValid
-        {
-            get
-            {
-                if (ResultsObject is Exception) return false;
-
-                if (resultValue.Any())
-                {
-                    var instance = new Instance("Verifying results", ResultsObject);
-                    foreach (var val in resultValue)
-                    {
-                        var item = instance.VerifyProperty(val.propertyName);
-                        switch (val.@operator)
-                        {
-                            case eOperator.isEqualTo:
-                                item.IsEqualTo(val.value, val.condition);
-                                break;
-                            case eOperator.isNotEqualTo:
-                                item.IsNotEqualTo(val.value, val.condition);
-                                break;
-                            case eOperator.isGreaterThan:
-                                item.IsGreaterThan(val.value, val.condition);
-                                break;
-                            case eOperator.isLessThan:
-                                item.IsLessThan(val.value, val.condition);
-                                break;
-                            case eOperator.isGreaterThanOrEqual:
-                                item.IsGreaterThanOrEqual(val.value, val.condition);
-                                break;
-                            case eOperator.isLessThanOrEqual:
-                                item.IsLessThanOrEqual(val.value, val.condition);
-                                break;
-                        }
-                    }
-
-                    return instance.GetResults().ResultsPassed;
-                }
-
-                return true;
             }
         }
     }
