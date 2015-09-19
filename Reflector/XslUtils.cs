@@ -49,6 +49,11 @@ namespace Reflector
             return capitalized;
         }
 
+        public string ToLower(string value)
+        {
+            return value.ToLower();
+        }
+
         public string Guid()
         {
             return System.Guid.NewGuid().ToString();
@@ -69,7 +74,7 @@ namespace Reflector
 
         public string TimeStamp()
         {
-            return DateTime.Now.Ticks.ToString();
+            return DateTime.Now.ToFileTime().ToString();
         }
 
         public string FileName(string fileName)
@@ -80,6 +85,11 @@ namespace Reflector
         public string TypeName(string value)
         {
             return value.Split('.').Last().Replace("Controller", string.Empty);
+        }
+
+        public string CompleteTypeName(string value)
+        {
+            return value.Split('.').Last();
         }
     }
 }
