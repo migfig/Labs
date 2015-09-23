@@ -70,6 +70,45 @@ namespace ApiTester.Wpf.ViewModels
                             loadAssembly(asm.name);
                         }
                     }
+
+                    if (string.IsNullOrEmpty(DocumentationPath))
+                    {
+                        var ofd = new OpenFileDialog
+                        {
+                            Title = "Select a Swagger File",
+                            CheckFileExists = true,
+                            DefaultExt = "yaml",
+                            InitialDirectory = AppDomain.CurrentDomain.BaseDirectory,
+                            Multiselect = false,
+                            Filter = "Swagger Files|*.yaml"
+                        };
+                        if (ofd.ShowDialog().Value)
+                        {
+                            DocumentationPath = Path.GetDirectoryName(ofd.FileName);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(DocumentationPath))
+                    {
+                        if (Directory.Exists(DocumentationPath))
+                        {
+                            try {
+                                var swaggerProjectFile = Path.Combine(DocumentationPath, "swagger.yaml");
+                                var swaggerDefPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                                    ConfigurationManager.AppSettings["ConfigurationPath"]);
+                                var swaggerFile = Path.Combine(swaggerDefPath,
+                                   _selectedConfiguration.setup
+                                    .name.Split('.').Last().Replace("Controller", string.Empty)
+                                    + "-swagger.yaml");
+                                if (File.Exists(swaggerFile))
+                                {
+                                    if (File.Exists(swaggerProjectFile)) File.Delete(swaggerProjectFile);
+
+                                    File.Copy(swaggerFile, swaggerProjectFile);
+                                }
+                            } catch(Exception) {; }
+                        }
+                    }
                 }
                 OnPropertyChanged();
                 OnPropertyChanged("HeadersTable");
@@ -221,6 +260,18 @@ namespace ApiTester.Wpf.ViewModels
             {
                 if (Properties.Settings.Default.BinariesPath == value) return;
                 Properties.Settings.Default.BinariesPath = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public string DocumentationPath
+        {
+            get { return Properties.Settings.Default.DocumentationPath; }
+            set
+            {
+                if (Properties.Settings.Default.DocumentationPath == value) return;
+                Properties.Settings.Default.DocumentationPath = value;
                 Properties.Settings.Default.Save();
                 OnPropertyChanged();
             }

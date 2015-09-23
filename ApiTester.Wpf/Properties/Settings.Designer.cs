@@ -34,5 +34,17 @@ namespace ApiTester.Wpf.Properties {
                 this["BinariesPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DocumentationPath {
+            get {
+                return ((string)(this["DocumentationPath"]));
+            }
+            set {
+                this["DocumentationPath"] = value;
+            }
+        }
     }
 }
