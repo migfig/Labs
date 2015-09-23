@@ -1,5 +1,6 @@
 ﻿using ApiTester.Models;
 using Common;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -213,6 +214,18 @@ namespace ApiTester.Wpf.ViewModels
             }
         }
 
+        public string BinariesPath
+        {
+            get { return Properties.Settings.Default.BinariesPath; }
+            set
+            {
+                if (Properties.Settings.Default.BinariesPath == value) return;
+                Properties.Settings.Default.BinariesPath = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
         private List<Assembly> _availableAssemblies;
         public IEnumerable<Assembly> AvailableAssemblies
         {
@@ -223,9 +236,30 @@ namespace ApiTester.Wpf.ViewModels
                 if (null == list)
                 {
                     _availableAssemblies = new List<Assembly>();
-                    foreach (var file in Directory.GetFiles(
-                        ConfigurationManager.AppSettings["BinariesPath"], "*.dll"))
+
+                    if(string.IsNullOrEmpty(BinariesPath))
                     {
+                        var ofd = new OpenFileDialog
+                        {
+                            Title = "Select a File Assembly",
+                            CheckFileExists = true,
+                            DefaultExt = "dll",
+                            InitialDirectory = AppDomain.CurrentDomain.BaseDirectory,
+                            Multiselect = false,
+                            Filter = "Assembly Files|*.dll"
+                        };
+                        if(ofd.ShowDialog().Value)
+                        {
+                            BinariesPath = Path.GetDirectoryName(ofd.FileName);
+                        }
+                        else
+                        {
+                            return _availableAssemblies;
+                        }
+                    }
+
+                    foreach (var file in Directory.GetFiles(BinariesPath, "*.dll"))
+                    {                        
                         _availableAssemblies.Add(getAssembly(file));
                     }
 

@@ -84,6 +84,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\IntToVisibilityConverter.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\MainViewModel.Commands.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\LoadAssembly.xaml.cs">
@@ -133,7 +134,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
