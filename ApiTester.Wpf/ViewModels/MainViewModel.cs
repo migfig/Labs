@@ -119,12 +119,20 @@ namespace ApiTester.Wpf.ViewModels
 
         private void loadAssembly(string source)
         {
-            _assemblies.Add(source, getAssembly(source));
+            var asm = getAssembly(source);
+
+            if(null != asm)
+                _assemblies.Add(source, asm);
         }
 
         private Assembly getAssembly(string source)
         {
-            return Assembly.LoadFrom(source);
+            try {
+                return Assembly.LoadFrom(source);
+            } catch(Exception)
+            {
+                return null;
+            }
         }
 
         public DataTable HeadersTable
