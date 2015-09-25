@@ -105,6 +105,8 @@
             <ListView 
                       ItemsSource="{Binding AvailableTypes}"
                       SelectedItem="{Binding Mode=TwoWay, Path=SelectedType}"
+                      SelectionMode="Extended"
+                      SelectionChanged="ListView_SelectionChanged"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
                       Background="Transparent">

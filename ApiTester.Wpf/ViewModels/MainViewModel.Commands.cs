@@ -173,8 +173,7 @@ namespace ApiTester.Wpf.ViewModels
                 }
                 else
                 {
-                    var types = SelectedAssembly.GetTypes().Where(x => x.Name.Contains("Controller"));
-                    foreach (var type in types)
+                    foreach (var type in SelectedTypes)
                     {
                         executeTaskItem(task, type.FullName
                             .Split('.')

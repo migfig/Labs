@@ -98,7 +98,7 @@
                 <!--Gallery with all tables-->
                 <Fluent:RibbonGroupBox Header="Configurations" Name="P">
                     <Fluent:InRibbonGallery ItemWidth="150" ItemHeight="56" ResizeMode="Both"
-                                      MinItemsInRow="2" MaxItemsInRow="7"                             
+                                      MinItemsInRow="2" MaxItemsInRow="4"                             
                                       ItemTemplate="{DynamicResource ItemCardTemplate}"
                                       ItemsSource="{Binding Configurations}"
                                       SelectedItem="{Binding Mode=TwoWay, Path=SelectedConfiguration}">

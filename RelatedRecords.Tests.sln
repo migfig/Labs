@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelatedRecords.Tests", "RelatedRecords.Tests\RelatedRecords.Tests.csproj", "{63290898-005D-4E23-963B-8AEFA440D5BC}"
 EndProject
@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Documents", "Suppor
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
 		README.md = README.md
+		ToDo.txt = ToDo.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Example", "WebApi.Example\WebApi.Example.csproj", "{88430C33-1702-4E8C-8F4C-392007BA21E1}"

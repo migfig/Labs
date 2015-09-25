@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using WPFSpark;
 using System.Collections.ObjectModel;
 using ApiTester.Wpf.ViewModels;
+using System.Windows.Controls;
 
 namespace ApiTester.Wpf
 {
@@ -15,6 +17,11 @@ namespace ApiTester.Wpf
         {
             InitializeComponent();
             DataContext = MainViewModel.ViewModel;
+        }
+
+        private void ListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            MainViewModel.ViewModel.SelectedTypes = (sender as ListView).SelectedItems.OfType<Type>();
         }
     }
 }

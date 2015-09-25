@@ -1,0 +1,23 @@
+Related Records:
+Remove duplicates when displaying children tables
+Fix bug when datasources point to same table defs
+Support for verifying relationships and refresh of data schema
+Support for reordering datasources on main window
+Support for Query definitions
+Support for Store procedures in Query definitions
+Support for Parameters in Query definitions
+Quick Table data display
+Quick table data display filtered
+Fix html and sql exports by using filter row property of table
+Improve datasource/dataset names by using catalog/server names instead of timestamp
+Quick clone/removal of unwanted datasources
+Quickly disable datasources
+
+Api Tester:
+Hability to edit workflow result conditions
+Hability to reorder, set parent/children workflow tasks
+Support for data providers when providing requests json (from sql/xml/json/csv)
+Hability to check/uncheck specific tasks to run
+Hability to disable tasks to run
+Display sucessful task runs with image icons
+Display I/O documentation along with Swagger

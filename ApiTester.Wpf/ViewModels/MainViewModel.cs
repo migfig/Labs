@@ -377,6 +377,17 @@ namespace ApiTester.Wpf.ViewModels
             }
         }
 
+        private IEnumerable<Type> _selectedTypes;
+        public IEnumerable<Type> SelectedTypes
+        {
+            get { return _selectedTypes; }
+            set
+            {
+                _selectedTypes = value;
+                OnPropertyChanged();
+            }
+        }
+
         public IEnumerable<MethodInfo> AvailableMethods
         {
             get {
