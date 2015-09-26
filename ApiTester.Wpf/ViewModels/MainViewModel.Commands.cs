@@ -144,7 +144,7 @@ namespace ApiTester.Wpf.ViewModels
 
                 try
                 {
-                    foreach (var task in SelectedBuildWorkflow.taskItem)
+                    foreach (var task in SelectedBuildWorkflow.taskItem.Where(x => !x.isDisabled))
                     {
                         runTaskItem(task);
                     }
@@ -231,7 +231,7 @@ namespace ApiTester.Wpf.ViewModels
 
                 try
                 {
-                    foreach (var task in workflow.task)
+                    foreach (var task in workflow.task.Where(x => !x.isDisabled))
                     {
                         runTask(task);
                     }

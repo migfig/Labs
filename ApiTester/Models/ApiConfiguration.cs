@@ -387,6 +387,7 @@
         private string resultsField;
         private object resultsObjectField;
         private Task parentTaskField;
+        private bool isDisabledField;
 
         public Task()
         {
@@ -543,6 +544,19 @@
             set
             {
                 parentTaskField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool isDisabled
+        {
+            get
+            {
+                return this.isDisabledField;
+            }
+            set
+            {
+                this.isDisabledField = value;
             }
         }
     }

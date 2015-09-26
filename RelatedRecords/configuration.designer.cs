@@ -11,6 +11,7 @@ namespace RelatedRecords
     using System;
     using System.Runtime.CompilerServices;
     using Common;
+    using System.Linq;
 
     public enum eAutoFilter
     {
@@ -361,8 +362,138 @@ namespace RelatedRecords
                 this.nameField = value;
             }
         }
+
+        public override string ToString()
+        {
+            return this.name.ToUpper() + Environment.NewLine + Environment.NewLine + "Columns: " + Column.Count.ToString();
+        }
     }
-    
+
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    public partial class CQuery
+    {
+        private ObservableCollection<CParameter> parameterField;
+        private string textField;
+        private string nameField;
+        private bool isStoreProcedureField;
+
+        public CQuery()
+        {
+            this.parameterField = new ObservableCollection<CParameter>();
+        }
+
+        [System.Xml.Serialization.XmlElementAttribute("Parameter")]
+        public ObservableCollection<CParameter> Parameter
+        {
+            get
+            {
+                return this.parameterField;
+            }
+            set
+            {
+                this.parameterField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public string Text
+        {
+            get
+            {
+                return this.textField;
+            }
+            set
+            {
+                this.textField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string name
+        {
+            get
+            {
+                return this.nameField;
+            }
+            set
+            {
+                this.nameField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool isStoreProcedure
+        {
+            get
+            {
+                return this.isStoreProcedureField;
+            }
+            set
+            {
+                this.isStoreProcedureField = value;
+            }
+        }
+
+        public override string ToString()
+        {
+            return this.name.ToUpper() + Environment.NewLine + Environment.NewLine + "Parameters: " + Parameter.Count.ToString();
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    public partial class CParameter
+    {
+        private string nameField;
+        private string typeField;
+        private string defaultValueField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string name
+        {
+            get
+            {
+                return this.nameField;
+            }
+            set
+            {
+                this.nameField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string type
+        {
+            get
+            {
+                return this.typeField;
+            }
+            set
+            {
+                this.typeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string defaultValue
+        {
+            get
+            {
+                return this.defaultValueField;
+            }
+            set
+            {
+                this.defaultValueField = value;
+            }
+        }
+    }
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.4.0.32990")]
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -372,14 +503,17 @@ namespace RelatedRecords
         
         private ObservableCollection<CTable> tableField;
         private ObservableCollection<CRelationship> relationshipField;
-        
+        private ObservableCollection<CQuery> queryField;
+
         private string nameField;
         private string dataSourceNameField;
         private string defaultTableField;
+        private bool isDisabledField;
 
         public CDataset() {
             this.relationshipField = new ObservableCollection<CRelationship>();
             this.tableField = new ObservableCollection<CTable>();
+            this.queryField = new ObservableCollection<CQuery>();
         }
         
         [System.Xml.Serialization.XmlElementAttribute("Table")]
@@ -391,7 +525,21 @@ namespace RelatedRecords
                 this.tableField = value;
             }
         }
-        
+
+        [System.Xml.Serialization.XmlElementAttribute("Query")]
+        public ObservableCollection<CQuery> Query
+        {
+            get
+            {
+                return this.queryField;
+            }
+            set
+            {
+                this.queryField = value;
+            }
+        }
+
+
         [System.Xml.Serialization.XmlElementAttribute("Relationship")]
         public ObservableCollection<CRelationship> Relationship {
             get {
@@ -436,9 +584,22 @@ namespace RelatedRecords
             }
         }
 
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool isDisabled
+        {
+            get
+            {
+                return this.isDisabledField;
+            }
+            set
+            {
+                this.isDisabledField = value;
+            }
+        }
+
         public override string ToString()
         {
-            return this.name.ToUpper() + Environment.NewLine + Environment.NewLine + "Children: " + Table.Count.ToString();
+            return this.name.ToUpper() + Environment.NewLine + Environment.NewLine + "Tables: " + Table.Count.ToString();
         }
     }
 }

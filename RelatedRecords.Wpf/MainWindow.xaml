@@ -24,8 +24,9 @@
                 <Fluent:QuickAccessMenuItem Target="{Binding ElementName=buttonGreen}"/>
             </Fluent:Ribbon.QuickAccessItems>
 
+            
             <!--Tabs-->
-            <Fluent:RibbonTabItem Header="Tab" ReduceOrder="(P),(P),(P),(P),(P)">
+            <Fluent:RibbonTabItem Header="Tab" ReduceOrder="(P),(Q),(R)">
                 <Fluent:RibbonGroupBox Header="Navigation">
                     <Button Command="{Binding GoBackCommand}">
                         <Button.RenderTransform>
@@ -88,11 +89,30 @@
                 <Fluent:RibbonGroupBox Header="Datasets" Name="P">
                     <Fluent:InRibbonGallery ItemWidth="100" ItemHeight="56" ResizeMode="Both"
                                       MinItemsInRow="2" MaxItemsInRow="4"                             
-                                      ItemTemplate="{DynamicResource TableCardTemplate}"
+                                      ItemTemplate="{DynamicResource DatasetCardTemplate}"
                                       ItemsSource="{Binding SelectedConfiguration.Dataset}"
                                       SelectedItem="{Binding Mode=TwoWay, Path=SelectedDataset}">
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Tables" Name="Q">
+                    <Fluent:InRibbonGallery ItemWidth="80" ItemHeight="56" ResizeMode="Both"
+                                      MinItemsInRow="1" MaxItemsInRow="2"                             
+                                      ItemTemplate="{DynamicResource TableCardTemplate}"
+                                      ItemsSource="{Binding SelectedDataset.Table}"
+                                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedDataset}">
+                    </Fluent:InRibbonGallery>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Queries" Name="R">
+                    <Fluent:InRibbonGallery ItemWidth="100" ItemHeight="56" ResizeMode="Both"
+                                      MinItemsInRow="1" MaxItemsInRow="2"                             
+                                      ItemTemplate="{DynamicResource QueryCardTemplate}"
+                                      ItemsSource="{Binding SelectedDataset.Query}"
+                                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedDataset}">
+                    </Fluent:InRibbonGallery>
+                </Fluent:RibbonGroupBox>
+
 
                 <Fluent:RibbonGroupBox Header="Search/Filters">
                     <Fluent:DropDownButton SizeDefinition="Middle" Header="Column">

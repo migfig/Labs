@@ -41,6 +41,15 @@
       <Column name="DepartmentName" DbType="string" isPrimaryKey="false" isForeignKey="false" isNullable="false" defaultValue=""/>
     </Table>
 
+    <Query name="Tickets" isStoreProcedure="false">
+      <![CDATA[SELECT * FROM Tickets]]>
+    </Query>
+
+    <Query name="usp_GetTickets" isStoreProcedure="true">
+      <Parameter name="Id" type="int" defaultValue="1"/>
+      <Parameter name="Title" type="string" defaultValue="Sample"/>
+    </Query>
+
     <Relationship name="Tickets->TicketsStatusCodes" fromTable="Tickets" toTable="TicketsStatusCodes" fromColumn="StatusCodeId" toColumn="StatusCodeId"/>
     <Relationship name="Tickets->TicketsPriorities" fromTable="Tickets" toTable="TicketsPriorities" fromColumn="PriorityId" toColumn="PriorityId"/>
     <Relationship name="Tickets->Users" fromTable="Tickets" toTable="Users" fromColumn="UserId" toColumn="UserId"/>

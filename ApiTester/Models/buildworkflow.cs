@@ -68,6 +68,7 @@ namespace ApiTester.Models
         private string nameField;        
         private string commandLineField;
         private bool foreachTypeField;
+        private bool isDisabledField;
 
         public TaskItem()
         {
@@ -125,6 +126,19 @@ namespace ApiTester.Models
             set
             {
                 this.foreachTypeField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool isDisabled
+        {
+            get
+            {
+                return this.isDisabledField;
+            }
+            set
+            {
+                this.isDisabledField = value;
             }
         }
     }
