@@ -1,0 +1,365 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <LinearGradientBrush x:Key="NormalBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#EEE" Offset="0.0" />
+        <GradientStop Color="#CCC" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="NormalBorderBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#CCC" Offset="0.0" />
+        <GradientStop Color="#444" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LightBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#FFF" Offset="0.0" />
+        <GradientStop Color="#EEE" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="MouseOverBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#FFF" Offset="0.0" />
+        <GradientStop Color="#AAA" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="PressedBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#BBB" Offset="0.0" />
+        <GradientStop Color="#EEE" Offset="0.1" />
+        <GradientStop Color="#EEE" Offset="0.9" />
+        <GradientStop Color="#FFF" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="PressedBorderBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#444" Offset="0.0" />
+        <GradientStop Color="#888" Offset="1.0" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD" />
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
+    <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#EEE" />
+    <SolidColorBrush x:Key="DisabledBorderBrush" Color="#AAA" />
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFF" />
+    <LinearGradientBrush x:Key="DefaultedBorderBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#777" Offset="0.0" />
+        <GradientStop Color="#000" Offset="1.0" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="SolidBorderBrush" Color="#888" />
+    <SolidColorBrush x:Key="LightBorderBrush" Color="#AAA" />
+    <SolidColorBrush x:Key="LightColorBrush" Color="#DDD" />
+    <SolidColorBrush x:Key="GlyphBrush" Color="#444" />
+    <SolidColorBrush x:Key="GlyphSucceedBrush" Color="#FF6EBF20" />
+    <SolidColorBrush x:Key="GlyphFailedBrush" Color="#FFC65325" />
+    <Style x:Key="DefaultRadioButton" TargetType="{x:Type RadioButton}">
+        <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <BulletDecorator Background="#00FFFFFF">
+                        <BulletDecorator.Bullet>
+                            <Grid Width="13" Height="13">
+                                <Ellipse Name="Ellipse_Border" Fill="{TemplateBinding Control.Background}" Stroke="{TemplateBinding Control.BorderBrush}" StrokeThickness="1" />
+                                <Ellipse Name="CheckMark" Margin="4" Fill="{DynamicResource GlyphBrush}" />
+                            </Grid>
+                        </BulletDecorator.Bullet>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" Margin="{TemplateBinding Control.Padding}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" RecognizesAccessKey="True" />
+                    </BulletDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ToggleButton.IsChecked" Value="false">
+                            <Setter TargetName="CheckMark" Property="UIElement.Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Ellipse_Border" Property="Shape.Fill" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Ellipse_Border" Property="Shape.Fill" />
+                            <Setter Value="{DynamicResource GlyphBrush}" TargetName="Ellipse_Border" Property="Shape.Stroke" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Ellipse_Border" Property="Shape.Fill" />
+                            <Setter TargetName="Ellipse_Border" Property="Shape.Stroke" Value="#40000000" />
+                            <Setter Property="Control.Foreground" Value="#80000000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SucceededRadioButton" TargetType="{x:Type RadioButton}">
+        <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <BulletDecorator Background="#00FFFFFF">
+                        <BulletDecorator.Bullet>
+                            <Grid Width="13" Height="13">
+                                <Ellipse Name="Ellipse_Border" Fill="{TemplateBinding Control.Background}" Stroke="{TemplateBinding Control.BorderBrush}" StrokeThickness="1" />
+                                <Ellipse Name="CheckMark" Margin="4" Fill="{DynamicResource GlyphSucceedBrush}" />
+                            </Grid>
+                        </BulletDecorator.Bullet>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" Margin="{TemplateBinding Control.Padding}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" RecognizesAccessKey="True" />
+                    </BulletDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ToggleButton.IsChecked" Value="false">
+                            <Setter TargetName="CheckMark" Property="UIElement.Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Ellipse_Border" Property="Shape.Fill" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Ellipse_Border" Property="Shape.Fill" />
+                            <Setter Value="{DynamicResource GlyphSucceedBrush}" TargetName="Ellipse_Border" Property="Shape.Stroke" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Ellipse_Border" Property="Shape.Fill" />
+                            <Setter TargetName="Ellipse_Border" Property="Shape.Stroke" Value="#40000000" />
+                            <Setter Property="Control.Foreground" Value="#80000000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="FailedRadioButton" TargetType="{x:Type RadioButton}">
+        <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <BulletDecorator Background="#00FFFFFF">
+                        <BulletDecorator.Bullet>
+                            <Grid Width="13" Height="13">
+                                <Ellipse Name="Ellipse_Border" Fill="{TemplateBinding Control.Background}" Stroke="{TemplateBinding Control.BorderBrush}" StrokeThickness="1" />
+                                <Ellipse Name="CheckMark" Margin="4" Fill="{DynamicResource GlyphFailedBrush}" />
+                            </Grid>
+                        </BulletDecorator.Bullet>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" Margin="{TemplateBinding Control.Padding}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" RecognizesAccessKey="True" />
+                    </BulletDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ToggleButton.IsChecked" Value="false">
+                            <Setter TargetName="CheckMark" Property="UIElement.Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Ellipse_Border" Property="Shape.Fill" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Ellipse_Border" Property="Shape.Fill" />
+                            <Setter Value="{DynamicResource GlyphFailedBrush}" TargetName="Ellipse_Border" Property="Shape.Stroke" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Ellipse_Border" Property="Shape.Fill" />
+                            <Setter TargetName="Ellipse_Border" Property="Shape.Stroke" Value="#40000000" />
+                            <Setter Property="Control.Foreground" Value="#80000000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="CheckBoxFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border>
+                        <Rectangle Margin="15,0,0,0" Stroke="#60000000" StrokeThickness="1" StrokeDashArray="1 2" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="DefaultCheckBox" TargetType="{x:Type CheckBox}">
+        <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource CheckBoxFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <BulletDecorator Background="#00FFFFFF">
+                        <BulletDecorator.Bullet>
+                            <Grid Width="13" Height="13">
+                                <Border Name="Border" Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" />
+                                <Path Name="CheckMark" Stroke="{DynamicResource GlyphBrush}" StrokeThickness="2" SnapsToDevicePixels="False" Data="M0,0L13,13 M0,13L13,0" />
+                            </Grid>
+                        </BulletDecorator.Bullet>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" Margin="{TemplateBinding Control.Padding}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" RecognizesAccessKey="True" />
+                    </BulletDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ToggleButton.IsChecked" Value="false">
+                            <Setter TargetName="CheckMark" Property="UIElement.Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Border" Property="Border.Background" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource PressedBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource DisabledBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SimpleButtonFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border>
+                        <Rectangle Margin="2" Stroke="#60000000" StrokeThickness="1" StrokeDashArray="1 2" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="DefaultButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Name="Grid">
+                        <Border Name="Border" Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" Padding="{TemplateBinding Control.Padding}" />
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" Margin="{TemplateBinding Control.Padding}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" RecognizesAccessKey="True" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsKeyboardFocused" Value="True">
+                            <Setter Value="{DynamicResource DefaultedBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Border" Property="Border.Background" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource PressedBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="True" />
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource DisabledBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                            <Setter Value="{DynamicResource DisabledForegroundBrush}" Property="Control.Foreground" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="RatingUpButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Name="Grid" Width="20" Height="20">
+                        <Border Name="Border">
+                            <Image Name="Content" Source="/Images/up.png" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Border" Property="Border.Background" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource PressedBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource DisabledBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="RatingDownButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Name="Grid" Width="20" Height="20">
+                        <Border Name="Border">
+                            <Image Name="Content" Source="/Images/down.png" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Border" Property="Border.Background" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource PressedBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource DisabledBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="RatingUndefButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Name="Grid" Width="20" Height="20">
+                        <Border Name="Border">
+                            <Image Name="Content" Source="/Images/undef.png" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Border" Property="Border.Background" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource PressedBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource DisabledBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="QuestionButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Name="Grid" Width="20" Height="20">
+                        <Border Name="Border">
+                            <Image Name="Content" Source="/Images/question.png" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Border" Property="Border.Background" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource PressedBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource DisabledBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <platform name="Web">
+    <knowledgeArea name="Knowledge Base">
+      <area name="HTTP Communication">
+        <question value="1" level="1">Enumerate at least 4 HTTP methods of comunication and describe each one</question>
+        <question value="1" level="1">Which is the default port for a web application</question>
+        <question value="1" level="1">What is SSL/TSL and its default port</question>
+        <question value="1" level="1">What are the Headers</question>
+        <question value="1" level="1">In what web objects Headers can be set/read</question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="ASP"/>
+    <knowledgeArea name="Ajax">
+      <area name="General">
+        <question value="1" level="1">What's the main component used by all ajax implementations</question>
+        <question value="1" level="1">What is the advantage of using Ajax</question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="IIS">
+      <area name="Admin">
+        <question value="1" level="1">Have deployed web applications into IIS</question>
+        <question value="1" level="1">What versions of IIS have used</question>
+        <question value="1" level="1">Have installed extra addins, which ones and why</question>
+        <question value="1" level="1">How can I setup application settings/connection strings for an specific web application thru the iis console</question>
+        <question value="1" level="1">What is an application pool and what is used for</question>
+        <question value="1" level="1">How many web.config files can I have on a web application</question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="WebAPI">
+      <area name="Controllers">
+        <question value="5" level="1">
+          What is a controller in web api?
+        </question>
+        <question value="5" level="1">
+          What is a controller method?
+        </question>
+        <question value="5" level="1">
+          What is the default base class for a controller?
+        </question>
+        <question value="5" level="1">
+          Is it the same base class a standard web application uses?
+        </question>
+        <question value="5" level="1">
+          Can I create more than one controller in a web api service?
+        </question>
+        <question value="5" level="1">
+          What type can be returned from controller method?
+        </question>
+      </area>
+      <area name="Routing">
+        <question value="1" level="1">How can you define a Route is in web api</question>
+        <question value="1" level="1">If all methods start with the same route, What attribute can I use to specify a default route prefix and what code object should be decorated with it</question>
+      </area>
+      <area name="REST Methods">
+        <question level="1" value="1">What is a REST API</question>
+        <question level="1" value="1">What's the meaning of a REST API being a FULL REST API</question>
+        <question level="1" value="1">What are the differences between REST and SOAP services</question>
+      </area>
+      <area name="Authentication/Authorization">
+        <question level="1" value="1">What schemas of Authetication and Authorization are available in web api</question>
+        <question level="1" value="1">What's the difference between Authetication and Authorization</question>
+        <question level="1" value="1">Can I implement my custom Authetication and Authorization provider</question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="Html5">
+      <area name="Tags">
+        <question level="1" value="1">What are the main improvements in HTML5 vs previous versions</question>
+        <question level="1" value="1">What are the main tags available in HTML5</question>
+        <question level="1" value="1">What means the term SVG and what it is used for</question>
+        <question level="1" value="1">Have used JSON and/or XML</question>
+        <question level="1" value="1">What is a SPA web page</question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="CSS3">
+      <area name="Knowledge Base">
+        <question level="1" value="1">What's for CSS3 in web development</question>
+        <question level="1" value="1">What's the difference between a .css file and a .less file</question>
+        <question level="1" value="1">Have used Bootstrap</question>
+        <question level="1" value="1">What is a Responsive Design</question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="JQuery">
+      <area name="Knowledge Base">
+        <question level="1" value="1">What is JQuery and what is used for, is it a Library or a platform/framework</question>
+        <question level="1" value="1">What is a JQuery Plugin</question>
+        <question level="1" value="1">What is a chained expression</question>
+        <question level="1" value="1">How do you query an html element by its ID</question>
+        <question level="1" value="1">How can I get the value of an html element queried by its Class name</question>
+        <question level="1" value="1">How can I get the value of an html attribute previously queried</question>
+        <question level="1" value="1">How can I get the value of the nth html attribute list previously queried</question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="JavaScript">
+      <area name="General">
+        <question value="1" level="1"></question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="AngularJS">
+      <area name="General">
+        <question value="1" level="1">What is the term $Scope in angular and what is used for</question>
+        <question value="1" level="1">What is needed in a web page to support angular</question>
+        <question value="1" level="1">What is printed in a web page if code {{6 + 4}} is inside of an html element and angular is supported</question>
+        <question value="1" level="1">What angular instruction must be specified to include an angular controller</question>
+      </area>
+    </knowledgeArea>
+  </platform>
+  <platform name="Development KB">
+    <knowledgeArea name="OOP">
+      <area name="General">
+        <question level="1" value="1">What is inheritance in object oriented programming</question>
+        <question level="1" value="1">What is polymorphism in object oriented programming</question>
+        <question level="1" value="1">What's the difference between an interface and an abstract class and when to use each</question>
+        <question level="1" value="1">How can be implemented the polymorphism in C#</question>
+        <question level="1" value="1">What is encapsulation in object oriented programming</question>
+        <question level="1" value="1">What is the difference between a private and a protected variable</question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="DesignPatterns">
+      <area name="SOLID">
+        <question level="1" value="1">Could you describe what is the meaning of SOLID in software development</question>
+        <question level="1" value="1">What's the meaning of a loosely coupled design</question>
+        <question level="1" value="1">Describe at least three Design patterns you have used</question>
+        <question level="1" value="1">What design pattern you should used if you want only one instance of x class running on the life of your application</question>
+      </area>
+    </knowledgeArea>
+  </platform>
+  <platform name=".NET Development">
+    <knowledgeArea name="Framework 4.0">
+      <area name="General">
+        <question level="1" value="1">What's the difference between managed and unmanaged framework/environment</question>
+        <question level="1" value="1">What's the lifecycle of an object instance in the .net framework</question>
+        <question level="1" value="1">What's the latest version of the .net framework and the latest used</question>
+        <question level="1" value="1">What's the GAC term and its function</question>
+        <question level="1" value="1">How code is build in .net framework and how is executed</question>
+        <question level="1" value="1">What is the Reflection term in .net framework and what can be reflected from an assembly</question>
+        <question level="1" value="1">What tool have used to disassembly a .net framework assembly</question>
+        <question level="1" value="1">What is obfuscation of code and how can be implemented</question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="C#">
+      <area name="Knowledge Base">
+        <question level="1" value="1">What are annonymous methods and how are they implemented</question>
+        <question level="1" value="1">Is there a razon to declare a variable using var instead of the proper type</question>
+        <question level="1" value="1">How can I create optional parameters in a method</question>
+        <question level="1" value="1">When providing several optional parameters in a method, can I assign them by name</question>
+        <question level="1" value="1">What is a delegate in C#</question>
+        <question level="1" value="1">What is an Action type, have used ever the Action with a generic type</question>
+        <question level="1" value="1">How is used the FUNC&lt;&gt; clause</question>
+        <question level="1" value="1">What an override of a method</question>
+        <question level="1" value="1">What is the overload of a method</question>
+        <question level="1" value="1">Have made xml transformations, XSD files</question>
+        <question level="1" value="1">What are XDocument and XElement for</question>
+        <question level="1" value="1">How can I declare a class to be the base class of some specific hierarchy of classes</question>
+        <question level="1" value="1">How can I specify a method in my base class must be implemented for descendants</question>
+        <question level="1" value="1">Types of Constructors in C#</question>
+        <question level="1" value="1">Difference between method overriding and method overloading</question>
+        <question level="1" value="1">Explain use of Abstract and Sealed Classes in C#</question>
+        <question level="1" value="1">What are Static Classes</question>
+        <question level="1" value="1">Which Access Modifiers are available in C#</question>
+        <question level="1" value="1">What is the use of using statement in C#</question>
+        <question level="1" value="1">What is the difference between Array and Arraylist</question>
+        <question level="1" value="1">What are generics in C#.NET</question>
+        <question level="1" value="1">How can we set a class to be inherited, but prevent some method from being overridden</question>
+        <question level="1" value="1">Is C# code is managed or unmanaged code</question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="LinQ">
+      <area name="Knowledge Base">
+        <question level="1" value="1">What are the advantages and disadvantages of using LinQ in your code</question>
+        <question level="1" value="1">Have used LinQ to Xml or SQL</question>
+        <question level="1" value="1">What's the LinQ clause or expression to return a list of not empty strings from a list of strings</question>
+        <question level="1" value="1">What's the LinQ clause or expression to return a list of unique strings from a list of strings</question>
+        <question level="1" value="1">When to use .First and when to use .FirstOrDefault with LINQ</question>
+        <question level="1" value="1">Explain what is LINQ? Why is it required</question>
+        <question level="1" value="1">What are the types of LINQ</question>
+        <question level="1" value="1">Explain how LINQ is useful than Stored Procedures</question>
+        <question level="1" value="1">Define what are the Where clause and the Let clause</question>
+        <question level="1" value="1">Explain what is the difference between Statement Lambda and Expression Lambda</question>
+        <question level="1" value="1">Explain what are LINQ query expressions</question>
+        <question level="1" value="1">Explain what are compiled queries</question>
+        <question level="1" value="1">Explain what is “LINQ to Objects”</question>
+      </area>
+    </knowledgeArea>
+  </platform>
+  <platform name="Database Development">
+    <knowledgeArea name="SQL Server">
+      <area name="Knowledge Base">
+        <question level="1" value="1">Have used Entity Framework</question>
+        <question level="1" value="1">Have used Entity Framework Code First</question>
+        <question level="1" value="1">What is a POCO class</question>
+        <question level="1" value="1">How can I restrict a numeric column to be within a range of values (min/max) in Entity Framework</question>
+        <question level="1" value="1">What is a unique value column</question>
+        <question level="1" value="1">What is a primary key on a table</question>
+        <question level="1" value="1">How can I specify a default column value in a table</question>
+        <question level="1" value="1">What is the meaning of the term Nullable for a table column</question>
+        <question level="1" value="1">How can I execute an store procedure inside another store procedure body</question>
+        <question level="1" value="1">What clause should I use to declare an string variable size 150 characters</question>
+        <question level="1" value="1">What clause should I use to specify the value of a declared variable</question>
+        <question level="1" value="1">After inserting a row in a given table which has a primary key as identity how can I get and return the inserted key value</question>
+        <question level="1" value="1">What is the basic clause for selecting n rows from the account table where account id is with a range of values</question>
+        <question level="1" value="1">What is the basic clause for inserting a row on a given table</question>
+        <question level="1" value="1">What is the basic clause for updating a row on a given table</question>
+        <question level="1" value="1">What is the basic clause for deleting a row on a given table</question>
+        <question level="1" value="1">What is the clause for selecting all the account names and the quantity of active ones from the account table where columns include accountname, isactive, etc.</question>
+        <question level="1" value="1">What are the types of joins and explain each</question>
+        <question level="1" value="1">What is normalization</question>
+        <question level="1" value="1">What is a View</question>
+        <question level="1" value="1">What is an Index</question>
+        <question level="1" value="1">What are the different types of indexes</question>
+        <question level="1" value="1">What is a stored procedure</question>
+        <question level="1" value="1">What is a trigger</question>
+        <question level="1" value="1">What is the difference between DELETE and TRUNCATE commands</question>
+        <question level="1" value="1">What are local and global variables and their differences</question>
+        <question level="1" value="1">What is a constraint</question>
+        <question level="1" value="1">What is collation</question>
+        <question level="1" value="1">Advantages and Disadvantages of Stored Procedure</question>
+      </area>
+    </knowledgeArea>
+  </platform>
+  <platform name="Unit Testing">
+    <knowledgeArea name="NUnit">
+      <area name="Knowledge Base">
+        <question level="1" value="1">What attribute needs to be set to make a class testable</question>
+        <question level="1" value="1">What attribute needs to be set to make a class method testable</question>
+        <question level="1" value="1">What attribute needs to be set to ignore a class method in the execution of the tests</question>
+        <question value="1" level="1">What do I need to do to test a class that needs some extra resources to have access to them and finally release them</question>
+        <question value="1" level="1">What is the main class for making assertions of your tested code</question>
+        <question value="1" level="1">What tools can I use for applying unit testing to my code</question>
+      </area>
+    </knowledgeArea>
+    <knowledgeArea name="Moq">
+      <area name="Knowledge Base">
+        <question level="1" value="1">How can we implement Mocking</question>
+        <question level="1" value="1">Which class is used in visual studio to use MOQ</question>
+      </area>
+    </knowledgeArea>
+  </platform>
+  <platform name="Agile">
+    <knowledgeArea name="Scrum">
+      <area name="Knowledge Base">
+        <question level="1" value="1">What tools have you used for doing Agile development</question>
+        <question level="1" value="1">What is the advantage of doing Scrum</question>
+        <question level="1" value="1">How long does a scrum cycle last? Who are involved in Scrum cycle</question>
+        <question level="1" value="1">Explain what is user stories in Scrum</question>
+        <question level="1" value="1">List out what are the artifacts of Scrum process?</question>
+        <question level="1" value="1">Explain what is a product backlog in Scrum</question>
+        <question level="1" value="1">Mention in brief, what is the role of scrum master in Scrum</question>
+        <question level="1" value="1">Mention what is the difference between Sprint and Iteration in Scrum</question>
+      </area>
+    </knowledgeArea>
+  </platform>
+  <profile level="DevIII">
+    <requirement platform="" knowledgeArea="" area="*"/>
+    <optional platform="Web" knowledgeArea="ASP"/>
+  </profile>
+  <profile level="DevIV">
+    <requirement platform="*" knowledgeArea="*" area="*"/>
+    <optional platform="Web" knowledgeArea="ASP"/>
+  </profile>
+</configuration>

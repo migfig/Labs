@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
+    xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"
+    xmlns:utils="urn:schemas-reflector-com:xslt">
     <xsl:output method="text" indent="yes"/>
     
     <xsl:template match="/type/methods">
@@ -33,8 +34,15 @@
   <xsl:template name="renderMethod" match="method">
     <xsl:param name="islast"/>
     "<xsl:value-of select="@name"/>": {
-      "description": "<xsl:value-of select="@name"/>",      
-      <xsl:for-each select="parameters">
+      "description": "<xsl:value-of select="utils:CapitalizeWords(@name)"/>",
+      "name": "<xsl:value-of select="@name"/>",
+      "method": "<xsl:value-of select="utils:HttpMethod(attributes/attribute/@type='System.Web.Http.HttpGetAttribute',
+                          attributes/attribute/@type='System.Web.Http.HttpPostAttribute',
+                          attributes/attribute/@type='System.Web.Http.HttpPutAttribute',
+                          attributes/attribute/@type='System.Web.Http.HttpPatchAttribute',
+                          attributes/attribute/@type='System.Web.Http.HttpDeleteAttribute',
+                          attributes/attribute/@type='System.Web.Http.HttpOptionsAttribute')"/>",
+    <xsl:for-each select="parameters">
         <xsl:call-template name="renderParameters"/>
       </xsl:for-each>
     }<xsl:if test="not($islast)">,</xsl:if>

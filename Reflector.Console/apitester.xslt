@@ -90,7 +90,7 @@
             <xsl:value-of select="concat(@itemType,'[]')"/>            
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="attributes/attribute[@type='System.Web.Http.Description.ResponseTypeAttribute']/properties/property[@name='ResponseType']/@value"/>
+            <xsl:value-of select="utils:FixType(attributes/attribute[@type='System.Web.Http.Description.ResponseTypeAttribute']/properties/property[@name='ResponseType']/@value)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>

@@ -30,7 +30,22 @@
         <xsl:call-template name="renderParameter"/>
       </xsl:for-each>
 
-      <resultValue condition="And" propertyName="Id" operator="isEqualTo" value="1"/>
+      <resultValue>
+        <xsl:attribute name="condition">And</xsl:attribute>
+        <xsl:attribute name="propertyName">
+          <xsl:choose>
+            <xsl:when test="@itemType">Length</xsl:when>
+          <xsl:otherwise>Id</xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+        <xsl:attribute name="operator">isNotEqualTo</xsl:attribute>
+        <xsl:attribute name="value">
+          <xsl:choose>
+            <xsl:when test="@itemType">0</xsl:when>
+            <xsl:otherwise></xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+      </resultValue>
     </task>
   </xsl:template>
 

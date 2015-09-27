@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Reflector
@@ -90,6 +91,23 @@ namespace Reflector
         public string CompleteTypeName(string value)
         {
             return value.Split('.').Last();
+        }
+
+        public string FixType(string value)
+        {
+            var reg = new Regex(@"[a-zA-Z0-9.`]*[0-9\[]*(?<typename>[a-zA-Z0-9.]*)[,\s\]]?");
+            var match = reg.Match(value);
+            if(value.StartsWith("System.Collections") && null != match && match.Success)
+            {
+                return match.Groups["typename"].Value + "[]";
+            }
+
+            return value;
+        }
+
+        public string NewLine()
+        {
+            return Environment.NewLine;
         }
     }
 }

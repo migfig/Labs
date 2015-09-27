@@ -19,5 +19,4 @@ Hability to reorder, set parent/children workflow tasks
 Support for data providers when providing requests json (from sql/xml/json/csv)
 Hability to check/uncheck specific tasks to run
 Hability to disable tasks to run
-Display sucessful task runs with image icons
 Display I/O documentation along with Swagger

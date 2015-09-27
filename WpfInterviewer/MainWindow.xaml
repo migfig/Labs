@@ -1,0 +1,131 @@
+﻿<Window x:Class="WpfInterviewer.MainWindow" 
+        Title="Interviewer Questions" 
+        Height="350" 
+        Width="525" 
+        WindowState="Maximized" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:converters="clr-namespace:WpfInterviewer.Converters">
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15*" />
+            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="15*" />
+            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="50*" />
+        </Grid.ColumnDefinitions>
+        <Button Grid.ColumnSpan="5" HorizontalAlignment="Stretch" Content="Get Random Questions" Style="{DynamicResource DefaultButton}" Height="50" CommandParameter="1" Command="{Binding RunQuestionsCommand}" />
+        <Button Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Content="Reset Questions" Style="{DynamicResource DefaultButton}" Height="50" CommandParameter="0" Command="{Binding RunQuestionsCommand}" />
+        <Grid Grid.Row="1" Grid.ColumnSpan="7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="150" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Profile" TextBlock.FontSize="16" />
+            <ComboBox Grid.Column="1" ItemsSource="{Binding Profiles}" SelectedItem="{Binding Mode=TwoWay, Path=SelectedProfile}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding level}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <TextBlock Text="Person" TextBlock.FontSize="16" Margin="4,0,0,0" />
+                <TextBox Width="140" FontSize="16" Foreground="#FF228B22" Margin="4,0,0,0" Text="{Binding Mode=TwoWay, Path=InterviewedPerson, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <TextBlock Grid.Column="3" Text="Questions Count" TextBlock.FontSize="16" Margin="4,0,0,0" />
+            <ComboBox Grid.Column="4" ItemsSource="{Binding QuestionsCountRange}" SelectedItem="{Binding Mode=TwoWay, Path=QuestionsCount}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock TextBlock.FontSize="16" Text="{Binding}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel Grid.Column="5" Orientation="Horizontal">
+                <Image Source="/Images/up.png" Width="20" Height="20" Margin="4,0,0,0" />
+                <TextBlock TextBlock.FontSize="14" Margin="2,0,0,0" VerticalAlignment="Center" Text="{Binding PassedCount}" />
+                <Image Source="/Images/down.png" Width="20" Height="20" Margin="4,0,0,0" />
+                <TextBlock TextBlock.FontSize="14" Margin="2,0,0,0" VerticalAlignment="Center" Text="{Binding FailedCount}" />
+                <Image Source="/Images/undef.png" Width="20" Height="20" Margin="4,0,0,0" />
+                <TextBlock TextBlock.FontSize="14" Margin="2,0,0,0" VerticalAlignment="Center" Text="{Binding UndefinedCount}" />
+            </StackPanel>
+        </Grid>
+        <ListView Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single" 
+                  ItemsSource="{Binding Platforms}" SelectedItem="{Binding Mode=TwoWay, Path=SelectedPlatform}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch">
+                        <TextBlock Text="{Binding name}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <GridSplitter Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" />
+        <ListView Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single" 
+                  ItemsSource="{Binding SelectedPlatform.knowledgeArea}" 
+                  SelectedItem="{Binding Mode=TwoWay, Path=SelectedKnowledgeArea}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch">
+                        <TextBlock Text="{Binding name}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <GridSplitter Grid.Row="2" Grid.Column="3" HorizontalAlignment="Stretch" />
+        <ListView Grid.Row="2" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single" 
+                  ItemsSource="{Binding SelectedKnowledgeArea.area}" 
+                  SelectedItem="{Binding Mode=TwoWay, Path=SelectedArea}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Text="{Binding name}" />
+                        <Button Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{DynamicResource QuestionButton}" Height="30" Command="{Binding ShowAddQuestionsCommand}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <GridSplitter Grid.Row="2" Grid.Column="5" HorizontalAlignment="Stretch" />
+        <ListView Grid.Row="2" Grid.Column="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single" ItemsSource="{Binding Path=SelectedArea.question}" SelectedItem="{Binding Mode=TwoWay, Path=SelectedQuestion}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch" Visibility="{Binding AlreadyAnswered, Converter={StaticResource boolToVisibilityConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding level}" />
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding value}" />
+                        <Button Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource RatingUpButton}" Height="30" Command="{Binding QuestionUpCommand}" CommandParameter="{Binding}" />
+                        <Button Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource RatingDownButton}" Height="30" Command="{Binding QuestionDownCommand}" CommandParameter="{Binding}" />
+                        <Button Grid.Column="4" HorizontalAlignment="Left" Style="{DynamicResource RatingUndefButton}" Height="30" Command="{Binding QuestionUndefCommand}" CommandParameter="{Binding}" />
+                        <TextBlock Grid.Column="5" Text="{Binding Value}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Window>

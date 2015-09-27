@@ -195,6 +195,7 @@
                                     <ColumnDefinition Width="15*"/>
                                     <ColumnDefinition Width="35*"/>
                                     <ColumnDefinition Width="15*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="35*"/>
                                 </Grid.ColumnDefinitions>
 
@@ -212,8 +213,8 @@
                                 </ComboBox>
 
                                 <TextBlock Text="Workflow" Grid.Column="2" />
-                                
-                                <ComboBox Grid.Column="3"  
+                                <Button Command="{Binding EditWorkflow}" Style="{DynamicResource EditButton}" Grid.Column="3"/>
+                                <ComboBox Grid.Column="4"  
                                   ItemsSource="{Binding SelectedConfiguration.setup.workflow}"
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedWorkflow}"
                                   VerticalAlignment="Center">
@@ -225,7 +226,7 @@
                                 </ComboBox>
 
                                 <TextBlock Grid.Row="1" Text="Source" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding SelectedConfiguration.setup.source}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Text="{Binding SelectedConfiguration.setup.source}" VerticalAlignment="Center"/>
                             </Grid>
                             <DataGrid ItemsSource="{Binding HeadersTable}"
                           CanUserResizeRows="False" 

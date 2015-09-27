@@ -36,6 +36,22 @@ namespace ApiTester.Wpf.ViewModels
             }
         }
 
+        RelayCommand _editWorkflow;
+        public ICommand EditWorkflow
+        {
+            get
+            {
+                _editWorkflow = _editWorkflow ?? new RelayCommand(
+                    (parameter) => {
+                        //TODO: add workflow edit window
+                    },
+                    x => SelectedConfiguration != null
+                        && SelectedWorkflow != null
+                        && !IsBusy);
+                return _editWorkflow;
+            }
+        }
+
         RelayCommand _loadConfiguration;
         public ICommand LoadConfiguration
         {

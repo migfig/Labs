@@ -58,7 +58,7 @@
     <xsl:value-of select="concat($urlPrefix, attributes/attribute[@type='System.Web.Http.RouteAttribute']/properties/property[@name='Template']/@value)"/>:
     # binds app logic to a route
     x-swagger-router-controller: <xsl:value-of select="@name"/>
-     
+    <xsl:value-of select="utils:NewLine()"/> 
     <xsl:value-of select="utils:ToLower(utils:HttpMethod(attributes/attribute/@type='System.Web.Http.HttpGetAttribute',
                           attributes/attribute/@type='System.Web.Http.HttpPostAttribute',
                           attributes/attribute/@type='System.Web.Http.HttpPutAttribute',
@@ -77,7 +77,7 @@
     description: Success
     schema:
     # a pointer to a definition
-    $ref: "#/definitions/<xsl:value-of select="@type"/>"
+    $ref: "#/definitions/<xsl:value-of select="utils:TypeName(utils:FixType(@type))"/>"
     # responses may fall through to errors
     default:
     description: Error
