@@ -13,7 +13,8 @@
     <Fluent:RibbonWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary x:Key="itemTemplate" Source="ConfigTemplate.xaml"/>
-            <converters:StringToUriConverter x:Key="UriConverter"/>
+            <converters:eValidTestToBitmapConverter x:Key="BitmapConverter"/>
+            <converters:BooleanToBitmapConverter x:Key="BooleanConverter"/>
         </ResourceDictionary>
     </Fluent:RibbonWindow.Resources>
 
@@ -211,6 +212,7 @@
                                 </ComboBox>
 
                                 <TextBlock Text="Workflow" Grid.Column="2" />
+                                
                                 <ComboBox Grid.Column="3"  
                                   ItemsSource="{Binding SelectedConfiguration.setup.workflow}"
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedWorkflow}"
@@ -253,11 +255,29 @@
                           SelectionMode="Single" 
                           AlternatingRowBackground="LemonChiffon" 
                           ClipboardCopyMode="IncludeHeader" 
-                          IsReadOnly="True" 
+                          IsReadOnly="False" 
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
                           IsTextSearchEnabled="True"
-                          AutoGenerateColumns="True"
+                          AutoGenerateColumns="False"
                           HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"/>
+                          VerticalAlignment="Stretch">
+                            <DataGrid.Resources>
+                                <DataTemplate x:Key="ImageTemplate">
+                                    <Image Source="{Binding isValidTest, Converter={StaticResource BitmapConverter}}"
+                                           Height="16" Width="16"/>
+                                </DataTemplate>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn Header="Selected" Binding="{Binding Mode=TwoWay, Path=isSelected}" IsReadOnly="False"/>
+                                <DataGridTemplateColumn Header="Passed" IsReadOnly="True" CellTemplate="{StaticResource ImageTemplate}" />
+                                <DataGridTextColumn Header="Name" Binding="{Binding name}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Http Method" Binding="{Binding httpMethod}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Url" Binding="{Binding url}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Type" Binding="{Binding type}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Description" Binding="{Binding description}" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </Border>
 
                     <GridSplitter Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
@@ -339,9 +359,22 @@
                           ClipboardCopyMode="IncludeHeader" 
                           IsReadOnly="True" 
                           IsTextSearchEnabled="True"
-                          AutoGenerateColumns="True"
+                          AutoGenerateColumns="False"
                           HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"/>
+                          VerticalAlignment="Stretch">
+                            <DataGrid.Resources>
+                                <DataTemplate x:Key="ImageTemplate">
+                                    <Image Source="{Binding Passed, Converter={StaticResource BooleanConverter}}"
+                                           Height="16" Width="16"
+                                           VerticalAlignment="Top"/>
+                                </DataTemplate>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Passed" CellTemplate="{StaticResource ImageTemplate}" />
+                                <DataGridTextColumn Header="Name" Binding="{Binding name}"/>
+                                <DataGridTextColumn Header="Results" Binding="{Binding Results}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </Border>
                 </Grid>
             </TabItem>

@@ -76,7 +76,7 @@ namespace ApiTester.Wpf.ViewModels
                         foreach(var m in SelectedConfiguration.method)
                         {
                             m.isSelected = null != parameter ? Convert.ToBoolean(parameter) : !m.isSelected;
-                            m.isValidTest = false;
+                            m.isValidTest = eValidTest.Undefined;
                         }
 
                         OnPropertyChanged("MethodsTable");
@@ -245,7 +245,8 @@ namespace ApiTester.Wpf.ViewModels
             {
                 ExecutedWorkflow = workflow;
 
-                if (SelectedConfiguration.method.Any(m => m.isValidTest))
+                if (SelectedConfiguration.method
+                    .Any(m => m.isValidTest == eValidTest.Passed || m.isValidTest == eValidTest.Failed))
                 {
                     OnPropertyChanged("MethodsTable");
                 }
@@ -292,7 +293,7 @@ namespace ApiTester.Wpf.ViewModels
                 if (type == null) return;
 
                 task.ResultsObject = loadResults(type, outFile);
-                method.isValidTest = task.IsValid;
+                method.isValidTest = task.IsValidTest ? eValidTest.Passed : eValidTest.Failed;
             }
         }
 

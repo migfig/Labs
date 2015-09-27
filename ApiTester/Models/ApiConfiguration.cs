@@ -376,6 +376,13 @@
         }
     }
 
+    public enum eValidTest
+    {
+        Undefined,
+        Passed,
+        Failed
+    }
+
     [XmlTypeAttribute(AnonymousType = true)]
     public partial class Task: BaseModel
     {
@@ -388,6 +395,7 @@
         private object resultsObjectField;
         private Task parentTaskField;
         private bool isDisabledField;
+        private bool hasPassedField;
 
         public Task()
         {
@@ -397,10 +405,18 @@
         }
 
         [XmlIgnore]
-        public bool IsValid
+        public bool Passed
+        {
+            get { return hasPassedField; }
+        }
+
+        [ColumnIgnore]
+        [XmlIgnore]
+        public bool IsValidTest
         {
             get
             {
+                hasPassedField = false;
                 if (ResultsObject is Exception) return false;
 
                 if (resultValue.Any())
@@ -432,10 +448,12 @@
                         }
                     }
 
-                    return instance.GetResults().ResultsPassed;
+                    hasPassedField = instance.GetResults().ResultsPassed;
+                    return hasPassedField;
                 }
 
-                return true;
+                hasPassedField = true;
+                return hasPassedField;
             }
         }
 
@@ -547,6 +565,7 @@
             }
         }
 
+        [ColumnIgnore]
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public bool isDisabled
         {
@@ -657,16 +676,16 @@
         private string descriptionField;
 
         private bool isSelectedField;
-        private bool isValidTestField;
+        private eValidTest isValidTestField;
 
         public Method()
         {
             isSelectedField = false;
-            isValidTestField = false;
+            isValidTestField = eValidTest.Undefined;
             parameterField = new ObservableCollection<Parameter>();
         }
 
-        [XmlAttributeAttribute()]
+        [XmlIgnore]
         public bool isSelected
         {
             get
@@ -680,8 +699,8 @@
             }
         }
 
-        [XmlAttributeAttribute()]
-        public bool isValidTest
+        [XmlIgnore]
+        public eValidTest isValidTest
         {
             get
             {
