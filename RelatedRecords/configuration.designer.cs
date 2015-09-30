@@ -20,6 +20,13 @@ namespace RelatedRecords
         MatchingColumnNames
     }
 
+    public enum eViewType
+    {
+        Datasets,
+        Tables,
+        Queries
+    }
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.4.0.32990")]
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]

@@ -328,6 +328,34 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }
 
+        private CTable _selectedTable;
+        public CTable SelectedTable
+        {
+            get { return _selectedTable; }
+            set
+            {
+                _selectedTable = value;
+                OnPropertyChanged();
+                if (value == null) return;
+
+                //OnPropertyChanged("NonYetRelatedTables");
+            }
+        }
+
+        private CQuery _selectedQuery;
+        public CQuery SelectedQuery
+        {
+            get { return _selectedQuery; }
+            set
+            {
+                _selectedQuery = value;
+                OnPropertyChanged();
+                if (value == null) return;
+
+                //OnPropertyChanged("");
+            }
+        }
+
         private CConfiguration _selectedNewConfiguration;
         public CConfiguration SelectedNewConfiguration
         {
@@ -416,6 +444,53 @@ namespace RelatedRecords.Wpf.ViewModels
         public Properties.Settings AppSettings
         {
             get { return Properties.Settings.Default; }
+        }
+
+        private eViewType _selectedViewType = eViewType.Datasets;
+        public eViewType SelectedViewType
+        {
+            get { return _selectedViewType; }
+            set
+            {
+                _selectedViewType = value;
+                OnPropertyChanged();
+                OnPropertyChanged("DatasetsVisibility");
+                OnPropertyChanged("HiddenDatasetsVisibility");
+                OnPropertyChanged("TablesVisibility");
+                OnPropertyChanged("HiddenTablesVisibility");
+                OnPropertyChanged("QueriesVisibility");
+                OnPropertyChanged("HiddenQueriesVisibility");
+            }
+        }
+
+        public Visibility DatasetsVisibility
+        {
+            get { return SelectedViewType == eViewType.Datasets ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility TablesVisibility
+        {
+            get { return SelectedViewType == eViewType.Tables ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility QueriesVisibility
+        {
+            get { return SelectedViewType == eViewType.Queries ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HiddenDatasetsVisibility
+        {
+            get { return SelectedViewType == eViewType.Datasets ? Visibility.Collapsed : Visibility.Visible; }
+        }
+
+        public Visibility HiddenTablesVisibility
+        {
+            get { return SelectedViewType == eViewType.Tables ? Visibility.Collapsed : Visibility.Visible; }
+        }
+
+        public Visibility HiddenQueriesVisibility
+        {
+            get { return SelectedViewType == eViewType.Queries ? Visibility.Collapsed : Visibility.Visible; }
         }
 
         public Visibility SprocketVisibility

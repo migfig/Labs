@@ -259,7 +259,7 @@ namespace RelatedRecords
                             child.QueryChildren(child.Root.Table.Rows[0]);
                         }
 
-                        if (appendChild)
+                        if (appendChild && !parent.Children.Any(x => x.Root.Table.TableName == child.Root.Table.TableName))
                             parent.Children.Add(child);
                     }
                 }

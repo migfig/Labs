@@ -228,6 +228,64 @@ namespace RelatedRecords.Wpf.ViewModels
 
         #endregion //export support
 
+        #region views command
+
+        RelayCommand _viewDatasetsCommand;
+        /// <summary>
+        /// select the datasets view
+        /// </summary>
+        public ICommand ViewDatasetsCommand
+        {
+            get
+            {
+                if (_viewDatasetsCommand == null)
+                {
+                    _viewDatasetsCommand = new RelayCommand(
+                        x => SelectedViewType = eViewType.Datasets,
+                        x => true);
+                }
+                return _viewDatasetsCommand;
+            }
+        }
+
+        RelayCommand _viewTablesCommand;
+        /// <summary>
+        /// select the datasets view
+        /// </summary>
+        public ICommand ViewTablesCommand
+        {
+            get
+            {
+                if (_viewTablesCommand == null)
+                {
+                    _viewTablesCommand = new RelayCommand(
+                        x => SelectedViewType = eViewType.Tables,
+                        x => SelectedViewType != eViewType.Tables);
+                }
+                return _viewTablesCommand;
+            }
+        }
+
+        RelayCommand _viewQueriesCommand;
+        /// <summary>
+        /// select the datasets view
+        /// </summary>
+        public ICommand ViewQueriesCommand
+        {
+            get
+            {
+                if (_viewQueriesCommand == null)
+                {
+                    _viewQueriesCommand = new RelayCommand(
+                        x => SelectedViewType = eViewType.Queries,
+                        x => SelectedViewType != eViewType.Queries);
+                }
+                return _viewQueriesCommand;
+            }
+        }
+
+        #endregion views command
+
         #region Exit
 
         RelayCommand _exitCommand;

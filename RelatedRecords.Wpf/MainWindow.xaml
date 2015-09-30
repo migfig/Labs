@@ -86,7 +86,7 @@
                 </Fluent:RibbonGroupBox>
 
                 <!--Gallery with all tables-->
-                <Fluent:RibbonGroupBox Header="Datasets" Name="P">
+                <Fluent:RibbonGroupBox Header="Datasets" Name="P" Visibility="{Binding DatasetsVisibility}" >
                     <Fluent:InRibbonGallery ItemWidth="100" ItemHeight="56" ResizeMode="Both"
                                       MinItemsInRow="2" MaxItemsInRow="4"                             
                                       ItemTemplate="{DynamicResource DatasetCardTemplate}"
@@ -95,24 +95,29 @@
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
 
-                <Fluent:RibbonGroupBox Header="Tables" Name="Q">
-                    <Fluent:InRibbonGallery ItemWidth="80" ItemHeight="56" ResizeMode="Both"
+                <Fluent:RibbonGroupBox Header="Tables" Name="Q" Visibility="{Binding TablesVisibility}" >
+                    <Fluent:InRibbonGallery ItemWidth="120" ItemHeight="56" ResizeMode="Both"
                                       MinItemsInRow="1" MaxItemsInRow="2"                             
                                       ItemTemplate="{DynamicResource TableCardTemplate}"
                                       ItemsSource="{Binding SelectedDataset.Table}"
-                                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedDataset}">
+                                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedTable}">
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
 
-                <Fluent:RibbonGroupBox Header="Queries" Name="R">
-                    <Fluent:InRibbonGallery ItemWidth="100" ItemHeight="56" ResizeMode="Both"
+                <Fluent:RibbonGroupBox Header="Queries" Name="R" Visibility="{Binding QueriesVisibility}" >
+                    <Fluent:InRibbonGallery ItemWidth="120" ItemHeight="56" ResizeMode="Both"
                                       MinItemsInRow="1" MaxItemsInRow="2"                             
                                       ItemTemplate="{DynamicResource QueryCardTemplate}"
                                       ItemsSource="{Binding SelectedDataset.Query}"
-                                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedDataset}">
+                                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedQuery}">
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
 
+                <Fluent:RibbonGroupBox Header="View" Name="V">
+                    <Fluent:Button Header="Datasets" Visibility="{Binding HiddenDatasetsVisibility}" Command="{Binding ViewDatasetsCommand}" LargeIcon="Images\tables-relation.png"/>
+                    <Fluent:Button Header="Tables" Visibility="{Binding HiddenTablesVisibility}" Command="{Binding ViewTablesCommand}" LargeIcon="Images\List.png"/>
+                    <Fluent:Button Header="Queries" Visibility="{Binding HiddenQueriesVisibility}" Command="{Binding ViewQueriesCommand}" LargeIcon="Images\Find.png"/>
+                </Fluent:RibbonGroupBox>
 
                 <Fluent:RibbonGroupBox Header="Search/Filters">
                     <Fluent:DropDownButton SizeDefinition="Middle" Header="Column">
@@ -260,21 +265,23 @@
             </Fluent:Ribbon.Menu>
         </Fluent:Ribbon>
 
-        <!--View Current table Details-->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50*"/>
-                <ColumnDefinition Width="3"/>
-                <ColumnDefinition Width="50*"/>
-            </Grid.ColumnDefinitions>
-            <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
-                <DockPanel LastChildFill="True">
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
-                        <TextBlock Text="{Binding SelectedDataTable.Root.Table.TableName}" FontWeight="DemiBold" VerticalAlignment="Center"/>
-                        <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding SelectedDataTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
-                        <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
-                        <Fluent:Button Height="32" Width="32"
+        <TabControl>
+            <TabItem Header="Dataset" Visibility="{Binding DatasetsVisibility}">
+                <!--View Current dataset table Details-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="3"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
+                        <DockPanel LastChildFill="True">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
+                                <TextBlock Text="{Binding SelectedDataTable.Root.Table.TableName}" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding SelectedDataTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
+                                <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+                                <Fluent:Button Height="32" Width="32"
                             VerticalAlignment="Center"
                             Click="AddTableRelation_Click"
                             Visibility="{Binding SelectedDataTable.Root.ConfigTable, Converter={StaticResource TableConverter}}"
@@ -282,8 +289,8 @@
                             Icon="Images\connect.png" 
                             LargeIcon="Images\connect.png" 
                             Style="{DynamicResource FluentButtonStyle}"/>
-                    </StackPanel>
-                    <DataGrid ItemsSource="{Binding SelectedDataTable.Root.Table}"
+                            </StackPanel>
+                            <DataGrid ItemsSource="{Binding SelectedDataTable.Root.Table}"
                           CanUserResizeRows="False" 
                           SelectionMode="Single" 
                           AlternatingRowBackground="LemonChiffon" 
@@ -295,69 +302,69 @@
                           SelectedItem="{Binding SelectedRootDataRowView}"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"/>
-                </DockPanel>
-            </Border>
+                        </DockPanel>
+                    </Border>
 
-            <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
+                    <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
                           Style="{DynamicResource GridSplitterStyle}" Background="LightBlue"/>
 
-            <Border Grid.Column="2" 
+                    <Border Grid.Column="2" 
                     Padding="4" CornerRadius="2"  
                     VerticalAlignment="Stretch" 
                     HorizontalAlignment="Stretch" 
                     BorderBrush="DarkGray" 
                     BorderThickness="1">
-                <ListBox ItemsSource="{Binding SelectedDataTable.Children}" 
+                        <ListBox ItemsSource="{Binding SelectedDataTable.Children}" 
                          SelectionMode="Single"
                          VerticalAlignment="Stretch">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border x:Name="OuterBackgroundBorder"
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border x:Name="OuterBackgroundBorder"
                                     VerticalAlignment="Stretch"
                                     BorderThickness="1" 
                                     Margin="0,10,0,0">
-                                <Border.BorderBrush>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                        <GradientStop Offset="0" Color="#9CA0A3"/>
-                                        <GradientStop Offset="1" Color="#7F8384"/>
-                                    </LinearGradientBrush>
-                                </Border.BorderBrush>
-                                <Border.Background>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                        <GradientStop Offset="0" Color="#FFFBFF"/>
-                                        <GradientStop Offset="0.5" Color="#FDFFFE"/>
-                                        <GradientStop Offset="0.5" Color="#F3F4F6"/>
-                                        <GradientStop Offset="1" Color="#D1D6DC"/>
-                                    </LinearGradientBrush>
-                                </Border.Background>
-                                <Border x:Name="InnerBackgroundBorder" 
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                <GradientStop Offset="0" Color="#9CA0A3"/>
+                                                <GradientStop Offset="1" Color="#7F8384"/>
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                <GradientStop Offset="0" Color="#FFFBFF"/>
+                                                <GradientStop Offset="0.5" Color="#FDFFFE"/>
+                                                <GradientStop Offset="0.5" Color="#F3F4F6"/>
+                                                <GradientStop Offset="1" Color="#D1D6DC"/>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <Border x:Name="InnerBackgroundBorder" 
                                         BorderThickness="1"
                                         VerticalAlignment="Stretch">
-                                    <Border.BorderBrush>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                            <GradientStop Offset="0" Color="#80EBEFF0"/>
-                                            <GradientStop Offset="1" Color="#60889ca3"/>
-                                        </LinearGradientBrush>
-                                    </Border.BorderBrush>
-                                    <Grid VerticalAlignment="Stretch"
+                                            <Border.BorderBrush>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                    <GradientStop Offset="0" Color="#80EBEFF0"/>
+                                                    <GradientStop Offset="1" Color="#60889ca3"/>
+                                                </LinearGradientBrush>
+                                            </Border.BorderBrush>
+                                            <Grid VerticalAlignment="Stretch"
                                           HorizontalAlignment="Stretch">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                                            <Fluent:Button Height="32" Width="32"
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                                    <Fluent:Button Height="32" Width="32"
                                                            VerticalAlignment="Center"
                                                            Click="btnDrillDown_Click"
                                                            Visibility="{Binding Root.ConfigTable.Children.Count, Converter={StaticResource IntConverter}}"
                                                            Tag="{Binding}"       
                                                            Icon="Images\tables-relation.png" 
                                                            LargeIcon="Images\tables-relation.png"/>
-                                            <TextBlock Text="{Binding Root.Table.TableName}" Foreground="Black" FontWeight="DemiBold" VerticalAlignment="Center"/>
-                                            <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
-                                            <TextBlock Text="{Binding Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
-                                            <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
-                                            <Fluent:Button Height="32" Width="32"
+                                                    <TextBlock Text="{Binding Root.Table.TableName}" Foreground="Black" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                                                    <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
+                                                    <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+                                                    <Fluent:Button Height="32" Width="32"
                                                            VerticalAlignment="Center"
                                                            Click="AddTableRelation_Click"
                                                            Visibility="{Binding Root.ConfigTable, Converter={StaticResource TableConverter}}"
@@ -365,8 +372,8 @@
                                                            Icon="Images\connect.png" 
                                                            LargeIcon="Images\connect.png"
                                                            Style="{DynamicResource FluentButtonStyle}"/>
-                                        </StackPanel>
-                                        <DataGrid Grid.Row="1" 
+                                                </StackPanel>
+                                                <DataGrid Grid.Row="1" 
                                                 ItemsSource="{Binding Root.Table}"
                                                     AutoGenerateColumns="True"
                                                     IsReadOnly="True"
@@ -382,13 +389,67 @@
                                                     VerticalAlignment="Stretch"
                                                   MinHeight="50"  
                                                   MaxHeight="400"/>
-                                    </Grid>
-                                </Border>
-                            </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Border>
-        </Grid>
+                                            </Grid>
+                                        </Border>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Table" Visibility="{Binding TablesVisibility}">
+                <!--View Current table Details-->
+                <Grid>
+                    <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
+                        <DockPanel LastChildFill="True">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
+                                <TextBlock Text="{Binding SelectedRootTable.Root.Table.TableName}" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding SelectedRootTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
+                                <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <DataGrid ItemsSource="{Binding SelectedRootTable.Root.Table}"
+                          CanUserResizeRows="False" 
+                          SelectionMode="Single" 
+                          AlternatingRowBackground="LemonChiffon" 
+                          ClipboardCopyMode="IncludeHeader" 
+                          IsReadOnly="True" 
+                          IsTextSearchEnabled="True"
+                          AutoGenerateColumns="True"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"/>
+                        </DockPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="Query" Visibility="{Binding QueriesVisibility}">
+                <!--View Current query table Details-->
+                <Grid>
+                    <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
+                        <DockPanel LastChildFill="True">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
+                                <TextBlock Text="{Binding SelectedRootTable.Root.Table.TableName}" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding SelectedRootTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
+                                <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <DataGrid ItemsSource="{Binding SelectedRootTable.Root.Table}"
+                          CanUserResizeRows="False" 
+                          SelectionMode="Single" 
+                          AlternatingRowBackground="LemonChiffon" 
+                          ClipboardCopyMode="IncludeHeader" 
+                          IsReadOnly="True" 
+                          IsTextSearchEnabled="True"
+                          AutoGenerateColumns="True"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"/>
+                        </DockPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </DockPanel>
 </Fluent:RibbonWindow>
