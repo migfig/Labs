@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.IO;
 using System.Configuration;
+using System.Collections.Generic;
 
 namespace RelatedRecords
 {
@@ -167,12 +168,131 @@ namespace RelatedRecords
             return query.ToString().Trim();
         }
 
+        public static IDbDataParameter[] ToParams(this CQuery query)
+        {
+            var pars = new List<IDbDataParameter>();
+            query.Parameter.ToList().ForEach(p => 
+                pars.Add(new SqlParameter(p.name, GetParameterValue(p))));
+
+            return pars.ToArray();
+        }
+
+        private static object GetParameterValue(CParameter p)
+        {
+            switch(p.type)
+            {
+                case eDbType.bigint:
+                case eDbType.@long:
+                    return Convert.ToInt64(p.defaultValue);
+                case eDbType.binary:
+                case eDbType.image:
+                case eDbType.varbinary:
+                    var i = 0;
+                    var bytes = new byte[p.defaultValue.Length];
+                    foreach (var c in p.defaultValue)
+                        bytes[i++] = Convert.ToByte(c);
+                    return bytes; 
+                case eDbType.bit:
+                case eDbType.@bool:
+                    return Convert.ToBoolean(p.defaultValue);
+                case eDbType.@char:
+                case eDbType.nchar:
+                    return Convert.ToChar(p.defaultValue);
+                case eDbType.date:
+                case eDbType.datetime:
+                case eDbType.datetime2:
+                case eDbType.datetimeoffset:
+                case eDbType.smalldatetime:
+                case eDbType.time:
+                case eDbType.timestamp:
+                    return Convert.ToDateTime(p.defaultValue);
+                case eDbType.@decimal:
+                case eDbType.@float:
+                case eDbType.money:
+                case eDbType.numeric:
+                case eDbType.real:
+                case eDbType.smallmoney:
+                    return Convert.ToDecimal(p.defaultValue);                    
+                case eDbType.geography:
+                case eDbType.geometry:
+                case eDbType.hierarchyid:
+                    return p.defaultValue;
+                case eDbType.@int:
+                    return Convert.ToInt32(p.defaultValue);
+                case eDbType.guid:
+                case eDbType.uniqueidentifier:
+                case eDbType.ntext:
+                case eDbType.nvarchar:
+                case eDbType.@string:
+                case eDbType.text:
+                case eDbType.varchar:
+                case eDbType.sql_variant:
+                case eDbType.xml:
+                    return Convert.ToString(p.defaultValue);
+                case eDbType.smallint:
+                case eDbType.tinyint:
+                    return Convert.ToInt16(p.defaultValue);
+            }
+
+            return p.defaultValue;
+        }
+
+        public static string ToSelectWhereString(this CQuery query, params IDbDataParameter[] pars)
+        {
+            if (query.isStoreProcedure || pars.Length == 0) return query.Text;
+
+            var q = query.Text;
+
+            if (pars.Length > 0)
+            {
+                pars.ToList().ForEach(p =>
+                {
+                    q = q.Replace(string.Format("{{{0}}}", p.ParameterName), p.Value.ToString());
+                });
+            }
+
+            return q;
+        }
+
         private static string ParseTableName(string query)
         {
             return Regex.Match(query,
                 @"SELECT[\[\sa-zA-Z0-9,\*\]]*FROM[\s]*(?<tablename>(\[\w*\s\w*\])|([\[]?\w*[\]]?))",
                 RegexOptions.IgnoreCase)
                     .Groups["tablename"].Value;
+        }
+
+        public static async Task<DatatableEx> Query(this CQuery query, params IDbDataParameter[] pars)
+        {
+            var result = new DatatableEx(new TableContainer(new DataTable(query.name), new CTable { name = query.name }));
+            var q = query.ToSelectWhereString(pars);
+
+            Common.Extensions.TraceLog.Information("Running query {query} for query {name}", q, query.name);
+
+            try
+            {
+                using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
+                {
+                    if (query.isStoreProcedure)
+                    {
+                        var reader = await connection.ExecuteReaderAsync(q, pars, commandType: CommandType.StoredProcedure);
+                        result.Root.Table.Load(reader);
+                        reader.Close();
+                    }
+                    else
+                    {
+                        var reader = await connection.ExecuteReaderAsync(q);
+                        result.Root.Table.Load(reader);
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Common.Extensions.ErrorLog.Error(e, "@ Query(CQuery) query: {q}, connectionString: {ConnectionString}", q, SelectedDatasource.ConnectionString.Trimmed());
+            }
+
+            return result;
         }
 
         public static async Task<DatatableEx> Query(this CTable table,

@@ -266,7 +266,7 @@
         </Fluent:Ribbon>
 
         <TabControl>
-            <TabItem Header="Dataset" Visibility="{Binding DatasetsVisibility}">
+            <TabItem Visibility="{Binding DatasetsVisibility}" IsSelected="{Binding Mode=OneWay, Path=IsDatasetsViewSelected}">
                 <!--View Current dataset table Details-->
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -399,7 +399,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Table" Visibility="{Binding TablesVisibility}">
+            <TabItem Visibility="{Binding TablesVisibility}" IsSelected="{Binding Mode=OneWay, Path=IsTablesViewSelected}">
                 <!--View Current table Details-->
                 <Grid>
                     <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
@@ -424,8 +424,8 @@
                     </Border>
                 </Grid>
             </TabItem>
-            
-            <TabItem Header="Query" Visibility="{Binding QueriesVisibility}">
+
+            <TabItem Visibility="{Binding QueriesVisibility}" IsSelected="{Binding Mode=OneWay, Path=IsQueriesViewSelected}">
                 <!--View Current query table Details-->
                 <Grid>
                     <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">

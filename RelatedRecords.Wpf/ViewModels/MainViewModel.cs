@@ -7,6 +7,7 @@ using Common;
 using System.Windows;
 using System.Collections.ObjectModel;
 using Serilog;
+using System.Windows.Controls;
 
 namespace RelatedRecords.Wpf.ViewModels
 {
@@ -334,11 +335,38 @@ namespace RelatedRecords.Wpf.ViewModels
             get { return _selectedTable; }
             set
             {
-                _selectedTable = value;
-                OnPropertyChanged();
-                if (value == null) return;
+                if (null != value)
+                {
+                    if (_selectedTable != value)
+                    {
+                        _selectedTable = value;
 
-                //OnPropertyChanged("NonYetRelatedTables");
+                        IsBusy = true;
+
+                        var action = new Action(async () =>
+                        {
+                            SelectedRootTable = await _selectedTable
+                                .Query("".ToArray(""),
+                                    "".ToArray(""),
+                                    true);
+
+                            IsBusy = false;
+                        });
+                        action.Invoke();
+                        OnPropertyChanged();
+                    }
+                }
+            }
+        }
+
+        private DatatableEx _selectedRootTable;
+        public DatatableEx SelectedRootTable
+        {
+            get { return _selectedRootTable; }
+            set
+            {
+                _selectedRootTable = value;
+                OnPropertyChanged();
             }
         }
 
@@ -348,11 +376,24 @@ namespace RelatedRecords.Wpf.ViewModels
             get { return _selectedQuery; }
             set
             {
-                _selectedQuery = value;
-                OnPropertyChanged();
-                if (value == null) return;
+                if (null != value)
+                {
+                    if (_selectedQuery != value)
+                    {
+                        _selectedQuery = value;
 
-                //OnPropertyChanged("");
+                        IsBusy = true;
+
+                        var action = new Action(async () =>
+                        {
+                            SelectedRootTable = await _selectedQuery.Query(_selectedQuery.ToParams());
+
+                            IsBusy = false;
+                        });
+                        action.Invoke();
+                        OnPropertyChanged();
+                    }
+                }
             }
         }
 
@@ -446,6 +487,32 @@ namespace RelatedRecords.Wpf.ViewModels
             get { return Properties.Settings.Default; }
         }
 
+        private TabItem _selectedTabItem;
+        public TabItem SelectedTabItem
+        {
+            get { return _selectedTabItem; }
+            set
+            {
+                _selectedTabItem = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsDatasetsViewSelected
+        {
+            get { return SelectedViewType == eViewType.Datasets; }
+        }
+
+        public bool IsTablesViewSelected
+        {
+            get { return SelectedViewType == eViewType.Tables; }
+        }
+
+        public bool IsQueriesViewSelected
+        {
+            get { return SelectedViewType == eViewType.Queries; }
+        }
+
         private eViewType _selectedViewType = eViewType.Datasets;
         public eViewType SelectedViewType
         {
@@ -460,6 +527,9 @@ namespace RelatedRecords.Wpf.ViewModels
                 OnPropertyChanged("HiddenTablesVisibility");
                 OnPropertyChanged("QueriesVisibility");
                 OnPropertyChanged("HiddenQueriesVisibility");
+                OnPropertyChanged("IsDatasetsViewSelected");
+                OnPropertyChanged("IsTablesViewSelected");
+                OnPropertyChanged("IsQueriesViewSelected");
             }
         }
 

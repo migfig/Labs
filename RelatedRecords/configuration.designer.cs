@@ -455,7 +455,7 @@ namespace RelatedRecords
     public partial class CParameter
     {
         private string nameField;
-        private string typeField;
+        private eDbType typeField;
         private string defaultValueField;
 
         /// <remarks/>
@@ -474,7 +474,7 @@ namespace RelatedRecords
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string type
+        public eDbType type
         {
             get
             {
