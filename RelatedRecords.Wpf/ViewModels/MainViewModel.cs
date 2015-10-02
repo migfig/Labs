@@ -382,16 +382,21 @@ namespace RelatedRecords.Wpf.ViewModels
                     {
                         _selectedQuery = value;
 
-                        IsBusy = true;
-
-                        var action = new Action(async () =>
+                        var hasParams = _selectedQuery.Parameter.Any();
+                        var result = hasParams && new InputParameters().ShowDialog().Value;
+                        if (result)
                         {
-                            SelectedRootTable = await _selectedQuery.Query(_selectedQuery.ToParams());
+                            IsBusy = true;
 
-                            IsBusy = false;
-                        });
-                        action.Invoke();
-                        OnPropertyChanged();
+                            var action = new Action(async () =>
+                            {
+                                SelectedRootTable = await _selectedQuery.Query(_selectedQuery.ToParams());
+
+                                IsBusy = false;
+                            });
+                            action.Invoke();
+                            OnPropertyChanged();
+                        }
                     }
                 }
             }

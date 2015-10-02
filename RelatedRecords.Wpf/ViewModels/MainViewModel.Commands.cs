@@ -81,7 +81,7 @@ namespace RelatedRecords.Wpf.ViewModels
         #region drill down command
         RelayCommand _drillDown;
         /// <summary>
-        /// Exit from the application
+        /// drill down navigation
         /// </summary>
         public ICommand DrillDownCommand
         {
@@ -110,7 +110,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _export2WordCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// Export to ms word
         /// </summary>
         public ICommand Export2WordCommand
         {
@@ -133,7 +133,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _export2ExcelCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// Export to excel
         /// </summary>
         public ICommand Export2ExcelCommand
         {
@@ -156,7 +156,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _export2PDFCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// export to pdf
         /// </summary>
         public ICommand Export2PDFCommand
         {
@@ -179,7 +179,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _export2HtmlCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// export to html
         /// </summary>
         public ICommand Export2HtmlCommand
         {
@@ -205,7 +205,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _export2SqlInsertCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// export to sql script
         /// </summary>
         public ICommand Export2SqlInsertCommand
         {
@@ -250,7 +250,7 @@ namespace RelatedRecords.Wpf.ViewModels
 
         RelayCommand _viewTablesCommand;
         /// <summary>
-        /// select the datasets view
+        /// select the tables view
         /// </summary>
         public ICommand ViewTablesCommand
         {
@@ -268,7 +268,7 @@ namespace RelatedRecords.Wpf.ViewModels
 
         RelayCommand _viewQueriesCommand;
         /// <summary>
-        /// select the datasets view
+        /// select the queries view
         /// </summary>
         public ICommand ViewQueriesCommand
         {
@@ -312,7 +312,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _connectCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// connect to datasource
         /// </summary>
         public ICommand ConnectCommand
         {
@@ -338,7 +338,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _workOfflineCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// work offline
         /// </summary>
         public ICommand WorkOfflineCommand
         {
@@ -368,7 +368,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _clearCacheCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// clear cache
         /// </summary>
         public ICommand ClearCacheCommand
         {
@@ -396,7 +396,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _setColumnRelationshipsCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// Set relationships for columns
         /// </summary>
         public ICommand SetColumnRelationshipsCommand
         {
@@ -425,7 +425,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _setTableRelationshipsCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// setup table relationships
         /// </summary>
         public ICommand SetTableRelationshipsCommand
         {
@@ -451,7 +451,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _addTableRelationshipCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// Add table to relationship
         /// </summary>
         public ICommand AddTableRelationshipCommand
         {
@@ -478,7 +478,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _saveRelationshipCommand;
 
         /// <summary>
-        /// Exit from the application
+        /// Save current relationship
         /// </summary>
         public ICommand SaveRelationshipCommand
         {
@@ -541,7 +541,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _goBackCommand;
 
         /// <summary>
-        /// Delete this person
+        /// go back
         /// </summary>
         public ICommand GoBackCommand
         {
@@ -572,7 +572,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _filterCommand;
 
         /// <summary>
-        /// Delete this person
+        /// apply the filter
         /// </summary>
         public ICommand FilterCommand
         {
@@ -609,7 +609,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _clearFilterCommand;
 
         /// <summary>
-        /// Delete this person
+        /// clear filter
         /// </summary>
         public ICommand ClearFilterCommand
         {
@@ -694,7 +694,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _clearSearchHistoryCommand;
 
         /// <summary>
-        /// Delete this person
+        /// clear search history
         /// </summary>
         public ICommand ClearSearchHistoryCommand
         {
@@ -723,7 +723,7 @@ namespace RelatedRecords.Wpf.ViewModels
         RelayCommand _searchCommand;
 
         /// <summary>
-        /// Delete this person
+        /// Search from selected filter
         /// </summary>
         public ICommand SearchCommand
         {
@@ -772,11 +772,48 @@ namespace RelatedRecords.Wpf.ViewModels
                     IsBusy = false;
                     SelectedDataTable = table;
                     _searchCommand.RaiseCanExecuteChanged();
+                    _copyCommand.RaiseCanExecuteChanged();
+
                 }
             }
         }
 
         #endregion //Search
+
+        #region copy command
+
+        RelayCommand _copyCommand;
+
+        /// <summary>
+        /// Copy current select sql text
+        /// </summary>
+        public ICommand CopyCommand
+        {
+            get
+            {
+                if (_copyCommand == null)
+                {
+                    _copyCommand = new RelayCommand(
+                        x =>
+                        {                            
+                            var query = "SELECT * FROM " + 
+                                (SelectedViewType == eViewType.Datasets 
+                                    ? SelectedDataTable.Root.ConfigTable.name
+                                    : SelectedRootTable.Root.ConfigTable.name)
+                                 + " " + SelectedSearchCriteria;
+
+                            Clipboard.SetText(query, TextDataFormat.Text);
+                        },
+                        x => (null != SelectedRootDataView
+                                && !string.IsNullOrEmpty(SelectedSearchCriteria)));
+
+                }
+                return _copyCommand;
+            }
+        }
+
+
+        #endregion
 
         #region public export methods
 

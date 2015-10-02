@@ -102,6 +102,9 @@
     <Compile Include="ViewModels\MainViewModel.Commands.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.Filters.cs" />
+    <Compile Include="Views\InputParameters.xaml.cs">
+      <DependentUpon>InputParameters.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddTableRelationship.xaml.cs">
       <DependentUpon>AddTableRelationship.xaml</DependentUpon>
     </Compile>
@@ -121,6 +124,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="TableTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\InputParameters.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -247,6 +254,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\black_linen_v2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NavNext.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

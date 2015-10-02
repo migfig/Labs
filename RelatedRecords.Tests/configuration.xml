@@ -42,7 +42,9 @@
     </Table>
 
     <Query name="Tickets" isStoreProcedure="false">
-      <![CDATA[SELECT * FROM Tickets]]>
+      <Parameter name="TicketId" type="int" defaultValue="1"/>
+      <Parameter name="Title" type="string" defaultValue="Sample"/>
+      <![CDATA[SELECT * FROM Tickets WHERE Id = {{TicketId}} And Title = {{Title}}]]>
     </Query>
 
     <Query name="usp_GetTickets" isStoreProcedure="true">

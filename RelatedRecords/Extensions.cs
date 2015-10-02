@@ -237,9 +237,30 @@ namespace RelatedRecords
             return p.defaultValue;
         }
 
+        public static string QuoteValue(this IDbDataParameter parameter)
+        {
+            if (parameter.DbType == DbType.AnsiString
+                || parameter.DbType == DbType.AnsiString
+                || parameter.DbType == DbType.AnsiStringFixedLength
+                || parameter.DbType == DbType.Date
+                || parameter.DbType == DbType.DateTime
+                || parameter.DbType == DbType.DateTime2
+                || parameter.DbType == DbType.DateTimeOffset
+                || parameter.DbType == DbType.Guid
+                || parameter.DbType == DbType.String
+                || parameter.DbType == DbType.StringFixedLength
+                || parameter.DbType == DbType.Time)
+                return "'" + parameter.Value.ToString() + "'";
+
+            else if (parameter.DbType == DbType.Boolean)
+                return bool.Parse(parameter.Value.ToString()) == true ? "1" : "0"; 
+
+            return parameter.Value.ToString();
+        }
+
         public static string ToSelectWhereString(this CQuery query, params IDbDataParameter[] pars)
         {
-            if (query.isStoreProcedure || pars.Length == 0) return query.Text;
+            if (query.isStoreProcedure) return query.name;
 
             var q = query.Text;
 
@@ -247,7 +268,7 @@ namespace RelatedRecords
             {
                 pars.ToList().ForEach(p =>
                 {
-                    q = q.Replace(string.Format("{{{0}}}", p.ParameterName), p.Value.ToString());
+                    q = q.Replace("{{" + p.ParameterName + "}}", p.QuoteValue());
                 });
             }
 
@@ -274,7 +295,7 @@ namespace RelatedRecords
                 using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
                 {
                     if (query.isStoreProcedure)
-                    {
+                    {                        
                         var reader = await connection.ExecuteReaderAsync(q, pars, commandType: CommandType.StoredProcedure);
                         result.Root.Table.Load(reader);
                         reader.Close();
