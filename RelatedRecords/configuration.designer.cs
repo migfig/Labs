@@ -221,7 +221,9 @@ namespace RelatedRecords
         private bool isNullableField;
         
         private string defaultValueField;
-        
+
+        private bool isIdentityField;
+
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string name {
             get {
@@ -279,6 +281,19 @@ namespace RelatedRecords
             }
             set {
                 this.defaultValueField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool isIdentity
+        {
+            get
+            {
+                return this.isIdentityField;
+            }
+            set
+            {
+                this.isIdentityField = value;
             }
         }
     }

@@ -146,8 +146,13 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_searchCriteria == value) return;
                 _searchCriteria = value;
                 OnPropertyChanged("SearchCriteria");
-                if (null != _searchCommand)
-                    _searchCommand.RaiseCanExecuteChanged();
+                _searchCommand.RaiseCanExecuteChanged();
+                ClipboardText = "SELECT * FROM " +
+                                (SelectedViewType == eViewType.Datasets
+                                    ? SelectedDataTable.Root.ConfigTable.name
+                                    : SelectedRootTable.Root.ConfigTable.name)
+                                 + " WHERE " + SelectedSearchCriteria + ";";
+                _copyCommand.RaiseCanExecuteChanged();
                 this.FilterCriteria = value;
             }
         }
@@ -161,8 +166,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_filterCriteria == value) return;
                 _filterCriteria = value;
                 OnPropertyChanged("FilterCriteria");
-                if (null != _filterCommand)
-                    _filterCommand.RaiseCanExecuteChanged();
+                _filterCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -174,11 +178,10 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 if (_selectedColumn == value) return;
                 _selectedColumn = value;
-                OnPropertyChanged("SelectedColumn");
+                OnPropertyChanged();
                 OnPropertyChanged("SelectedColumnOperators");
                 OnPropertyChanged("SelectedOperator");
-                if (null != _filterCommand)
-                    _filterCommand.RaiseCanExecuteChanged();
+                _filterCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -190,9 +193,8 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 if (_selectedOperator == value) return;
                 _selectedOperator = value;
-                OnPropertyChanged("SelectedOperator");
-                if (null != _filterCommand)
-                    _filterCommand.RaiseCanExecuteChanged();
+                OnPropertyChanged();
+                _filterCommand.RaiseCanExecuteChanged();
             }
         }
 

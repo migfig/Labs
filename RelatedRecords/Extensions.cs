@@ -787,7 +787,12 @@ namespace RelatedRecords
                 && table.Root.Table != null
                 && table.Root.Table.Rows.Count > 0)
             {
+                var hasIdentity = table.Root.ConfigTable.Column.Any(x => x.isIdentity);
+                if (hasIdentity)
+                    value.AppendFormat("SET IDENTITY_INSERT [dbo].{0} ON{1}", table.Root.ConfigTable.name, Environment.NewLine);
                 value.SqlInsert(table.Root.Table);
+                if (hasIdentity)
+                    value.AppendFormat("SET IDENTITY_INSERT [dbo].{0} OFF{1}", table.Root.ConfigTable.name, Environment.NewLine);
                 foreach (var child in table.Children)
                     value.SqlInsert(child);
             }

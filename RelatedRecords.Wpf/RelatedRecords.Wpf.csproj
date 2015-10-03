@@ -201,7 +201,6 @@
   <ItemGroup>
     <None Include="..\RelatedRecords.Tests\configuration.xml">
       <Link>configuration.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -46,6 +47,30 @@ namespace Common
         public static string Quote(this string value, string append = "")
         {
             return string.Format("\"{0}\"{1}", value, append);
+        }
+
+        public static int runProcess(string program, string args, int waitForExitMS = 30000)
+        {
+            TraceLog.Information("Running method with args {program} {args}", program, args);
+            System.Diagnostics.Debug.WriteLine(program + " " + args);
+
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo
+            {
+                FileName = program,
+                Arguments = args,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            p.Start();
+
+            if (waitForExitMS > 0)
+            {
+                p.WaitForExit(waitForExitMS);
+                return p.ExitCode;
+            }
+
+            return 0;
         }
     }
 

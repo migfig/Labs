@@ -3,14 +3,10 @@ using Common;
 using Common.Commands;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ApiTester.Wpf.ViewModels
@@ -224,7 +220,7 @@ namespace ApiTester.Wpf.ViewModels
                 type = SelectedAssembly.Location;
             }
 
-            var exitCode = runProcess(!string.IsNullOrEmpty(task.commandLine)
+            var exitCode = Extensions.runProcess(!string.IsNullOrEmpty(task.commandLine)
                     ? task.commandLine
                     : SelectedBuildWorkflow.commandLine,
                 string.Format(task.ToArgs(type)));
@@ -298,7 +294,7 @@ namespace ApiTester.Wpf.ViewModels
             var outFile = method.name + ".json";
             if (File.Exists(outFile)) File.Delete(outFile);
 
-            var exitCode = runProcess(SelectedConfiguration.setup.commandLine,
+            var exitCode = Extensions.runProcess(SelectedConfiguration.setup.commandLine,
                 string.Format(method.ToArgs(task), 
                     SelectedHost.baseAddress,
                     SelectedConfiguration.setup.ToHeaders(),
@@ -352,26 +348,7 @@ namespace ApiTester.Wpf.ViewModels
             return type;
         }
 
-        #endregion run workflow
-
-        private int runProcess(string program, string args)
-        {
-            Common.Extensions.TraceLog.Information("Running method with args {program} {args}", program, args);
-            System.Diagnostics.Debug.WriteLine(program + " " + args);
-
-            var p = new Process();
-            p.StartInfo = new ProcessStartInfo
-            {
-                FileName = program,
-                Arguments = args,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-            p.Start();
-            p.WaitForExit(30000);
-
-            return p.ExitCode;
-        }
+        #endregion run workflow       
 
         #endregion command methods
     }

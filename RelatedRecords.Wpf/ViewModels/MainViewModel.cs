@@ -402,6 +402,17 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }
 
+        private string _clipboardText;
+        public string ClipboardText
+        {
+            get { return _clipboardText; }
+            set
+            {
+                _clipboardText = value;
+                OnPropertyChanged();
+            }
+        }
+
         private CConfiguration _selectedNewConfiguration;
         public CConfiguration SelectedNewConfiguration
         {

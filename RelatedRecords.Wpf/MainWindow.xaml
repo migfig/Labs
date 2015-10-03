@@ -150,7 +150,7 @@
                                     Text="{Binding Mode=TwoWay, Path=SearchCriteria, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Fluent:Button Header="Search" Command="{Binding SearchCommand}" Icon="Images\Find.png" LargeIcon="Images\Find.png"/>
-                    <Fluent:Button Header="Copy" Command="{Binding CopyCommand}" Icon="Images\word.png" LargeIcon="Images\word.png"/>
+                    <Fluent:Button Header="Copy" Command="{Binding CopyCommand}" Icon="Images\word.png" LargeIcon="Images\word.png" ToolTip="{Binding ClipboardText}"/>
 
                     <Fluent:DropDownButton Name="searchValues" SizeDefinition="Middle" Header="Search History">
                         <Fluent:DropDownButton.Icon>

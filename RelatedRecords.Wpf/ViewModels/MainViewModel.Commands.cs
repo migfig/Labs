@@ -218,7 +218,14 @@ namespace RelatedRecords.Wpf.ViewModels
                         {
                             exportTablesToSqlInsert();
                         },
-                        x => null != SelectedDataTable && SelectedDataTable.Root.Table.Rows.Count > 0);
+                        x => {
+                            return SelectedViewType == eViewType.Datasets
+                                ? null != SelectedDataTable && SelectedDataTable.Root.Table.Rows.Count > 0
+                                : SelectedViewType == eViewType.Tables
+                                    ? null != SelectedRootTable && SelectedRootTable.Root.Table.Rows.Count > 0
+                                    : false;
+                            }
+                        );
                 }
                 return _export2SqlInsertCommand;
             }
@@ -794,16 +801,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_copyCommand == null)
                 {
                     _copyCommand = new RelayCommand(
-                        x =>
-                        {                            
-                            var query = "SELECT * FROM " + 
-                                (SelectedViewType == eViewType.Datasets 
-                                    ? SelectedDataTable.Root.ConfigTable.name
-                                    : SelectedRootTable.Root.ConfigTable.name)
-                                 + " " + SelectedSearchCriteria;
-
-                            Clipboard.SetText(query, TextDataFormat.Text);
-                        },
+                        x => Clipboard.SetText(ClipboardText, TextDataFormat.Text),
                         x => (null != SelectedRootDataView
                                 && !string.IsNullOrEmpty(SelectedSearchCriteria)));
 
@@ -904,8 +902,13 @@ namespace RelatedRecords.Wpf.ViewModels
             string sqlFile = Path.Combine(ExportPath, DateTime.Now.ToString("yyyy-MMM-dd.hh-mm-ss") + ".sql");
             using(var stream = new StreamWriter(sqlFile))
             {
-                stream.Write(new StringBuilder().SqlInsert(SelectedDataTable).ToString());
+                stream.Write(new StringBuilder().SqlInsert(
+                    SelectedViewType == eViewType.Datasets 
+                        ? SelectedDataTable 
+                        : SelectedRootTable).ToString());
             }
+
+            Common.Extensions.runProcess(ConfigurationManager.AppSettings["fileExplorer"], sqlFile, -1);
 
             return sqlFile;
         }        
