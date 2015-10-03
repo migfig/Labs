@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Common.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RelatedRecords.Wpf.ViewModels
 {
@@ -16,11 +15,28 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 ObservableCollection<string> list = new ObservableCollection<string>();
 
-                if (null != SelectedDataTable && null != SelectedDataTable.Root.Table)
-                    foreach (DataColumn dc in SelectedDataTable.Root.Table.Columns)
+                if (null != WorkingTable && null != WorkingTable.Root.Table)
+                    foreach (DataColumn dc in WorkingTable.Root.Table.Columns)
                         list.Add(dc.ColumnName);
 
                 return list;
+            }
+        }
+
+        public DatatableEx WorkingTable
+        {
+            get
+            {
+                return SelectedViewType == eViewType.Datasets
+                       ? SelectedDataTable
+                       : SelectedRootTable;
+            }
+            set
+            {
+                if (SelectedViewType == eViewType.Datasets)
+                    SelectedDataTable = value;
+                else if (SelectedViewType == eViewType.Tables)
+                    SelectedRootTable = value;
             }
         }
 
@@ -29,9 +45,9 @@ namespace RelatedRecords.Wpf.ViewModels
             get
             {
                 ObservableCollection<string> list = new ObservableCollection<string>();
-
-                if (null != SelectedDataTable && !string.IsNullOrEmpty(this._selectedColumn))
-                    foreach (DataColumn dc in SelectedDataTable.Root.Table.Columns)
+                
+                if (null != WorkingTable && !string.IsNullOrEmpty(this._selectedColumn))
+                    foreach (DataColumn dc in WorkingTable.Root.Table.Columns)
                     {
                         if (dc.ColumnName.Equals(this._selectedColumn))
                         {
@@ -86,11 +102,11 @@ namespace RelatedRecords.Wpf.ViewModels
 
         public string getColumnType(string columnName)
         {
-            if (null != SelectedDataTable && SelectedDataset.Table.Count > 0)
+            if (null != WorkingTable && SelectedDataset.Table.Count > 0)
             {
                 var column = from col in
                                  (from table in SelectedDataset.Table
-                                  where table.name.Equals(SelectedDataTable.Root.ConfigTable.name)
+                                  where table.name.Equals(WorkingTable.Root.ConfigTable.name)
                                   select table).FirstOrDefault().Column
                              where col.name.Equals(columnName)
                              select col;
@@ -146,14 +162,10 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_searchCriteria == value) return;
                 _searchCriteria = value;
                 OnPropertyChanged("SearchCriteria");
-                _searchCommand.RaiseCanExecuteChanged();
-                ClipboardText = "SELECT * FROM " +
-                                (SelectedViewType == eViewType.Datasets
-                                    ? SelectedDataTable.Root.ConfigTable.name
-                                    : SelectedRootTable.Root.ConfigTable.name)
-                                 + " WHERE " + SelectedSearchCriteria + ";";
-                _copyCommand.RaiseCanExecuteChanged();
                 this.FilterCriteria = value;
+                OnPropertyChanged("ClipboardText");
+                SearchCommand.AsRelay().RaiseCanExecuteChanged();
+                CopyCommand.AsRelay().RaiseCanExecuteChanged();
             }
         }
 
@@ -166,7 +178,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_filterCriteria == value) return;
                 _filterCriteria = value;
                 OnPropertyChanged("FilterCriteria");
-                _filterCommand.RaiseCanExecuteChanged();
+                FilterCommand.AsRelay().RaiseCanExecuteChanged();
             }
         }
 
@@ -181,7 +193,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged("SelectedColumnOperators");
                 OnPropertyChanged("SelectedOperator");
-                _filterCommand.RaiseCanExecuteChanged();
+                OnPropertyChanged("ClipboardText");
+                FilterCommand.AsRelay().RaiseCanExecuteChanged();
             }
         }
 
@@ -194,7 +207,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_selectedOperator == value) return;
                 _selectedOperator = value;
                 OnPropertyChanged();
-                _filterCommand.RaiseCanExecuteChanged();
+                OnPropertyChanged("ClipboardText");
+                FilterCommand.AsRelay().RaiseCanExecuteChanged();
             }
         }
 

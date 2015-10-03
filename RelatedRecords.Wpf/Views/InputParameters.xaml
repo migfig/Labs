@@ -14,7 +14,7 @@
         Foreground="Orange"
         TitleMargin="10,-5,0,0"
         Width="612"
-        Height="506"
+        Height="380"
         WindowFrameMode="CanMaximize"
         IsAboutEnabled="True"
         OuterBorderBrush="Black"
@@ -60,12 +60,12 @@
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="180"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding name}" Background="Transparent" Foreground="LightBlue"/>
-                            <TextBox Grid.Column="1" Text="{Binding Mode=TwoWay, Path=defaultValue, UpdateSourceTrigger=PropertyChanged}" Foreground="Orange" Width="200"/>
+                            <TextBlock Text="{Binding name}" FontSize="18" Background="Transparent" Foreground="LightBlue"/>
+                            <TextBox Grid.Column="1" Text="{Binding Mode=TwoWay, Path=defaultValue, UpdateSourceTrigger=PropertyChanged}" Foreground="Orange" FontSize="18" Width="260"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

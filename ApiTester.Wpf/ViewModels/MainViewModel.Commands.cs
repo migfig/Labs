@@ -220,7 +220,7 @@ namespace ApiTester.Wpf.ViewModels
                 type = SelectedAssembly.Location;
             }
 
-            var exitCode = Extensions.runProcess(!string.IsNullOrEmpty(task.commandLine)
+            var exitCode = Common.Extensions.runProcess(!string.IsNullOrEmpty(task.commandLine)
                     ? task.commandLine
                     : SelectedBuildWorkflow.commandLine,
                 string.Format(task.ToArgs(type)));
@@ -294,7 +294,7 @@ namespace ApiTester.Wpf.ViewModels
             var outFile = method.name + ".json";
             if (File.Exists(outFile)) File.Delete(outFile);
 
-            var exitCode = Extensions.runProcess(SelectedConfiguration.setup.commandLine,
+            var exitCode = Common.Extensions.runProcess(SelectedConfiguration.setup.commandLine,
                 string.Format(method.ToArgs(task), 
                     SelectedHost.baseAddress,
                     SelectedConfiguration.setup.ToHeaders(),

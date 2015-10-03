@@ -20,6 +20,13 @@ using System.Windows;
 
 namespace Common.Commands
 {
+    public static class Extensions
+    {
+        public static RelayCommand AsRelay(this ICommand command)
+        {
+            return command as RelayCommand;
+        }
+    }
     /// <summary>
     /// Represents base command
     /// </summary>

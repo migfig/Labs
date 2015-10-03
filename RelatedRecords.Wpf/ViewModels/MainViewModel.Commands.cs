@@ -1,7 +1,6 @@
 ﻿using Common;
 using Common.Commands;
 using System;
-using System.ComponentModel;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
@@ -67,8 +66,8 @@ namespace RelatedRecords.Wpf.ViewModels
                             SelectedConfiguration.Deflate();
                             SelectedNewConfiguration = null;
                             SelectedConnectionString = string.Empty;
-                            _loadDatasourceSchemaCommand.RaiseCanExecuteChanged();
-                            _setTableRelationshipsCommand.RaiseCanExecuteChanged();
+                            LoadDatasourceSchemaCommand.AsRelay().RaiseCanExecuteChanged();
+                            SetTableRelationshipsCommand.AsRelay().RaiseCanExecuteChanged();
                         },
                         x => null != SelectedNewConfiguration);
                 }
@@ -119,8 +118,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_export2WordCommand == null)
                 {
                     _export2WordCommand = new RelayCommand(
-                        x => exportTables(SelectedDataTable, ExportToFormat.Word2007),
-                        x => null != SelectedDataTable && SelectedDataTable.Root.Table.Rows.Count > 0);
+                        x => exportTables(WorkingTable, ExportToFormat.Word2007),
+                        x => null != WorkingTable && WorkingTable.Root.Table.Rows.Count > 0);
                 }
                 return _export2WordCommand;
             }
@@ -142,8 +141,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_export2ExcelCommand == null)
                 {
                     _export2ExcelCommand = new RelayCommand(
-                        x => exportTables(SelectedDataTable, ExportToFormat.Excel2007),
-                        x => null != SelectedDataTable && SelectedDataTable.Root.Table.Rows.Count > 0);
+                        x => exportTables(WorkingTable, ExportToFormat.Excel2007),
+                        x => null != WorkingTable && WorkingTable.Root.Table.Rows.Count > 0);
                 }
                 return _export2ExcelCommand;
             }
@@ -165,8 +164,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_export2PDFCommand == null)
                 {
                     _export2PDFCommand = new RelayCommand(
-                        x => exportTables(SelectedDataTable, ExportToFormat.PDFtextSharpXML),
-                        x => null != SelectedDataTable && SelectedDataTable.Root.Table.Rows.Count > 0);
+                        x => exportTables(WorkingTable, ExportToFormat.PDFtextSharpXML),
+                        x => null != WorkingTable && WorkingTable.Root.Table.Rows.Count > 0);
                 }
                 return _export2PDFCommand;
             }
@@ -192,7 +191,7 @@ namespace RelatedRecords.Wpf.ViewModels
                         {
                             exportTablesToHtml();
                         },
-                        x => null != SelectedDataTable && SelectedDataTable.Root.Table.Rows.Count > 0);
+                        x => null != WorkingTable && WorkingTable.Root.Table.Rows.Count > 0);
                 }
                 return _export2HtmlCommand;
             }
@@ -214,18 +213,8 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (_export2SqlInsertCommand == null)
                 {
                     _export2SqlInsertCommand = new RelayCommand(
-                        x =>
-                        {
-                            exportTablesToSqlInsert();
-                        },
-                        x => {
-                            return SelectedViewType == eViewType.Datasets
-                                ? null != SelectedDataTable && SelectedDataTable.Root.Table.Rows.Count > 0
-                                : SelectedViewType == eViewType.Tables
-                                    ? null != SelectedRootTable && SelectedRootTable.Root.Table.Rows.Count > 0
-                                    : false;
-                            }
-                        );
+                        x => exportTablesToSqlInsert(),
+                        x => WorkingTable != null && WorkingTable.Root.Table.Rows.Count > 0);
                 }
                 return _export2SqlInsertCommand;
             }
@@ -358,10 +347,10 @@ namespace RelatedRecords.Wpf.ViewModels
                         {
                             //dataViewModel.saveDataSetEntities();
                             _workOfflineCommand.RaiseCanExecuteChanged();
-                            _clearCacheCommand.RaiseCanExecuteChanged();
+                            ClearCacheCommand.AsRelay().RaiseCanExecuteChanged();
                         },
-                        x => null != SelectedDataTable
-                            && SelectedDataTable.Root.Table.Rows.Count > 0
+                        x => null != WorkingTable
+                            && WorkingTable.Root.Table.Rows.Count > 0
                             && !File.Exists(CacheFile));
                 }
                 return _workOfflineCommand;
@@ -388,7 +377,7 @@ namespace RelatedRecords.Wpf.ViewModels
                         {
                             //dataViewModel.clearDataSetEntities();
                             _clearCacheCommand.RaiseCanExecuteChanged();
-                            _workOfflineCommand.RaiseCanExecuteChanged();
+                            WorkOfflineCommand.AsRelay().RaiseCanExecuteChanged();
                         },
                         x => File.Exists(CacheFile));
                 }
@@ -604,8 +593,8 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 SelectedRootDataView.RowFilter = SelectedCriteria;
                 OnPropertyChanged();
-                _filterCommand.RaiseCanExecuteChanged();
-                _clearFilterCommand.RaiseCanExecuteChanged();
+                FilterCommand.AsRelay().RaiseCanExecuteChanged();
+                ClearFilterCommand.AsRelay().RaiseCanExecuteChanged();
             }
         }
 
@@ -638,8 +627,8 @@ namespace RelatedRecords.Wpf.ViewModels
         {
             SelectedRootDataView.RowFilter = string.Empty;
             OnPropertyChanged("SelectedRootDataView");
-            _filterCommand.RaiseCanExecuteChanged();
-            _clearFilterCommand.RaiseCanExecuteChanged();
+            FilterCommand.AsRelay().RaiseCanExecuteChanged();
+            ClearFilterCommand.AsRelay().RaiseCanExecuteChanged();
         }
 
         #endregion //Clear Filter
@@ -757,30 +746,29 @@ namespace RelatedRecords.Wpf.ViewModels
                     AppSettings.SearchValues.Add(SelectedSearchCriteria);
                     AppSettings.Save();
                     OnPropertyChanged("AppSettings");
-                    _clearSearchHistoryCommand.RaiseCanExecuteChanged();
+                    ClearSearchHistoryCommand.AsRelay().RaiseCanExecuteChanged();
                 }
 
                 if (!IsBusy)
                 {
                     Common.Extensions.TraceLog.Information("Searching data for table {name} with {SelectedColumn} {SelectedOperator} {SearchCriteria}",
-                        SelectedDataTable.Root.ConfigTable.name,
+                        WorkingTable.Root.ConfigTable.name,
                         SelectedColumn,
                         SelectedOperator,
                         SearchCriteria
                         );
 
                     IsBusy = true;
-                    var table = await SelectedDataTable.Root.ConfigTable
+                    var table = await WorkingTable.Root.ConfigTable
                         .Query(SelectedOperator.ToArray(),
                             "".ToArray(),
                             true,
                             new SqlParameter(SelectedColumn, SearchCriteria));
 
                     IsBusy = false;
-                    SelectedDataTable = table;
-                    _searchCommand.RaiseCanExecuteChanged();
-                    _copyCommand.RaiseCanExecuteChanged();
-
+                    WorkingTable = table;
+                    SearchCommand.AsRelay().RaiseCanExecuteChanged();
+                    CopyCommand.AsRelay().RaiseCanExecuteChanged();
                 }
             }
         }
@@ -871,7 +859,7 @@ namespace RelatedRecords.Wpf.ViewModels
             StringBuilder tables = new StringBuilder();
             //t.ExportTo(ExportToFormat.HTML, Path.Combine(basePath, string.Format("{0}.html", t.TableName)));
             int level = 0;
-            fillHtml(SelectedDataTable, ref tables, ref level);
+            fillHtml(WorkingTable, ref tables, ref level);
 
             string retval = Path.Combine(basePath, string.Format("{0}.html", namePart));
             File.WriteAllText(retval, html.ToString().Replace("<$Tables>", tables.ToString()));
@@ -902,10 +890,7 @@ namespace RelatedRecords.Wpf.ViewModels
             string sqlFile = Path.Combine(ExportPath, DateTime.Now.ToString("yyyy-MMM-dd.hh-mm-ss") + ".sql");
             using(var stream = new StreamWriter(sqlFile))
             {
-                stream.Write(new StringBuilder().SqlInsert(
-                    SelectedViewType == eViewType.Datasets 
-                        ? SelectedDataTable 
-                        : SelectedRootTable).ToString());
+                stream.Write(new StringBuilder().SqlInsert(WorkingTable).ToString());
             }
 
             Common.Extensions.runProcess(ConfigurationManager.AppSettings["fileExplorer"], sqlFile, -1);

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Collections.ObjectModel;
 using Serilog;
 using System.Windows.Controls;
+using Common.Commands;
 
 namespace RelatedRecords.Wpf.ViewModels
 {
@@ -150,24 +151,24 @@ namespace RelatedRecords.Wpf.ViewModels
                     OnPropertyChanged();
                     OnPropertyChanged("ParentVisibility");
                     OnPropertyChanged("SelectedDataTableColumns");
-                    _goBackCommand.RaiseCanExecuteChanged();
-                    _export2HtmlCommand.RaiseCanExecuteChanged();
-                    _export2SqlInsertCommand.RaiseCanExecuteChanged();
+                    GoBackCommand.AsRelay().RaiseCanExecuteChanged();
+                    Export2HtmlCommand.AsRelay().RaiseCanExecuteChanged();
+                    Export2SqlInsertCommand.AsRelay().RaiseCanExecuteChanged();
                 }
             }
         }
 
         private int GetDataRowViewIndex()
         {
-            var filter = _selectedDataTable.Root.Table.DefaultView.RowFilter;
+            var filter = WorkingTable.Root.Table.DefaultView.RowFilter;
             if (!string.IsNullOrEmpty(filter))
             {
-                var rows = _selectedDataTable.Root.Table.Select(filter);
+                var rows = WorkingTable.Root.Table.Select(filter);
                 if(null != rows && rows.Any())
                 {
-                    for(var i=0; i<_selectedDataTable.Root.Table.Rows.Count; i++)
+                    for(var i=0; i< WorkingTable.Root.Table.Rows.Count; i++)
                     {
-                        if(rows[0].Equals(_selectedDataTable.Root.Table.Rows[i]))
+                        if(rows[0].Equals(WorkingTable.Root.Table.Rows[i]))
                             return i;
                     }
                 }
@@ -182,6 +183,8 @@ namespace RelatedRecords.Wpf.ViewModels
             get { return _selectedRootDataRowView; }
             set
             {
+                if (SelectedViewType == eViewType.Queries) return;
+
                 if (null != value && !value.AreEqual(_selectedRootDataRowView))
                 {
                     var loadChildren = _selectedRootDataRowView != null;
@@ -190,7 +193,7 @@ namespace RelatedRecords.Wpf.ViewModels
                     if (loadChildren && null != _selectedRootDataRowView)
                     {
                         IsBusy = true;
-                        SelectedDataTable.QueryChildren(_selectedRootDataRowView.Row);
+                        WorkingTable.QueryChildren(_selectedRootDataRowView.Row);
                         IsBusy = false;
                     }
                     OnPropertyChanged();
@@ -300,8 +303,7 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 _selectedParentColumn = value;
                 OnPropertyChanged();
-                var cmd = SaveRelationshipCommand;
-                _saveRelationshipCommand.RaiseCanExecuteChanged();
+                SaveRelationshipCommand.AsRelay().RaiseCanExecuteChanged();
             }
         }
 
@@ -313,8 +315,7 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 _selectedChildColumn = value;
                 OnPropertyChanged();
-                var cmd = SaveRelationshipCommand;
-                _saveRelationshipCommand.RaiseCanExecuteChanged();
+                SaveRelationshipCommand.AsRelay().RaiseCanExecuteChanged();
             }
         }
 
@@ -367,6 +368,13 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 _selectedRootTable = value;
                 OnPropertyChanged();
+                OnPropertyChanged("SelectedDataTableColumns");
+                OnPropertyChanged("SelectedColumnOperators");
+                SelectedRootDataView = _selectedRootTable.Root.Table.AsDataView();
+                if (_selectedRootTable.Root.Table.Rows.Count > 0)
+                {
+                    SelectedRootDataRowView = SelectedRootDataView[GetDataRowViewIndex()];
+                }
             }
         }
 
@@ -383,7 +391,7 @@ namespace RelatedRecords.Wpf.ViewModels
                         _selectedQuery = value;
 
                         var hasParams = _selectedQuery.Parameter.Any();
-                        var result = hasParams && new InputParameters().ShowDialog().Value;
+                        var result = !hasParams || (hasParams && new InputParameters().ShowDialog().Value);
                         if (result)
                         {
                             IsBusy = true;
@@ -402,14 +410,16 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }
 
-        private string _clipboardText;
         public string ClipboardText
         {
-            get { return _clipboardText; }
-            set
+            get
             {
-                _clipboardText = value;
-                OnPropertyChanged();
+                if(!string.IsNullOrEmpty(SelectedSearchCriteria) && null != WorkingTable)
+                    return "SELECT * FROM " +
+                        WorkingTable.Root.ConfigTable.name +
+                        " WHERE " + SelectedSearchCriteria + ";"; ;
+
+                return string.Empty;
             }
         }
 
@@ -422,7 +432,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 _selectedNewConfiguration = value;
                 OnPropertyChanged();
                 OnPropertyChanged("SelectedNewConfigurationTables");
-                _saveDatasourceSchemaCommand.RaiseCanExecuteChanged();
+                SaveDatasourceSchemaCommand.AsRelay().RaiseCanExecuteChanged();
             }
         }
 

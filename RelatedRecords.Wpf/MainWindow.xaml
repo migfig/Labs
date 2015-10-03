@@ -146,11 +146,11 @@
                                         ItemTemplate="{DynamicResource ColumnsTemplate}"/>
                     </Fluent:DropDownButton>
 
-                    <Fluent:TextBox Name="searchFilterCriteria" 
+                    <Fluent:TextBox Name="searchFilterCriteria" Width="140"
                                     Text="{Binding Mode=TwoWay, Path=SearchCriteria, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Fluent:Button Header="Search" Command="{Binding SearchCommand}" Icon="Images\Find.png" LargeIcon="Images\Find.png"/>
-                    <Fluent:Button Header="Copy" Command="{Binding CopyCommand}" Icon="Images\word.png" LargeIcon="Images\word.png" ToolTip="{Binding ClipboardText}"/>
+                    <Fluent:Button Header="Copy" Command="{Binding CopyCommand}" Icon="Images\word.png" LargeIcon="Images\word.png" ToolTip="{Binding  Mode =OneWay, Path=ClipboardText}"/>
 
                     <Fluent:DropDownButton Name="searchValues" SizeDefinition="Middle" Header="Search History">
                         <Fluent:DropDownButton.Icon>
@@ -412,7 +412,9 @@
                             </StackPanel>
                             <DataGrid ItemsSource="{Binding SelectedRootTable.Root.Table}"
                           CanUserResizeRows="False" 
-                          SelectionMode="Single" 
+                          SelectionMode="Extended" 
+                          CurrentCellChanged="DataGrid_CurrentCellChanged"
+                          SelectedItem="{Binding SelectedRootDataRowView}"
                           AlternatingRowBackground="LemonChiffon" 
                           ClipboardCopyMode="IncludeHeader" 
                           IsReadOnly="True" 
@@ -438,7 +440,7 @@
                             </StackPanel>
                             <DataGrid ItemsSource="{Binding SelectedRootTable.Root.Table}"
                           CanUserResizeRows="False" 
-                          SelectionMode="Single" 
+                          SelectionMode="Extended" 
                           AlternatingRowBackground="LemonChiffon" 
                           ClipboardCopyMode="IncludeHeader" 
                           IsReadOnly="True" 

@@ -23,7 +23,7 @@ namespace RelatedRecords
         {
             get { return _selectedConfiguration; }
             set
-            {
+            { 
                 _selectedConfiguration = value;
                 SelectedDataset = _selectedConfiguration
                     .Dataset
@@ -295,10 +295,17 @@ namespace RelatedRecords
                 using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
                 {
                     if (query.isStoreProcedure)
-                    {                        
-                        var reader = await connection.ExecuteReaderAsync(q, pars, commandType: CommandType.StoredProcedure);
-                        result.Root.Table.Load(reader);
-                        reader.Close();
+                    {
+                        using (var cmd = connection.CreateCommand())
+                        {
+                            cmd.Connection.Open();
+                            cmd.CommandText = q;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddRange(pars);
+                            var reader = await cmd.ExecuteReaderAsync();
+                            result.Root.Table.Load(reader);
+                            reader.Close();
+                        }                     
                     }
                     else
                     {
@@ -334,7 +341,8 @@ namespace RelatedRecords
                     reader.Close();
                 }
 
-                result.QueryChildren(result.Root.Table.Rows[0]);
+                if(result.Root.Table.Rows.Count > 0)
+                    result.QueryChildren(result.Root.Table.Rows[0]);
             }
             catch (Exception e)
             {
@@ -793,6 +801,8 @@ namespace RelatedRecords
                 value.SqlInsert(table.Root.Table);
                 if (hasIdentity)
                     value.AppendFormat("SET IDENTITY_INSERT [dbo].{0} OFF{1}", table.Root.ConfigTable.name, Environment.NewLine);
+                value.Append(Environment.NewLine);
+
                 foreach (var child in table.Children)
                     value.SqlInsert(child);
             }
@@ -808,8 +818,6 @@ namespace RelatedRecords
                 {
                     value.SqlInsert(row);
                 }
-
-                value.Append(Environment.NewLine);
             }
 
             return value;
