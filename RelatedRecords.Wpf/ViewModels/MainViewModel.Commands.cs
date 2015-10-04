@@ -102,6 +102,60 @@ namespace RelatedRecords.Wpf.ViewModels
         }
         #endregion drill down command
 
+        #region refresh command
+        RelayCommand _refresh;
+        /// <summary>
+        /// Refresh data
+        /// </summary>
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                if (_refresh == null)
+                {
+                    _refresh = new RelayCommand(
+                        x =>
+                        {
+                            switch(SelectedViewType)
+                            {
+                                case eViewType.Datasets:
+                                    var tname = SelectedDataTable.Root.ConfigTable.name;
+                                    _dataTablesList.Remove(_dataTablesList.First(t => t.Root.ConfigTable.name == tname));
+
+                                    IsBusy = true;
+
+                                    var action = new Action(async () =>
+                                    {
+                                        var table = await SelectedDataset.Table.First(t => t.name == tname)
+                                            .Query("".ToArray(""),
+                                                "".ToArray(""),
+                                                true);
+                                        _dataTablesList.Add(table);
+
+                                        IsBusy = false;
+                                        SelectedDataTable = table;
+                                    });
+                                    action.Invoke();                                    
+                                    break;
+                                case eViewType.Tables:
+                                    var tableName = _selectedTable.name;
+                                    SelectedTable = null;
+                                    SelectedTable = SelectedDataset.Table.First(t => t.name == tableName);
+                                    break;
+                                case eViewType.Queries:
+                                    var queryName = _selectedQuery.name;
+                                    SelectedQuery = null;
+                                    SelectedQuery = SelectedDataset.Query.First(q => q.name == queryName);
+                                    break;
+                            }
+                        },
+                        x => true);
+                }
+                return _refresh;
+            }
+        }
+        #endregion
+
         #region export support
 
         #region Export to Word

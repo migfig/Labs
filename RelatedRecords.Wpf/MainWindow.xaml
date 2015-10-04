@@ -82,6 +82,7 @@
                             </Style>
                         </Button.Style>
                     </Button>
+                    <Fluent:Button Header="Refresh" Command="{Binding RefreshCommand}" LargeIcon="Images\refresh.png" Icon="Images\refresh.png"/>
                 </Fluent:RibbonGroupBox>
 
                 <!--Gallery with all tables-->
@@ -114,8 +115,8 @@
 
                 <Fluent:RibbonGroupBox Header="View" Name="V">
                     <Fluent:Button Header="Datasets" Visibility="{Binding HiddenDatasetsVisibility}" Command="{Binding ViewDatasetsCommand}" LargeIcon="Images\tables-relation.png"/>
-                    <Fluent:Button Header="Tables" Visibility="{Binding HiddenTablesVisibility}" Command="{Binding ViewTablesCommand}" LargeIcon="Images\List.png"/>
-                    <Fluent:Button Header="Queries" Visibility="{Binding HiddenQueriesVisibility}" Command="{Binding ViewQueriesCommand}" LargeIcon="Images\Find.png"/>
+                    <Fluent:Button Header="Tables" Visibility="{Binding HiddenTablesVisibility}" Command="{Binding ViewTablesCommand}" LargeIcon="Images\table.png"/>
+                    <Fluent:Button Header="Queries" Visibility="{Binding HiddenQueriesVisibility}" Command="{Binding ViewQueriesCommand}" LargeIcon="Images\Query.png"/>
                 </Fluent:RibbonGroupBox>
 
                 <Fluent:RibbonGroupBox Header="Search/Filters">
@@ -150,7 +151,7 @@
                                     Text="{Binding Mode=TwoWay, Path=SearchCriteria, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Fluent:Button Header="Search" Command="{Binding SearchCommand}" Icon="Images\Find.png" LargeIcon="Images\Find.png"/>
-                    <Fluent:Button Header="Copy" Command="{Binding CopyCommand}" Icon="Images\word.png" LargeIcon="Images\word.png" ToolTip="{Binding  Mode =OneWay, Path=ClipboardText}"/>
+                    <Fluent:Button Header="Copy" Command="{Binding CopyCommand}" Icon="Images\Copy.png" LargeIcon="Images\Copy.png" ToolTip="{Binding  Mode =OneWay, Path=ClipboardText}"/>
 
                     <Fluent:DropDownButton Name="searchValues" SizeDefinition="Middle" Header="Search History">
                         <Fluent:DropDownButton.Icon>

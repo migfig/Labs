@@ -336,27 +336,25 @@ namespace RelatedRecords.Wpf.ViewModels
             get { return _selectedTable; }
             set
             {
-                if (null != value)
+                _selectedTable = value;
+
+                if (null != _selectedTable)
                 {
-                    if (_selectedTable != value)
+                    IsBusy = true;
+
+                    var action = new Action(async () =>
                     {
-                        _selectedTable = value;
+                        SelectedRootTable = await _selectedTable
+                            .Query("".ToArray(""),
+                                "".ToArray(""),
+                                true);
 
-                        IsBusy = true;
-
-                        var action = new Action(async () =>
-                        {
-                            SelectedRootTable = await _selectedTable
-                                .Query("".ToArray(""),
-                                    "".ToArray(""),
-                                    true);
-
-                            IsBusy = false;
-                        });
-                        action.Invoke();
-                        OnPropertyChanged();
-                    }
+                        IsBusy = false;
+                    });
+                    action.Invoke();
                 }
+
+                OnPropertyChanged();
             }
         }
 
@@ -384,29 +382,27 @@ namespace RelatedRecords.Wpf.ViewModels
             get { return _selectedQuery; }
             set
             {
-                if (null != value)
+                _selectedQuery = value;
+
+                if (null != _selectedQuery)
                 {
-                    if (_selectedQuery != value)
+                    var hasParams = _selectedQuery.Parameter.Any();
+                    var result = !hasParams || (hasParams && new InputParameters().ShowDialog().Value);
+                    if (result)
                     {
-                        _selectedQuery = value;
+                        IsBusy = true;
 
-                        var hasParams = _selectedQuery.Parameter.Any();
-                        var result = !hasParams || (hasParams && new InputParameters().ShowDialog().Value);
-                        if (result)
+                        var action = new Action(async () =>
                         {
-                            IsBusy = true;
+                            SelectedRootTable = await _selectedQuery.Query(_selectedQuery.ToParams());
 
-                            var action = new Action(async () =>
-                            {
-                                SelectedRootTable = await _selectedQuery.Query(_selectedQuery.ToParams());
-
-                                IsBusy = false;
-                            });
-                            action.Invoke();
-                            OnPropertyChanged();
-                        }
+                            IsBusy = false;
+                        });
+                        action.Invoke();
                     }
                 }
+
+                OnPropertyChanged();
             }
         }
 
