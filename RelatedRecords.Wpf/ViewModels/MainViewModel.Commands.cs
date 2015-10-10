@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using www.serviciipeweb.ro.iafblog.ExportDLL;
@@ -145,6 +146,7 @@ namespace RelatedRecords.Wpf.ViewModels
                                 case eViewType.Queries:
                                     var queryName = _selectedQuery.name;
                                     SelectedQuery = null;
+                                    _isRefreshing = true;
                                     SelectedQuery = SelectedDataset.Query.First(q => q.name == queryName);
                                     break;
                             }
@@ -373,8 +375,7 @@ namespace RelatedRecords.Wpf.ViewModels
                     _connectCommand = new RelayCommand(
                         x =>
                         {
-                            if (null != OnConnect)
-                                OnConnect(this, EventArgs.Empty);
+                            
                         });
                 }
                 return _connectCommand;
@@ -383,92 +384,123 @@ namespace RelatedRecords.Wpf.ViewModels
 
         #endregion //Connect
 
-        #region Work Offline
+        #region Save query
 
-        RelayCommand _workOfflineCommand;
+        RelayCommand _saveQueryCommand;
 
         /// <summary>
-        /// work offline
+        /// save query
         /// </summary>
-        public ICommand WorkOfflineCommand
+        public ICommand SaveQueryCommand
         {
             get
             {
-                if (_workOfflineCommand == null)
+                if (_saveQueryCommand == null)
                 {
-                    _workOfflineCommand = new RelayCommand(
+                    _saveQueryCommand = new RelayCommand(
                         x =>
                         {
-                            //dataViewModel.saveDataSetEntities();
-                            _workOfflineCommand.RaiseCanExecuteChanged();
-                            ClearCacheCommand.AsRelay().RaiseCanExecuteChanged();
+                            SelectedDataset.Query.Add(SelectedQuery);
+
+                            SelectedConfiguration.Inflate();
+                            XmlHelper<CConfiguration>.Save(
+                                ConfigurationManager.AppSettings["ConfigurationFile"],
+                                SelectedConfiguration);                            
+                            SelectedConfiguration.Deflate();                                                       
                         },
-                        x => null != WorkingTable
-                            && WorkingTable.Root.Table.Rows.Count > 0
-                            && !File.Exists(CacheFile));
+                        x => QueryText.Length > 0 && QueryName.Length > 0 && SelectedQuery != null);
                 }
-                return _workOfflineCommand;
+                return _saveQueryCommand;
             }
         }
 
-        #endregion //Work Offline
+        #endregion 
 
-        #region Clear Cache
+        #region Run Query Command
 
-        RelayCommand _clearCacheCommand;
+        RelayCommand _runQueryCommand;
 
         /// <summary>
-        /// clear cache
+        /// run query
         /// </summary>
-        public ICommand ClearCacheCommand
+        public ICommand RunQueryCommand
         {
             get
             {
-                if (_clearCacheCommand == null)
+                if (_runQueryCommand == null)
                 {
-                    _clearCacheCommand = new RelayCommand(
+                    _runQueryCommand = new RelayCommand(
+                        x => SelectedQuery = buildQuery(),
+                        x => QueryText.Length > 0);
+                }
+                return _runQueryCommand;
+            }
+        }
+
+        private CQuery buildQuery()
+        {
+            var query = new CQuery
+            {
+                isStoreProcedure = false,
+                name = QueryName,
+                Text = QueryText
+            };
+            
+            var match = new Regex(@"(?<columnfilter>(?<column>[\[]?\w+[\]]?)\s*=\s*(?<idvar>\{\{(?<id>\w+)\}\}))").Match(query.Text);
+            while(null != match && match.Success)
+            {
+                var column = match.Groups["column"].Value;
+                var paramName = match.Groups["id"].Value;
+                if(!string.IsNullOrEmpty(column) && !string.IsNullOrEmpty(paramName))
+                {
+                    var col = (from t in SelectedDataset.Table
+                              from c in t.Column
+                              where c.name.ToLower() == column.ToLower()
+                              select c).First();
+                    query.Parameter.Add(new CParameter
+                    {
+                        name = paramName,
+                        type = col.DbType,
+                        defaultValue = ""
+                    });
+                }
+
+                match = match.NextMatch();
+            }
+
+            return query;
+        }
+
+        #endregion
+
+        #region Add Query
+
+        RelayCommand _addQueryCommand;
+
+        /// <summary>
+        /// add query
+        /// </summary>
+        public ICommand AddQueryCommand
+        {
+            get
+            {
+                if (_addQueryCommand == null)
+                {
+                    _addQueryCommand = new RelayCommand(
                         x =>
                         {
-                            //dataViewModel.clearDataSetEntities();
-                            _clearCacheCommand.RaiseCanExecuteChanged();
-                            WorkOfflineCommand.AsRelay().RaiseCanExecuteChanged();
+                            SelectedParentTable = SelectedDataset.Table.FirstOrDefault();
+                            QueryName = "qry" + SelectedParentTable.name.Replace("[", string.Empty).Replace("]", string.Empty);
+                            QueryText = SelectedParentTable.ToSelectWhereString("".ToArray(), "".ToArray(), true);
+                            var result = new AddQuery().ShowDialog();
                         },
-                        x => File.Exists(CacheFile));
+                        x => SelectedViewType == eViewType.Queries);
                 }
-                return _clearCacheCommand;
+                return _addQueryCommand;
             }
         }
-
-        #endregion //Clear Cache
-
-        #region Column Relations
-
-        RelayCommand _setColumnRelationshipsCommand;
-
-        /// <summary>
-        /// Set relationships for columns
-        /// </summary>
-        public ICommand SetColumnRelationshipsCommand
-        {
-            get
-            {
-                if (_setColumnRelationshipsCommand == null)
-                {
-                    /*setColumnRelationshipsCommand = new RelayCommand(
-                        x => OnSetColumnRelationships(),
-                        x => SelectedSchemaTable != null && SelectedSchemaTable2 != null);*/
-                }
-                return _setColumnRelationshipsCommand;
-            }
-        }
-
-        private void OnSetColumnRelationships()
-        {
-            MessageBox.Show("Feature not yet Implemented!", "Information",
-                MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        #endregion //Column Relations
+        
+        #endregion //Add Query
 
         #region Table Relationships
 
@@ -915,10 +947,11 @@ namespace RelatedRecords.Wpf.ViewModels
             int level = 0;
             fillHtml(WorkingTable, ref tables, ref level);
 
-            string retval = Path.Combine(basePath, string.Format("{0}.html", namePart));
-            File.WriteAllText(retval, html.ToString().Replace("<$Tables>", tables.ToString()));
+            string htmlFile = Path.Combine(basePath, string.Format("{0}.html", namePart));
+            File.WriteAllText(htmlFile, html.ToString().Replace("<$Tables>", tables.ToString()));
 
-            return retval;
+            Common.Extensions.runProcess(ConfigurationManager.AppSettings["fileExplorer"], htmlFile, -1);
+            return htmlFile;
         }
 
         private void fillHtml(DatatableEx t, ref StringBuilder tables, ref int level)

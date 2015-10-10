@@ -162,13 +162,61 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-
-        <Fluent:Button Grid.Row="2" Header="Save"
-                           Foreground="Orange"
-                           Command="{Binding SaveRelationshipCommand}" 
-                           Icon="\Images\connect.png" 
-                           LargeIcon="\Images\connect.png" />
-
+        
+        <Button Grid.Row="2" Grid.Column="3" Command="{Binding SaveRelationshipCommand}" HorizontalAlignment="Right">
+            <Button.RenderTransform>
+                <SkewTransform />
+            </Button.RenderTransform>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="#FF1F3B53"/>
+                    <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                    <Setter Property="Height" Value="48"/>
+                    <Setter Property="Width" Value="48"/>
+                    <Setter Property="Margin" Value="0,10,0,0"/>
+                    <Setter Property="Padding" Value="3"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Opacity" Value="0.995"/>
+                    <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                <GradientStop Color="#FF718597" Offset="0.375"/>
+                                <GradientStop Color="#FF617584" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Grid>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal"/>
+                                            <VisualState x:Name="MouseOver">
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0" To="#FF4472A2" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed"/>
+                                            <VisualState x:Name="Disabled"/>
+                                        </VisualStateGroup>
+                                        <VisualStateGroup x:Name="FocusStates">
+                                            <VisualState x:Name="Focused"/>
+                                            <VisualState x:Name="Unfocused"/>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Path x:Name="path" Data="M58.087635,37.91074L47.872219,48.125874 43.038265,43.283699 41.153744,45.166451 47.872219,51.884777 59.972256,39.793491z M50.563049,31.73C57.949932,31.73 64,37.779644 64,45.166451 64,52.553158 57.949932,58.603001 50.563049,58.603001 43.176067,58.603001 37.125999,52.553158 37.125999,45.166451 37.125999,37.779644 43.176067,31.73 50.563049,31.73z M33.032001,0L40.381001,0 40.381001,16.236 33.032001,16.236z M5.0388451,0L13.576872,0 13.576872,15.676368C13.576872,17.995482,15.456882,19.875292,17.775993,19.875292L39.191006,19.875292C41.510117,19.875292,43.389931,17.995482,43.389931,15.676368L43.389931,0 49.177559,0 56.966999,7.789382 56.966999,30.375652C55.002491,29.522047 52.83918,29.042944 50.564068,29.042944 41.672218,29.042944 34.440281,36.274784 34.440281,45.166538 34.440281,49.536861 36.193592,53.500183 39.026005,56.407002L5.0388451,56.407002C2.255872,56.407002,0,54.150986,0,51.368172L0,5.038847C0,2.2558709,2.255872,4.6670634E-08,5.0388451,0z" Stretch="Uniform" Fill="#FF599737" Width="26" Height="26" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+        
         <StackPanel Grid.Row="3"
                     Grid.ColumnSpan="2"
                     Orientation="Horizontal">

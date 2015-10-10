@@ -27,26 +27,7 @@ namespace RelatedRecords.Wpf.ViewModels
         public static MainViewModel ViewModel {
             get { return _instance; }
         }
-
-        #region Events
-
-        public delegate void QueryingTableCompleted(object sender, EventArgs e);
-        public event QueryingTableCompleted OnQueryingTableCompleted;
-
-        public delegate void Connect(object sender, EventArgs e);
-        public event Connect OnConnect;
-
-        public delegate void ProgressNotify(string message);
-        public event ProgressNotify OnProgressNotify;
-
-        public delegate void ExportCompleted(string fileName);
-        public event ExportCompleted OnExportCompleted;
-
-        private Action<int> onProgress;
-        private Action<string> onNotify;
-
-        #endregion //Events
-
+        
         public ILogger TraceLog
         {
             get { return Common.Extensions.TraceLog; }
@@ -221,6 +202,44 @@ namespace RelatedRecords.Wpf.ViewModels
             return false;
         }
 
+        private string _queryText = string.Empty;
+        public string QueryText
+        {
+            get { return _queryText; }
+            set
+            {
+                _queryText = value;
+                OnPropertyChanged();
+                RunQueryCommand.AsRelay().RaiseCanExecuteChanged();
+                SaveQueryCommand.AsRelay().RaiseCanExecuteChanged();
+            }
+        }
+
+        private string _queryName = string.Empty;
+        public string QueryName
+        {
+            get { return _queryName; }
+            set
+            {
+                _queryName = value;
+                OnPropertyChanged();
+                SaveQueryCommand.AsRelay().RaiseCanExecuteChanged();
+            }
+        }
+
+        public IEnumerable<CTable> AvailableTables
+        {
+            get
+            {
+                return (
+                    from t in SelectedDataset.Table
+                    where (!string.IsNullOrEmpty(_filterTable)
+                               ? t.name.ToLower().Contains(_filterTable.ToLower()) : true)
+                    select t
+                        ).Distinct();
+            }
+        }
+
         public IEnumerable<CTable> NonYetRelatedTables
         {
             get
@@ -264,6 +283,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 _filterTable = value;
                 OnPropertyChanged();
                 OnPropertyChanged("NonYetRelatedTables");
+                OnPropertyChanged("AvailableTables");
             }
         }
 
@@ -376,6 +396,8 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }
 
+        private bool _isRefreshing = true;
+
         private CQuery _selectedQuery;
         public CQuery SelectedQuery
         {
@@ -386,10 +408,14 @@ namespace RelatedRecords.Wpf.ViewModels
 
                 if (null != _selectedQuery)
                 {
-                    var hasParams = _selectedQuery.Parameter.Any();
-                    var result = !hasParams || (hasParams && new InputParameters().ShowDialog().Value);
+                    var result = true;
+                    if(_selectedQuery.Parameter.Any() && _isRefreshing)
+                    {
+                        result = new InputParameters().ShowDialog().Value;
+                    }
                     if (result)
                     {
+                        _isRefreshing = false;
                         IsBusy = true;
 
                         var action = new Action(async () =>
@@ -403,6 +429,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 }
 
                 OnPropertyChanged();
+                SaveQueryCommand.AsRelay().RaiseCanExecuteChanged();
             }
         }
 
@@ -457,29 +484,7 @@ namespace RelatedRecords.Wpf.ViewModels
         {
             get { return TableNavigation.Count > 0 ? Visibility.Visible : Visibility.Collapsed;  }
         }
-
-        public string CacheFile { get; set; }
-
-        private int _loadProgress = 0;
-        public int LoadProgress
-        {
-            get { return _loadProgress; }
-            private set
-            {
-                //if (loadProgress == value) return;
-                _loadProgress = value;
-                OnPropertyChanged("LoadProgress");
-
-                if (null != OnProgressNotify)
-                    OnProgressNotify(string.Format("{0} %", _loadProgress));
-            }
-        }
-
-        private void OnReportProgress(int progressPercentage)
-        {
-            this.LoadProgress = progressPercentage;
-        }
-
+        
         private ObservableCollection<string> _lastErrors = new ObservableCollection<string>();
         public ObservableCollection<string> LastErrors
         {
@@ -552,6 +557,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 OnPropertyChanged("IsDatasetsViewSelected");
                 OnPropertyChanged("IsTablesViewSelected");
                 OnPropertyChanged("IsQueriesViewSelected");
+                AddQueryCommand.AsRelay().RaiseCanExecuteChanged();
             }
         }
 

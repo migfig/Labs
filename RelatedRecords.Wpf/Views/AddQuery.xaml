@@ -1,4 +1,4 @@
-﻿<wpfspark:SparkWindow x:Class="RelatedRecords.Wpf.InputParameters"
+﻿<wpfspark:SparkWindow x:Class="RelatedRecords.Wpf.AddQuery"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wpfspark="clr-namespace:WPFSpark;assembly=WPFSpark"
@@ -7,14 +7,14 @@
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:local="clr-namespace:RelatedRecords.Wpf.Controls"
         xmlns:converters="clr-namespace:RelatedRecords.Wpf"
-        Title="Enter Parameters"
+        Title="Add Query"
         FontFamily="Segoe WP"
         FontWeight="Light"
         FontSize="28"
         Foreground="Orange"
         TitleMargin="10,-5,0,0"
         Width="612"
-        Height="380"
+        Height="506"
         WindowFrameMode="CanMaximize"
         IsAboutEnabled="True"
         OuterBorderBrush="Black"
@@ -22,6 +22,12 @@
         InnerBorderBrush="White"
         InnerBorderThickness="1"
         WindowStartupLocation="CenterScreen">
+    <wpfspark:SparkWindow.Resources>
+        <ResourceDictionary>
+            <converters:DbTypeToStringConverter x:Key="DbTypeConverter"/>
+            <converters:NegatedIntToVisibilityConverter x:Key="NegatedIntConverter"/>
+        </ResourceDictionary>
+    </wpfspark:SparkWindow.Resources>
     <wpfspark:SparkWindow.TitleEffect>
         <DropShadowEffect BlurRadius="3"
                           Direction="-85"
@@ -38,7 +44,6 @@
             </VisualBrush.Visual>
         </VisualBrush>
     </Window.Background>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -46,34 +51,95 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.4*"/>
+            <ColumnDefinition Width="0.6*"/>
+        </Grid.ColumnDefinitions>
 
         <wpfspark:PivotHeaderControl>
             <Grid HorizontalAlignment="Stretch">
-                <TextBlock Text="Parameters" Foreground="Orange"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Tables" Margin="0,0,4,0" Visibility="{Binding Path=FilterTable.Length, Converter={StaticResource NegatedIntConverter}}"/>
+                <Image Grid.Column="1" Source="\Images\Filter.png" Width="16" Height="16" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="2" Margin="4,0,0,0" Background="Transparent" Foreground="Orange" Text="{Binding Mode=TwoWay, Path=FilterTable, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </wpfspark:PivotHeaderControl>
 
+        <wpfspark:PivotHeaderControl Grid.Column="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Query"/>
+                <TextBox Text="{Binding Mode=TwoWay, Path=QueryName, UpdateSourceTrigger=PropertyChanged}" 
+                         FontSize="18"
+                         Margin="8,0,0,0"
+                         MinWidth="278"
+                         MaxWidth="400"/>    
+            </StackPanel>
+        </wpfspark:PivotHeaderControl>
+
         <Grid Grid.Row="1">
-            <ListView ItemsSource="{Binding SelectedQuery.Parameter}"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.5*"/>
+            </Grid.RowDefinitions>
+            
+            <ListView
+                ItemsSource="{Binding AvailableTables}"
+                SelectedItem="{Binding Mode=TwoWay, Path=SelectedParentTable}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="Transparent">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding name}" FontSize="14" Foreground="Orange"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <ListView Grid.Row="1"
+                      ItemsSource="{Binding SelectedParentTable.Column}"
+                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedParentColumn}"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
                       Background="Transparent">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding name}" FontSize="18" Background="Transparent" Foreground="LightBlue"/>
-                            <TextBox Grid.Column="1" Text="{Binding Mode=TwoWay, Path=defaultValue, UpdateSourceTrigger=PropertyChanged}" Foreground="Orange" FontSize="18" Width="260"/>
+                            <TextBlock Text="{Binding name}" FontSize="14" Foreground="Orange"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Path=DbType, Converter={StaticResource DbTypeConverter}}" FontSize="14" Foreground="GreenYellow"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
-            <Button Click="cmdOk_Click">
+        <Grid Grid.Column="1" Grid.Row="1">            
+            <TextBox Text="{Binding Mode=TwoWay, Path=QueryText, UpdateSourceTrigger=PropertyChanged}"
+                      FontSize="18"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      Background="White"
+                      Foreground="Orange"    
+                      MinLines="1"
+                      MaxLines="99999"
+                      AcceptsReturn="True"
+                      AcceptsTab="True"
+                      AutoWordSelection="True"
+                      CaretBrush="Black"                     
+                      TextWrapping="Wrap"/>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Grid.Column="3" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Command="{Binding RunQueryCommand}" HorizontalAlignment="Right">
                 <Button.RenderTransform>
                     <SkewTransform />
                 </Button.RenderTransform>
@@ -106,7 +172,7 @@
                                             <VisualStateGroup x:Name="CommonStates">
                                                 <VisualState x:Name="Normal"/>
                                                 <VisualState x:Name="MouseOver">
-                                                    <Storyboard>                                                        
+                                                    <Storyboard>
                                                         <ColorAnimation Duration="0" To="#FF4472A2" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
                                                     </Storyboard>
                                                 </VisualState>
@@ -117,7 +183,7 @@
                                                 <VisualState x:Name="Focused"/>
                                                 <VisualState x:Name="Unfocused"/>
                                             </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>                                        
+                                        </VisualStateManager.VisualStateGroups>
                                         <Path x:Name="path" Data="M8.3570007,6.1859996L14.698,10.66649 8.3570007,15.146999z M10.6665,2.0871906C5.9268889,2.0871906 2.0858412,5.9283266 2.0858412,10.66655 2.0858412,15.404783 5.9268889,19.24583 10.6665,19.24583 15.403311,19.24583 19.244439,15.404783 19.244439,10.66655 19.244439,5.9283266 15.403311,2.0871906 10.6665,2.0871906z M10.6665,0C16.54649,0 21.332999,4.7850927 21.332999,10.66655 21.332999,16.547968 16.54649,21.333 10.6665,21.333 4.7837806,21.333 0,16.547968 0,10.66655 0,4.7850927 4.7837806,0 10.6665,0z" Stretch="Uniform" Fill="#FF599737" Width="26" Height="26" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"/>
                                     </Grid>
                                 </ControlTemplate>
@@ -127,7 +193,7 @@
                 </Button.Style>
             </Button>
 
-            <Button Click="cmdCancel_Click">
+            <Button Command="{Binding SaveQueryCommand}" HorizontalAlignment="Right">
                 <Button.RenderTransform>
                     <SkewTransform />
                 </Button.RenderTransform>
@@ -160,7 +226,7 @@
                                             <VisualStateGroup x:Name="CommonStates">
                                                 <VisualState x:Name="Normal"/>
                                                 <VisualState x:Name="MouseOver">
-                                                    <Storyboard>                                                        
+                                                    <Storyboard>
                                                         <ColorAnimation Duration="0" To="#FF4472A2" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
                                                     </Storyboard>
                                                 </VisualState>
@@ -171,8 +237,8 @@
                                                 <VisualState x:Name="Focused"/>
                                                 <VisualState x:Name="Unfocused"/>
                                             </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>                                        
-                                        <Path x:Name="path" Data="M19.85228,12.08996L12.093,19.849201 24.242323,31.997846 12.094,44.145998 19.852051,51.904958 32.001186,39.756277 44.150543,51.904958 51.909,44.145994 39.760246,31.997501 51.909,19.849201 44.15049,12.08996 32.001431,24.238849z M32,0C49.671021,3.1599484E-07 64,14.329407 64,31.998501 64,49.677606 49.671021,63.997003 32,63.997003 14.328003,63.997003 0,49.677606 0,31.998501 0,14.329407 14.328003,3.1599484E-07 32,0z" Stretch="Uniform" Fill="#FFC17819" Width="26" Height="26" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"/>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M58.087635,37.91074L47.872219,48.125874 43.038265,43.283699 41.153744,45.166451 47.872219,51.884777 59.972256,39.793491z M50.563049,31.73C57.949932,31.73 64,37.779644 64,45.166451 64,52.553158 57.949932,58.603001 50.563049,58.603001 43.176067,58.603001 37.125999,52.553158 37.125999,45.166451 37.125999,37.779644 43.176067,31.73 50.563049,31.73z M33.032001,0L40.381001,0 40.381001,16.236 33.032001,16.236z M5.0388451,0L13.576872,0 13.576872,15.676368C13.576872,17.995482,15.456882,19.875292,17.775993,19.875292L39.191006,19.875292C41.510117,19.875292,43.389931,17.995482,43.389931,15.676368L43.389931,0 49.177559,0 56.966999,7.789382 56.966999,30.375652C55.002491,29.522047 52.83918,29.042944 50.564068,29.042944 41.672218,29.042944 34.440281,36.274784 34.440281,45.166538 34.440281,49.536861 36.193592,53.500183 39.026005,56.407002L5.0388451,56.407002C2.255872,56.407002,0,54.150986,0,51.368172L0,5.038847C0,2.2558709,2.255872,4.6670634E-08,5.0388451,0z" Stretch="Uniform" Fill="#FF599737" Width="26" Height="26" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"/>
                                     </Grid>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -181,11 +247,26 @@
                 </Button.Style>
             </Button>
 
-            
         </StackPanel>
-
+        
         <StackPanel Grid.Row="3"
+                    Grid.ColumnSpan="2"
                     Orientation="Horizontal">
+            <wpfspark:SprocketControl 
+                                  HorizontalAlignment="Left"
+                                  Name="sprocWait"
+                                  VerticalAlignment="Top"
+                                  TickColor="Orange"
+                                  Width="50"
+                                  Height="50"
+                                  TickWidth="3"
+                                  TickCount="40"
+                                  StartAngle="-90"
+                                  IsIndeterminate="{Binding IsBusy}"
+                                  Interval="30" 
+                                  LowestAlpha="50"
+                                  AlphaTicksPercentage="50"/>
+
             <wpfspark:FluidStatusBar 
                                  Content="{Binding LastErrorsString}"
                                  HorizontalAlignment="Stretch"
