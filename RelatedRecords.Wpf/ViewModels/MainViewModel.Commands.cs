@@ -59,12 +59,8 @@ namespace RelatedRecords.Wpf.ViewModels
                                 .Add(SelectedNewConfiguration.Datasource.First());
                             SelectedConfiguration.Dataset
                                 .Add(SelectedNewConfiguration.Dataset.First());
-                            SelectedConfiguration.Inflate();
-                            XmlHelper<CConfiguration>.Save(
-                                ConfigurationManager.AppSettings["ConfigurationFile"], SelectedConfiguration);
-                            SelectedConfiguration = XmlHelper<CConfiguration>.Load(
-                                ConfigurationManager.AppSettings["ConfigurationFile"]);
-                            SelectedConfiguration.Deflate();
+
+                            saveConfiguration();
                             SelectedNewConfiguration = null;
                             SelectedConnectionString = string.Empty;
                             LoadDatasourceSchemaCommand.AsRelay().RaiseCanExecuteChanged();
@@ -359,31 +355,6 @@ namespace RelatedRecords.Wpf.ViewModels
 
         #endregion //Exit
 
-        #region Connect 
-
-        RelayCommand _connectCommand;
-
-        /// <summary>
-        /// connect to datasource
-        /// </summary>
-        public ICommand ConnectCommand
-        {
-            get
-            {
-                if (_connectCommand == null)
-                {
-                    _connectCommand = new RelayCommand(
-                        x =>
-                        {
-                            
-                        });
-                }
-                return _connectCommand;
-            }
-        }
-
-        #endregion //Connect
-
         #region Save query
 
         RelayCommand _saveQueryCommand;
@@ -401,12 +372,7 @@ namespace RelatedRecords.Wpf.ViewModels
                         x =>
                         {
                             SelectedDataset.Query.Add(SelectedQuery);
-
-                            SelectedConfiguration.Inflate();
-                            XmlHelper<CConfiguration>.Save(
-                                ConfigurationManager.AppSettings["ConfigurationFile"],
-                                SelectedConfiguration);                            
-                            SelectedConfiguration.Deflate();                                                       
+                            saveConfiguration();
                         },
                         x => QueryText.Length > 0 && QueryName.Length > 0 && SelectedQuery != null);
                 }
@@ -493,6 +459,8 @@ namespace RelatedRecords.Wpf.ViewModels
                             QueryName = "qry" + SelectedParentTable.name.Replace("[", string.Empty).Replace("]", string.Empty);
                             QueryText = SelectedParentTable.ToSelectWhereString("".ToArray(), "".ToArray(), true);
                             var result = new AddQuery().ShowDialog();
+                            if (result.HasValue && result.Value)
+                                loadAndSetConfiguration();
                         },
                         x => SelectedViewType == eViewType.Queries);
                 }
@@ -519,7 +487,9 @@ namespace RelatedRecords.Wpf.ViewModels
                         x =>
                         {
                             SelectedConnectionString = SelectedDatasource.ConnectionString;
-                            new TableRelationships().ShowDialog();
+                            var result = new TableRelationships().ShowDialog();
+                            if (result.HasValue && result.Value)
+                                loadAndSetConfiguration();
                         });
                 }
                 return _setTableRelationshipsCommand;
@@ -546,7 +516,9 @@ namespace RelatedRecords.Wpf.ViewModels
                         {
                             LastErrors.Clear();
                             OnPropertyChanged("LastErrorsString");
-                            new AddTableRelationship().ShowDialog();
+                            var result = new AddTableRelationship().ShowDialog();
+                            if (result.HasValue && result.Value)
+                                loadAndSetConfiguration();
                         });
                 }
                 return _addTableRelationshipCommand;
@@ -582,13 +554,7 @@ namespace RelatedRecords.Wpf.ViewModels
                             if (!SelectedDataset.Relationship.Any(r => r.name == relationship.name))
                             {
                                 SelectedDataset.Relationship.Add(relationship);
-                                SelectedConfiguration.Inflate();
-                                XmlHelper<CConfiguration>.Save(
-                                    ConfigurationManager.AppSettings["ConfigurationFile"],
-                                    SelectedConfiguration);
-                                SelectedConfiguration = XmlHelper<CConfiguration>.Load(
-                                    ConfigurationManager.AppSettings["ConfigurationFile"]);
-                                SelectedConfiguration.Deflate();
+                                saveConfiguration();
                                 LastErrors.Clear();
                                 LastErrors.Add("Relationship Saved");
                             }

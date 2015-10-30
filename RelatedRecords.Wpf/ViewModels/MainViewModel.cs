@@ -16,11 +16,37 @@ namespace RelatedRecords.Wpf.ViewModels
     {
         public MainViewModel()
         {
-            var configuration = ConfigurationManager.AppSettings["ConfigurationFile"];
-            TraceLog.Information("Running with {configuration} file", configuration);
+            loadAndSetConfiguration();
+        }
 
-            SelectedConfiguration = XmlHelper<CConfiguration>.Load(configuration);
+        private void loadAndSetConfiguration(string cfgFile = "")
+        {
+            _dataTablesList.Clear();
+
+            if(string.IsNullOrEmpty(cfgFile))
+                cfgFile = ConfigurationManager.AppSettings["ConfigurationFile"];
+            TraceLog.Information("Loading {cfgFile} file", cfgFile);
+
+            var cfg = XmlHelper<CConfiguration>.Load(cfgFile);
+            cfg.Deflate();
+            SelectedConfiguration = cfg;
+        }
+
+        private void saveAndReloadConfiguration()
+        {
+            loadAndSetConfiguration(saveConfiguration());
+        }
+
+        private string saveConfiguration()
+        {
+            var cfgFile = ConfigurationManager.AppSettings["ConfigurationFile"];
+            TraceLog.Information("Saving {cfgFile} file", cfgFile);
+
+            SelectedConfiguration.Inflate();
+            XmlHelper<CConfiguration>.Save(cfgFile, SelectedConfiguration);
             SelectedConfiguration.Deflate();
+
+            return cfgFile;
         }
 
         private static MainViewModel _instance = new MainViewModel();

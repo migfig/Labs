@@ -11,7 +11,6 @@
 
     <Fluent:RibbonWindow.Resources>
         <ResourceDictionary>
-            <ResourceDictionary x:Key="tableTemplate" Source="TableTemplate.xaml"/>
             <local:IntToVisibilityConverter x:Key="IntConverter"/>
             <local:CTableToVisibilityConverter x:Key="TableConverter"/>
         </ResourceDictionary>
@@ -25,7 +24,7 @@
             </Fluent:Ribbon.QuickAccessItems>
             
             <!--Tabs-->
-            <Fluent:RibbonTabItem Header="Tab" ReduceOrder="(P),(Q),(R)">
+            <Fluent:RibbonTabItem Header="Tab" ReduceOrder="(P),(P),(P),(P),(P)">
                 <Fluent:RibbonGroupBox Header="Navigation">
                     <Button Command="{Binding GoBackCommand}">
                         <Button.RenderTransform>
@@ -141,9 +140,19 @@
                 <Fluent:RibbonGroupBox Header="Datasets" Name="P" Visibility="{Binding DatasetsVisibility}" >
                     <Fluent:InRibbonGallery ItemWidth="100" ItemHeight="56" ResizeMode="Both"
                                       MinItemsInRow="2" MaxItemsInRow="4"                             
-                                      ItemTemplate="{DynamicResource DatasetCardTemplate}"
                                       ItemsSource="{Binding SelectedConfiguration.Dataset}"
                                       SelectedItem="{Binding Mode=TwoWay, Path=SelectedDataset}">
+                        <Fluent:InRibbonGallery.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding name}" FontWeight="Bold" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Tables " VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                        <TextBlock Text="{Binding Table.Count}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Fluent:InRibbonGallery.ItemTemplate>
                     </Fluent:InRibbonGallery>
                     <Button Command="{Binding SetTableRelationshipsCommand}">
                         <Button.RenderTransform>
@@ -203,18 +212,38 @@
                 <Fluent:RibbonGroupBox Header="Tables" Name="Q" Visibility="{Binding TablesVisibility}" >
                     <Fluent:InRibbonGallery ItemWidth="120" ItemHeight="56" ResizeMode="Both"
                                       MinItemsInRow="1" MaxItemsInRow="2"                             
-                                      ItemTemplate="{DynamicResource TableCardTemplate}"
                                       ItemsSource="{Binding SelectedDataset.Table}"
                                       SelectedItem="{Binding Mode=TwoWay, Path=SelectedTable}">
+                        <Fluent:InRibbonGallery.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding name}" FontWeight="Bold" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Columns " VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                        <TextBlock Text="{Binding Column.Count}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Fluent:InRibbonGallery.ItemTemplate>
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
 
                 <Fluent:RibbonGroupBox Header="Queries" Name="R" Visibility="{Binding QueriesVisibility}" >
                     <Fluent:InRibbonGallery ItemWidth="120" ItemHeight="56" ResizeMode="Both"
                                       MinItemsInRow="1" MaxItemsInRow="2"                             
-                                      ItemTemplate="{DynamicResource QueryCardTemplate}"
                                       ItemsSource="{Binding SelectedDataset.Query}"
                                       SelectedItem="{Binding Mode=TwoWay, Path=SelectedQuery}">
+                        <Fluent:InRibbonGallery.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding name}" FontWeight="Bold" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Parameters " VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                        <TextBlock Text="{Binding Parameter.Count}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Fluent:InRibbonGallery.ItemTemplate>
                     </Fluent:InRibbonGallery>
                     <Button Command="{Binding AddQueryCommand}">
                         <Button.RenderTransform>
@@ -287,8 +316,17 @@
 
                         <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="100"
                                         SelectedItem="{Binding Mode=TwoWay, Path=SelectedColumn}" SelectedValue="{Binding Mode=TwoWay, Path=SelectedColumn}"
-                                        ItemsSource="{Binding SelectedDataTableColumns}" 
-                                        ItemTemplate="{DynamicResource ColumnsTemplate}"/>
+                                        ItemsSource="{Binding SelectedDataTableColumns}">
+                            <Fluent:Gallery.ItemTemplate>
+                                <DataTemplate>
+                                    <Border>
+                                        <StackPanel HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding Mode=OneWay, Path=name}" FontSize="10" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </Fluent:Gallery.ItemTemplate>
+                        </Fluent:Gallery>
                         <Fluent:MenuItem Header="Search" Command="{Binding SearchCommand}" Icon="Images\Find.png"/>
                     </Fluent:DropDownButton>
 
@@ -410,7 +448,8 @@
         </Fluent:Ribbon>
 
         <TabControl>
-            <TabItem Visibility="{Binding DatasetsVisibility}" IsSelected="{Binding Mode=OneWay, Path=IsDatasetsViewSelected}">
+            <TabItem Visibility="{Binding DatasetsVisibility}" 
+                     IsSelected="{Binding Mode=OneWay, Path=IsDatasetsViewSelected}">
                 <!--View Current dataset table Details-->
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -543,7 +582,8 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Visibility="{Binding TablesVisibility}" IsSelected="{Binding Mode=OneWay, Path=IsTablesViewSelected}">
+            <TabItem Visibility="{Binding TablesVisibility}" 
+                     IsSelected="{Binding Mode=OneWay, Path=IsTablesViewSelected}">
                 <!--View Current table Details-->
                 <Grid>
                     <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
@@ -571,7 +611,8 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Visibility="{Binding QueriesVisibility}" IsSelected="{Binding Mode=OneWay, Path=IsQueriesViewSelected}">
+            <TabItem Visibility="{Binding QueriesVisibility}" 
+                     IsSelected="{Binding Mode=OneWay, Path=IsQueriesViewSelected}">
                 <!--View Current query table Details-->
                 <Grid>
                     <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">

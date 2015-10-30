@@ -133,7 +133,9 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Button Grid.Row="2" Command="{Binding SaveDatasourceSchemaCommand}" HorizontalAlignment="Right">
+        <Button x:Name="cmdSave" Grid.Row="2" 
+                Click="cmdSave_Click" 
+                HorizontalAlignment="Right">
             <Button.RenderTransform>
                 <SkewTransform />
             </Button.RenderTransform>

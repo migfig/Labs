@@ -193,7 +193,8 @@
                 </Button.Style>
             </Button>
 
-            <Button Command="{Binding SaveQueryCommand}" HorizontalAlignment="Right">
+            <Button x:Name="cmdSave" HorizontalAlignment="Right"
+                    Click="cmdSave_Click">
                 <Button.RenderTransform>
                     <SkewTransform />
                 </Button.RenderTransform>

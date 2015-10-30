@@ -16,5 +16,12 @@ namespace RelatedRecords.Wpf
             InitializeComponent();
             DataContext = MainViewModel.ViewModel;
         }
+
+        private void cmdSave_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            MainViewModel.ViewModel.SaveQueryCommand.Execute(null);
+            Close();
+        }
     }
 }

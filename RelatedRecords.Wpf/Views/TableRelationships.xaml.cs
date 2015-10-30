@@ -21,5 +21,12 @@ namespace RelatedRecords.Wpf
         {
             customStatusBar.SetStatus(message, true);
         }
+
+        private void cmdSave_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            MainViewModel.ViewModel.SaveDatasourceSchemaCommand.Execute(null);
+            Close();
+        }
     }
 }
