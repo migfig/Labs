@@ -6,6 +6,7 @@ namespace RelatedRecords
     using System.Runtime.CompilerServices;
     using Common;
     using System.Linq;
+    using System.Windows;
 
     public enum eAutoFilter
     {
@@ -342,11 +343,11 @@ namespace RelatedRecords
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
     public partial class CTable: BaseModel {
-        
         private ObservableCollection<CColumn> columnField;
         private ObservableCollection<CTable> childrenField;
         private string nameField;
-        
+        private bool isDefaultField;
+
         public CTable() {
             this.columnField = new ObservableCollection<CColumn>();
             this.childrenField = new ObservableCollection<CTable>();
@@ -379,15 +380,22 @@ namespace RelatedRecords
             }
         }
 
-        public override string ToString()
+        [System.Xml.Serialization.XmlIgnore]
+        public bool isDefault
         {
-            return this.name
-                .Replace("[", string.Empty)
-                .Replace("]",string.Empty) + 
-                Environment.NewLine + 
-                Environment.NewLine + 
-                "Columns: " + 
-                Column.Count.ToString();
+            get { return isDefaultField; }
+            set
+            {
+                isDefaultField = value;
+                OnPropertyChanged();
+                OnPropertyChanged("DefaultVisibility");
+            }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public Visibility DefaultVisibility
+        {
+            get { return isDefaultField ? Visibility.Visible : Visibility.Collapsed; }
         }
     }
 
@@ -458,11 +466,6 @@ namespace RelatedRecords
                 this.isStoreProcedureField = value;
             }
         }
-
-        public override string ToString()
-        {
-            return this.name + Environment.NewLine + Environment.NewLine + "Parameters: " + Parameter.Count.ToString();
-        }
     }
 
     /// <remarks/>
@@ -521,8 +524,7 @@ namespace RelatedRecords
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
     public partial class CDataset : BaseModel
-    {
-        
+    {        
         private ObservableCollection<CTable> tableField;
         private ObservableCollection<CRelationship> relationshipField;
         private ObservableCollection<CQuery> queryField;
@@ -531,6 +533,8 @@ namespace RelatedRecords
         private string dataSourceNameField;
         private string defaultTableField;
         private bool isDisabledField;
+        private bool isSelectedField;
+        private bool isDefaultField;
 
         public CDataset() {
             this.relationshipField = new ObservableCollection<CRelationship>();
@@ -619,9 +623,43 @@ namespace RelatedRecords
             }
         }
 
-        public override string ToString()
+        [System.Xml.Serialization.XmlIgnore]
+        public bool isSelected
         {
-            return this.name.ToUpper() + Environment.NewLine + Environment.NewLine + "Tables: " + Table.Count.ToString();
+            get
+            {
+                return this.isSelectedField;
+            }
+            set
+            {
+                this.isSelectedField = value;
+                OnPropertyChanged();
+                OnPropertyChanged("SelectedVisibility");
+            }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public Visibility SelectedVisibility
+        {
+            get { return isSelected ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public bool isDefault
+        {
+            get { return isDefaultField; }
+            set
+            {
+                isDefaultField = value;
+                OnPropertyChanged();
+                OnPropertyChanged("DefaultVisibility");
+            }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public Visibility DefaultVisibility
+        {
+            get { return isDefaultField ? Visibility.Visible : Visibility.Collapsed; }
         }
     }
 }

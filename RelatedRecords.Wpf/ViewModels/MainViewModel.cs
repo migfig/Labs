@@ -80,7 +80,12 @@ namespace RelatedRecords.Wpf.ViewModels
             get { return Extensions.SelectedDataset; }
             set
             {
+                if (null != Extensions.SelectedDataset)
+                    Extensions.SelectedDataset.isSelected = false;
+
                 Extensions.SelectedDataset = value;
+                Extensions.SelectedDataset.isSelected = true;
+                Extensions.SelectedDataset.isDefault = value.name == Extensions.SelectedConfiguration.defaultDataset;
                 OnPropertyChanged();
                 LoadTableList();
             }

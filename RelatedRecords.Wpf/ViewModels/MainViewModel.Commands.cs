@@ -18,6 +18,61 @@ namespace RelatedRecords.Wpf.ViewModels
     {
         #region load schema commands
 
+        RelayCommand _reloadDatasourceCommand;
+        public ICommand ReLoadDatasourceCommand
+        {
+            get
+            {
+                if (_reloadDatasourceCommand == null)
+                {
+                    _reloadDatasourceCommand = new RelayCommand(
+                        async x =>
+                        {
+                            IsBusy = true;
+                            var config = XmlHelper<CConfiguration>.Load(
+                                    await Helpers.GetConfigurationFromConnectionString(
+                                        SelectedConfiguration.Datasource.First(ds => ds.name == SelectedDataset.dataSourceName).ConnectionString)
+                                );
+                            IsBusy = false;
+
+                            if (null != config && config.Dataset.Any() && config.Dataset.First().Table.Any())
+                            {
+                                SelectedDataset.Table.Clear();
+                                config.Dataset.First().Table.ToList().ForEach(t =>
+                                    SelectedDataset.Table.Add(t)
+                                );
+
+                                saveAndReloadConfiguration();
+                            }
+                        },
+                        x => null != SelectedConfiguration && !IsBusy);
+                }
+                return _reloadDatasourceCommand;
+            }
+        }
+
+        RelayCommand _setAsDefaultDatasetCommand;
+        public ICommand SetAsDefaultDatasetCommand
+        {
+            get
+            {
+                if (_setAsDefaultDatasetCommand == null)
+                {
+                    _setAsDefaultDatasetCommand = new RelayCommand(
+                        x =>
+                        {
+                            SelectedConfiguration.Dataset.First(ds => ds.isDefault == true).isDefault = false;
+                            SelectedConfiguration.defaultDatasource = SelectedDataset.name;
+                            SelectedConfiguration.defaultDataset = SelectedDataset.name;
+                            SelectedDataset.isDefault = true;
+                            saveConfiguration();
+                        },
+                        x => null != SelectedDataset && SelectedDataset.isDefault == false);
+                }
+                return _setAsDefaultDatasetCommand;
+            }
+        }
+
         RelayCommand _loadDatasourceSchemaCommand;
         public ICommand LoadDatasourceSchemaCommand
         {
@@ -155,7 +210,7 @@ namespace RelatedRecords.Wpf.ViewModels
                                     break;
                             }
                         },
-                        x => true);
+                        x => !IsBusy);
                 }
                 return _refresh;
             }
@@ -470,7 +525,7 @@ namespace RelatedRecords.Wpf.ViewModels
                             if (result.HasValue && result.Value)
                                 loadAndSetConfiguration();
                         },
-                        x => SelectedViewType == eViewType.Queries);
+                        x => SelectedViewType == eViewType.Queries && !IsBusy);
                 }
                 return _addQueryCommand;
             }
@@ -498,7 +553,8 @@ namespace RelatedRecords.Wpf.ViewModels
                             var result = new TableRelationships().ShowDialog();
                             if (result.HasValue && result.Value)
                                 loadAndSetConfiguration();
-                        });
+                        },  
+                        x => !IsBusy);
                 }
                 return _setTableRelationshipsCommand;
             }
@@ -790,7 +846,7 @@ namespace RelatedRecords.Wpf.ViewModels
                     _searchCommand = new RelayCommand(
                         x => searchDataForRootTable(),
                         x => (null != SelectedRootDataView
-                                && !string.IsNullOrEmpty(SelectedSearchCriteria)));
+                                && !string.IsNullOrEmpty(SelectedSearchCriteria) && !IsBusy));
 
                 }
                 return _searchCommand;

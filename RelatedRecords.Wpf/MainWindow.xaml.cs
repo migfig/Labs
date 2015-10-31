@@ -47,5 +47,10 @@ namespace RelatedRecords.Wpf
                 MainViewModel.ViewModel.AddTableRelationshipCommand.Execute(null);
             }
         }
+
+        private void cmdReloadDataset_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.ViewModel.ReLoadDatasourceCommand.Execute(null);
+        }
     }
 }
