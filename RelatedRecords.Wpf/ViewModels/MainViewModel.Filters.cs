@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace RelatedRecords.Wpf.ViewModels
 {
@@ -145,9 +146,57 @@ namespace RelatedRecords.Wpf.ViewModels
         {
             get
             {
-                List<int> list = new List<int>();
-                foreach (string item in Properties.Settings.Default.MaxRows)
+                var list = new List<int>();
+                foreach (var item in Properties.Settings.Default.MaxRows)
                     list.Add(int.Parse(item));
+
+                return list;
+            }
+        }
+
+        public DataGridSelectionMode SelectionMode
+        {
+            get { return (DataGridSelectionMode)Enum.Parse(typeof(DataGridSelectionMode), Properties.Settings.Default.DefaultSelectionMode); }
+            set
+            {
+                if (value.ToString() == Properties.Settings.Default.DefaultSelectionMode) return;
+                Properties.Settings.Default.DefaultSelectionMode = value.ToString();
+                Properties.Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public List<DataGridSelectionMode> SelectionModes
+        {
+            get
+            {
+                var list = new List<DataGridSelectionMode>();
+                foreach (var item in Properties.Settings.Default.SelectionModes)
+                    list.Add((DataGridSelectionMode)Enum.Parse(typeof(DataGridSelectionMode), item));
+
+                return list;
+            }
+        }
+
+        public DataGridClipboardCopyMode CopyMode
+        {
+            get { return (DataGridClipboardCopyMode)Enum.Parse(typeof(DataGridClipboardCopyMode), Properties.Settings.Default.DefaultCopyMode); }
+            set
+            {
+                if (value.ToString() == Properties.Settings.Default.DefaultCopyMode) return;
+                Properties.Settings.Default.DefaultCopyMode = value.ToString();
+                Properties.Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public List<DataGridClipboardCopyMode> CopyModes
+        {
+            get
+            {
+                var list = new List<DataGridClipboardCopyMode>();
+                foreach (var item in Properties.Settings.Default.CopyModes)
+                    list.Add((DataGridClipboardCopyMode)Enum.Parse(typeof(DataGridClipboardCopyMode), item));
 
                 return list;
             }

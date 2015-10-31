@@ -852,6 +852,8 @@ namespace RelatedRecords
         public static string Value(this DataRow row, string columnName)
         {
             var value = "NULL";
+            if (!row.Table.Columns.Contains(columnName)) return value;
+
             switch (row.Table.Columns[columnName].DataType.ToString())
             {
                 case "System.Boolean":
@@ -964,6 +966,23 @@ namespace RelatedRecords
             }
 
             return value;
+        }
+
+        public static string RemoveLastNumbers(this string value)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+
+            var len = value.Trim().Length;
+            var lastCharPos = len - 1;
+            for(var i=len-1; i>0; i--)
+            {
+                if (Char.IsNumber(value[i]))
+                    lastCharPos--;
+                else
+                    break;
+            }
+
+            return value.Substring(0, lastCharPos+1);
         }
     }
 }

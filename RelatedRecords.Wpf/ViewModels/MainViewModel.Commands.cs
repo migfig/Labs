@@ -55,10 +55,17 @@ namespace RelatedRecords.Wpf.ViewModels
                         x =>
                         {                            
                             SelectedNewConfiguration.Dataset.FirstOrDefault().defaultTable = SelectedParentTable.name;
-                            SelectedConfiguration.Datasource
-                                .Add(SelectedNewConfiguration.Datasource.First());
-                            SelectedConfiguration.Dataset
-                                .Add(SelectedNewConfiguration.Dataset.First());
+                            var sourceName = SelectedNewConfiguration.Datasource.First().name.RemoveLastNumbers();
+                            var namesFound = SelectedConfiguration.Datasource.Where(s => s.name.Contains(sourceName)).Count();
+                            if (namesFound > 0)
+                            {
+                                sourceName += namesFound.ToString();
+                                SelectedNewConfiguration.Datasource.First().name = sourceName;
+                                SelectedNewConfiguration.Dataset.First().dataSourceName = sourceName;
+                                SelectedNewConfiguration.Dataset.First().name = sourceName;
+                            }
+                            SelectedConfiguration.Datasource.Add(SelectedNewConfiguration.Datasource.First());
+                            SelectedConfiguration.Dataset.Add(SelectedNewConfiguration.Dataset.First());
 
                             saveConfiguration();
                             SelectedNewConfiguration = null;

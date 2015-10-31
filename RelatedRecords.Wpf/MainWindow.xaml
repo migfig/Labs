@@ -339,8 +339,7 @@
 
                         <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="100" 
                                         SelectedItem="{Binding Mode=TwoWay, Path=SelectedOperator}" SelectedValue="{Binding Mode=TwoWay, Path=SelectedOperator}"
-                                        ItemsSource="{Binding SelectedColumnOperators}" 
-                                        ItemTemplate="{DynamicResource ColumnsTemplate}"/>
+                                        ItemsSource="{Binding SelectedColumnOperators}"/>
                     </Fluent:DropDownButton>
 
                     <Fluent:TextBox Name="searchFilterCriteria" Width="140"
@@ -358,8 +357,7 @@
 
                         <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="100"
                                         SelectedItem="{Binding Mode=TwoWay, Path=SelectedCriteria}"
-                                        ItemsSource="{Binding AppSettings.SearchValues}" 
-                                        ItemTemplate="{DynamicResource ColumnsTemplate}"/>
+                                        ItemsSource="{Binding AppSettings.SearchValues}"/>
                         <Fluent:MenuItem Header="Clear History" Command="{Binding ClearSearchHistoryCommand}" Icon="Images\clear.png"/>
                     </Fluent:DropDownButton>
                 </Fluent:RibbonGroupBox>
@@ -374,8 +372,31 @@
 
                         <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="100"
                                         SelectedItem="{Binding Mode=TwoWay, Path=MaxRowCount}" SelectedValue="{Binding Mode=TwoWay, Path=MaxRowCount}"
-                                        ItemsSource="{Binding MaxRows}" 
-                                        ItemTemplate="{DynamicResource ColumnsTemplate}"/>
+                                        ItemsSource="{Binding MaxRows}"/>
+                    </Fluent:DropDownButton>
+
+                    <Fluent:DropDownButton Name="copyMode" SizeDefinition="Middle" Header="Copy Mode">
+                        <Fluent:DropDownButton.Icon>
+                            <Grid Width="16" Height="16">
+                                <Image Source="Images\Copy.png"/>
+                            </Grid>
+                        </Fluent:DropDownButton.Icon>
+
+                        <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="100"
+                                        SelectedItem="{Binding Mode=TwoWay, Path=CopyMode}" SelectedValue="{Binding Mode=TwoWay, Path=CopyMode}"
+                                        ItemsSource="{Binding CopyModes}"/>
+                    </Fluent:DropDownButton>
+
+                    <Fluent:DropDownButton Name="selectionMode" SizeDefinition="Middle" Header="Selection Mode">
+                        <Fluent:DropDownButton.Icon>
+                            <Grid Width="16" Height="16">
+                                <Image Source="Images\List.png"/>
+                            </Grid>
+                        </Fluent:DropDownButton.Icon>
+
+                        <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="100"
+                                        SelectedItem="{Binding Mode=TwoWay, Path=SelectionMode}" SelectedValue="{Binding Mode=TwoWay, Path=SelectionMode}"
+                                        ItemsSource="{Binding SelectionModes}"/>
                     </Fluent:DropDownButton>
 
                     <Fluent:CheckBox Header="Use Constraints" Visibility="Collapsed" IsChecked="{Binding Mode=TwoWay, Path=UseSchemaConstraints}"/>
@@ -395,8 +416,7 @@
                         </Fluent:DropDownButton.Icon>
 
                         <Fluent:Gallery MaxItemsInRow="1" MinItemsInRow="1" ItemWidth="200"
-                                        ItemsSource="{Binding Mode=OneWay, Path=LastErrors}" 
-                                        ItemTemplate="{DynamicResource ColumnsTemplate}"/>
+                                        ItemsSource="{Binding Mode=OneWay, Path=LastErrors}"/>
                         <Fluent:MenuItem Header="Clear" Command="{Binding ClearLastErrorsCommand}" Icon="Images\clear.png"/>
                     </Fluent:DropDownButton>
                 </Fluent:RibbonGroupBox>
@@ -475,9 +495,9 @@
                             </StackPanel>
                             <DataGrid ItemsSource="{Binding SelectedDataTable.Root.Table}"
                           CanUserResizeRows="False" 
-                          SelectionMode="Single" 
                           AlternatingRowBackground="LemonChiffon" 
-                          ClipboardCopyMode="IncludeHeader" 
+                          ClipboardCopyMode="{Binding CopyMode}"                                      
+                          SelectionMode="{Binding SelectionMode}" 
                           IsReadOnly="True" 
                           IsTextSearchEnabled="True"
                           AutoGenerateColumns="True"
@@ -557,15 +577,15 @@
                                                            Style="{DynamicResource FluentButtonStyle}"/>
                                                 </StackPanel>
                                                 <DataGrid Grid.Row="1" 
-                                                ItemsSource="{Binding Root.Table}"
+                                                    ItemsSource="{Binding Root.Table}"
                                                     AutoGenerateColumns="True"
                                                     IsReadOnly="True"
-                                                    SelectionMode="Single"
+                                                    SelectionMode="{Binding SelectionMode}"
                                                     AlternatingRowBackground="LightCyan" 
                                                     CanUserAddRows="False" 
                                                     CanUserDeleteRows="False" 
                                                     CanUserResizeRows="False" 
-                                                    ClipboardCopyMode="IncludeHeader" 
+                                                    ClipboardCopyMode="{Binding CopyMode}" 
                                                     IsTextSearchEnabled="True" 
                                                     SelectionUnit="CellOrRowHeader"
                                                     HorizontalAlignment="Stretch"
@@ -596,11 +616,11 @@
                             </StackPanel>
                             <DataGrid ItemsSource="{Binding SelectedRootTable.Root.Table}"
                           CanUserResizeRows="False" 
-                          SelectionMode="Extended" 
+                          SelectionMode="{Binding SelectionMode}" 
                           CurrentCellChanged="DataGrid_CurrentCellChanged"
                           SelectedItem="{Binding SelectedRootDataRowView}"
                           AlternatingRowBackground="LemonChiffon" 
-                          ClipboardCopyMode="IncludeHeader" 
+                          ClipboardCopyMode="{Binding CopyMode}" 
                           IsReadOnly="True" 
                           IsTextSearchEnabled="True"
                           AutoGenerateColumns="True"
@@ -707,9 +727,9 @@
                             
                             <DataGrid Grid.Row="2" ItemsSource="{Binding SelectedRootTable.Root.Table}"
                               CanUserResizeRows="False" 
-                              SelectionMode="Extended" 
+                              SelectionMode="{Binding SelectionMode}" 
                               AlternatingRowBackground="LemonChiffon" 
-                              ClipboardCopyMode="IncludeHeader" 
+                              ClipboardCopyMode="{Binding CopyMode}" 
                               IsReadOnly="True" 
                               IsTextSearchEnabled="True"
                               AutoGenerateColumns="True"

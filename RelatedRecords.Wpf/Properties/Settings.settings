@@ -28,5 +28,25 @@
     <Setting Name="UseSchemaConstraints" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="CopyModes" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;IncludeHeader&lt;/string&gt;
+  &lt;string&gt;ExcludeHeader&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="DefaultCopyMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">IncludeHeader</Value>
+    </Setting>
+    <Setting Name="SelectionModes" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;Extended&lt;/string&gt;
+  &lt;string&gt;Single&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="DefaultSelectionMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Extended</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
