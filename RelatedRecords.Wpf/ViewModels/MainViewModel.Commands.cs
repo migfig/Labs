@@ -113,7 +113,8 @@ namespace RelatedRecords.Wpf.ViewModels
                     _refresh = new RelayCommand(
                         x =>
                         {
-                            switch(SelectedViewType)
+                            _refreshingFromMainCommand = (x == null);
+                            switch (SelectedViewType)
                             {
                                 case eViewType.Datasets:
                                     var tname = SelectedDataTable.Root.ConfigTable.name;

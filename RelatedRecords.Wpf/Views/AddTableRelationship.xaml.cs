@@ -19,9 +19,12 @@ namespace RelatedRecords.Wpf
 
         private void cmdSave_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
-            MainViewModel.ViewModel.SaveRelationshipCommand.Execute(null);
-            Close();
+            if (MainViewModel.ViewModel.SaveRelationshipCommand.CanExecute(null))
+            {
+                DialogResult = true;
+                MainViewModel.ViewModel.SaveRelationshipCommand.Execute(null);
+                Close();
+            }
         }
     }
 }

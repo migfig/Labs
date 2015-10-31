@@ -423,6 +423,7 @@ namespace RelatedRecords.Wpf.ViewModels
         }
 
         private bool _isRefreshing = true;
+        private bool _refreshingFromMainCommand = true;
 
         private CQuery _selectedQuery;
         public CQuery SelectedQuery
@@ -435,7 +436,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (null != _selectedQuery)
                 {
                     var result = true;
-                    if(_selectedQuery.Parameter.Any() && _isRefreshing)
+                    if(_selectedQuery.Parameter.Any() && _isRefreshing && _refreshingFromMainCommand)
                     {
                         result = new InputParameters().ShowDialog().Value;
                     }

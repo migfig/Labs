@@ -22,7 +22,7 @@
             <Fluent:Ribbon.QuickAccessItems>
                 <Fluent:QuickAccessMenuItem Target="{Binding ElementName=buttonGreen}"/>
             </Fluent:Ribbon.QuickAccessItems>
-            
+
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Tab" ReduceOrder="(P),(P),(P),(P),(P)">
                 <Fluent:RibbonGroupBox Header="Navigation">
@@ -81,7 +81,7 @@
                             </Style>
                         </Button.Style>
                     </Button>
-                    <Button Command="{Binding RefreshCommand}">
+                    <Button Command="{Binding RefreshCommand}" Visibility="{Binding HiddenQueriesVisibility}">
                         <Button.RenderTransform>
                             <SkewTransform />
                         </Button.RenderTransform>
@@ -125,7 +125,7 @@
                                                         <VisualState x:Name="Focused"/>
                                                         <VisualState x:Name="Unfocused"/>
                                                     </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>                                                
+                                                </VisualStateManager.VisualStateGroups>
                                                 <Path x:Name="path" Data="M44.817715,32.701C44.817715,36.424438 43.317719,39.769474 40.880226,42.212898 38.434834,44.649822 35.091141,46.147739 31.369753,46.150341 27.679762,46.150341 24.35157,44.671223 21.919287,42.2715L26.742264,37.44965 13.336,37.44965 13.336,50.854187 17.786488,46.404942C21.270859,49.861279 26.078165,52 31.369753,52 42.028622,51.998199 50.661396,43.359409 50.663998,32.701z M32.635052,12C21.97893,12.002014,13.341001,20.637493,13.341001,31.295L19.187323,31.295C19.189894,27.57238 20.68988,24.227364 23.127359,21.784601 25.567509,19.347088 28.913782,17.849091 32.635052,17.84647 36.379917,17.84647 39.757488,19.373089 42.197472,21.83989L37.58041,26.455275 50.660995,26.455275 50.660995,13.373056 46.330338,17.702539C42.838165,14.183121,37.989204,12,32.635052,12z M32,0C49.6744,0 64,14.3269 64,32 64,49.673199 49.6744,64 32,64 14.3281,64 0,49.673199 0,32 0,14.3269 14.3281,0 32,0z" Stretch="Uniform" Fill="#FF87BDDD" Width="42" Height="42" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"/>
                                             </Grid>
                                         </ControlTemplate>
@@ -289,7 +289,7 @@
                                                         <VisualState x:Name="Focused"/>
                                                         <VisualState x:Name="Unfocused"/>
                                                     </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>                                                
+                                                </VisualStateManager.VisualStateGroups>
                                                 <Path x:Name="path" Data="M342.522,146.43L342.522,343.653 145.298,343.653 145.298,437.611 342.522,437.611 342.522,634.834 436.478,634.834 436.478,437.611 633.701,437.611 633.701,343.653 436.478,343.653 436.478,146.43z M389.517,0C604.233,0 779,174.729 779,389.517 779,604.27 604.233,779 389.517,779 174.693,779 0,604.27 0,389.517 0,174.729 174.693,0 389.517,0z" Stretch="Uniform" Fill="#FF599737" Width="26" Height="26" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"/>
                                             </Grid>
                                         </ControlTemplate>
@@ -381,7 +381,7 @@
                     <Fluent:CheckBox Header="Use Constraints" Visibility="Collapsed" IsChecked="{Binding Mode=TwoWay, Path=UseSchemaConstraints}"/>
                 </Fluent:RibbonGroupBox>
 
-                <Fluent:RibbonGroupBox Header="Export">                    
+                <Fluent:RibbonGroupBox Header="Export">
                     <Fluent:Button Header="Html" Command="{Binding Export2HtmlCommand}" Icon="Images\html.png" LargeIcon="Images\html.png"/>
                     <Fluent:Button Header="SQL" Command="{Binding Export2SqlInsertCommand}" Icon="Images\sql.png" LargeIcon="Images\sql.png"/>
                 </Fluent:RibbonGroupBox>
@@ -616,24 +616,106 @@
                 <!--View Current query table Details-->
                 <Grid>
                     <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
-                        <DockPanel LastChildFill="True">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
                             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
                                 <TextBlock Text="{Binding SelectedRootTable.Root.Table.TableName}" FontWeight="DemiBold" VerticalAlignment="Center"/>
                                 <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding SelectedRootTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
                                 <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+                                <HeaderedItemsControl Grid.Row="1" ItemsSource="{Binding SelectedQuery.Parameter}"
+                                        Height="25"
+                                        VerticalAlignment="Center"
+                                        Visibility="{Binding SelectedQuery.Paramter.Count, Converter={StaticResource IntConverter}}" Background="Transparent">
+                                    <HeaderedItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </HeaderedItemsControl.ItemsPanel>
+                                    <HeaderedItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Text="{Binding name}" Margin="8,0,0,0" FontWeight="DemiBold" Foreground="Gray" VerticalAlignment="Center"/>
+                                                <TextBox Grid.Column="1" Margin="4,0,0,0" Text="{Binding Mode=TwoWay, Path=defaultValue, UpdateSourceTrigger=PropertyChanged}" Foreground="Orange" Width="100" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </HeaderedItemsControl.ItemTemplate>
+                                </HeaderedItemsControl>
+                                <Button Command="{Binding RefreshCommand}" CommandParameter="1" VerticalAlignment="Center">
+                                    <Button.RenderTransform>
+                                        <SkewTransform />
+                                    </Button.RenderTransform>
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#FF262626"/>
+                                            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                            <Setter Property="Height" Value="24"/>
+                                            <Setter Property="Width" Value="24"/>
+                                            <Setter Property="Margin" Value="4,0,0,0"/>
+                                            <Setter Property="Padding" Value="3"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="Opacity" Value="0.995"/>
+                                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                            <Setter Property="BorderBrush">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                        <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                                        <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                                        <GradientStop Color="#FF718597" Offset="0.375"/>
+                                                        <GradientStop Color="#FF617584" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Grid>
+                                                            <VisualStateManager.VisualStateGroups>
+                                                                <VisualStateGroup x:Name="CommonStates">
+                                                                    <VisualState x:Name="Normal"/>
+                                                                    <VisualState x:Name="MouseOver">
+                                                                        <Storyboard>
+                                                                            <ColorAnimation Duration="0" To="#FF4472A2" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                                        </Storyboard>
+                                                                    </VisualState>
+                                                                    <VisualState x:Name="Pressed"/>
+                                                                    <VisualState x:Name="Disabled"/>
+                                                                </VisualStateGroup>
+                                                                <VisualStateGroup x:Name="FocusStates">
+                                                                    <VisualState x:Name="Focused"/>
+                                                                    <VisualState x:Name="Unfocused"/>
+                                                                </VisualStateGroup>
+                                                            </VisualStateManager.VisualStateGroups>
+                                                            <Path x:Name="path" Data="M44.817715,32.701C44.817715,36.424438 43.317719,39.769474 40.880226,42.212898 38.434834,44.649822 35.091141,46.147739 31.369753,46.150341 27.679762,46.150341 24.35157,44.671223 21.919287,42.2715L26.742264,37.44965 13.336,37.44965 13.336,50.854187 17.786488,46.404942C21.270859,49.861279 26.078165,52 31.369753,52 42.028622,51.998199 50.661396,43.359409 50.663998,32.701z M32.635052,12C21.97893,12.002014,13.341001,20.637493,13.341001,31.295L19.187323,31.295C19.189894,27.57238 20.68988,24.227364 23.127359,21.784601 25.567509,19.347088 28.913782,17.849091 32.635052,17.84647 36.379917,17.84647 39.757488,19.373089 42.197472,21.83989L37.58041,26.455275 50.660995,26.455275 50.660995,13.373056 46.330338,17.702539C42.838165,14.183121,37.989204,12,32.635052,12z M32,0C49.6744,0 64,14.3269 64,32 64,49.673199 49.6744,64 32,64 14.3281,64 0,49.673199 0,32 0,14.3269 14.3281,0 32,0z" Stretch="Uniform" Fill="#FF87BDDD" Width="24" Height="24" RenderTransformOrigin="0.5,0.5"/>
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
                             </StackPanel>
-                            <DataGrid ItemsSource="{Binding SelectedRootTable.Root.Table}"
-                          CanUserResizeRows="False" 
-                          SelectionMode="Extended" 
-                          AlternatingRowBackground="LemonChiffon" 
-                          ClipboardCopyMode="IncludeHeader" 
-                          IsReadOnly="True" 
-                          IsTextSearchEnabled="True"
-                          AutoGenerateColumns="True"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"/>
-                        </DockPanel>
+                            
+                            <DataGrid Grid.Row="2" ItemsSource="{Binding SelectedRootTable.Root.Table}"
+                              CanUserResizeRows="False" 
+                              SelectionMode="Extended" 
+                              AlternatingRowBackground="LemonChiffon" 
+                              ClipboardCopyMode="IncludeHeader" 
+                              IsReadOnly="True" 
+                              IsTextSearchEnabled="True"
+                              AutoGenerateColumns="True"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"/>
+                        </Grid>
                     </Border>
                 </Grid>
             </TabItem>
