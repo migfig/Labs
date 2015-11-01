@@ -1,5 +1,7 @@
 ﻿using Serilog;
+using Serilog.Events;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -19,6 +21,7 @@ namespace Common
                         .WriteTo.File(Path.Combine(
                             AppDomain.CurrentDomain.BaseDirectory,
                             typeof(Extensions).ToString().Split('.').First() + ".log"))
+                        .MinimumLevel.Is(LogLevel)                       
                         .CreateLogger();
                 }
 
@@ -37,10 +40,34 @@ namespace Common
                         .WriteTo.File(Path.Combine(
                             AppDomain.CurrentDomain.BaseDirectory,
                             typeof(Extensions).ToString().Split('.').First() + "-error.log"))
+                        .MinimumLevel.Is(LogEventLevel.Error)
                         .CreateLogger();
                 }
 
                 return _errorLog;
+            }
+        }
+
+        public static LogEventLevel LogLevel
+        {
+            get { return (LogEventLevel)Enum.Parse(typeof(LogEventLevel), Properties.Settings.Default.DefaultLogLevel); }
+            set
+            {
+                if (value.ToString() == Properties.Settings.Default.DefaultLogLevel) return;
+                Properties.Settings.Default.DefaultLogLevel = value.ToString();
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public static List<LogEventLevel> LogLevels
+        {
+            get
+            {
+                var list = new List<LogEventLevel>();
+                foreach (var item in Properties.Settings.Default.LogLevels)
+                    list.Add((LogEventLevel)Enum.Parse(typeof(LogEventLevel), item));
+
+                return list;
             }
         }
 

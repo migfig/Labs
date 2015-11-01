@@ -80,12 +80,17 @@ namespace RelatedRecords.Wpf.ViewModels
             get { return Extensions.SelectedDataset; }
             set
             {
+                _dataTablesList.Clear();
+                
                 if (null != Extensions.SelectedDataset)
                     Extensions.SelectedDataset.isSelected = false;
 
                 Extensions.SelectedDataset = value;
-                Extensions.SelectedDataset.isSelected = true;
-                Extensions.SelectedDataset.isDefault = value.name == Extensions.SelectedConfiguration.defaultDataset;
+                if (null != value)
+                {
+                    Extensions.SelectedDataset.isSelected = true;
+                    Extensions.SelectedDataset.isDefault = value.name == Extensions.SelectedConfiguration.defaultDataset;
+                }
                 OnPropertyChanged();
                 LoadTableList();
             }
@@ -328,7 +333,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (value == null) return;
 
                 OnPropertyChanged("NonYetRelatedTables");
-                SelectedParentColumn = value.Column.FirstOrDefault(x => x.isForeignKey);
+                SelectedParentColumn = value.Column.FirstOrDefault(x => x.isPrimaryKey);
             }
         }
 
@@ -342,7 +347,9 @@ namespace RelatedRecords.Wpf.ViewModels
                 OnPropertyChanged();
                 if (value == null) return;
 
-                SelectedChildColumn = value.Column.FirstOrDefault(x => x.isPrimaryKey);
+                SelectedChildColumn = _selectedChildTable.Column.Any(x => x.name == SelectedParentColumn.name) 
+                    ? _selectedChildTable.Column.First(x => x.name == SelectedParentColumn.name)
+                    : value.Column.FirstOrDefault(x => x.isForeignKey);
             }
         }
 

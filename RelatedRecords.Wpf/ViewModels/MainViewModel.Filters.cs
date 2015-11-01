@@ -1,4 +1,5 @@
 ﻿using Common.Commands;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -176,6 +177,21 @@ namespace RelatedRecords.Wpf.ViewModels
 
                 return list;
             }
+        }
+
+        public LogEventLevel LogLevel
+        {
+            get { return Common.Extensions.LogLevel; }
+            set
+            {
+                Common.Extensions.LogLevel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<LogEventLevel> LogLevels
+        {
+            get { return Common.Extensions.LogLevels; }
         }
 
         public DataGridClipboardCopyMode CopyMode
