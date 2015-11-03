@@ -344,6 +344,85 @@
                     </Border>
                 </Grid>
             </TabItem>
+            <TabItem Header="Edit Workflow" IsSelected="{Binding Mode=OneWay, Path=isEditingWorkflow}" Visibility="{Binding EditWorkflowVisibility}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40*"/>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="30*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Border
+                        Padding="4" CornerRadius="2"  
+                        VerticalAlignment="Stretch" 
+                        HorizontalAlignment="Stretch" 
+                        BorderBrush="DarkGray" 
+                        BorderThickness="1">
+
+                        <DataGrid ItemsSource="{Binding WorkflowTable}"
+                          SelectedItem="{Binding Mode=TwoWay, Path=SelectedWorkflowDataRowView}"
+                          CanUserResizeRows="False" 
+                          SelectionMode="Single" 
+                          AlternatingRowBackground="LemonChiffon" 
+                          ClipboardCopyMode="IncludeHeader" 
+                          IsReadOnly="True" 
+                          IsTextSearchEnabled="True"
+                          AutoGenerateColumns="True"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch">
+                        </DataGrid>
+                    </Border>
+
+                    <GridSplitter Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
+                          Style="{DynamicResource GridSplitterStyle}" Background="LightBlue"/>
+
+                    <Border Grid.Row="2"
+                        Padding="4" CornerRadius="2"  
+                        VerticalAlignment="Stretch" 
+                        HorizontalAlignment="Stretch" 
+                        BorderBrush="DarkGray" 
+                        BorderThickness="1">
+
+                        <DataGrid ItemsSource="{Binding WorkflowParametersTable}"
+                          CanUserResizeRows="False" 
+                          SelectionMode="Single" 
+                          AlternatingRowBackground="LemonChiffon" 
+                          ClipboardCopyMode="IncludeHeader" 
+                          IsReadOnly="True" 
+                          IsTextSearchEnabled="True"
+                          AutoGenerateColumns="True"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch">
+                        </DataGrid>
+                    </Border>
+
+                    <GridSplitter Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1"
+                          Style="{DynamicResource GridSplitterStyle}" Background="LightBlue"/>
+
+                    <Border Grid.Row="4"
+                        Padding="4" CornerRadius="2"  
+                        VerticalAlignment="Stretch" 
+                        HorizontalAlignment="Stretch" 
+                        BorderBrush="DarkGray" 
+                        BorderThickness="1">
+
+                        <DataGrid ItemsSource="{Binding WorkflowResultsTable}"
+                          CanUserResizeRows="False" 
+                          SelectionMode="Single" 
+                          AlternatingRowBackground="LemonChiffon" 
+                          ClipboardCopyMode="IncludeHeader" 
+                          IsReadOnly="True" 
+                          IsTextSearchEnabled="True"
+                          AutoGenerateColumns="True"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch">
+                        </DataGrid>
+                    </Border>
+
+                </Grid>
+            </TabItem>
             <TabItem Header="Results" Visibility="{Binding ResultsVisibility}">
                 <Grid>
                     <Border

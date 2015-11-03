@@ -405,12 +405,14 @@
         }
 
         [XmlIgnore]
+        [EditColumnIgnore]
         public bool Passed
         {
             get { return hasPassedField; }
         }
 
         [ColumnIgnore]
+        [EditColumnIgnore]
         [XmlIgnore]
         public bool IsValidTest
         {
@@ -471,6 +473,7 @@
         }
         
         [ColumnIgnore]
+        [EditColumnIgnore]
         [XmlAttributeAttribute()]
         public string pattern
         {
@@ -485,6 +488,7 @@
         }
 
         [ColumnIgnore]
+        [EditColumnIgnore]
         [XmlElementAttribute("parameter", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ObservableCollection<Parameter> parameter
         {
@@ -499,6 +503,7 @@
         }
 
         [ColumnIgnore]
+        [EditColumnIgnore]
         [XmlElementAttribute("task", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ObservableCollection<Task> task
         {
@@ -513,6 +518,7 @@
         }
 
         [ColumnIgnore]
+        [EditColumnIgnore]
         [XmlElementAttribute("resultValue", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ObservableCollection<ResultValue> resultValue
         {
@@ -527,6 +533,7 @@
         }
 
         [XmlIgnore]
+        [EditColumnIgnore]
         public string Results
         {
             get
@@ -540,6 +547,7 @@
         }
 
         [ColumnIgnore]
+        [EditColumnIgnore]
         [XmlIgnore]
         public object ResultsObject
         {
@@ -555,6 +563,7 @@
         }
 
         [ColumnIgnore]
+        [EditColumnIgnore]
         [XmlIgnore]
         public Task ParentTask
         {
@@ -829,38 +838,39 @@
             return table;
         }
 
-        public static DataTable ToTable(this workflow workflow)
+        public static DataTable ToTable(this workflow workflow, bool isEdit = false)
         {
             var table = new DataTable(workflow.name);
             foreach (var p in workflow.task.First().GetType().GetProperties()
                 .Where(x => x.GetCustomAttributes(
-                    typeof(ColumnIgnoreAttribute), false).Count() == 0))
+                    isEdit ? typeof(EditColumnIgnoreAttribute) : typeof(ColumnIgnoreAttribute), false)
+                        .Count() == 0))
             {
                 table.Columns.Add(new DataColumn(p.Name, p.PropertyType));
             }
 
             foreach (var t in workflow.task)
             {
-                AddRow(t, table);
+                AddRow(t, table, isEdit);
             }
             return table;
         }
 
-        private static void AddRow(Task task, DataTable table)
+        private static void AddRow(Task task, DataTable table, bool isEdit = false)
         {
-            table.Rows.Add(task.ToRow(table));
+            table.Rows.Add(task.ToRow(table, isEdit));
             foreach (var t in task.task)
             {
-                AddRow(t, table);
+                AddRow(t, table, isEdit);
             }
         }
 
-        public static DataRow ToRow(this Task task, DataTable table)
+        public static DataRow ToRow(this Task task, DataTable table, bool isEdit = false)
         {
             var row = table.NewRow();
             foreach (var p in task.GetType().GetProperties()
                 .Where(x => x.GetCustomAttributes(
-                    typeof(ColumnIgnoreAttribute), false).Count() == 0))
+                    isEdit ? typeof(EditColumnIgnoreAttribute) : typeof(ColumnIgnoreAttribute), false).Count() == 0))
             {
                 row[p.Name] = p.GetValue(task);
             }
@@ -868,12 +878,54 @@
             return row;
         }
 
+        public static DataTable ToTable(this Task task, bool isParameter = true)
+        {
+            var table = new DataTable(task.name);
+            if (isParameter)
+            {
+                foreach (var p in task.parameter.First().GetType().GetProperties())
+                {
+                    table.Columns.Add(new DataColumn(p.Name, p.PropertyType));
+                }
+
+                foreach (var p in task.parameter)
+                {
+                    table.Rows.Add(p.ToRow(table));
+                }
+            }
+            else
+            {
+                foreach (var p in task.resultValue.First().GetType().GetProperties())
+                {
+                    table.Columns.Add(new DataColumn(p.Name, p.PropertyType));
+                }
+
+                foreach (var p in task.resultValue)
+                {
+                    table.Rows.Add(p.ToRow(table));
+                }
+            }
+            return table;
+        }
+
+
         public static DataRow ToRow(this Parameter parameter, DataTable table)
         {
             var row = table.NewRow();
             foreach (var p in parameter.GetType().GetProperties())
             {
                 row[p.Name] = p.GetValue(parameter);
+            }
+
+            return row;
+        }
+
+        public static DataRow ToRow(this ResultValue result, DataTable table)
+        {
+            var row = table.NewRow();
+            foreach (var p in result.GetType().GetProperties())
+            {
+                row[p.Name] = p.GetValue(result);
             }
 
             return row;

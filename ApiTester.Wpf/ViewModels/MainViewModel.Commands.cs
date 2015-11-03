@@ -39,7 +39,7 @@ namespace ApiTester.Wpf.ViewModels
             {
                 _editWorkflow = _editWorkflow ?? new RelayCommand(
                     (parameter) => {
-                        //TODO: add workflow edit window
+                        isEditingWorkflow = true;
                     },
                     x => SelectedConfiguration != null
                         && SelectedWorkflow != null

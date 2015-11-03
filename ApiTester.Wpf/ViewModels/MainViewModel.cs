@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace ApiTester.Wpf.ViewModels
 {
@@ -239,6 +240,80 @@ namespace ApiTester.Wpf.ViewModels
             }
         }
 
+        private DataRowView _selectedWorkflowDataRowView;
+        public DataRowView SelectedWorkflowDataRowView
+        {
+            get { return _selectedWorkflowDataRowView; }
+            set
+            {
+                _selectedWorkflowDataRowView = value;
+                OnPropertyChanged();
+                if (null != _selectedWorkflowDataRowView)
+                {
+                    SelectedWorkflowTask = _workflow.task
+                        .First(x => x.name == _selectedWorkflowDataRowView["name"].ToString());
+                }
+            }
+        }
+
+        private Models.Task _selectedWorkflowTask;
+        public Models.Task SelectedWorkflowTask
+        {
+            get { return _selectedWorkflowTask; }
+            set
+            {
+                _selectedWorkflowTask = value;
+                OnPropertyChanged();
+                OnPropertyChanged("WorkflowParametersTable");
+                OnPropertyChanged("WorkflowResultsTable");
+            }
+
+        }
+
+        private workflow _workflow;
+        public DataTable WorkflowTable
+        {
+            get {
+                if (null != SelectedWorkflow)
+                {
+                    if (null == _workflow)
+                    {
+                        _workflow = XmlHelper<workflow>.Load(
+                            Path.Combine(
+                                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output"),
+                                SelectedWorkflow.name));
+                    }
+
+                    return _workflow.ToTable(isEdit: true);
+                }
+                return null;
+            }
+        }
+
+        public DataTable WorkflowParametersTable
+        {
+            get
+            {
+                if (null != SelectedWorkflow)
+                {
+                    return SelectedWorkflowTask.ToTable();
+                }
+                return null;
+            }
+        }
+
+        public DataTable WorkflowResultsTable
+        {
+            get
+            {
+                if (null != SelectedWorkflow)
+                {
+                    return SelectedWorkflowTask.ToTable(isParameter: false);
+                }
+                return null;
+            }
+        }
+
         private workflow _selectedWorkflow;
         public workflow SelectedWorkflow
         {
@@ -462,6 +537,37 @@ namespace ApiTester.Wpf.ViewModels
         public Visibility ResultsVisibility
         {
             get { return null != ExecutedWorkflow ? Visibility.Visible: Visibility.Collapsed; }
+        }
+
+        private TabItem _selectedTabItem;
+        public TabItem SelectedTabItem
+        {
+            get { return _selectedTabItem; }
+            set
+            {
+                _selectedTabItem = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isEditingWorkflow;
+        public bool isEditingWorkflow
+        {
+            get { return _isEditingWorkflow; }
+            set
+            {
+                _isEditingWorkflow = value;
+                OnPropertyChanged();
+                OnPropertyChanged("EditWorkflowVisibility");
+
+                if(_isEditingWorkflow)
+                    OnPropertyChanged("WorkflowTable");
+            }
+        }
+
+        public Visibility EditWorkflowVisibility
+        {
+            get { return isEditingWorkflow ? Visibility.Visible : Visibility.Collapsed; }
         }
     }    
 }

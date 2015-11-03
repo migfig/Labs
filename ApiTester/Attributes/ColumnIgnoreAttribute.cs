@@ -10,4 +10,9 @@ namespace ApiTester.Attributes
     public class ColumnIgnoreAttribute: Attribute
     {
     }
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class EditColumnIgnoreAttribute : Attribute
+    {
+    }
 }
