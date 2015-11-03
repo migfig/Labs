@@ -18,6 +18,8 @@ namespace RelatedRecords
     {
         #region static selected items
 
+        private static string _currentDatasetName = string.Empty;
+        
         private static CConfiguration _selectedConfiguration;
         public static CConfiguration SelectedConfiguration
         {
@@ -27,7 +29,9 @@ namespace RelatedRecords
                 _selectedConfiguration = value;
                 SelectedDataset = _selectedConfiguration
                     .Dataset
-                    .First(d => d.name == _selectedConfiguration.defaultDataset);
+                    .First(d => d.name == (!string.IsNullOrEmpty(_currentDatasetName) 
+                        ? _currentDatasetName
+                        : _selectedConfiguration.defaultDataset));
             }
         }
 
@@ -40,6 +44,8 @@ namespace RelatedRecords
                 if (value == null) return;
 
                 _selectedDataset = value;
+                _currentDatasetName = _selectedDataset.name;
+
                 SelectedDatasource = SelectedConfiguration
                     .Datasource.First(x => x.name == _selectedDataset.dataSourceName);
 
