@@ -48,6 +48,16 @@ namespace RelatedRecords.Wpf
             }
         }
 
+        private void RemoveTableRelation_Click(object sender, RoutedEventArgs e)
+        {
+            var table = (sender as Fluent.Button).Tag as DatatableEx;
+            if (null != table)
+            {
+                MainViewModel.ViewModel.SelectedChildTable = table.Root.ConfigTable;
+                MainViewModel.ViewModel.RemoveTableRelationshipCommand.Execute(null);
+            }
+        }
+
         private void cmdReloadDataset_Click(object sender, RoutedEventArgs e)
         {
             MainViewModel.ViewModel.ReLoadDatasourceCommand.Execute(null);

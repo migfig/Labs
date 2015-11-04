@@ -606,26 +606,97 @@
                                 <TextBlock Text="{Binding SelectedDataTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
                                 <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
                                 <Fluent:Button Height="32" Width="32"
-                            VerticalAlignment="Center"
-                            Click="AddTableRelation_Click"
-                            Visibility="{Binding SelectedDataTable.Root.ConfigTable, Converter={StaticResource TableConverter}}"
-                            Tag="{Binding SelectedDataTable}"       
-                            Icon="Images\connect.png" 
-                            LargeIcon="Images\connect.png" 
-                            Style="{DynamicResource FluentButtonStyle}"/>
+                                    VerticalAlignment="Center"
+                                    Click="AddTableRelation_Click"
+                                    Visibility="{Binding SelectedDataTable.Root.ConfigTable, Converter={StaticResource TableConverter}}"
+                                    Tag="{Binding SelectedDataTable}"       
+                                    Icon="Images\connect.png" 
+                                    LargeIcon="Images\connect.png" 
+                                    Style="{DynamicResource FluentButtonStyle}"/>
+                                <Fluent:Button Height="32" Width="32"
+                                    VerticalAlignment="Center"
+                                    Click="RemoveTableRelation_Click"
+                                    Visibility="{Binding RemoveRelationShipVisibility}"
+                                    Tag="{Binding SelectedDataTable}"       
+                                    Icon="Images\disconnect.png" 
+                                    LargeIcon="Images\disconnect.png" 
+                                    Style="{DynamicResource FluentButtonStyle}"/>
+                                <ComboBox ItemsSource="{Binding SelectedDataset.Table}" 
+                                          SelectedItem="{Binding Mode=TwoWay, Path=DefaultTable}"
+                                          VerticalAlignment="Center">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding name}" FontWeight="DemiBold"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button Command="{Binding SetAsDefaultTableCommand}">
+                                    <Button.RenderTransform>
+                                        <SkewTransform />
+                                    </Button.RenderTransform>
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#FF1F3B53"/>
+                                            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                            <Setter Property="Height" Value="20"/>
+                                            <Setter Property="Width" Value="20"/>
+                                            <Setter Property="Margin" Value="0,0,0,0"/>
+                                            <Setter Property="Padding" Value="3"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="Opacity" Value="0.995"/>
+                                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                            <Setter Property="BorderBrush">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                        <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                                        <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                                        <GradientStop Color="#FF718597" Offset="0.375"/>
+                                                        <GradientStop Color="#FF617584" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Grid>
+                                                            <VisualStateManager.VisualStateGroups>
+                                                                <VisualStateGroup x:Name="CommonStates">
+                                                                    <VisualState x:Name="Normal"/>
+                                                                    <VisualState x:Name="MouseOver">
+                                                                        <Storyboard>
+                                                                            <ColorAnimation Duration="0" To="#FF4472A2" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                                        </Storyboard>
+                                                                    </VisualState>
+                                                                    <VisualState x:Name="Pressed"/>
+                                                                    <VisualState x:Name="Disabled"/>
+                                                                </VisualStateGroup>
+                                                                <VisualStateGroup x:Name="FocusStates">
+                                                                    <VisualState x:Name="Focused"/>
+                                                                    <VisualState x:Name="Unfocused"/>
+                                                                </VisualStateGroup>
+                                                            </VisualStateManager.VisualStateGroups>
+                                                            <Path x:Name="path" Data="M49.1300048828125,19.1300048828125L26,38 18.6300048828125,28.6300048828125 12.7598876953125,34.75 26,52 52,22z M32,0C49.679931640625,0 64,14.3299560546875 64,32 64,49.679931640625 49.679931640625,64 32,64 14.3299560546875,64 0,49.679931640625 0,32 0,14.3299560546875 14.3299560546875,0 32,0z" Stretch="Uniform" Fill="#FF87BDDD" Width="16" Height="16" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"/>
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
                             </StackPanel>
                             <DataGrid ItemsSource="{Binding SelectedDataTable.Root.Table}"
-                          CanUserResizeRows="False" 
-                          AlternatingRowBackground="LemonChiffon" 
-                          ClipboardCopyMode="{Binding CopyMode}"                                      
-                          SelectionMode="{Binding SelectionMode}" 
-                          IsReadOnly="True" 
-                          IsTextSearchEnabled="True"
-                          AutoGenerateColumns="True"
-                          CurrentCellChanged="DataGrid_CurrentCellChanged"
-                          SelectedItem="{Binding SelectedRootDataRowView}"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"/>
+                                CanUserResizeRows="False" 
+                                AlternatingRowBackground="LemonChiffon" 
+                                ClipboardCopyMode="{Binding CopyMode}"                                      
+                                SelectionMode="{Binding SelectionMode}" 
+                                IsReadOnly="True" 
+                                IsTextSearchEnabled="True"
+                                AutoGenerateColumns="True"
+                                CurrentCellChanged="DataGrid_CurrentCellChanged"
+                                SelectedItem="{Binding SelectedRootDataRowView}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"/>
                         </DockPanel>
                     </Border>
 

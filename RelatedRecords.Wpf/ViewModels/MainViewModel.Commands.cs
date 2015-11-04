@@ -73,6 +73,27 @@ namespace RelatedRecords.Wpf.ViewModels
             }
         }
 
+        RelayCommand _setAsDefaultTableCommand;
+        public ICommand SetAsDefaultTableCommand
+        {
+            get
+            {
+                if (_setAsDefaultTableCommand == null)
+                {
+                    _setAsDefaultTableCommand = new RelayCommand(
+                        x =>
+                        {
+                            SelectedDataset.defaultTable = DefaultTable.name;
+                            saveAndReloadConfiguration();
+                        },
+                        x => null != DefaultTable 
+                            && null != SelectedDataTable 
+                            && DefaultTable.name != SelectedDataTable.Root.ConfigTable.name);
+                }
+                return _setAsDefaultTableCommand;
+            }
+        }
+
         RelayCommand _loadDatasourceSchemaCommand;
         public ICommand LoadDatasourceSchemaCommand
         {
@@ -590,6 +611,38 @@ namespace RelatedRecords.Wpf.ViewModels
         }
 
         #endregion //Add Table Relationship
+
+        #region Remove Table Relationship
+
+        RelayCommand _removeTableRelationshipCommand;
+
+        /// <summary>
+        /// Remove table to relationship
+        /// </summary>
+        public ICommand RemoveTableRelationshipCommand
+        {
+            get
+            {
+                if (_removeTableRelationshipCommand == null)
+                {
+                    _removeTableRelationshipCommand = new RelayCommand(
+                        x =>
+                        {
+                            var relationShip = SelectedDataset.Relationship
+                                .FirstOrDefault(r => r.name == string.Format("{0}->{1}",
+                                    SelectedDataTable.Root.ConfigTable.name, SelectedChildTable.name));
+                            if (null != relationShip)
+                            {
+                                SelectedDataset.Relationship.Remove(relationShip);
+                                loadAndSetConfiguration();
+                            }
+                        });
+                }
+                return _removeTableRelationshipCommand;
+            }
+        }
+
+        #endregion //Remove Table Relationship
 
         #region Save Relationship
 
