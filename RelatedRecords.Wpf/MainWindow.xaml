@@ -206,7 +206,7 @@
                                                 </Style>
                                             </Button.Style>
                                         </Button>
-                                        <Button x:Name="cmdRemoveDataset" Click="cmdRemoveDataset_Click" Visibility="{Binding SelectedVisibility}" VerticalAlignment="Center">
+                                        <!--<Button x:Name="cmdRemoveDataset" Click="cmdRemoveDataset_Click" Visibility="{Binding SelectedVisibility}" VerticalAlignment="Center">
                                             <Button.RenderTransform>
                                                 <SkewTransform />
                                             </Button.RenderTransform>
@@ -258,7 +258,7 @@
                                                     </Setter>
                                                 </Style>
                                             </Button.Style>
-                                        </Button>
+                                        </Button>-->
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>
