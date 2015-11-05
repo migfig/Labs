@@ -21,6 +21,7 @@ namespace RelatedRecords.Wpf.ViewModels
 
         private void loadAndSetConfiguration(string cfgFile = "")
         {
+            _tableNavigation.Clear();
             _dataTablesList.Clear();
 
             if(string.IsNullOrEmpty(cfgFile))
@@ -29,6 +30,7 @@ namespace RelatedRecords.Wpf.ViewModels
 
             var cfg = XmlHelper<CConfiguration>.Load(cfgFile);
             cfg.Deflate();
+            IsBusy = true;
             SelectedConfiguration = cfg;
         }
 
@@ -90,9 +92,9 @@ namespace RelatedRecords.Wpf.ViewModels
                 {
                     Extensions.SelectedDataset.isSelected = true;
                     Extensions.SelectedDataset.isDefault = value.name == Extensions.SelectedConfiguration.defaultDataset;
+                    LoadTableList();
                 }
                 OnPropertyChanged();
-                LoadTableList();
             }
         }
 
@@ -351,7 +353,7 @@ namespace RelatedRecords.Wpf.ViewModels
                 if (value == null) return;
 
                 OnPropertyChanged("RemoveRelationShipVisibility");
-                SelectedChildColumn = _selectedChildTable.Column.Any(x => x.name == SelectedParentColumn.name) 
+                SelectedChildColumn = null != SelectedParentColumn && _selectedChildTable.Column.Any(x => x.name == SelectedParentColumn.name) 
                     ? _selectedChildTable.Column.First(x => x.name == SelectedParentColumn.name)
                     : value.Column.FirstOrDefault(x => x.isForeignKey);
             }
@@ -428,6 +430,7 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 _defaultTable = value;
                 OnPropertyChanged();
+                SetAsDefaultTableCommand.AsRelay().RaiseCanExecuteChanged();
             }
         }
 
@@ -576,17 +579,6 @@ namespace RelatedRecords.Wpf.ViewModels
             {
                 _selectedTabItem = value;
                 OnPropertyChanged();
-            }
-        }
-
-        public Visibility RemoveRelationShipVisibility
-        {
-            get {
-                return null != SelectedDataTable
-                  && null != SelectedChildTable
-                  && SelectedDataTable.Root.ConfigTable.name != SelectedChildTable.name
-                  ? Visibility.Visible
-                  : Visibility.Collapsed;
             }
         }
 

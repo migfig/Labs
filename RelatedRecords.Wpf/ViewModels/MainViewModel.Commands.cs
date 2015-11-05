@@ -18,14 +18,14 @@ namespace RelatedRecords.Wpf.ViewModels
     {
         #region load schema commands
 
-        RelayCommand _reloadDatasourceCommand;
-        public ICommand ReLoadDatasourceCommand
+        RelayCommand _reloadDatasetCommand;
+        public ICommand ReLoadDatasetCommand
         {
             get
             {
-                if (_reloadDatasourceCommand == null)
+                if (_reloadDatasetCommand == null)
                 {
-                    _reloadDatasourceCommand = new RelayCommand(
+                    _reloadDatasetCommand = new RelayCommand(
                         async x =>
                         {
                             IsBusy = true;
@@ -47,7 +47,36 @@ namespace RelatedRecords.Wpf.ViewModels
                         },
                         x => null != SelectedConfiguration && !IsBusy);
                 }
-                return _reloadDatasourceCommand;
+                return _reloadDatasetCommand;
+            }
+        }
+
+        RelayCommand _removeDatasetCommand;
+        public ICommand RemoveDatasetCommand
+        {
+            get
+            {
+                if (_removeDatasetCommand == null)
+                {
+                    _removeDatasetCommand = new RelayCommand(
+                        x =>
+                        {
+                            var dsName = SelectedDataset.name;
+                            var dataset = SelectedConfiguration.Dataset.First(ds => ds.name == dsName);
+                            var datasrc = SelectedConfiguration.Datasource.First(ds => ds.name == SelectedDataset.dataSourceName);
+                            SelectedConfiguration.Dataset.Remove(dataset);
+                            SelectedConfiguration.Datasource.Remove(datasrc);
+                            if(SelectedConfiguration.defaultDataset == dsName)
+                            {
+                                SelectedConfiguration.defaultDataset = SelectedConfiguration.Dataset.First().name;
+                                SelectedConfiguration.defaultDatasource = SelectedConfiguration.Dataset.First().dataSourceName;
+                            }
+                            Extensions.CurrentDatasetName = string.Empty;
+                            loadAndSetConfiguration(saveConfiguration());
+                        },
+                        x => null != SelectedDataset && SelectedConfiguration.Dataset.Count > 1 && !IsBusy);
+                }
+                return _removeDatasetCommand;
             }
         }
 
@@ -575,7 +604,7 @@ namespace RelatedRecords.Wpf.ViewModels
                             if (result.HasValue && result.Value)
                                 loadAndSetConfiguration();
                         },  
-                        x => !IsBusy);
+                        x => true);
                 }
                 return _setTableRelationshipsCommand;
             }
@@ -628,14 +657,23 @@ namespace RelatedRecords.Wpf.ViewModels
                     _removeTableRelationshipCommand = new RelayCommand(
                         x =>
                         {
-                            var relationShip = SelectedDataset.Relationship
-                                .FirstOrDefault(r => r.name == string.Format("{0}->{1}",
-                                    SelectedDataTable.Root.ConfigTable.name, SelectedChildTable.name));
-                            if (null != relationShip)
+                            if (SelectedDataTable.Root.ConfigTable.name == SelectedChildTable.name)
                             {
-                                SelectedDataset.Relationship.Remove(relationShip);
-                                loadAndSetConfiguration();
+                                var relationShips = (from r in SelectedDataset.Relationship
+                                                    where r.fromTable == SelectedChildTable.name
+                                                    select r).ToList();
+                                foreach (var rel in relationShips)
+                                    SelectedDataset.Relationship.Remove(rel);
                             }
+                            else
+                            {
+                                var relationShip = SelectedDataset.Relationship
+                                    .FirstOrDefault(r => r.name == string.Format("{0}->{1}",
+                                        SelectedDataTable.Root.ConfigTable.name, SelectedChildTable.name));
+                                if (null != relationShip)
+                                    SelectedDataset.Relationship.Remove(relationShip);
+                            }
+                            loadAndSetConfiguration(saveConfiguration());
                         });
                 }
                 return _removeTableRelationshipCommand;

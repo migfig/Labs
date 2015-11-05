@@ -19,6 +19,14 @@ namespace RelatedRecords
         #region static selected items
 
         private static string _currentDatasetName = string.Empty;
+        public static string CurrentDatasetName
+        {
+            get { return _currentDatasetName; }
+            set
+            {
+                _currentDatasetName = value;
+            }
+        }
         
         private static CConfiguration _selectedConfiguration;
         public static CConfiguration SelectedConfiguration

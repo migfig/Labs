@@ -88,6 +88,25 @@ namespace RelatedRecords.Wpf
         }
     }
 
+    public class DatatableExToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (null != value && value is DatatableEx)
+            {
+                var table = value as DatatableEx;
+                return table.Root.ConfigTable.Children.Any() ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class StringListToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

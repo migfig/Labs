@@ -60,7 +60,12 @@ namespace RelatedRecords.Wpf
 
         private void cmdReloadDataset_Click(object sender, RoutedEventArgs e)
         {
-            MainViewModel.ViewModel.ReLoadDatasourceCommand.Execute(null);
+            MainViewModel.ViewModel.ReLoadDatasetCommand.Execute(null);
+        }
+
+        private void cmdRemoveDataset_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.ViewModel.RemoveDatasetCommand.Execute(null);
         }
     }
 }

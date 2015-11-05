@@ -13,6 +13,7 @@
         <ResourceDictionary>
             <local:IntToVisibilityConverter x:Key="IntConverter"/>
             <local:CTableToVisibilityConverter x:Key="TableConverter"/>
+            <local:DatatableExToVisibilityConverter x:Key="DatatableConverter"/>
         </ResourceDictionary>
     </Fluent:RibbonWindow.Resources>
 
@@ -149,6 +150,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                         <Label Content="Tables " VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                         <TextBlock Text="{Binding Table.Count}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                        <Image Source="Images\passed.png" Width="16" Height="16" Opacity="0.3" Visibility="{Binding DefaultVisibility}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                         <Button x:Name="cmdReloadDataset" Click="cmdReloadDataset_Click" Visibility="{Binding SelectedVisibility}" VerticalAlignment="Center">
                                             <Button.RenderTransform>
                                                 <SkewTransform />
@@ -202,8 +206,60 @@
                                                 </Style>
                                             </Button.Style>
                                         </Button>
+                                        <Button x:Name="cmdRemoveDataset" Click="cmdRemoveDataset_Click" Visibility="{Binding SelectedVisibility}" VerticalAlignment="Center">
+                                            <Button.RenderTransform>
+                                                <SkewTransform />
+                                            </Button.RenderTransform>
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Background" Value="#FF262626"/>
+                                                    <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                                    <Setter Property="Height" Value="16"/>
+                                                    <Setter Property="Width" Value="16"/>
+                                                    <Setter Property="Margin" Value="4,0,0,0"/>
+                                                    <Setter Property="Padding" Value="3"/>
+                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                    <Setter Property="Opacity" Value="0.995"/>
+                                                    <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                                    <Setter Property="BorderBrush">
+                                                        <Setter.Value>
+                                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                                                <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                                                <GradientStop Color="#FF718597" Offset="0.375"/>
+                                                                <GradientStop Color="#FF617584" Offset="1"/>
+                                                            </LinearGradientBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Grid>
+                                                                    <VisualStateManager.VisualStateGroups>
+                                                                        <VisualStateGroup x:Name="CommonStates">
+                                                                            <VisualState x:Name="Normal"/>
+                                                                            <VisualState x:Name="MouseOver">
+                                                                                <Storyboard>
+                                                                                    <ColorAnimation Duration="0" To="#FF4472A2" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                                                </Storyboard>
+                                                                            </VisualState>
+                                                                            <VisualState x:Name="Pressed"/>
+                                                                            <VisualState x:Name="Disabled"/>
+                                                                        </VisualStateGroup>
+                                                                        <VisualStateGroup x:Name="FocusStates">
+                                                                            <VisualState x:Name="Focused"/>
+                                                                            <VisualState x:Name="Unfocused"/>
+                                                                        </VisualStateGroup>
+                                                                    </VisualStateManager.VisualStateGroups>
+                                                                    <Path x:Name="path" Data="M33.977998,27.684L33.977998,58.102997 41.373998,58.102997 41.373998,27.684z M14.841999,27.684L14.841999,58.102997 22.237998,58.102997 22.237998,27.684z M4.0319996,22.433001L52.183,22.433001 52.183,63.999001 4.0319996,63.999001z M15.974,0L40.195001,0 40.195001,7.7260003 56.167001,7.7260003 56.167001,16.000999 0,16.000999 0,7.7260003 15.974,7.7260003z" Stretch="Uniform" Fill="#FFC17819" Width="16" Height="16" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"/>
+                                                                </Grid>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
                                     </StackPanel>
-                                    <Image Source="Images\passed.png" Width="16" Height="16" Opacity="0.3" Visibility="{Binding DefaultVisibility}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </Fluent:InRibbonGallery.ItemTemplate>
@@ -601,26 +657,6 @@
                     <Border Padding="4" CornerRadius="2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1">
                         <DockPanel LastChildFill="True">
                             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
-                                <TextBlock Text="{Binding SelectedDataTable.Root.Table.TableName}" FontWeight="DemiBold" VerticalAlignment="Center"/>
-                                <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding SelectedDataTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
-                                <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
-                                <Fluent:Button Height="32" Width="32"
-                                    VerticalAlignment="Center"
-                                    Click="AddTableRelation_Click"
-                                    Visibility="{Binding SelectedDataTable.Root.ConfigTable, Converter={StaticResource TableConverter}}"
-                                    Tag="{Binding SelectedDataTable}"       
-                                    Icon="Images\connect.png" 
-                                    LargeIcon="Images\connect.png" 
-                                    Style="{DynamicResource FluentButtonStyle}"/>
-                                <Fluent:Button Height="32" Width="32"
-                                    VerticalAlignment="Center"
-                                    Click="RemoveTableRelation_Click"
-                                    Visibility="{Binding RemoveRelationShipVisibility}"
-                                    Tag="{Binding SelectedDataTable}"       
-                                    Icon="Images\disconnect.png" 
-                                    LargeIcon="Images\disconnect.png" 
-                                    Style="{DynamicResource FluentButtonStyle}"/>
                                 <ComboBox ItemsSource="{Binding SelectedDataset.Table}" 
                                           SelectedItem="{Binding Mode=TwoWay, Path=DefaultTable}"
                                           VerticalAlignment="Center">
@@ -683,7 +719,25 @@
                                         </Style>
                                     </Button.Style>
                                 </Button>
-
+                                <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding SelectedDataTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
+                                <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+                                <Fluent:Button Height="32" Width="32"
+                                    VerticalAlignment="Center"
+                                    Click="AddTableRelation_Click"
+                                    Visibility="{Binding SelectedDataTable.Root.ConfigTable, Converter={StaticResource TableConverter}}"
+                                    Tag="{Binding SelectedDataTable}"       
+                                    Icon="Images\connect.png" 
+                                    LargeIcon="Images\connect.png" 
+                                    Style="{DynamicResource FluentButtonStyle}"/>
+                                <Fluent:Button Height="32" Width="32"
+                                    VerticalAlignment="Center"
+                                    Click="RemoveTableRelation_Click"
+                                    Visibility="{Binding SelectedDataTable, Converter={StaticResource DatatableConverter}}"
+                                    Tag="{Binding SelectedDataTable}"       
+                                    Icon="Images\disconnect.png" 
+                                    LargeIcon="Images\disconnect.png" 
+                                    Style="{DynamicResource FluentButtonStyle}"/>
                             </StackPanel>
                             <DataGrid ItemsSource="{Binding SelectedDataTable.Root.Table}"
                                 CanUserResizeRows="False" 
@@ -704,11 +758,11 @@
                           Style="{DynamicResource GridSplitterStyle}" Background="LightBlue"/>
 
                     <Border Grid.Column="2" 
-                    Padding="4" CornerRadius="2"  
-                    VerticalAlignment="Stretch" 
-                    HorizontalAlignment="Stretch" 
-                    BorderBrush="DarkGray" 
-                    BorderThickness="1">
+                        Padding="4" CornerRadius="2"  
+                        VerticalAlignment="Stretch" 
+                        HorizontalAlignment="Stretch" 
+                        BorderBrush="DarkGray" 
+                        BorderThickness="1">
                         <ListBox ItemsSource="{Binding SelectedDataTable.Children}" 
                          SelectionMode="Single"
                          VerticalAlignment="Stretch">
@@ -767,6 +821,13 @@
                                                            Icon="Images\connect.png" 
                                                            LargeIcon="Images\connect.png"
                                                            Style="{DynamicResource FluentButtonStyle}"/>
+                                                    <Fluent:Button Height="32" Width="32"
+                                                            VerticalAlignment="Center"
+                                                            Click="RemoveTableRelation_Click"
+                                                            Tag="{Binding}"       
+                                                            Icon="Images\disconnect.png" 
+                                                            LargeIcon="Images\disconnect.png" 
+                                                            Style="{DynamicResource FluentButtonStyle}"/>
                                                 </StackPanel>
                                                 <DataGrid Grid.Row="1" 
                                                     ItemsSource="{Binding Root.Table}"
