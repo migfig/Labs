@@ -407,17 +407,51 @@
                         HorizontalAlignment="Stretch" 
                         BorderBrush="DarkGray" 
                         BorderThickness="1">
+                        <Border.Resources>
+                            <CollectionViewSource Source="{Binding Operators}" x:Key="Ops"/>
+                        </Border.Resources>
 
                         <DataGrid ItemsSource="{Binding WorkflowResultsTable}"
                           CanUserResizeRows="False" 
                           SelectionMode="Single" 
                           AlternatingRowBackground="LemonChiffon" 
                           ClipboardCopyMode="IncludeHeader" 
-                          IsReadOnly="True" 
+                          IsReadOnly="False" 
                           IsTextSearchEnabled="True"
-                          AutoGenerateColumns="True"
+                          AutoGenerateColumns="False"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Property" Binding="{Binding propertyName}" IsReadOnly="True"/>
+                                <DataGridTemplateColumn Header="Condition">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Conditions}" SelectedItem="{Binding Mode=TwoWay, Path=condition}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}"/>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Operator">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Operators, Source={StaticResource ResourceKey=Ops}}" 
+                                                      SelectedItem="{Binding Mode=TwoWay, Path=operator}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}"/>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Value" Binding="{Binding value}"/>
+                            </DataGrid.Columns>
                         </DataGrid>
                     </Border>
 

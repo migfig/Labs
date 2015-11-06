@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <workflow name="WebApi.Example" xmlns:utils="urn:schemas-reflector-com:xslt">
-  <task name="GetCustomers" />
+  <task name="GetCustomers">
+    <resultValue condition="And" propertyName="Length" operator="isNotEqualTo" value="0" />
+  </task>
   <task name="GetCustomer">
-    <parameter name="id" type="System.Int32" location="query" defaultValue="1" />
+    <parameter name="id" type="System.Int32" location="query" defaultValue="0" />
+    <resultValue condition="And" propertyName="Id" operator="isNotEqualTo" value="" />
   </task>
   <task name="AddCustomer">
     <parameter name="request" type="Common.Data.Models.Requests.CustomerRequest" location="body">
@@ -14,9 +17,7 @@
           ]]>
       </jsonObject>
     </parameter>
-    <task name="DeleteCustomer">
-      <parameter name="id" type="System.Int32" location="query" defaultValue="1" valueFromObject="" valueFromProperty="Id" />
-    </task>
+    <resultValue condition="And" propertyName="Id" operator="isNotEqualTo" value="" />
   </task>
   <task name="AddCustomerCompleteRequest">
     <parameter name="request" type="Common.Data.Models.Requests.CustomerCompleteRequest" location="body">
@@ -26,44 +27,58 @@
     "Name": "Name",
     "Contacts":
     [
+    {
     "FirstName": "FirstName",
     "LastName": "LastName",
     "PhoneNumber": "PhoneNumber"
+    }
     ],
     "Orders":
     [
-    "RequestedBy": 1,
-    "DateCreated": 635764492831191767,
-    "DateDelivered": 635764492831191767,
+    {
+    "RequestedBy": 0,
+    "DateCreated": 635789680735075490,
+    "DateDelivered": 635789680735075490,
     "Items":
     [
+    {
     "Product": {
     
     "Name": "Name",
     "Description": "Description",
-    "Price": 11.22
+    "Price": 0
     },
-    "Quantity": 1
+    "Quantity": 0
+    }
     ]
+    }
     ],
     "Locations":
     [
+    {
+    }
     ]
           }
           ]]>
       </jsonObject>
     </parameter>
-    <task name="UpdateCustomer">
-      <parameter name="id" type="System.Int32" location="query" defaultValue="1" />
-      <parameter name="request" type="Common.Data.Models.Requests.CustomerRequest" location="body">
-        <jsonObject>
-          <![CDATA[
+    <resultValue condition="And" propertyName="Id" operator="isNotEqualTo" value="" />
+  </task>
+  <task name="UpdateCustomer">
+    <parameter name="id" type="System.Int32" location="query" defaultValue="0" />
+    <parameter name="request" type="Common.Data.Models.Requests.CustomerRequest" location="body">
+      <jsonObject>
+        <![CDATA[
           {
     "Name": "Name"
           }
           ]]>
-        </jsonObject>
-      </parameter>
-    </task>
+      </jsonObject>
+    </parameter>
+    <resultValue condition="And" propertyName="Id" operator="isNotEqualTo" value="" />
+  </task>
+  <task name="DeleteCustomer">
+    <parameter name="id" type="System.Int32" location="query" defaultValue="0" />
+    <resultValue condition="And" propertyName="Id" operator="isNotEqualTo" value="" />
   </task>
 </workflow>

@@ -1,5 +1,6 @@
 ﻿using ApiTester.Models;
 using Common;
+using FluentTesting;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -569,5 +570,15 @@ namespace ApiTester.Wpf.ViewModels
         {
             get { return isEditingWorkflow ? Visibility.Visible : Visibility.Collapsed; }
         }
-    }    
+
+        public IEnumerable<eCondition> Conditions
+        {
+            get { return typeof(eCondition).GetEnumValues().Cast<eCondition>(); }
+        }
+
+        public IEnumerable<eOperator> Operators
+        {
+            get { return typeof(eOperator).GetEnumValues().Cast<eOperator>(); }
+        }
+    }
 }

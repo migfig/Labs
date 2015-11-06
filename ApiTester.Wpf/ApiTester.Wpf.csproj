@@ -152,6 +152,10 @@
       <Project>{4d5eca11-0727-485d-985a-7fcadcfb25c7}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FluentTesting\FluentTesting.csproj">
+      <Project>{3813cdff-94ef-4a71-bd83-c69f43b029b0}</Project>
+      <Name>FluentTesting</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="apitester.xml">
