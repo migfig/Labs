@@ -110,6 +110,7 @@
                 <Fluent:RibbonGroupBox Header="Commands">
                     <Fluent:Button Header="Toggle Selection" Command="{Binding ToggleSelection}" Icon="Images\List.png" LargeIcon="Images\List.png"/>
                     <Fluent:Button Header="Build Headers" Command="{Binding BuildHeaders}" Icon="Images\html.png" LargeIcon="Images\html.png"/>
+                    <Fluent:Button Header="Save" Command="{Binding SaveWorkflow}" Icon="Images\save.png" LargeIcon="Images\save.png"/>
                 </Fluent:RibbonGroupBox>
 
                 <Fluent:RibbonGroupBox Header="Errors" Visibility="{Binding LastErrorsVisibility}" HorizontalAlignment="Right">
@@ -175,7 +176,7 @@
 
         <!--View Current configuration Details-->
         <TabControl>
-            <TabItem Header="Configuration">
+            <TabItem Header="Configuration" IsSelected="{Binding Mode=OneWay, Path=isNotEditingWorkflow}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20*"/>
@@ -419,7 +420,6 @@
                                     <x:Type Type="testing:eCondition"/>
                                 </ObjectDataProvider.MethodParameters>
                             </ObjectDataProvider>
-                            
                         </Border.Resources>
 
                         <DataGrid ItemsSource="{Binding WorkflowResultsTable}"
@@ -433,28 +433,19 @@
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Property" Binding="{Binding propertyName}" IsReadOnly="True"/>
-                                <DataGridTemplateColumn Header="Condition">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <ComboBox ItemsSource="{Binding Source={StaticResource Conditions}}" SelectedItem="{Binding Mode=TwoWay, Path=condition}">
-                                                <ComboBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding}"/>
-                                                    </DataTemplate>
-                                                </ComboBox.ItemTemplate>
-                                            </ComboBox>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Property" Binding="{Binding propertyName}"/>
+                                <DataGridComboBoxColumn Header="Condition" 
+                                                        ItemsSource="{Binding Source={StaticResource Conditions}}"
+                                                        TextBinding="{Binding condition}"
+                                                        SelectedValueBinding="{Binding condition}"
+                                                        SelectedValuePath=""
+                                                        SelectedItemBinding="{Binding condition}"/>
                                 <DataGridComboBoxColumn Header="Operator" 
                                                         ItemsSource="{Binding Source={StaticResource Operators}}"
                                                         TextBinding="{Binding operator}"
                                                         SelectedValueBinding="{Binding operator}"
                                                         SelectedValuePath=""
-                                                        SelectedItemBinding="{Binding operator}"
-                                                        />
-
+                                                        SelectedItemBinding="{Binding operator}"/>
                                 <DataGridTextColumn Header="Value" Binding="{Binding value}"/>
                             </DataGrid.Columns>
                         </DataGrid>

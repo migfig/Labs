@@ -1,10 +1,12 @@
 ﻿using ApiTester.Models;
 using Common;
 using Common.Commands;
+using FluentTesting;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.Configuration;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
@@ -29,6 +31,39 @@ namespace ApiTester.Wpf.ViewModels
                         && SelectedConfiguration.method.Any(m => m.isSelected)
                         && !IsBusy);
                 return _runTests;
+            }
+        }
+
+        RelayCommand _saveWorkflow;
+        public ICommand SaveWorkflow
+        {
+            get
+            {
+                _saveWorkflow = _saveWorkflow ?? new RelayCommand(
+                    (parameter) => {
+                        if(null != WorkflowParametersTable)
+                        {
+                            SelectedWorkflowTask.resultValue.Clear();
+                            foreach(DataRow r in WorkflowResultsTable.Rows)
+                            {
+                                SelectedWorkflowTask.resultValue.Add(new ResultValue
+                                {
+                                    propertyName = r["propertyName"].ToString(),
+                                    condition = (eCondition)Enum.Parse(typeof(eCondition), r["condition"].ToString()),
+                                    @operator = (eOperator)Enum.Parse(typeof(eOperator), r["operator"].ToString()),
+                                    value = r["value"].ToString()
+                                });
+                            }
+
+                            SaveConfigurationWorkflow();
+                            _saveWorkflow.RaiseCanExecuteChanged();
+                        }
+                        isEditingWorkflow = false;
+                    },
+                    x => SelectedConfiguration != null
+                        && SelectedWorkflow != null && EditingWorkflow != null
+                        && !IsBusy);
+                return _saveWorkflow;
             }
         }
 

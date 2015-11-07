@@ -32,6 +32,18 @@ namespace ApiTester.Wpf.ViewModels
         private Dictionary<string, Assembly> _assemblies = new Dictionary<string, Assembly>();
         private Dictionary<string, Type> _assemblyTypes = new Dictionary<string, Type>();
 
+        private void SaveConfigurationWorkflow()
+        {
+            if (null != EditingWorkflow)
+            {
+                var file = Path.Combine(ConfigurationManager.AppSettings["ConfigurationPath"],
+                     SelectedWorkflow.name);
+                if (File.Exists(file))
+                    File.Delete(file);
+                XmlHelper<workflow>.Save(file, EditingWorkflow);
+            }
+        }
+
         public IEnumerable<apiConfiguration> Configurations
         {
             get
@@ -251,7 +263,7 @@ namespace ApiTester.Wpf.ViewModels
                 OnPropertyChanged();
                 if (null != _selectedWorkflowDataRowView)
                 {
-                    SelectedWorkflowTask = _workflow.task
+                    SelectedWorkflowTask = _editingWorkflow.task
                         .First(x => x.name == _selectedWorkflowDataRowView["name"].ToString());
                 }
             }
@@ -267,51 +279,85 @@ namespace ApiTester.Wpf.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged("WorkflowParametersTable");
                 OnPropertyChanged("WorkflowResultsTable");
+                WorkflowResultsTable = null;
+                WorkflowParametersTable = null;
+                _saveWorkflow.RaiseCanExecuteChanged();
             }
 
         }
 
-        private workflow _workflow;
+        private workflow _editingWorkflow;
+        public workflow EditingWorkflow
+        {
+            get { return _editingWorkflow; }
+            set
+            {
+                _editingWorkflow = value;
+                OnPropertyChanged();
+            }
+        }
+
         public DataTable WorkflowTable
         {
             get {
                 if (null != SelectedWorkflow)
                 {
-                    if (null == _workflow)
+                    if (null == EditingWorkflow)
                     {
-                        _workflow = XmlHelper<workflow>.Load(
+                        EditingWorkflow = XmlHelper<workflow>.Load(
                             Path.Combine(
                                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output"),
                                 SelectedWorkflow.name));
                     }
 
-                    return _workflow.ToTable(isEdit: true);
+                    return EditingWorkflow.ToTable(isEdit: true);
                 }
                 return null;
             }
         }
 
+        private DataTable _workflowParametersTable;
         public DataTable WorkflowParametersTable
         {
             get
             {
                 if (null != SelectedWorkflow)
                 {
-                    return SelectedWorkflowTask.ToTable();
+                    if (null == _workflowParametersTable)
+                    {
+                        _workflowParametersTable = SelectedWorkflowTask.ToTable();
+                    }
+                    return _workflowParametersTable;
                 }
+
                 return null;
+            }
+            set
+            {
+                _workflowParametersTable = value;
+                OnPropertyChanged();
             }
         }
 
+        private DataTable _workflowResultsTable;
         public DataTable WorkflowResultsTable
         {
             get
             {
                 if (null != SelectedWorkflow)
                 {
-                    return SelectedWorkflowTask.ToTable(isParameter: false);
+                    if (null == _workflowResultsTable)
+                    {
+                        _workflowResultsTable = SelectedWorkflowTask.ToTable(isParameter: false);
+                    }
+                    return _workflowResultsTable;
                 }
                 return null;
+            }
+            set
+            {
+                _workflowResultsTable = value;
+                OnPropertyChanged();
             }
         }
 
@@ -551,6 +597,11 @@ namespace ApiTester.Wpf.ViewModels
             }
         }
 
+        private bool IsNotEditingWorkflow
+        {
+            get { return !_isEditingWorkflow; }
+        }
+
         private bool _isEditingWorkflow;
         public bool isEditingWorkflow
         {
@@ -560,6 +611,7 @@ namespace ApiTester.Wpf.ViewModels
                 _isEditingWorkflow = value;
                 OnPropertyChanged();
                 OnPropertyChanged("EditWorkflowVisibility");
+                OnPropertyChanged("IsNotEditingWorkflow");
 
                 if(_isEditingWorkflow)
                     OnPropertyChanged("WorkflowTable");
