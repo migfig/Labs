@@ -7,6 +7,7 @@
         xmlns:wpfspark="clr-namespace:WPFSpark;assembly=WPFSpark"                 
         xmlns:local="clr-namespace:ApiTester.Wpf"
         xmlns:converters="clr-namespace:RelatedRecords.Wpf"
+        xmlns:testing="clr-namespace:FluentTesting;assembly=FluentTesting"
         mc:Ignorable="d"
         Title="API Tester" Height="350" Width="525" WindowState="Maximized">
 
@@ -408,7 +409,17 @@
                         BorderBrush="DarkGray" 
                         BorderThickness="1">
                         <Border.Resources>
-                            <CollectionViewSource Source="{Binding Operators}" x:Key="Ops"/>
+                            <ObjectDataProvider x:Key="Operators" MethodName="GetValues" ObjectType="{x:Type testing:eOperator}">
+                                <ObjectDataProvider.MethodParameters>
+                                    <x:Type Type="testing:eOperator"/>
+                                </ObjectDataProvider.MethodParameters>
+                            </ObjectDataProvider>
+                            <ObjectDataProvider x:Key="Conditions" MethodName="GetValues" ObjectType="{x:Type testing:eCondition}">
+                                <ObjectDataProvider.MethodParameters>
+                                    <x:Type Type="testing:eCondition"/>
+                                </ObjectDataProvider.MethodParameters>
+                            </ObjectDataProvider>
+                            
                         </Border.Resources>
 
                         <DataGrid ItemsSource="{Binding WorkflowResultsTable}"
@@ -426,7 +437,7 @@
                                 <DataGridTemplateColumn Header="Condition">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ComboBox ItemsSource="{Binding Conditions}" SelectedItem="{Binding Mode=TwoWay, Path=condition}">
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource Conditions}}" SelectedItem="{Binding Mode=TwoWay, Path=condition}">
                                                 <ComboBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <TextBlock Text="{Binding}"/>
@@ -436,20 +447,14 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Operator">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <ComboBox ItemsSource="{Binding Operators, Source={StaticResource ResourceKey=Ops}}" 
-                                                      SelectedItem="{Binding Mode=TwoWay, Path=operator}">
-                                                <ComboBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding}"/>
-                                                    </DataTemplate>
-                                                </ComboBox.ItemTemplate>
-                                            </ComboBox>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                <DataGridComboBoxColumn Header="Operator" 
+                                                        ItemsSource="{Binding Source={StaticResource Operators}}"
+                                                        TextBinding="{Binding operator}"
+                                                        SelectedValueBinding="{Binding operator}"
+                                                        SelectedValuePath=""
+                                                        SelectedItemBinding="{Binding operator}"
+                                                        />
+
                                 <DataGridTextColumn Header="Value" Binding="{Binding value}"/>
                             </DataGrid.Columns>
                         </DataGrid>
