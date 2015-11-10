@@ -1,0 +1,141 @@
+﻿"Name"     = 'Related Records Grammar'
+"Author"   = 'Miguel Figueroa'
+"Version"  = '1.0'
+"About"    = 'Commands for Related Records'
+
+"Start Symbol" = <Start>
+
+! -------------------------------------------------
+! Character Sets
+! -------------------------------------------------
+{WS}           = {Whitespace} - {CR} - {LF}
+{ID Head}      = {Letter} + [_]
+{ID Tail}      = {Alphanumeric} + [_]
+{String Chars} = {Printable} + {HT} - ["]
+{Quoted String Chars} = {Printable} + {HT} - ['']
+! -------------------------------------------------
+! Terminals
+! -------------------------------------------------
+Whitespace    = {WS}+
+NewLine       = {CR}{LF} | {CR} | {LF}
+Identifier    = {ID Head}{ID Tail}*
+StringLiteral = '"' {String Chars}* '"'
+              | '''' {Quoted String Chars}* ''''
+Integer       = {Digit} + {Digit}*
+Decimal       = {Digit} + {Digit}* [.] {Digit}* 
+! -------------------------------------------------
+! Rules
+! -------------------------------------------------
+! The grammar starts below
+<nl>     ::= NewLine <nl>          !One or more
+          |  NewLine
+
+<nl Opt> ::= NewLine <nl Opt>      !Zero or more
+          |  !Empty
+
+! <nl opt> removes blank lines before first statement
+<Start>   ::= <nl opt> <CommandExp> <nl Opt>
+
+<CommandExp> ::= <ImportExp>
+              | <CloneExp>
+              | <RemoveExp>
+              | <LoadExp>
+              | <TableExp>
+              | <RelateExp>
+              | <UnrelateExp>
+              | <ExportExp>
+              | <BackExp>
+              | <RootExp>
+              | <TablesExp>
+              | <ColumnsExp>
+              | <TopnExp>
+              
+! import catalog <catalogname> [server <servername> [user <username> password <password>]]
+<ImportExp>   ::= import <CatalogExp> !using localhost and trusted creds
+               | import <CatalogExp> <UserExp> <PasswordExp> !using localhost
+               | import <CatalogExp> <ServerExp> <UserExp> <PasswordExp>
+
+! clone [catalog <catalogname>] [as <new-catalogname>]
+<CloneExp>    ::= clone !current catalog
+               | clone <CatalogExp> !catalog as new default name
+               | clone <AsExp> !current catalog
+               | clone <CatalogExp> <AsExp>
+
+! remove [catalog <catalogname>]
+<RemoveExp>   ::= remove !current catalog
+               | remove <CatalogExp>
+
+! load [catalog <catalogname>] 
+<LoadExp>     ::= load !default catalog
+               | load <CatalogExp>
+
+! table <tablename> [default] [where <column> ((<operator> <value>) | (is [not] NULL) | (between <value1> and <value2>)]
+<TableExp>    ::= table !default table
+               | table Identifier
+               | table Identifier default
+               | table Identifier default where <Expression> 
+               | table Identifier where <Expression> 
+
+! relate [<source-tablename>] to <target-tablename> on <source-columnname> = <target-columnname>
+<RelateExp>   ::= relate to Identifier on Identifier '=' Identifier 
+               | relate Identifier to Identifier on Identifier '=' Identifier
+               
+! unrelate [<source-tablename>] to <target-tablename>
+<UnrelateExp> ::= unrelate to Identifier
+               | unrelate Identifier to Identifier
+               
+! export [<tablename>] as (sql | html | json | xml)
+<ExportExp>   ::= export as sql
+               | export as html
+               | export as json
+               | export as xml
+               | export Identifier as sql
+               | export Identifier as html
+               | export Identifier as json
+               | export Identifier as xml
+
+! back
+<BackExp>    ::= back
+              
+! root
+<RootExp>    ::= root
+
+! tables
+<TablesExp>  ::= tables
+              | tables Integer
+              
+! columns
+<ColumnsExp> ::= columns
+              | columns Integer
+
+! top n
+<TopnExp>     ::= top Integer
+
+<CatalogExp>  ::= catalog Identifier
+<UserExp>     ::= user Identifier
+<PasswordExp> ::= password Identifier
+<ServerExp>   ::= server Identifier
+<AsExp>       ::= as Identifier
+
+<Expression>  ::= <Expression> '>'  <Negate Exp> 
+               |  <Expression> '<'  <Negate Exp>
+               |  <Expression> '<=' <Negate Exp>
+               |  <Expression> '>=' <Negate Exp>
+               |  <Expression> '=' <Negate Exp>    !Equal
+               |  <Expression> '<>' <Negate Exp>    !Not equal
+               |  <Expression> is <Negate Exp>
+               |  <Expression> between <Negate Exp> and <Negate Exp>
+               |  <Expression> like StringLiteral
+               |  <Negate Exp>
+
+<Negate Exp>  ::= '-' <Value> 
+               | not <Value>
+               | <Value> 
+
+!Add more values to the rule below - as needed
+
+<Value>       ::= Identifier
+               |  '(' <Expression> ')'
+               | null
+               | Integer
+               | Decimal
