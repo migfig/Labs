@@ -139,3 +139,4 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
                | null
                | Integer
                | Decimal
+               | StringLiteral

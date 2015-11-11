@@ -1,0 +1,1 @@
+table Test21 where col12xo is null
