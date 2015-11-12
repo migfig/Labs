@@ -7,8 +7,8 @@
     <ProjectGuid>{5443780E-3F66-421F-ACEE-E7F6821C216E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RelatedRecords.Data</RootNamespace>
-    <AssemblyName>RelatedRecords.Data</AssemblyName>
+    <RootNamespace>RelatedRecords.Parser</RootNamespace>
+    <AssemblyName>RelatedRecords.Parser</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Binaries\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,15 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CalithaLib">
-      <HintPath>..\packages\GoldParser\lib\CalithaLib.dll</HintPath>
-    </Reference>
-    <Reference Include="GoldParser">
-      <HintPath>..\packages\GoldParser\lib\GoldParser.dll</HintPath>
-    </Reference>
-    <Reference Include="GoldParserEngine">
-      <HintPath>..\packages\GoldParser\lib\GoldParserEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -93,10 +84,28 @@
     <Content Include="Grammar\Tests\unrelate.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Grammar\relatedrecords.egt">
+    <EmbeddedResource Include="GoldParser.resources" />
+    <EmbeddedResource Include="relatedrecords.egt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Include="relatedrecords.cgt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Grammar\relatedrecords.grm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GoldParser\Engine2\GoldParserEngine 2.1\Source\Engine\GoldParser.csproj">
+      <Project>{1a1a5ae9-7981-471c-9cc7-f7465e675a32}</Project>
+      <Name>GoldParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GoldParser\Engine\CalithaLib\CalithaLibrary.csproj">
+      <Project>{9e8f8fbc-29c0-4dcb-83ce-058aa757d570}</Project>
+      <Name>CalithaLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GoldParser\Engine\GoldParserEngine\GoldParserEngine.csproj">
+      <Project>{837dc4cb-4bea-4171-8366-a1aa6207f576}</Project>
+      <Name>GoldParserEngine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

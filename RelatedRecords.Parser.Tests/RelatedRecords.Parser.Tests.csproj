@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Binaries\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -35,17 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CalithaLib">
-      <HintPath>..\packages\GoldParser\lib\CalithaLib.dll</HintPath>
-    </Reference>
-    <Reference Include="GoldParser, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\GoldParser\lib\GoldParser.dll</HintPath>
-    </Reference>
-    <Reference Include="GoldParserEngine, Version=1.13.5792.33527, Culture=neutral, PublicKeyToken=0f3e632eb2334cd9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\GoldParser\lib\GoldParserEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -65,14 +54,33 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GoldParser\Engine2\GoldParserEngine 2.1\Source\Engine\GoldParser.csproj">
+      <Project>{1a1a5ae9-7981-471c-9cc7-f7465e675a32}</Project>
+      <Name>GoldParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GoldParser\Engine\CalithaLib\CalithaLibrary.csproj">
+      <Project>{9e8f8fbc-29c0-4dcb-83ce-058aa757d570}</Project>
+      <Name>CalithaLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GoldParser\Engine\GoldParserEngine\GoldParserEngine.csproj">
+      <Project>{837dc4cb-4bea-4171-8366-a1aa6207f576}</Project>
+      <Name>GoldParserEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RelatedRecords.Data\RelatedRecords.Parser.csproj">
       <Project>{5443780e-3f66-421f-acee-e7f6821c216e}</Project>
       <Name>RelatedRecords.Parser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\RelatedRecords.Data\Grammar\relatedrecords.egt">
+    <EmbeddedResource Include="..\RelatedRecords.Data\relatedrecords.egt">
       <Link>relatedrecords.egt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GoldParser.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\RelatedRecords.Data\relatedrecords.cgt">
+      <Link>relatedrecords.cgt</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

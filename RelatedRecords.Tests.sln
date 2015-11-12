@@ -42,6 +42,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelatedRecords.Parser", "Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelatedRecords.Parser.Tests", "RelatedRecords.Parser.Tests\RelatedRecords.Parser.Tests.csproj", "{89DF4AB5-70B3-467F-916E-0BE93E073351}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoldParser", "..\GoldParser\Engine2\GoldParserEngine 2.1\Source\Engine\GoldParser.csproj", "{1A1A5AE9-7981-471C-9CC7-F7465E675A32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalithaLibrary", "..\GoldParser\Engine\CalithaLib\CalithaLibrary.csproj", "{9E8F8FBC-29C0-4DCB-83CE-058AA757D570}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoldParserEngine", "..\GoldParser\Engine\GoldParserEngine\GoldParserEngine.csproj", "{837DC4CB-4BEA-4171-8366-A1AA6207F576}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -150,6 +156,30 @@ Global
 		{89DF4AB5-70B3-467F-916E-0BE93E073351}.Release|Any CPU.Build.0 = Release|Any CPU
 		{89DF4AB5-70B3-467F-916E-0BE93E073351}.StronglyNamedAssembly|Any CPU.ActiveCfg = Release|Any CPU
 		{89DF4AB5-70B3-467F-916E-0BE93E073351}.StronglyNamedAssembly|Any CPU.Build.0 = Release|Any CPU
+		{1A1A5AE9-7981-471C-9CC7-F7465E675A32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A1A5AE9-7981-471C-9CC7-F7465E675A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A1A5AE9-7981-471C-9CC7-F7465E675A32}.Documentation|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A1A5AE9-7981-471C-9CC7-F7465E675A32}.Documentation|Any CPU.Build.0 = Debug|Any CPU
+		{1A1A5AE9-7981-471C-9CC7-F7465E675A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A1A5AE9-7981-471C-9CC7-F7465E675A32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A1A5AE9-7981-471C-9CC7-F7465E675A32}.StronglyNamedAssembly|Any CPU.ActiveCfg = Release|Any CPU
+		{1A1A5AE9-7981-471C-9CC7-F7465E675A32}.StronglyNamedAssembly|Any CPU.Build.0 = Release|Any CPU
+		{9E8F8FBC-29C0-4DCB-83CE-058AA757D570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E8F8FBC-29C0-4DCB-83CE-058AA757D570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E8F8FBC-29C0-4DCB-83CE-058AA757D570}.Documentation|Any CPU.ActiveCfg = Documentation|Any CPU
+		{9E8F8FBC-29C0-4DCB-83CE-058AA757D570}.Documentation|Any CPU.Build.0 = Documentation|Any CPU
+		{9E8F8FBC-29C0-4DCB-83CE-058AA757D570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E8F8FBC-29C0-4DCB-83CE-058AA757D570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E8F8FBC-29C0-4DCB-83CE-058AA757D570}.StronglyNamedAssembly|Any CPU.ActiveCfg = StronglyNamedAssembly|Any CPU
+		{9E8F8FBC-29C0-4DCB-83CE-058AA757D570}.StronglyNamedAssembly|Any CPU.Build.0 = StronglyNamedAssembly|Any CPU
+		{837DC4CB-4BEA-4171-8366-A1AA6207F576}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{837DC4CB-4BEA-4171-8366-A1AA6207F576}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{837DC4CB-4BEA-4171-8366-A1AA6207F576}.Documentation|Any CPU.ActiveCfg = Documentation|Any CPU
+		{837DC4CB-4BEA-4171-8366-A1AA6207F576}.Documentation|Any CPU.Build.0 = Documentation|Any CPU
+		{837DC4CB-4BEA-4171-8366-A1AA6207F576}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{837DC4CB-4BEA-4171-8366-A1AA6207F576}.Release|Any CPU.Build.0 = Release|Any CPU
+		{837DC4CB-4BEA-4171-8366-A1AA6207F576}.StronglyNamedAssembly|Any CPU.ActiveCfg = StronglyNamedAssembly|Any CPU
+		{837DC4CB-4BEA-4171-8366-A1AA6207F576}.StronglyNamedAssembly|Any CPU.Build.0 = StronglyNamedAssembly|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

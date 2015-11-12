@@ -4,6 +4,8 @@ using System.Runtime.Serialization;
 using com.calitha.goldparser.lalr;
 using com.calitha.commons;
 using com.calitha.goldparser;
+using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace RelatedRecords.Parser
 {
@@ -44,6 +46,16 @@ namespace RelatedRecords.Parser
         {
         }
 
+    }
+
+    public class ParseResults
+    {
+        public bool isAccepted { get; set; }
+        public List<TerminalToken> Tokens { get; private set; }
+        public ParseResults()
+        {
+            Tokens = new List<TerminalToken>();
+        }
     }
 
     enum SymbolConstants : int
@@ -208,9 +220,11 @@ namespace RelatedRecords.Parser
     public class KalithaParser
     {
         private LALRParser parser;
+        private readonly ParseResults _results;
 
         public KalithaParser(string filename)
         {
+            _results = new ParseResults();
             FileStream stream = new FileStream(filename,
                                                FileMode.Open, 
                                                FileAccess.Read, 
@@ -249,9 +263,11 @@ namespace RelatedRecords.Parser
             parser.OnParseError += new LALRParser.ParseErrorHandler(ParseErrorEvent);
         }
 
-        public void Parse(string source)
+        public ParseResults Parse(string source)
         {
             parser.Parse(source);
+
+            return _results;
         }
 
         private void TokenReadEvent(LALRParser parser, TokenReadEventArgs args)
@@ -259,6 +275,9 @@ namespace RelatedRecords.Parser
             try
             {
                 args.Token.UserObject = CreateObject(args.Token);
+                Debug.WriteLine("Position: {0}, Symbol: {1}, Text: {2}", args.Token.Location.Position, 
+                    args.Token.Symbol.Name, args.Token.Text);
+                _results.Tokens.Add(args.Token);
             }
             catch (Exception e)
             {
@@ -283,7 +302,8 @@ namespace RelatedRecords.Parser
         private void AcceptEvent(LALRParser parser, AcceptEventArgs args)
         {
             //todo: Use your fully reduced args.Token.UserObject
-            System.Console.WriteLine(args.Token);
+            Debug.WriteLine(args.Token);
+            _results.isAccepted = true;
         }
 
         private void TokenErrorEvent(LALRParser parser, TokenErrorEventArgs args)
