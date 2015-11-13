@@ -38,7 +38,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTester.Wpf", "ApiTester.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTester.Console", "ApiTester.Console\ApiTester.Console.csproj", "{B90BA7DE-E7E2-4DF9-AC93-20C0546F28B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelatedRecords.Parser", "RelatedRecords.Data\RelatedRecords.Parser.csproj", "{5443780E-3F66-421F-ACEE-E7F6821C216E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelatedRecords.Parser", "RelatedRecords.Parser\RelatedRecords.Parser.csproj", "{5443780E-3F66-421F-ACEE-E7F6821C216E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelatedRecords.Parser.Tests", "RelatedRecords.Parser.Tests\RelatedRecords.Parser.Tests.csproj", "{89DF4AB5-70B3-467F-916E-0BE93E073351}"
 EndProject

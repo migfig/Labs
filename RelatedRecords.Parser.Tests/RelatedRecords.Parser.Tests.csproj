@@ -62,7 +62,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RelatedRecords.Data\RelatedRecords.Parser.csproj">
+    <ProjectReference Include="..\RelatedRecords.Parser\RelatedRecords.Parser.csproj">
       <Project>{5443780e-3f66-421f-acee-e7f6821c216e}</Project>
       <Name>RelatedRecords.Parser</Name>
     </ProjectReference>
@@ -71,7 +71,7 @@
     <EmbeddedResource Include="GoldParser.resources" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\RelatedRecords.Data\relatedrecords.cgt">
+    <None Include="..\RelatedRecords.Parser\relatedrecords.cgt">
       <Link>relatedrecords.cgt</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

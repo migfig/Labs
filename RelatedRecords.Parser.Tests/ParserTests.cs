@@ -8,7 +8,7 @@ namespace RelatedRecords.Parser.Tests
     public class ParserTests
     {
         [TestMethod]
-        public void KalithaParserTests()
+        public void RelatedRecords_Parser_Tests()
         {
 
             #region text commands
