@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization;
-using com.calitha.goldparser.lalr;
 using com.calitha.commons;
 using com.calitha.goldparser;
 using System.Diagnostics;
@@ -217,12 +216,12 @@ namespace RelatedRecords.Parser
         RULE_VALUE_STRINGLITERAL                                                   = 76  // <Value> ::= StringLiteral
     };
 
-    public class KalithaParser
+    public class RRParser
     {
         private LALRParser parser;
         private readonly ParseResults _results;
 
-        public KalithaParser(string filename)
+        public RRParser(string filename)
         {
             _results = new ParseResults();
             FileStream stream = new FileStream(filename,
@@ -233,7 +232,7 @@ namespace RelatedRecords.Parser
             stream.Close();
         }
 
-        public KalithaParser(string baseName, string resourceName)
+        public RRParser(string baseName, string resourceName)
         {
             byte[] buffer = ResourceUtil.GetByteArrayResource(
                 System.Reflection.Assembly.GetExecutingAssembly(),
@@ -244,7 +243,7 @@ namespace RelatedRecords.Parser
             stream.Close();
         }
 
-        public KalithaParser(Stream stream)
+        public RRParser(Stream stream)
         {
             Init(stream);
         }
