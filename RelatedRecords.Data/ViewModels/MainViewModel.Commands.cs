@@ -428,8 +428,18 @@ namespace RelatedRecords.Data.ViewModels
 
         [Command(SymbolConstants.SYMBOL_TABLE
         , SymbolConstants.SYMBOL_IDENTIFIER)]
-        public void TableId(IEnumerable<TerminalToken> tokens)
+        public async void TableId(IEnumerable<TerminalToken> tokens)
         {
+            var table = findTable(tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER).Text);
+            if (null == table) return;
+
+            var needsPush = (null != CurrentTable && table.name == CurrentTable.Root.ConfigTable.name);
+            CurrentTable = await table.Query("".ToArray(), "".ToArray(), true);
+
+            if (needsPush)
+            {
+                _tableNavigation.Push(CurrentTable);
+            }
         }
 
         [Command(SymbolConstants.SYMBOL_TABLES
@@ -502,5 +512,16 @@ namespace RelatedRecords.Data.ViewModels
                     new Location(0, 0, 0)));
             UnrelateIdToId(tokens);
         }
+
+        #region utility methods 
+
+        private CTable findTable(string name)
+        {
+            return SelectedDataset
+                .Table
+                .FirstOrDefault(x => x.name.ToLower() == name.ToLower());
+        }
+
+        #endregion utility methods
     }
 }
