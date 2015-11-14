@@ -4,11 +4,36 @@ using System.IO;
 using System.Runtime.Serialization;
 using com.calitha.commons;
 using com.calitha.goldparser;
-using System.Diagnostics;
 using System.Collections.Generic;
 
 namespace RelatedRecords.Parser
 {
+    public static class Extensions
+    {
+        public static SymbolConstants SymbolEnum(this Symbol symbol)
+        {
+            return (SymbolConstants)Enum.ToObject(typeof(SymbolConstants), symbol.Id);
+        }
+
+        public static SymbolTerminal SymbolTerminal(this SymbolConstants symbol, string name = "")
+        {
+            return new SymbolTerminal((int)symbol, !string.IsNullOrEmpty(name) ? name : symbol.ToString());
+        }
+
+        public static TerminalToken TerminalToken(this IEnumerable<TerminalToken> tokens, SymbolConstants symbol)
+        {
+            return tokens
+                    .First(t => t.Symbol.SymbolEnum() == symbol);
+        }
+
+        public static TerminalToken TerminalToken(this IEnumerable<TerminalToken> tokens, SymbolConstants symbol, int index)
+        {
+            return tokens
+                    .Where(t => t.Symbol.SymbolEnum() == symbol)
+                    .ElementAt(index);
+        }
+    }
+
     [Serializable()]
     public class SymbolException : System.Exception
     {
@@ -51,6 +76,7 @@ namespace RelatedRecords.Parser
     public class ParseResults
     {
         public bool isAccepted { get; set; }
+        public string Error { get; set; }
 
         private List<TerminalToken> _tokens;
         public IEnumerable<TerminalToken> Tokens
@@ -279,14 +305,16 @@ namespace RelatedRecords.Parser
 
         public ParseResults Parse(string source)
         {
-            _results.isAccepted = false;           
-            ((List<TerminalToken>)_results.Tokens).Clear();
+            _results.isAccepted = false;
+            _results.Error = string.Empty;          
+            _results.Tokens.ToList().Clear();
 
             parser.Parse(source);
 
             if(_results.isAccepted)
             {
-                ((List<TerminalToken>)_results.Tokens)
+                //remove EOF token
+                _results.Tokens.ToList()
                     .Remove(_results.Tokens.Last());
             }
 
@@ -298,14 +326,12 @@ namespace RelatedRecords.Parser
             try
             {
                 args.Token.UserObject = CreateObject(args.Token);
-                Debug.WriteLine("Position: {0}, Symbol: {1}, Text: {2}", args.Token.Location.Position, 
-                    args.Token.Symbol.Name, args.Token.Text);
-                ((List<TerminalToken>)_results.Tokens).Add(args.Token);
+                _results.Tokens.ToList().Add(args.Token);
             }
             catch (Exception e)
             {
+                _results.Error += e.Message;
                 args.Continue = false;
-                //todo: Report message to UI?
             }
         }
 
@@ -317,28 +343,24 @@ namespace RelatedRecords.Parser
             }
             catch (Exception e)
             {
+                _results.Error += e.Message;
                 args.Continue = false;
-                //todo: Report message to UI?
             }
         }
 
         private void AcceptEvent(LALRParser parser, AcceptEventArgs args)
         {
-            //todo: Use your fully reduced args.Token.UserObject
-            Debug.WriteLine(args.Token);
             _results.isAccepted = true;
         }
 
         private void TokenErrorEvent(LALRParser parser, TokenErrorEventArgs args)
         {
-            string message = "Token error with input: '" + args.Token.ToString() + "'";
-            //todo: Report message to UI?
+            _results.Error += "Token error with input: '" + args.Token.ToString() + "'";
         }
 
         private void ParseErrorEvent(LALRParser parser, ParseErrorEventArgs args)
         {
-            string message = "Parse error caused by token: '" + args.UnexpectedToken.ToString() + "'";
-            //todo: Report message to UI?
+            _results.Error = "Parse error caused by token: '" + args.UnexpectedToken.ToString() + "'";
         }
 
         private Object CreateObject(TerminalToken token)

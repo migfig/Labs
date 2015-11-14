@@ -24,12 +24,16 @@ namespace RelatedRecords.Data.Tests
         {
             Assert.IsNotNull(MainViewModel.ViewModel.SelectedConfiguration);
             Assert.IsTrue(MainViewModel.ViewModel.SelectedConfiguration.Dataset.Any());
+            Assert.IsNotNull(MainViewModel.ViewModel.SelectedConfiguration);
+            Assert.IsNotNull(MainViewModel.ViewModel.SelectedDataset);
+            Assert.IsNotNull(MainViewModel.ViewModel.SelectedDatasource);
         }
 
         [TestMethod]
         public void Navigate_To_Root_Test()
         {
-            MainViewModel.ViewModel.ExecuteCommand("root");
+            MainViewModel.ViewModel.Command = "root";
+            MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             //Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
         }
@@ -37,7 +41,8 @@ namespace RelatedRecords.Data.Tests
         [TestMethod]
         public void Navigate_Back_Test()
         {
-            MainViewModel.ViewModel.ExecuteCommand("back");
+            MainViewModel.ViewModel.Command = "back";
+            MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             //Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
         }

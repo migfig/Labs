@@ -133,11 +133,22 @@ namespace RelatedRecords.Data.ViewModels
             return result;
         }
 
-        public void ExecuteCommand(string command)
+        private string _command;
+        public string Command
         {
-            if (string.IsNullOrWhiteSpace(command)) return;
+            get { return _command; }
+            set
+            {
+                _command = value;
+                OnPropertyChanged();
+            }
+        }
 
-            var parseResults = _parser.Parse(command);
+        public void ExecuteCommand()
+        {
+            if (string.IsNullOrWhiteSpace(Command)) return;
+
+            var parseResults = _parser.Parse(Command);
             IsValidCommand = parseResults.isAccepted;
             if(parseResults.isAccepted)
             {

@@ -96,6 +96,11 @@ namespace RelatedRecords
                 );
         }
 
+        public static DatatableEx ToDatatableEx(this DataTable dataTable, CTable table)
+        {
+            return new DatatableEx(new TableContainer(dataTable, table));
+        }
+
         public static string ToSelectString(this CTable table, bool asStar = false)
         {
             var query = new StringBuilder();
@@ -632,6 +637,33 @@ namespace RelatedRecords
                 column.isPrimaryKey ? "PRIMARY KEY" : string.Empty);
 
             return query.ToString().Trim();
+        }
+
+        public static CTable ToTable(this CDataset dataset)
+        {
+            var table = new CTable { name = dataset.name };
+            table.Column.Add(new CColumn { DbType = eDbType.@string, name = "name" });
+            table.Column.Add(new CColumn { DbType = eDbType.@int, name = "columns" });
+            return table;
+        }
+
+        public static DataTable ToDataTable(this CDataset dataset, int top = 100)
+        {
+            var table = new DataTable(dataset.name);
+            table.Columns.AddRange(new DataColumn[] {
+                new DataColumn("name", typeof(string)),
+                new DataColumn("columns", typeof(int))
+            });
+
+            foreach(var t in dataset.Table.Take(top))
+            {
+                var row = table.NewRow();
+                row["name"] = t.name;
+                row["columns"] = t.Column.Count;
+                table.Rows.Add(row);
+            }
+
+            return table;
         }
 
         public static string ToSchemaString(this CDataset dataset)

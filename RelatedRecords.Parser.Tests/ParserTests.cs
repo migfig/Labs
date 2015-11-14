@@ -75,8 +75,7 @@ unrelate to OtherTable12
                     {
                         methods.AppendFormat("{0}SymbolConstants.{1}{2}",
                             t == results.Tokens.First() ? string.Empty : ",",
-                            (SymbolConstants)Enum.ToObject(typeof(SymbolConstants),
-                                t.Symbol.Id),
+                            t.Symbol.SymbolEnum(),
                             t == results.Tokens.Last() ? string.Empty : Environment.NewLine);
                     }
                     methods.AppendFormat(")]{0}", Environment.NewLine);

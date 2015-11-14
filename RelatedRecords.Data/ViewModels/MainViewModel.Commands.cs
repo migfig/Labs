@@ -189,11 +189,26 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void LoadCatalogId(IEnumerable<TerminalToken> tokens)
         {
+            var ds = SelectedConfiguration
+                .Dataset
+                .FirstOrDefault(x => 
+                    x.name.ToLower() == tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER)
+                        .Text.ToLower());
+            if (null != ds)
+            {
+                SelectedDataset = ds;
+            }
         }
 
         [Command(SymbolConstants.SYMBOL_LOAD)]
-        public void Load(IEnumerable<TerminalToken> tokens)
+        public async void Load(IEnumerable<TerminalToken> tokens)
         {
+            CurrentTable = await SelectedDataset
+                .Table
+                .First(x => x.name == SelectedDataset.defaultTable)
+                .Query("".ToArray(), "".ToArray(), true);
+
+            _tableNavigation.Push(CurrentTable);   
         }
 
         [Command(SymbolConstants.SYMBOL_RELATE
@@ -206,6 +221,64 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void RelateIdToIdOnIdEqId(IEnumerable<TerminalToken> tokens)
         {
+            var srcTable = SelectedDataset
+                .Table
+                .FirstOrDefault(x =>
+                    x.name.ToLower() == tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0)
+                        .Text.ToLower());
+
+            if (null == srcTable) return;
+
+            var tgtTable = SelectedDataset
+            .Table
+            .FirstOrDefault(x =>
+                x.name.ToLower() == tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1)
+                    .Text.ToLower());
+
+            if (null == tgtTable) return;
+
+            var srcCol = srcTable
+                .Column
+                .FirstOrDefault(x => x.name.ToLower() == tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2)
+                    .Text.ToLower());
+
+            if (null == srcCol) return;
+
+            var tgtCol = tgtTable
+                .Column
+                .FirstOrDefault(x => x.name.ToLower() == tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3)
+                    .Text.ToLower());
+
+            if (null == tgtCol || srcCol.DbType != tgtCol.DbType) return;
+
+            var relationship = new CRelationship
+            {
+                name = string.Format("{0}->{1}", srcTable.name, tgtTable.name),
+                fromTable = srcTable.name,
+                toTable = tgtTable.name,
+                fromColumn = srcCol.name,
+                toColumn = tgtCol.name
+            };
+
+            if (SelectedDataset.Relationship.Any(x => x.name == relationship.name)) return;
+
+            var currentDatasetName = SelectedDataset.name;
+            var currentTableName = null != CurrentTable ? CurrentTable.Root.ConfigTable.name : string.Empty;
+
+            SelectedDataset.Relationship.Add(relationship);
+            SaveConfiguration();
+            LoadConfiguration();
+
+            if(SelectedDataset.name != currentDatasetName)
+            {
+                SelectedDataset = SelectedConfiguration.Dataset.First(x => x.name == currentDatasetName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(currentTableName))
+            {
+                Command = "table " + currentTableName;
+                ExecuteCommand();
+            }
         }
 
         [Command(SymbolConstants.SYMBOL_RELATE
@@ -217,6 +290,15 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void RelateToIdOnIdEqId(IEnumerable<TerminalToken> tokens)
         {
+            var currentTableName = null != CurrentTable 
+                ? CurrentTable.Root.ConfigTable.name 
+                : SelectedDataset.defaultTable;
+
+            tokens.ToList().Insert(1, 
+                new TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER.SymbolTerminal(currentTableName), 
+                    currentTableName,
+                    new Location(0, 0, 0)));
+            RelateIdToIdOnIdEqId(tokens);
         }
 
         [Command(SymbolConstants.SYMBOL_REMOVE
@@ -224,11 +306,40 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void RemoveCatalogId(IEnumerable<TerminalToken> tokens)
         {
+            if (SelectedConfiguration.Dataset.Count > 1)
+            {
+                var currentDatasetName = SelectedDataset.name;
+                var dataSet = SelectedConfiguration
+                    .Dataset
+                    .FirstOrDefault(x => 
+                    x.name.ToLower() == tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER).Text.ToLower());
+                if (null == dataSet) return;
+
+                SelectedConfiguration.Dataset.Remove(dataSet);
+                if(SelectedConfiguration.defaultDataset == currentDatasetName)
+                {
+                    SelectedConfiguration.defaultDataset = SelectedConfiguration.Dataset.First().name;
+                    SelectedConfiguration.defaultDatasource = SelectedConfiguration.Dataset.First().dataSourceName;
+                }
+
+                SaveConfiguration();
+                LoadConfiguration();                
+            }
         }
 
         [Command(SymbolConstants.SYMBOL_REMOVE)]
         public void Remove(IEnumerable<TerminalToken> tokens)
         {
+            tokens.ToList().Add(
+                new TerminalToken(SymbolConstants.SYMBOL_CATALOG.SymbolTerminal("catalog"),
+                    "catalog",
+                    new Location(0, 0, 0)));
+            tokens.ToList().Add(
+                new TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER.SymbolTerminal(SelectedDataset.name),
+                    SelectedDataset.name,
+                    new Location(0, 0, 0)));
+
+            RemoveCatalogId(tokens);
         }
 
         [Command(SymbolConstants.SYMBOL_ROOT)]
@@ -246,6 +357,15 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void TableIdDefaultWhereIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
+            var table = SelectedDataset
+                .Table
+                .FirstOrDefault(x =>
+                    x.name.ToLower() == tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER).Text.ToLower());
+            if (null == table || SelectedDataset.defaultTable == table.name) return;
+
+            SelectedDataset.defaultTable = table.name;
+            SaveConfiguration();
+            LoadConfiguration();
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -253,6 +373,14 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DEFAULT)]
         public void TableIdDefault(IEnumerable<TerminalToken> tokens)
         {
+            var table = SelectedDataset
+                .Table
+                .FirstOrDefault(x =>
+                    x.name.ToLower() == tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER).Text.ToLower());
+            if (null == table || SelectedDataset.defaultTable == table.name) return;
+
+            SelectedDataset.defaultTable = table.name;
+            SaveConfiguration();
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -308,11 +436,17 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TablesInteger(IEnumerable<TerminalToken> tokens)
         {
+            _tableNavigation.Push(SelectedDataset
+                .ToDataTable(int.Parse(tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER).Text))
+                .ToDatatableEx(SelectedDataset.ToTable()));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLES)]
         public void Tables(IEnumerable<TerminalToken> tokens)
         {
+            _tableNavigation.Push(SelectedDataset
+                .ToDataTable()
+                .ToDatatableEx(SelectedDataset.ToTable()));
         }
 
         [Command(SymbolConstants.SYMBOL_TOP
@@ -327,6 +461,30 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void UnrelateIdToId(IEnumerable<TerminalToken> tokens)
         {
+            var srcTable = SelectedDataset
+                .Table
+                .FirstOrDefault(x =>
+                    x.name.ToLower() == tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0)
+                        .Text.ToLower());
+
+            if (null == srcTable) return;
+
+            var tgtTable = SelectedDataset
+            .Table
+            .FirstOrDefault(x =>
+                x.name.ToLower() == tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1)
+                    .Text.ToLower());
+
+            if (null == tgtTable || srcTable.name == tgtTable.name) return;
+
+            var relationship = SelectedDataset
+                .Relationship.FirstOrDefault(x =>
+                    x.name == CRelationship.GetName(srcTable.name, tgtTable.name));
+            if (null == relationship) return;
+
+            SelectedDataset.Relationship.Remove(relationship);
+            SaveConfiguration();
+            LoadConfiguration();
         }
 
         [Command(SymbolConstants.SYMBOL_UNRELATE
@@ -334,6 +492,15 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void UnrelateToId(IEnumerable<TerminalToken> tokens)
         {
+            var currentTableName = null != CurrentTable
+                ? CurrentTable.Root.ConfigTable.name
+                : SelectedDataset.defaultTable;
+
+            tokens.ToList().Insert(1,
+                new TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER.SymbolTerminal(currentTableName),
+                    currentTableName,
+                    new Location(0, 0, 0)));
+            UnrelateIdToId(tokens);
         }
     }
 }

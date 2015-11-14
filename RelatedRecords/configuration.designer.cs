@@ -196,6 +196,11 @@ namespace RelatedRecords
                 this.toColumnField = value;
             }
         }
+
+        public static string GetName(string sourceName, string targetName)
+        {
+            return string.Format("{0}->{1}", sourceName, targetName);
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.4.0.32990")]
