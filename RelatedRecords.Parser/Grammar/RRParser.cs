@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Runtime.Serialization;
 using com.calitha.commons;
@@ -50,14 +51,28 @@ namespace RelatedRecords.Parser
     public class ParseResults
     {
         public bool isAccepted { get; set; }
-        public List<TerminalToken> Tokens { get; private set; }
+
+        private List<TerminalToken> _tokens;
+        public IEnumerable<TerminalToken> Tokens
+        {
+            get { return _tokens; }
+        }
+
         public ParseResults()
         {
-            Tokens = new List<TerminalToken>();
+            _tokens = new List<TerminalToken>();
+        }
+
+        public override string ToString()
+        {
+            var value = string.Empty;
+            _tokens.ForEach(s => value += "_" + s.Symbol.Id.ToString());
+
+            return value;
         }
     }
 
-    enum SymbolConstants : int
+    public enum SymbolConstants : int
     {
         SYMBOL_EOF           =  0, // (EOF)
         SYMBOL_ERROR         =  1, // (Error)
@@ -264,7 +279,16 @@ namespace RelatedRecords.Parser
 
         public ParseResults Parse(string source)
         {
+            _results.isAccepted = false;           
+            ((List<TerminalToken>)_results.Tokens).Clear();
+
             parser.Parse(source);
+
+            if(_results.isAccepted)
+            {
+                ((List<TerminalToken>)_results.Tokens)
+                    .Remove(_results.Tokens.Last());
+            }
 
             return _results;
         }
@@ -276,7 +300,7 @@ namespace RelatedRecords.Parser
                 args.Token.UserObject = CreateObject(args.Token);
                 Debug.WriteLine("Position: {0}, Symbol: {1}, Text: {2}", args.Token.Location.Position, 
                     args.Token.Symbol.Name, args.Token.Text);
-                _results.Tokens.Add(args.Token);
+                ((List<TerminalToken>)_results.Tokens).Add(args.Token);
             }
             catch (Exception e)
             {

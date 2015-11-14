@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using System.Text;
+using static Common.Extensions;
 
 namespace RelatedRecords.Parser.Tests
 {
@@ -10,7 +13,6 @@ namespace RelatedRecords.Parser.Tests
         [TestMethod]
         public void RelatedRecords_Parser_Tests()
         {
-
             #region text commands
 
             var commands = @"
@@ -54,14 +56,44 @@ unrelate to OtherTable12
 ";
             #endregion text commands
 
-            foreach (var cmd in commands.Replace("'", "\"").Split(Environment.NewLine.ToCharArray(), 
-                StringSplitOptions.RemoveEmptyEntries))
-            {
-                var parser = new RRParser(
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "relatedrecords.cgt"));
+            var parser = new RRParser(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "relatedrecords.cgt"));
 
-                var results = parser.Parse(cmd);
-                Assert.IsTrue(results.isAccepted);
+            using (var stream = File.CreateText(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "methods.cs")))
+            {
+                var methods = new StringBuilder();
+
+                foreach (var cmd in commands.Replace("'", "\"").Split(Environment.NewLine.ToCharArray(),
+                    StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var results = parser.Parse(cmd);
+                    Assert.IsTrue(results.isAccepted);
+
+                    methods.Append("[Command(");
+                    foreach (var t in results.Tokens)
+                    {
+                        methods.AppendFormat("{0}SymbolConstants.{1}{2}",
+                            t == results.Tokens.First() ? string.Empty : ",",
+                            (SymbolConstants)Enum.ToObject(typeof(SymbolConstants),
+                                t.Symbol.Id),
+                            t == results.Tokens.Last() ? string.Empty : Environment.NewLine);
+                    }
+                    methods.AppendFormat(")]{0}", Environment.NewLine);
+
+                    methods.Append("public void ");
+                    foreach(var t in results.Tokens)
+                    {
+                        methods.Append(CapitalizeWords(t.Symbol.Name));
+                    }
+                    methods.AppendFormat("(IEnumerable<TerminalToken> tokens){0}",
+                        Environment.NewLine);
+
+                    methods.AppendFormat("{{{0}", Environment.NewLine);
+                    methods.AppendFormat("}}{0}{0}", Environment.NewLine);
+                }
+
+                stream.Write(methods.ToString());
             }
         }
     }

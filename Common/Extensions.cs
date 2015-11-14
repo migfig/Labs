@@ -76,6 +76,25 @@ namespace Common
             return string.Format("\"{0}\"{1}", value, append);
         }
 
+        public static string CapitalizeWords(string value)
+        {
+            var capitalized = string.Empty;
+            if (!string.IsNullOrEmpty(value))
+            {
+                for (var i = 0; i < value.Length; i++)
+                {
+                    if (i == 0)
+                        capitalized = value[i].ToString().ToUpper();
+                    else if (Char.IsUpper(value[i]))
+                        capitalized += " " + value[i];
+                    else
+                        capitalized += value[i];
+                }
+            }
+
+            return capitalized;
+        }
+
         public static int runProcess(string program, string args, int waitForExitMS = 30000)
         {
             TraceLog.Information("Running method with args {program} {args}", program, args);
