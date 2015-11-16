@@ -51,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Grammar\Tests\back.txt" />
+    <Content Include="Grammar\Tests\child-id.txt" />
+    <Content Include="Grammar\Tests\child-n.txt" />
+    <Content Include="Grammar\Tests\child.txt" />
     <Content Include="Grammar\Tests\clone-as.txt" />
     <Content Include="Grammar\Tests\clone-catalog-as.txt" />
     <Content Include="Grammar\Tests\clone-catalog.txt" />

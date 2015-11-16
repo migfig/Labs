@@ -75,6 +75,9 @@ tables
 top 100
 unrelate This_Table12 to OtherTable12
 unrelate to OtherTable12
+child
+child 2
+child MyTable
 ";
             #endregion text commands
 
@@ -129,7 +132,7 @@ unrelate to OtherTable12
             var idList = new Dictionary<int, int>();
             foreach (var t in filtered)
             {
-                methods.AppendFormat("\tvar {0}{2} = tokens.TerminalToken(SymbolConstants.{1}, {2});{3}",
+                methods.AppendFormat("\tvar {0}{2} = tokens.TerminalToken(SymbolConstants.{1}, {2}).Text;{3}",
                     FixId(CapitalizeWords(t.Symbol.Name)),
                     t.Symbol.SymbolEnum(),
                     idList.ContainsKey(t.Symbol.Id) ? idList[t.Symbol.Id] : 0,

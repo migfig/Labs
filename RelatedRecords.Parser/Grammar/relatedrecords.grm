@@ -49,6 +49,7 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
               | <TablesExp>
               | <ColumnsExp>
               | <TopnExp>
+              | <ChildExp>
               
 ! import catalog <catalogname> [server <servername> [user <username> password <password>]]
 <ImportExp>   ::= import <CatalogExp> !using localhost and trusted creds
@@ -110,6 +111,11 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
 
 ! top n
 <TopnExp>     ::= top Integer
+
+!child 
+<ChildExp>    ::= child
+               | child Integer
+               | child Identifier
 
 <CatalogExp>  ::= catalog Identifier
 <UserExp>     ::= user Identifier
