@@ -78,21 +78,17 @@ namespace RelatedRecords.Parser
         public bool isAccepted { get; set; }
         public string Error { get; set; }
 
-        private List<TerminalToken> _tokens;
-        public IEnumerable<TerminalToken> Tokens
-        {
-            get { return _tokens; }
-        }
+        public List<TerminalToken> Tokens { get; private set; }
 
         public ParseResults()
         {
-            _tokens = new List<TerminalToken>();
+            Tokens = new List<TerminalToken>();
         }
 
         public override string ToString()
         {
             var value = string.Empty;
-            _tokens.ForEach(s => value += "_" + s.Symbol.Id.ToString());
+            Tokens.ForEach(s => value += "_" + s.Symbol.Id.ToString());
 
             return value;
         }
@@ -307,14 +303,14 @@ namespace RelatedRecords.Parser
         {
             _results.isAccepted = false;
             _results.Error = string.Empty;          
-            _results.Tokens.ToList().Clear();
+            _results.Tokens.Clear();
 
             parser.Parse(source);
 
             if(_results.isAccepted)
             {
                 //remove EOF token
-                _results.Tokens.ToList()
+                _results.Tokens
                     .Remove(_results.Tokens.Last());
             }
 
@@ -326,7 +322,7 @@ namespace RelatedRecords.Parser
             try
             {
                 args.Token.UserObject = CreateObject(args.Token);
-                _results.Tokens.ToList().Add(args.Token);
+                _results.Tokens.Add(args.Token);
             }
             catch (Exception e)
             {

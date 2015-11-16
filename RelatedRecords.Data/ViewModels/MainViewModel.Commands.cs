@@ -294,11 +294,12 @@ namespace RelatedRecords.Data.ViewModels
                 ? CurrentTable.Root.ConfigTable.name 
                 : SelectedDataset.defaultTable;
 
-            tokens.ToList().Insert(1, 
+            var list = tokens.ToList();
+            list.Insert(1, 
                 new TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER.SymbolTerminal(currentTableName), 
                     currentTableName,
                     new Location(0, 0, 0)));
-            RelateIdToIdOnIdEqId(tokens);
+            RelateIdToIdOnIdEqId(list);
         }
 
         [Command(SymbolConstants.SYMBOL_REMOVE
@@ -330,16 +331,17 @@ namespace RelatedRecords.Data.ViewModels
         [Command(SymbolConstants.SYMBOL_REMOVE)]
         public void Remove(IEnumerable<TerminalToken> tokens)
         {
-            tokens.ToList().Add(
+            var list = tokens.ToList();
+            list.Add(
                 new TerminalToken(SymbolConstants.SYMBOL_CATALOG.SymbolTerminal("catalog"),
                     "catalog",
                     new Location(0, 0, 0)));
-            tokens.ToList().Add(
+            list.Add(
                 new TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER.SymbolTerminal(SelectedDataset.name),
                     SelectedDataset.name,
                     new Location(0, 0, 0)));
 
-            RemoveCatalogId(tokens);
+            RemoveCatalogId(list);
         }
 
         [Command(SymbolConstants.SYMBOL_ROOT)]
@@ -506,11 +508,12 @@ namespace RelatedRecords.Data.ViewModels
                 ? CurrentTable.Root.ConfigTable.name
                 : SelectedDataset.defaultTable;
 
-            tokens.ToList().Insert(1,
+            var list = tokens.ToList();
+            list.Insert(1,
                 new TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER.SymbolTerminal(currentTableName),
                     currentTableName,
                     new Location(0, 0, 0)));
-            UnrelateIdToId(tokens);
+            UnrelateIdToId(list);
         }
 
         #region utility methods 
