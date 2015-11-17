@@ -42,6 +42,8 @@ relate ThisTable to OtherTable12 on Column1 = column_2
 relate to OtherTable12 on Column1 = column_2
 remove catalog CatalogName
 remove
+refresh
+refresh catalog My_Catalog
 root
 table Test21 default where col1 = '1.34'
 table Test21 default

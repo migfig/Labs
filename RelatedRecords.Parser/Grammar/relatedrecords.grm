@@ -39,6 +39,7 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
 <CommandExp> ::= <ImportExp>
               | <CloneExp>
               | <RemoveExp>
+              | <RefreshExp>
               | <LoadExp>
               | <TableExp>
               | <RelateExp>
@@ -65,6 +66,10 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
 ! remove [catalog <catalogname>]
 <RemoveExp>   ::= remove !current catalog
                | remove <CatalogExp>
+
+! remove [catalog <catalogname>]
+<RefreshExp>   ::= refresh !current catalog
+               | refresh <CatalogExp>
 
 ! load [catalog <catalogname>] 
 <LoadExp>     ::= load !default catalog

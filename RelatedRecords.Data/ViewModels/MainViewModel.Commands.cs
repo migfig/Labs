@@ -58,8 +58,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void CloneAsId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoCloneAsId(Id0);
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoCloneAsId(catalog);
         }
 
         [Command(SymbolConstants.SYMBOL_CLONE
@@ -69,9 +69,9 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void CloneCatalogIdAsId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            DoCloneCatalogIdAsId(Id0, Id1);
+            var srcCatalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var tgtCatalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            DoCloneCatalogIdAsId(srcCatalog, tgtCatalog);
         }
 
         [Command(SymbolConstants.SYMBOL_CLONE
@@ -79,8 +79,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void CloneCatalogId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoCloneCatalogId(Id0);
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoCloneCatalogId(catalog);
         }
 
         [Command(SymbolConstants.SYMBOL_CLONE)]
@@ -93,8 +93,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void ColumnsInt(IEnumerable<TerminalToken> tokens)
         {
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoColumnsInt(Int0);
+            var topN = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoColumnsInt(topN);
         }
 
         [Command(SymbolConstants.SYMBOL_COLUMNS)]
@@ -133,8 +133,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_HTML)]
         public void ExportIdAsHtml(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoExportIdAsHtml(Id0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoExportIdAsHtml(table);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
@@ -143,8 +143,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_JSON)]
         public void ExportIdAsJson(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoExportIdAsJson(Id0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoExportIdAsJson(table);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
@@ -153,8 +153,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_SQL)]
         public void ExportIdAsSql(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoExportIdAsSql(Id0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoExportIdAsSql(table);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
@@ -163,8 +163,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_XML)]
         public void ExportIdAsXml(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoExportIdAsXml(Id0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoExportIdAsXml(table);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
@@ -186,14 +186,11 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void ImportCatalogIdSvrIdUserIdPwdId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Svr0 = tokens.TerminalToken(SymbolConstants.SYMBOL_SERVER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var User0 = tokens.TerminalToken(SymbolConstants.SYMBOL_USER, 0).Text;
-            var Id2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
-            var Pwd0 = tokens.TerminalToken(SymbolConstants.SYMBOL_PASSWORD, 0).Text;
-            var Id3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
-            DoImportCatalogIdSvrIdUserIdPwdId(Id0, Svr0, Id1, User0, Id2, Pwd0, Id3);
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var server = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var user = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var password = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            DoImportCatalogIdSvrIdUserIdPwdId(catalog, server, user, password);
         }
 
         [Command(SymbolConstants.SYMBOL_IMPORT
@@ -205,12 +202,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void ImportCatalogIdUserIdPwdId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var User0 = tokens.TerminalToken(SymbolConstants.SYMBOL_USER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Pwd0 = tokens.TerminalToken(SymbolConstants.SYMBOL_PASSWORD, 0).Text;
-            var Id2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
-            DoImportCatalogIdUserIdPwdId(Id0, User0, Id1, Pwd0, Id2);
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var user = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var password = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            DoImportCatalogIdUserIdPwdId(catalog, user, password);
         }
 
         [Command(SymbolConstants.SYMBOL_IMPORT
@@ -218,8 +213,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void ImportCatalogId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoImportCatalogId(Id0);
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoImportCatalogId(catalog);
         }
 
         [Command(SymbolConstants.SYMBOL_LOAD
@@ -227,8 +222,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void LoadCatalogId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoLoadCatalogId(Id0);
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoLoadCatalogId(catalog);
         }
 
         [Command(SymbolConstants.SYMBOL_LOAD)]
@@ -247,11 +242,11 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void RelateIdToIdOnIdEqId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Id2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
-            var Id3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
-            DoRelateIdToIdOnIdEqId(Id0, Id1, Id2, Id3);
+            var srcTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var srcCol = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var tgtCol = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            DoRelateIdToIdOnIdEqId(srcTbl, tgtTbl, srcCol, tgtCol);
         }
 
         [Command(SymbolConstants.SYMBOL_RELATE
@@ -263,10 +258,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void RelateToIdOnIdEqId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Id2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
-            DoRelateToIdOnIdEqId(Id0, Id1, Id2);
+            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var srcCol = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var tgtCol = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            DoRelateToIdOnIdEqId(tgtTbl, srcCol, tgtCol);
         }
 
         [Command(SymbolConstants.SYMBOL_REMOVE
@@ -274,14 +269,29 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void RemoveCatalogId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoRemoveCatalogId(Id0);
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoRemoveCatalogId(catalog);
         }
 
         [Command(SymbolConstants.SYMBOL_REMOVE)]
         public void Remove(IEnumerable<TerminalToken> tokens)
         {
             DoRemove();
+        }
+
+        [Command(SymbolConstants.SYMBOL_REFRESH)]
+        public void Refresh(IEnumerable<TerminalToken> tokens)
+        {
+            DoRefresh();
+        }
+
+        [Command(SymbolConstants.SYMBOL_REFRESH
+        , SymbolConstants.SYMBOL_CATALOG
+        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        public void RefreshCatalogId(IEnumerable<TerminalToken> tokens)
+        {
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoRefreshCatalogId(catalog);
         }
 
         [Command(SymbolConstants.SYMBOL_ROOT)]
@@ -299,10 +309,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void TableIdDefaultWhereIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var StrLit0 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            DoTableIdDefaultWhereIdEqStrLit(Id0, Id1, StrLit0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            DoTableIdDefaultWhereIdEqStrLit(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -310,8 +320,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DEFAULT)]
         public void TableIdDefault(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoTableIdDefault(Id0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoTableIdDefault(table);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -324,11 +334,11 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdBetweenIntAndInt(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var Int1 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
-            DoTableIdWhereIdBetweenIntAndInt(Id0, Id1, Int0, Int1);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
+            DoTableIdWhereIdBetweenIntAndInt(table, column, minValue, maxValue);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -341,11 +351,11 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdBetweenDecAndDec(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Dec0 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var Dec1 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
-            DoTableIdWhereIdBetweenDecAndDec(Id0, Id1, Dec0, Dec1);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
+            DoTableIdWhereIdBetweenDecAndDec(table, column, minValue, maxValue);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -357,10 +367,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdGtEqMinusInt(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdGtEqMinusInt(Id0, Id1, Int0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTableIdWhereIdGtEqMinusInt(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -372,10 +382,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdGtEqMinusDec(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Dec0 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdGtEqMinusDec(Id0, Id1, Dec0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoTableIdWhereIdGtEqMinusDec(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -386,10 +396,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdGtEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdGtEqInt(Id0, Id1, Int0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTableIdWhereIdGtEqInt(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -400,10 +410,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdGtEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Dec0 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdGtEqDec(Id0, Id1, Dec0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoTableIdWhereIdGtEqDec(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -415,10 +425,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdGtMinusInt(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdGtMinusInt(Id0, Id1, Int0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTableIdWhereIdGtMinusInt(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -430,10 +440,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdGtMinusDec(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Dec0 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdGtMinusDec(Id0, Id1, Dec0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoTableIdWhereIdGtMinusDec(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -444,10 +454,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdGtInt(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdGtInt(Id0, Id1, Int0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTableIdWhereIdGtInt(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -458,10 +468,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdGtDec(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Dec0 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdGtDec(Id0, Id1, Dec0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoTableIdWhereIdGtDec(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -473,10 +483,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdLtEqMinusInt(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdLtEqMinusInt(Id0, Id1, Int0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTableIdWhereIdLtEqMinusInt(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -488,10 +498,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdLtEqMinusDec(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Dec0 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdLtEqMinusDec(Id0, Id1, Dec0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoTableIdWhereIdLtEqMinusDec(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -502,10 +512,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdLtEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdLtEqInt(Id0, Id1, Int0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTableIdWhereIdLtEqInt(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -516,10 +526,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdLtEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Dec0 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdLtEqDec(Id0, Id1, Dec0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoTableIdWhereIdLtEqDec(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -530,10 +540,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdLtGtInt(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdLtGtInt(Id0, Id1, Int0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTableIdWhereIdLtGtInt(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -544,10 +554,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdLtGtDec(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Dec0 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdLtGtDec(Id0, Id1, Dec0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoTableIdWhereIdLtGtDec(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -559,10 +569,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdLtGtMinusInt(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdLtGtMinusInt(Id0, Id1, Int0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTableIdWhereIdLtGtMinusInt(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -574,10 +584,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdLtGtMinusDec(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Dec0 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdLtGtMinusDec(Id0, Id1, Dec0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoTableIdWhereIdLtGtMinusDec(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -589,10 +599,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdEqMinusInt(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdEqMinusInt(Id0, Id1, Int0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTableIdWhereIdEqMinusInt(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -604,10 +614,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdEqMinusDec(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Dec0 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdEqMinusDec(Id0, Id1, Dec0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoTableIdWhereIdEqMinusDec(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -618,10 +628,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdEqInt(Id0, Id1, Int0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTableIdWhereIdEqInt(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -632,10 +642,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Dec0 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdEqDec(Id0, Id1, Dec0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoTableIdWhereIdEqDec(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -647,10 +657,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_NULL)]
         public void TableIdWhereIdIsNotNull(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Null0 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            DoTableIdWhereIdIsNotNull(Id0, Id1, Null0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            DoTableIdWhereIdIsNotNull(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -661,26 +671,26 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_NULL)]
         public void TableIdWhereIdIsNull(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var Null0 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            DoTableIdWhereIdIsNull(Id0, Id1, Null0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            DoTableIdWhereIdIsNull(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void TableId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoTableId(Id0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoTableId(table);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLES
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TablesInt(IEnumerable<TerminalToken> tokens)
         {
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTablesInt(Int0);
+            var topN = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTablesInt(topN);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLES)]
@@ -693,8 +703,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TopInt(IEnumerable<TerminalToken> tokens)
         {
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTopInt(Int0);
+            var topN = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoTopInt(topN);
         }
 
         [Command(SymbolConstants.SYMBOL_UNRELATE
@@ -703,9 +713,9 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void UnrelateIdToId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var Id1 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            DoUnrelateIdToId(Id0, Id1);
+            var srcTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            DoUnrelateIdToId(srcTbl, tgtTbl);
         }
 
         [Command(SymbolConstants.SYMBOL_UNRELATE
@@ -713,8 +723,8 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void UnrelateToId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoUnrelateToId(Id0);
+            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoUnrelateToId(tgtTbl);
         }
 
         [Command(SymbolConstants.SYMBOL_CHILD)]
@@ -727,16 +737,16 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void ChildInt(IEnumerable<TerminalToken> tokens)
         {
-            var Int0 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoChildInt(Int0);
+            var index = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoChildInt(index);
         }
 
         [Command(SymbolConstants.SYMBOL_CHILD
         , SymbolConstants.SYMBOL_IDENTIFIER)]
         public void ChildId(IEnumerable<TerminalToken> tokens)
         {
-            var Id0 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            DoChildId(Id0);
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoChildId(table);
         }
 
         #endregion command handlers
@@ -751,15 +761,15 @@ namespace RelatedRecords.Data.ViewModels
             }
         }
 
-        private void DoCloneAsId(string Id0)
+        private void DoCloneAsId(string catalog)
         {
         }
 
-        private void DoCloneCatalogIdAsId(string Id0, string Id1)
+        private void DoCloneCatalogIdAsId(string srcCatalog, string tgtCatalog)
         {
         }
 
-        private void DoCloneCatalogId(string Id0)
+        private void DoCloneCatalogId(string catalog)
         {
         }
 
@@ -767,7 +777,7 @@ namespace RelatedRecords.Data.ViewModels
         {
         }
 
-        private void DoColumnsInt(string Int0)
+        private void DoColumnsInt(string topN)
         {
         }
 
@@ -787,19 +797,19 @@ namespace RelatedRecords.Data.ViewModels
         {
         }
 
-        private void DoExportIdAsHtml(string Id0)
+        private void DoExportIdAsHtml(string table)
         {
         }
 
-        private void DoExportIdAsJson(string Id0)
+        private void DoExportIdAsJson(string table)
         {
         }
 
-        private void DoExportIdAsSql(string Id0)
+        private void DoExportIdAsSql(string table)
         {
         }
 
-        private void DoExportIdAsXml(string Id0)
+        private void DoExportIdAsXml(string table)
         {
         }
 
@@ -807,29 +817,28 @@ namespace RelatedRecords.Data.ViewModels
         {
         }
 
-        private void DoImportCatalogIdSvrIdUserIdPwdId(string Id0, string Svr0, string Id1, string User0, string Id2, string Pwd0, string Id3)
+        private void DoImportCatalogIdSvrIdUserIdPwdId(string catalog, string server, string user, string password)
         {
         }
 
-        private void DoImportCatalogIdUserIdPwdId(string Id0, string User0, string Id1, string Pwd0, string Id2)
+        private void DoImportCatalogIdUserIdPwdId(string catalog, string user, string password)
         {
         }
 
-        private void DoImportCatalogId(string Id0)
+        private void DoImportCatalogId(string catalog)
         {
         }
 
-        private void DoLoadCatalogId(string Id0)
+        private void DoLoadCatalogId(string catalog)
         {
             var ds = SelectedConfiguration
                 .Dataset
                 .FirstOrDefault(x =>
-                    x.name.ToLower() == Id0.ToLower());
+                    x.name.ToLower() == catalog.ToLower());
             if (null != ds)
             {
                 SelectedDataset = ds;
             }
-
         }
 
         private async void DoLoad()
@@ -842,31 +851,31 @@ namespace RelatedRecords.Data.ViewModels
             _tableNavigation.Push(CurrentTable);
         }
 
-        private void DoRelateIdToIdOnIdEqId(string Id0, string Id1, string Id2, string Id3)
+        private void DoRelateIdToIdOnIdEqId(string srcTblName, string tgtTblName, string srcColName, string tgtColName)
         {
             var srcTable = SelectedDataset
                 .Table
                 .FirstOrDefault(x =>
-                    x.name.ToLower() == Id0.ToLower());
+                    x.name.ToLower() == srcTblName.ToLower());
 
             if (null == srcTable) return;
 
             var tgtTable = SelectedDataset
             .Table
             .FirstOrDefault(x =>
-                x.name.ToLower() == Id1.ToLower());
+                x.name.ToLower() == tgtTblName.ToLower());
 
             if (null == tgtTable) return;
 
             var srcCol = srcTable
                 .Column
-                .FirstOrDefault(x => x.name.ToLower() == Id2.ToLower());
+                .FirstOrDefault(x => x.name.ToLower() == srcColName.ToLower());
 
             if (null == srcCol) return;
 
             var tgtCol = tgtTable
                 .Column
-                .FirstOrDefault(x => x.name.ToLower() == Id3.ToLower());
+                .FirstOrDefault(x => x.name.ToLower() == tgtColName.ToLower());
 
             if (null == tgtCol || srcCol.DbType != tgtCol.DbType) return;
 
@@ -887,34 +896,18 @@ namespace RelatedRecords.Data.ViewModels
             SelectedDataset.Relationship.Add(relationship);
             SaveConfiguration();
             LoadConfiguration();
-
-            if (SelectedDataset.name != currentDatasetName)
-            {
-                SelectedDataset = SelectedConfiguration.Dataset.First(x => x.name == currentDatasetName);
-            }
-
-            if (!string.IsNullOrWhiteSpace(currentTableName))
-            {
-                Command = "table " + currentTableName;
-                ExecuteCommand();
-            }
         }
 
-        private void DoRelateToIdOnIdEqId(string Id0, string Id1, string Id2)
+        private void DoRelateToIdOnIdEqId(string tgtTblName, string srcColName, string tgtColName)
         {
-            //var currentTableName = null != CurrentTable
-            //    ? CurrentTable.Root.ConfigTable.name
-            //    : SelectedDataset.defaultTable;
+            var currentTableName = null != CurrentTable
+                ? CurrentTable.Root.ConfigTable.name
+                : SelectedDataset.defaultTable;
 
-            //var list = tokens.ToList();
-            //list.Insert(1,
-            //    new TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER.SymbolTerminal(currentTableName),
-            //        currentTableName,
-            //        new Location(0, 0, 0)));
-            //RelateIdToIdOnIdEqId(list);
+            DoRelateIdToIdOnIdEqId(currentTableName, tgtTblName, srcColName, tgtColName);
         }
 
-        private void DoRemoveCatalogId(string Id0)
+        private void DoRemoveCatalogId(string datasetName)
         {
             if (SelectedConfiguration.Dataset.Count > 1)
             {
@@ -922,7 +915,7 @@ namespace RelatedRecords.Data.ViewModels
                 var dataSet = SelectedConfiguration
                     .Dataset
                     .FirstOrDefault(x =>
-                    x.name.ToLower() == Id0.ToLower());
+                    x.name.ToLower() == datasetName.ToLower());
                 if (null == dataSet) return;
 
                 SelectedConfiguration.Dataset.Remove(dataSet);
@@ -939,17 +932,15 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoRemove()
         {
-            //var list = tokens.ToList();
-            //list.Add(
-            //    new TerminalToken(SymbolConstants.SYMBOL_CATALOG.SymbolTerminal("catalog"),
-            //        "catalog",
-            //        new Location(0, 0, 0)));
-            //list.Add(
-            //    new TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER.SymbolTerminal(SelectedDataset.name),
-            //        SelectedDataset.name,
-            //        new Location(0, 0, 0)));
+            DoRemoveCatalogId(SelectedDataset.name);
+        }
 
-            //RemoveCatalogId(list);
+        private void DoRefresh()
+        {
+        }
+
+        private void DoRefreshCatalogId(string catalog)
+        {
         }
 
         private void DoRoot()
@@ -957,12 +948,12 @@ namespace RelatedRecords.Data.ViewModels
             _tableNavigation.Clear();
         }
 
-        private void DoTableIdDefaultWhereIdEqStrLit(string Id0, string Id1, string StrLit0)
+        private void DoTableIdDefaultWhereIdEqStrLit(string tableName, string column, string value)
         {
             var table = SelectedDataset
                 .Table
                 .FirstOrDefault(x =>
-                    x.name.ToLower() == Id0.ToLower());
+                    x.name.ToLower() == tableName.ToLower());
             if (null == table || SelectedDataset.defaultTable == table.name) return;
 
             SelectedDataset.defaultTable = table.name;
@@ -970,117 +961,117 @@ namespace RelatedRecords.Data.ViewModels
             LoadConfiguration();
         }
 
-        private void DoTableIdDefault(string Id0)
+        private void DoTableIdDefault(string tableName)
         {
             var table = SelectedDataset
                 .Table
                 .FirstOrDefault(x =>
-                    x.name.ToLower() == Id0.ToLower());
+                    x.name.ToLower() == tableName.ToLower());
             if (null == table || SelectedDataset.defaultTable == table.name) return;
 
             SelectedDataset.defaultTable = table.name;
             SaveConfiguration();
         }
 
-        private void DoTableIdWhereIdBetweenIntAndInt(string Id0, string Id1, string Int0, string Int1)
+        private void DoTableIdWhereIdBetweenIntAndInt(string tableName, string columnName, string minValue, string maxValue)
         {
         }
 
-        private void DoTableIdWhereIdBetweenDecAndDec(string Id0, string Id1, string Dec0, string Dec1)
+        private void DoTableIdWhereIdBetweenDecAndDec(string tableName, string columnName, string minValue, string maxValue)
         {
         }
 
-        private void DoTableIdWhereIdGtEqMinusInt(string Id0, string Id1, string Int0)
+        private void DoTableIdWhereIdGtEqMinusInt(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdGtEqMinusDec(string Id0, string Id1, string Dec0)
+        private void DoTableIdWhereIdGtEqMinusDec(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdGtEqInt(string Id0, string Id1, string Int0)
+        private void DoTableIdWhereIdGtEqInt(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdGtEqDec(string Id0, string Id1, string Dec0)
+        private void DoTableIdWhereIdGtEqDec(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdGtMinusInt(string Id0, string Id1, string Int0)
+        private void DoTableIdWhereIdGtMinusInt(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdGtMinusDec(string Id0, string Id1, string Dec0)
+        private void DoTableIdWhereIdGtMinusDec(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdGtInt(string Id0, string Id1, string Int0)
+        private void DoTableIdWhereIdGtInt(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdGtDec(string Id0, string Id1, string Dec0)
+        private void DoTableIdWhereIdGtDec(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdLtEqMinusInt(string Id0, string Id1, string Int0)
+        private void DoTableIdWhereIdLtEqMinusInt(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdLtEqMinusDec(string Id0, string Id1, string Dec0)
+        private void DoTableIdWhereIdLtEqMinusDec(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdLtEqInt(string Id0, string Id1, string Int0)
+        private void DoTableIdWhereIdLtEqInt(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdLtEqDec(string Id0, string Id1, string Dec0)
+        private void DoTableIdWhereIdLtEqDec(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdLtGtInt(string Id0, string Id1, string Int0)
+        private void DoTableIdWhereIdLtGtInt(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdLtGtDec(string Id0, string Id1, string Dec0)
+        private void DoTableIdWhereIdLtGtDec(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdLtGtMinusInt(string Id0, string Id1, string Int0)
+        private void DoTableIdWhereIdLtGtMinusInt(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdLtGtMinusDec(string Id0, string Id1, string Dec0)
+        private void DoTableIdWhereIdLtGtMinusDec(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdEqMinusInt(string Id0, string Id1, string Int0)
+        private void DoTableIdWhereIdEqMinusInt(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdEqMinusDec(string Id0, string Id1, string Dec0)
+        private void DoTableIdWhereIdEqMinusDec(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdEqInt(string Id0, string Id1, string Int0)
+        private void DoTableIdWhereIdEqInt(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdEqDec(string Id0, string Id1, string Dec0)
+        private void DoTableIdWhereIdEqDec(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdIsNotNull(string Id0, string Id1, string Null0)
+        private void DoTableIdWhereIdIsNotNull(string tableName, string columnName, string value)
         {
         }
 
-        private void DoTableIdWhereIdIsNull(string Id0, string Id1, string Null0)
+        private void DoTableIdWhereIdIsNull(string tableName, string columnName, string value)
         {
         }
 
-        private async void DoTableId(string Id0)
+        private async void DoTableId(string tableName)
         {
-            var table = findTable(Id0);
+            var table = findTable(tableName);
             if (null == table) return;
 
             var needsPush = (null != CurrentTable && table.name == CurrentTable.Root.ConfigTable.name);
@@ -1092,10 +1083,10 @@ namespace RelatedRecords.Data.ViewModels
             }
         }
 
-        private void DoTablesInt(string Int0)
+        private void DoTablesInt(string topN)
         {
             _tableNavigation.Push(SelectedDataset
-                .ToDataTable(int.Parse(Int0))
+                .ToDataTable(int.Parse(topN))
                 .ToDatatableEx(SelectedDataset.ToTable()));
         }
 
@@ -1106,23 +1097,23 @@ namespace RelatedRecords.Data.ViewModels
                 .ToDatatableEx(SelectedDataset.ToTable()));
         }
 
-        private void DoTopInt(string Int0)
+        private void DoTopInt(string topN)
         {
         }
 
-        private void DoUnrelateIdToId(string Id0, string Id1)
+        private void DoUnrelateIdToId(string srcTblName, string tgtTblName)
         {
             var srcTable = SelectedDataset
                 .Table
                 .FirstOrDefault(x =>
-                    x.name.ToLower() == Id0.ToLower());
+                    x.name.ToLower() == srcTblName.ToLower());
 
             if (null == srcTable) return;
 
             var tgtTable = SelectedDataset
             .Table
             .FirstOrDefault(x =>
-                x.name.ToLower() == Id1.ToLower());
+                x.name.ToLower() == tgtTblName.ToLower());
 
             if (null == tgtTable || srcTable.name == tgtTable.name) return;
 
@@ -1136,29 +1127,23 @@ namespace RelatedRecords.Data.ViewModels
             LoadConfiguration();
         }
 
-        private void DoUnrelateToId(string Id0)
+        private void DoUnrelateToId(string tgtTblName)
         {
-            //var currentTableName = null != CurrentTable
-            //    ? CurrentTable.Root.ConfigTable.name
-            //    : SelectedDataset.defaultTable;
-
-            //var list = tokens.ToList();
-            //list.Insert(1,
-            //    new TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER.SymbolTerminal(currentTableName),
-            //        currentTableName,
-            //        new Location(0, 0, 0)));
-            //UnrelateIdToId(list);
+            var currentTableName = null != CurrentTable
+                ? CurrentTable.Root.ConfigTable.name
+                : SelectedDataset.defaultTable;
+            DoUnrelateIdToId(currentTableName, tgtTblName);
         }
 
         private void DoChild()
         {
         }
 
-        private void DoChildInt(string Int0)
+        private void DoChildInt(string index)
         {
         }
 
-        private void DoChildId(string Id0)
+        private void DoChildId(string tableName)
         {
         }
 
@@ -1174,5 +1159,52 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         #endregion utility methods
+
+        #region utility classes
+
+        internal class State
+        {
+            private string _datasetName;
+            private string _tableName;
+            private List<DatatableEx> _navigation;
+
+            private readonly MainViewModel _model;
+            public State(MainViewModel model)
+            {
+                _model = model;
+            }
+
+            public void SaveState()
+            {
+                _datasetName = _model.SelectedDataset.name;
+                _tableName = null != _model.CurrentTable
+                    ? _model.CurrentTable.Root.ConfigTable.name
+                    : _model.SelectedDataset.defaultTable;
+                _navigation = _model.TableNavigation.ToList();
+            }
+
+            public async void RestoreState()
+            {
+                var ds = _model
+                    .SelectedConfiguration
+                    .Dataset
+                    .FirstOrDefault(x => x.name == _datasetName);
+                if (null == ds)
+                {
+                    ds = _model.SelectedConfiguration.Dataset.First();
+                }
+                _model.SelectedDataset = ds;
+
+                foreach (var t in _navigation)
+                {
+                    _model.TableNavigation.Push(
+                        await t.Root.ConfigTable.Query("".ToArray(), "".ToArray(), true));
+                }
+
+                _model.CurrentTable = _navigation.FirstOrDefault(x => x.Root.ConfigTable.name == _tableName);
+            }
+        }
+
+        #endregion
     }
 }

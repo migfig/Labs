@@ -73,6 +73,8 @@
     <Content Include="Grammar\Tests\import.txt" />
     <Content Include="Grammar\Tests\load-catalog.txt" />
     <Content Include="Grammar\Tests\load.txt" />
+    <Content Include="Grammar\Tests\refresh-catalog.txt" />
+    <Content Include="Grammar\Tests\refresh.txt" />
     <Content Include="Grammar\Tests\relate-table.txt" />
     <Content Include="Grammar\Tests\relate.txt" />
     <Content Include="Grammar\Tests\remove-catalog.txt" />

@@ -33,6 +33,7 @@ namespace RelatedRecords.Data.ViewModels
         private readonly RRParser _parser;
         private readonly string _configurationFile;
         private IEnumerable<MethodInfo> _commandMethods;
+        private readonly State _state;
 
         public MainViewModel(string configFile, string grammarFile)
         {
@@ -41,6 +42,7 @@ namespace RelatedRecords.Data.ViewModels
             _commandMethods = GetType()
                 .GetMethods()
                 .Where(m => m.GetCustomAttribute<CommandAttribute>(false) != null);
+            _state = new State(this);
         }
         
         public CConfiguration SelectedConfiguration
@@ -87,6 +89,10 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         private Stack<DatatableEx> _tableNavigation = new Stack<DatatableEx>();
+        public Stack<DatatableEx> TableNavigation
+        {
+            get { return _tableNavigation; }
+        }
 
         private bool _isValidCommand;
         public bool IsValidCommand
@@ -117,9 +123,13 @@ namespace RelatedRecords.Data.ViewModels
 
         public bool LoadConfiguration()
         {
+            _state.SaveState();
+
             var cfg = XmlHelper<CConfiguration>.Load(_configurationFile);
             cfg.Deflate();
             SelectedConfiguration = cfg;
+
+            _state.RestoreState();
 
             return cfg.Dataset.Any();
         }
