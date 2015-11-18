@@ -80,6 +80,7 @@ unrelate to OtherTable12
 child
 child 2
 child MyTable
+help
 ";
             #endregion text commands
 

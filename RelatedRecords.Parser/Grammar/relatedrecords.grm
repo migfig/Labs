@@ -51,6 +51,7 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
               | <ColumnsExp>
               | <TopnExp>
               | <ChildExp>
+              | <HelpExp>
               
 ! import catalog <catalogname> [server <servername> [user <username> password <password>]]
 <ImportExp>   ::= import <CatalogExp> !using localhost and trusted creds
@@ -127,6 +128,7 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
 <PasswordExp> ::= password Identifier
 <ServerExp>   ::= server Identifier
 <AsExp>       ::= as Identifier
+<HelpExp>     ::= help
 
 <Expression>  ::= <Expression> '>'  <Negate Exp> 
                |  <Expression> '<'  <Negate Exp>

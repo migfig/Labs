@@ -68,6 +68,7 @@
     <Content Include="Grammar\Tests\export-table-sql.txt" />
     <Content Include="Grammar\Tests\export-table-xml.txt" />
     <Content Include="Grammar\Tests\export-xml.txt" />
+    <Content Include="Grammar\Tests\help.txt" />
     <Content Include="Grammar\Tests\import-svr-usr-pwd.txt" />
     <Content Include="Grammar\Tests\import-usr-pwd.txt" />
     <Content Include="Grammar\Tests\import.txt" />

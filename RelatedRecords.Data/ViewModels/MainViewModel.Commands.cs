@@ -5,6 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using RelatedRecords.Parser;
 using com.calitha.goldparser;
+using System.IO;
+using System.Reflection;
+using System.Configuration;
+using static Common.Extensions;
+using www.serviciipeweb.ro.iafblog.ExportDLL;
+using Common;
 
 namespace RelatedRecords.Data.ViewModels
 {
@@ -749,6 +755,12 @@ namespace RelatedRecords.Data.ViewModels
             DoChildId(table);
         }
 
+        [Command(SymbolConstants.SYMBOL_HELP)]
+        public void Help(IEnumerable<TerminalToken> tokens)
+        {
+            DoHelp();
+        }
+
         #endregion command handlers
 
         #region helper methods
@@ -763,30 +775,131 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoCloneAsId(string catalog)
         {
+            DoCloneCatalogIdAsId(SelectedDataset.name, catalog);
         }
 
         private void DoCloneCatalogIdAsId(string srcCatalog, string tgtCatalog)
         {
+            var srcDataset = findDataset(srcCatalog);
+            if (null == srcDataset) return;
+
+            var tgtDataset = findDataset(tgtCatalog);
+            if (null != tgtCatalog) return;
+
+            tgtDataset = Extensions.Clone<CDataset>(srcDataset);
+            var tgtDatasource = Extensions.Clone<CDatasource>(SelectedConfiguration
+                .Datasource
+                .First(x => x.name == srcDataset.dataSourceName));
+            tgtDataset.name = tgtCatalog;
+            tgtDataset.dataSourceName = tgtCatalog;
+            tgtDatasource.name = tgtCatalog;
+            SaveConfiguration();
+            LoadConfiguration();
         }
 
         private void DoCloneCatalogId(string catalog)
         {
+            var srcDataset = findDataset(catalog);
+            if (null == srcDataset) return;
+
+            var tgtCatalog = catalog.RemoveLastNumbers();
+            var count = SelectedConfiguration
+                .Dataset
+                .Where(x => x.name.ToLower().Contains(tgtCatalog.ToLower()));
+            DoCloneCatalogIdAsId(catalog, tgtCatalog + count.ToString());
         }
 
         private void DoClone()
         {
+            DoCloneCatalogId(SelectedDataset.name);
         }
 
         private void DoColumnsInt(string topN)
         {
+            if (null != CurrentTable)
+            {
+                _tableNavigation.Push(
+                    CurrentTable
+                        .Root
+                        .ConfigTable
+                        .ToColumnsDataTable(int.Parse(topN))
+                        .ToDatatableEx(CurrentTable.Root.ConfigTable));
+            }
         }
 
         private void DoColumns()
         {
+            if(null != CurrentTable)
+            {
+                _tableNavigation.Push(
+                    CurrentTable
+                        .Root
+                        .ConfigTable
+                        .ToColumnsDataTable()
+                        .ToDatatableEx(CurrentTable.Root.ConfigTable));
+            }
+        }
+
+        #region export features
+
+        private string ExportPath
+        {
+            get
+            {
+                string basePath = Path.Combine(
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "export");
+
+                if (!Directory.Exists(basePath))
+                {
+                    Directory.CreateDirectory(basePath);
+                }
+
+                return basePath;
+            }
         }
 
         private void DoExportAsHtml()
         {
+            if(null != CurrentTable)
+            {
+                TraceLog.Information("Exporting tables to Html");
+
+                string templatePath = Path.Combine(
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    @"templates\Collection\html_tables.st");
+                string basePath = ExportPath;
+
+                string namePart = DateTime.Now.ToString("yyyy-MMM-dd.hh-mm-ss");
+                StringBuilder html = new StringBuilder();
+                html.Append(File.ReadAllText(templatePath).Replace("$FirstItem.Name;format=\"toUpper\"$", namePart)
+                    .Replace("$DateCreated;format=\"yyyy MMM dd\"$", DateTime.Now.ToString("MMM-dd-yyyy hh:mm:ss")));
+
+                StringBuilder tables = new StringBuilder();
+                int level = 0;
+                fillHtml(CurrentTable, ref tables, ref level);
+
+                string htmlFile = Path.Combine(basePath, string.Format("{0}.html", namePart));
+                File.WriteAllText(htmlFile, html.ToString().Replace("<$Tables>", tables.ToString()));
+
+                runProcess(ConfigurationManager.AppSettings["fileExplorer"], htmlFile, -1);
+
+            }
+        }
+
+        private void fillHtml(DatatableEx t, ref StringBuilder tables, ref int level)
+        {
+            string[] levels = new string[] {
+                "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "nineth", "tenth"
+            };
+            tables.Append(t.Root.Table.ExportAsHtmlFragment()
+                .Replace("className", string.Format("{0}LevelTable", levels[level]))
+                .Replace("tableName", t.Root.Table.TableName.ToUpper())
+                .Replace("columnCount", t.Root.Table.Columns.Count.ToString()));
+
+            ++level;
+            foreach (var child in t.Children)
+                fillHtml(child, ref tables, ref level);
+            --level;
         }
 
         private void DoExportAsJson()
@@ -795,6 +908,15 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoExportAsSql()
         {
+            TraceLog.Information("Exporting tables to SQL Insert");
+
+            string sqlFile = Path.Combine(ExportPath, DateTime.Now.ToString("yyyy-MMM-dd.hh-mm-ss") + ".sql");
+            using (var stream = new StreamWriter(sqlFile))
+            {
+                stream.Write(new StringBuilder().SqlInsert(CurrentTable).ToString());
+            }
+
+            runProcess(ConfigurationManager.AppSettings["fileExplorer"], sqlFile, -1);
         }
 
         private void DoExportIdAsHtml(string table)
@@ -817,16 +939,50 @@ namespace RelatedRecords.Data.ViewModels
         {
         }
 
-        private void DoImportCatalogIdSvrIdUserIdPwdId(string catalog, string server, string user, string password)
+        #endregion export features
+
+        private async void DoImportCatalogIdSvrIdUserIdPwdId(string catalog, string server, string user = "", string password = "")
         {
+            var connStr = string.Format("data source={0};initial catalog={1};{2}MultipleActiveResultSets=True;asynchronous processing=True;Enlist=false;",
+                server, catalog,
+                !string.IsNullOrWhiteSpace(user)
+                    ? string.Format("User Id={1};Password={1};", user, password)
+                    : "Integrated Security=True;");
+            var newCfg = XmlHelper<CConfiguration>.Load(
+                await Helpers.GetConfigurationFromConnectionString(connStr)
+            );
+
+            if (null == newCfg || !newCfg.Dataset.Any()) return;
+
+            newCfg.Dataset.FirstOrDefault().defaultTable = newCfg.Dataset.First().Table.First().name;
+            var sourceName = newCfg.Datasource.First().name.RemoveLastNumbers();
+            var namesFound = SelectedConfiguration.Datasource.Where(s => s.name.Contains(sourceName)).Count();
+            if (namesFound > 0)
+            {
+                sourceName += namesFound.ToString();
+                newCfg.Datasource.First().name = sourceName;
+                newCfg.Dataset.First().dataSourceName = sourceName;
+                newCfg.Dataset.First().name = sourceName;
+            }
+            SelectedConfiguration.Datasource.Add(newCfg.Datasource.First());
+            SelectedConfiguration.Dataset.Add(newCfg.Dataset.First());
+
+            SaveConfiguration();
+            LoadConfiguration();
         }
 
         private void DoImportCatalogIdUserIdPwdId(string catalog, string user, string password)
         {
+            DoImportCatalogIdSvrIdUserIdPwdId(catalog, 
+                ConfigurationManager.AppSettings["localdb"].ToString(), 
+                user, 
+                password);
         }
 
         private void DoImportCatalogId(string catalog)
         {
+            DoImportCatalogIdSvrIdUserIdPwdId(catalog,
+                ConfigurationManager.AppSettings["localdb"].ToString());
         }
 
         private void DoLoadCatalogId(string catalog)
@@ -937,10 +1093,29 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoRefresh()
         {
+            DoRefreshCatalogId(SelectedDataset.name);
         }
 
-        private void DoRefreshCatalogId(string catalog)
+        private async void DoRefreshCatalogId(string catalog)
         {
+            var dataset = findDataset(catalog);
+            if (null == dataset) return;
+
+            var config = XmlHelper<CConfiguration>.Load(
+                await Helpers.GetConfigurationFromConnectionString(
+                    SelectedConfiguration.Datasource.First(ds => ds.name == dataset.dataSourceName)
+                        .ConnectionString)
+                );
+
+            if (null == config || !config.Dataset.Any()) return;
+            
+            dataset.Table.Clear();
+            config.Dataset.First().Table.ToList().ForEach(t =>
+                dataset.Table.Add(t)
+            );
+
+            SaveConfiguration();
+            LoadConfiguration();
         }
 
         private void DoRoot()
@@ -1147,6 +1322,10 @@ namespace RelatedRecords.Data.ViewModels
         {
         }
 
+        private void DoHelp()
+        {
+        }
+
         #endregion helper methods
 
         #region utility methods 
@@ -1155,6 +1334,13 @@ namespace RelatedRecords.Data.ViewModels
         {
             return SelectedDataset
                 .Table
+                .FirstOrDefault(x => x.name.ToLower() == name.ToLower());
+        }
+
+        private CDataset findDataset(string name)
+        {
+            return SelectedConfiguration
+                .Dataset
                 .FirstOrDefault(x => x.name.ToLower() == name.ToLower());
         }
 

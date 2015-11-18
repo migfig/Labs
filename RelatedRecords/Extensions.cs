@@ -523,6 +523,25 @@ namespace RelatedRecords
             return dtable;
         }
 
+        public static DataTable ToColumnsDataTable(this CTable table, int top = 100)
+        {
+            var dtable = new DataTable(table.name);
+            dtable.Columns.AddRange(new DataColumn[] {
+                new DataColumn("name", typeof(string)),
+                new DataColumn("type", typeof(string))
+            });
+
+            foreach (var c in table.Column.Take(top))
+            {
+                var row = dtable.NewRow();
+                row["name"] = c.name;
+                row["type"] = GetType(c.DbType).ToString();
+                dtable.Rows.Add(row);
+            }
+
+            return dtable;
+        }
+
         public static string ToInsertString(this CTable table, int testRows = 1)
         {
             var query = new StringBuilder();
@@ -645,6 +664,40 @@ namespace RelatedRecords
             table.Column.Add(new CColumn { DbType = eDbType.@string, name = "name" });
             table.Column.Add(new CColumn { DbType = eDbType.@int, name = "columns" });
             return table;
+        }
+
+        //public static CDataset Clone(this CDataset dataset)
+        //{
+        //    var newds = new CDataset
+        //    {
+        //        dataSourceName = dataset.dataSourceName,
+        //        defaultTable = dataset.defaultTable,
+        //        isDefault = dataset.isDefault,
+        //        isDisabled = dataset.isDisabled,
+        //        isSelected = dataset.isSelected,
+        //        name = dataset.name               
+        //    };
+
+        //    foreach(var t in dataset.Table)
+        //        newds.Table.Add(t.Clone());
+
+        //    foreach (var r in dataset.Relationship)
+        //        newds.Relationship.Add(r.Clone());
+
+        //    foreach (var q in dataset.Query)
+        //        newds.Query.Add(q.Clone());
+
+        //    return newds;
+        //}
+
+        public static T Clone<T>(T source) where T: class
+        {
+            var obj = Activator.CreateInstance<T>();
+            var props = obj.GetType().GetProperties();
+            foreach (var p in props)
+                p.SetValue(obj, p.GetValue(source));
+
+            return obj as T;
         }
 
         public static DataTable ToDataTable(this CDataset dataset, int top = 100)
