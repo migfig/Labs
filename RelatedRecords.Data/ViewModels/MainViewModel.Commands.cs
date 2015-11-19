@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region usings
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,8 @@ using System.Configuration;
 using static Common.Extensions;
 using www.serviciipeweb.ro.iafblog.ExportDLL;
 using Common;
+using System.Data.SqlClient;
+#endregion usings
 
 namespace RelatedRecords.Data.ViewModels
 {
@@ -41,6 +44,8 @@ namespace RelatedRecords.Data.ViewModels
 
     public partial class MainViewModel
     {
+        #region command handlers
+
         public void HandleCommand(ParseResults results)
         {
             var method = _commandMethods.First(m =>
@@ -50,8 +55,6 @@ namespace RelatedRecords.Data.ViewModels
 
             method.Invoke(this, new object[] { results.Tokens });
         }
-
-        #region command handlers
 
         [Command(SymbolConstants.SYMBOL_BACK)]
         public void Back(IEnumerable<TerminalToken> tokens)
@@ -765,6 +768,8 @@ namespace RelatedRecords.Data.ViewModels
 
         #region helper methods
 
+        #region done methods
+
         private void DoBack()
         {
             if (_tableNavigation.Any())
@@ -1148,114 +1153,177 @@ namespace RelatedRecords.Data.ViewModels
             SaveConfiguration();
         }
 
-        private void DoTableIdWhereIdBetweenIntAndInt(string tableName, string columnName, string minValue, string maxValue)
+        #endregion done methods
+
+        private async void DoTableIdWhereIdBetweenIntAndInt(string tableName, string columnName, string minValue, string maxValue, Type type = null)
         {
+            var table = findTable(tableName);
+            if (null == table || table.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
+                ThrowError("Invalid table {0}, column: {1}", tableName, columnName);
+
+            var isCurrent = TableIsCurrent(tableName);
+
+            CurrentTable = await table.Query("between".ToArray(),
+                        "".ToArray(),
+                        false,
+                        new SqlParameter(columnName, ParseValue(minValue, type)),
+                        new SqlParameter(columnName, ParseValue(maxValue, type)));
+
+            if(isCurrent)
+            {
+                _tableNavigation.Pop();
+            }
+            _tableNavigation.Push(CurrentTable);
         }
 
         private void DoTableIdWhereIdBetweenDecAndDec(string tableName, string columnName, string minValue, string maxValue)
         {
+            DoTableIdWhereIdBetweenIntAndInt(tableName, columnName, minValue, maxValue, typeof(double));
         }
 
-        private void DoTableIdWhereIdGtEqMinusInt(string tableName, string columnName, string value)
+        private async void DoTableIdWhereIdGtEqMinusInt(string tableName, string columnName, string value, Type type = null, string compOperator = "")
         {
+            var table = findTable(tableName);
+            if (null == table || table.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
+                ThrowError("Invalid table {0}, column: {1}", tableName, columnName);
+
+            var isCurrent = TableIsCurrent(tableName);
+
+            CurrentTable = await table.Query(compOperator.ToArray(),
+                        "".ToArray(),
+                        false,
+                        new SqlParameter(columnName, ParseValue(value, type)));
+
+            if (isCurrent)
+            {
+                _tableNavigation.Pop();
+            }
+            _tableNavigation.Push(CurrentTable);
         }
 
         private void DoTableIdWhereIdGtEqMinusDec(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), ">=");
         }
 
         private void DoTableIdWhereIdGtEqInt(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), ">=");
         }
 
         private void DoTableIdWhereIdGtEqDec(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), ">=");
         }
 
         private void DoTableIdWhereIdGtMinusInt(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), ">");
         }
 
         private void DoTableIdWhereIdGtMinusDec(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), ">");
         }
 
         private void DoTableIdWhereIdGtInt(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), ">");
         }
 
         private void DoTableIdWhereIdGtDec(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), ">");
         }
 
         private void DoTableIdWhereIdLtEqMinusInt(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), "<=");
         }
 
         private void DoTableIdWhereIdLtEqMinusDec(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), "<=");
         }
 
         private void DoTableIdWhereIdLtEqInt(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), "<=");
         }
 
         private void DoTableIdWhereIdLtEqDec(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), "<=");
         }
 
         private void DoTableIdWhereIdLtGtInt(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), "<>");
         }
 
         private void DoTableIdWhereIdLtGtDec(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), "<>");
         }
 
         private void DoTableIdWhereIdLtGtMinusInt(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), "<>");
         }
 
         private void DoTableIdWhereIdLtGtMinusDec(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), "<>");
         }
 
         private void DoTableIdWhereIdEqMinusInt(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long));
         }
 
         private void DoTableIdWhereIdEqMinusDec(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double));
         }
 
         private void DoTableIdWhereIdEqInt(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long));
         }
 
         private void DoTableIdWhereIdEqDec(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double));
         }
 
         private void DoTableIdWhereIdIsNotNull(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(string), "is not");
         }
 
         private void DoTableIdWhereIdIsNull(string tableName, string columnName, string value)
         {
+            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(string), "is");
         }
 
         private async void DoTableId(string tableName)
         {
             var table = findTable(tableName);
-            if (null == table) return;
+            if (null == table) ThrowError("Invalid table {0}", tableName);
 
-            var needsPush = (null != CurrentTable && table.name == CurrentTable.Root.ConfigTable.name);
+            var isCurrent = TableIsCurrent(tableName);
             CurrentTable = await table.Query("".ToArray(), "".ToArray(), true);
 
-            if (needsPush)
+            if (isCurrent)
             {
-                _tableNavigation.Push(CurrentTable);
+                _tableNavigation.Pop();
             }
+
+            _tableNavigation.Push(CurrentTable);
+        }
+
+        private void DoTopInt(string topN)
+        {
         }
 
         private void DoTablesInt(string topN)
@@ -1270,10 +1338,6 @@ namespace RelatedRecords.Data.ViewModels
             _tableNavigation.Push(SelectedDataset
                 .ToDataTable()
                 .ToDatatableEx(SelectedDataset.ToTable()));
-        }
-
-        private void DoTopInt(string topN)
-        {
         }
 
         private void DoUnrelateIdToId(string srcTblName, string tgtTblName)
@@ -1316,10 +1380,20 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoChildInt(string index)
         {
+            var table = findDataTableByIndex(int.Parse(index));
+            if (null == table) ThrowError("Invalid table at Index {0}", index);
+
+            _tableNavigation.Push(CurrentTable);
+            CurrentTable = table;
         }
 
         private void DoChildId(string tableName)
         {
+            var table = findDataTable(tableName);
+            if (null == table) ThrowError("Invalid table {0}", tableName);
+
+            _tableNavigation.Push(CurrentTable);
+            CurrentTable = table;
         }
 
         private void DoHelp()
@@ -1329,6 +1403,26 @@ namespace RelatedRecords.Data.ViewModels
         #endregion helper methods
 
         #region utility methods 
+
+        private DatatableEx findDataTable(string name)
+        {
+            if (null == CurrentTable) return null;
+
+            return CurrentTable
+                .Children
+                .FirstOrDefault(x => x.Root.ConfigTable.name.ToLower() == name.ToLower());
+        }
+
+        private DatatableEx findDataTableByIndex(int index)
+        {
+            if (null == CurrentTable 
+                || index < 0 
+                || index > CurrentTable.Children.Count-1) return null;
+
+            return CurrentTable
+                .Children
+                .ElementAt(index);
+        }
 
         private CTable findTable(string name)
         {
@@ -1342,6 +1436,31 @@ namespace RelatedRecords.Data.ViewModels
             return SelectedConfiguration
                 .Dataset
                 .FirstOrDefault(x => x.name.ToLower() == name.ToLower());
+        }
+
+        private object ParseValue(string value, Type type)
+        {
+            var valType = type ?? typeof(long);
+            switch (valType.ToString())
+            {
+                case "System.Int64":
+                    return Int64.Parse(value);
+                case "System.Double":
+                    return Double.Parse(value);
+                default:
+                    return value;
+            }
+        }
+
+        private bool TableIsCurrent(string tableName)
+        {
+            return (null != CurrentTable
+                && CurrentTable.Root.ConfigTable.name.ToLower() == tableName.ToLower());
+        }
+
+        private void ThrowError(string format, params string[] args)
+        {
+            throw new Exception(string.Format(format, args));
         }
 
         #endregion utility methods
