@@ -54,11 +54,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataSetDataSource.cs" />
+    <Compile Include="DataSourceProvider.cs" />
     <Compile Include="DatatableEx.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="configuration.designer.cs" />
+    <Compile Include="IDataSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -110,52 +110,54 @@ namespace RelatedRecords
 
         public static async Task<string> ConfigurationFromConnectionString(string connectionString)
         {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                var xml = await connection.ExecuteScalarAsync(ConfigurationManager.AppSettings["schemaQuery"]
+            var xml = await DataSourceProvider
+                .Data
+                .Source
+                .LoadXml(connectionString, ConfigurationManager.AppSettings["schemaQuery"]
                     .Replace("&quot;", "\""));
 
-                var fileName = Helpers.XmlFile.Replace(".xml", "-generated.xml");
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                }
-
-                var schemafileName = Helpers.XmlFile.Replace(".xml", "-schema.xml");
-                if (File.Exists(schemafileName))
-                {
-                    File.Delete(schemafileName);
-                }
-
-                using (var schemaStream = File.CreateText(schemafileName))
-                {
-                    schemaStream.Write(xml.ToString());
-                }
-
-                using (var stream = new XmlTextWriter(fileName, Encoding.UTF8))
-                {
-                    var newDoc = BuildElements(connectionString, XDocument.Load(new StringReader(xml.ToString()))); 
-                    newDoc.WriteTo(stream);
-                }
-
-                return fileName;
+            var fileName = Helpers.XmlFile.Replace(".xml", "-generated.xml");
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
             }
+
+            var schemafileName = Helpers.XmlFile.Replace(".xml", "-schema.xml");
+            if (File.Exists(schemafileName))
+            {
+                File.Delete(schemafileName);
+            }
+
+            using (var schemaStream = File.CreateText(schemafileName))
+            {
+                schemaStream.Write(xml.ToString());
+            }
+
+            using (var stream = new XmlTextWriter(fileName, Encoding.UTF8))
+            {
+                var newDoc = BuildElements(connectionString, XDocument.Load(new StringReader(xml)));
+                newDoc.WriteTo(stream);
+            }
+
+            return fileName;
         }
 
         public static async Task<XElement> GetConfigurationFromConnectionString(string connectionString)
         {
-            using (var connection = new SqlConnection(connectionString))
+            try
             {
-                try {
-                    var xml = await connection.ExecuteScalarAsync(ConfigurationManager.AppSettings["schemaQuery"]
+                var xml = await DataSourceProvider
+                    .Data
+                    .Source
+                    .LoadXml(connectionString, ConfigurationManager.AppSettings["schemaQuery"]
                         .Replace("&quot;", "\""));
 
-                    return BuildElements(connectionString, XDocument.Load(new StringReader(xml.ToString())));
-                } catch(Exception e)
-                {
-                    Common.Extensions.ErrorLog.Error(e, "@ Get config from connstr");
-                    return new XElement("void");
-                } 
+                return BuildElements(connectionString, XDocument.Load(new StringReader(xml.ToString())));
+            }
+            catch (Exception e)
+            {
+                Common.Extensions.ErrorLog.Error(e, "@ Get config from connstr");
+                return new XElement("void");
             }
         }
 

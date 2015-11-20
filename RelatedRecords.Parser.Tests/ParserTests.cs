@@ -92,6 +92,7 @@ help
             {
                 var methods = new StringBuilder();
                 var hlpMethods = new StringBuilder();
+                var tstHlpMethods = new StringBuilder();
 
                 foreach (var cmd in commands.Replace("'", "\"").Split(Environment.NewLine.ToCharArray(),
                     StringSplitOptions.RemoveEmptyEntries))
@@ -101,10 +102,12 @@ help
 
                     DumpCommandMethods(results.Tokens, methods);
                     DumpHelperMethods(results.Tokens, hlpMethods);
+                    DumpTestMethods(results.Tokens, tstHlpMethods, cmd);
                 }
 
                 stream.Write(methods.ToString());
                 stream.Write(hlpMethods.ToString());
+                stream.Write(tstHlpMethods.ToString());
             }
         }
 
@@ -197,6 +200,41 @@ help
             }
             methods.AppendFormat("){0}", Environment.NewLine);
             methods.AppendFormat("{{{0}", Environment.NewLine);
+            methods.AppendFormat("}}{0}{0}", Environment.NewLine);
+        }
+
+        private void DumpTestMethods(IEnumerable<TerminalToken> tokens, StringBuilder methods, string command)
+        {
+            methods.AppendFormat("[TestMethod]{0}", Environment.NewLine);
+            methods.Append("public void ");
+            foreach (var t in tokens)
+            {
+                methods.Append(FixId(CapitalizeWords(t.Symbol.Name))+"_");
+            }
+            methods.AppendFormat("Test(){0}", Environment.NewLine);
+
+            methods.AppendFormat("{{{0}", Environment.NewLine);
+
+            methods.AppendFormat("\tMainViewModel.ViewModel.Command = \"{0}\";{1}", command, Environment.NewLine);
+            methods.AppendFormat("\tMainViewModel.ViewModel.ExecuteCommand();{0}", Environment.NewLine);
+            methods.AppendFormat("\tAssert.IsTrue(MainViewModel.ViewModel.IsValidCommand);{0}", Environment.NewLine);
+
+            methods.AppendFormat("}}{0}", Environment.NewLine);
+
+            methods.AppendFormat("[TestMethod]{0}", Environment.NewLine);
+            methods.Append("public void Invalid_");
+            foreach (var t in tokens)
+            {
+                methods.Append(FixId(CapitalizeWords(t.Symbol.Name)) + "_");
+            }
+            methods.AppendFormat("Test(){0}", Environment.NewLine);
+
+            methods.AppendFormat("{{{0}", Environment.NewLine);
+
+            methods.AppendFormat("\tMainViewModel.ViewModel.Command = \"_{0}\";{1}", command, Environment.NewLine);
+            methods.AppendFormat("\tMainViewModel.ViewModel.ExecuteCommand();{0}", Environment.NewLine);
+            methods.AppendFormat("\tAssert.IsFalse(MainViewModel.ViewModel.IsValidCommand);{0}", Environment.NewLine);
+
             methods.AppendFormat("}}{0}{0}", Environment.NewLine);
         }
 

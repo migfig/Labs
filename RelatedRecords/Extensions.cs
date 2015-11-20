@@ -294,7 +294,7 @@ namespace RelatedRecords
             return q;
         }
 
-        private static string ParseTableName(string query)
+        public static string ParseTableName(string query)
         {
             return Regex.Match(query,
                 @"SELECT[\[\sa-zA-Z0-9,\*\]]*FROM[\s]*(?<tablename>(\[\w*\s\w*\])|([\[]?\w*[\]]?))",
@@ -311,27 +311,19 @@ namespace RelatedRecords
 
             try
             {
-                using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
+                if (query.isStoreProcedure)
                 {
-                    if (query.isStoreProcedure)
-                    {
-                        using (var cmd = connection.CreateCommand())
-                        {
-                            cmd.Connection.Open();
-                            cmd.CommandText = q;
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddRange(pars);
-                            var reader = await cmd.ExecuteReaderAsync();
-                            result.Root.Table.Load(reader);
-                            reader.Close();
-                        }                     
-                    }
-                    else
-                    {
-                        var reader = await connection.ExecuteReaderAsync(q);
-                        result.Root.Table.Load(reader);
-                        reader.Close();
-                    }
+                    result.Root.Table = await DataSourceProvider
+                        .Data
+                        .Source
+                        .LoadStoreProcedure(SelectedDatasource.ConnectionString, query, pars);
+                }
+                else
+                {
+                    result.Root.Table = await DataSourceProvider
+                        .Data
+                        .Source
+                        .Load(SelectedDatasource.ConnectionString, q);
                 }
             }
             catch (Exception e)
@@ -353,12 +345,10 @@ namespace RelatedRecords
 
             try
             {
-                using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
-                {
-                    var reader = await connection.ExecuteReaderAsync(query);
-                    result.Root.Table.Load(reader);
-                    reader.Close();
-                }
+                result.Root.Table = await DataSourceProvider
+                    .Data
+                    .Source
+                    .Load(SelectedDatasource.ConnectionString, query);
 
                 if(result.Root.Table.Rows.Count > 0)
                     result.QueryChildren(result.Root.Table.Rows[0]);
@@ -438,15 +428,10 @@ namespace RelatedRecords
         {
             try
             {
-                using (var connection = new SqlConnection(SelectedDatasource.ConnectionString))
-                {
-                    var rdr = await connection.ExecuteReaderAsync(query);
-                    var table = new DataTable(ParseTableName(query));
-                    table.Load(rdr);
-                    rdr.Close();
-
-                    return table;
-                }
+                return await DataSourceProvider
+                    .Data
+                    .Source
+                    .Load(SelectedDatasource.ConnectionString, query);
             }
             catch (Exception e)
             {
