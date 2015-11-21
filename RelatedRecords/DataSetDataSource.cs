@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace RelatedRecords
@@ -26,13 +27,29 @@ namespace RelatedRecords
         public Task<DataTable> Load(string dataSetName, string query)
         {
             var tableName = Extensions.ParseTableName(query);
+            dataSetName = dataSetName.ToLower().Contains("catalog") 
+                ? Extensions.SelectedDataset.name 
+                : dataSetName;
 
-            return Task.FromResult(
-                _dataSets
+            var whereParts = query.Split(new string[] { "WHERE" }, StringSplitOptions.RemoveEmptyEntries);
+            var where = whereParts.Length == 2
+                ? whereParts.Last()
+                : string.Empty;
+
+            var topRows = int.Parse(new Regex(@"TOP[\s]*(?<topn>\d{1,})[\s]*").Match(query).Groups["topn"].Value);
+            var table = _dataSets
                     .First(x => x.DataSetName == (!string.IsNullOrWhiteSpace(dataSetName)
                             ? dataSetName
                             : Extensions.SelectedDataset.name))
-                        .Tables[tableName]);
+                        .Tables[tableName];
+            var rows = table.Select(where).Take(Math.Min(topRows, table.Rows.Count));
+            var value = table.Clone();
+            foreach (var r in rows)
+            {
+                value.Rows.Add(r.ItemArray);
+            }
+            
+            return Task.FromResult(value);
         }
 
         public Task<DataTable> LoadStoreProcedure(string dataSetName, CQuery query, 

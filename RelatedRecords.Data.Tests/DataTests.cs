@@ -67,14 +67,18 @@ namespace RelatedRecords.Data.Tests
             Assert.IsTrue(table.Rows.Count > 0);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Back_Test()
         {
+            Tables_Test();
+            Table_Id_Test();
             MainViewModel.ViewModel.Command = "back";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Tickets");
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Back_Test()
         {
             MainViewModel.ViewModel.Command = "_back";
@@ -88,6 +92,8 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.Command = "clone as SomeOtherName";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsTrue(MainViewModel.ViewModel.SelectedConfiguration
+                .Dataset.Any(x => x.name == "SomeOtherName"));
         }
         [TestMethod]
         public void Invalid_Clone_As_Id_Test()
@@ -885,19 +891,22 @@ namespace RelatedRecords.Data.Tests
             Assert.IsNull(MainViewModel.ViewModel.CurrentTable);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Tables_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "tables 10";
+            MainViewModel.ViewModel.Command = "tables 2";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count == 2);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Tables_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_tables 10";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNull(MainViewModel.ViewModel.CurrentTable);
         }
 
         [TestMethod, Ignore]
@@ -909,7 +918,7 @@ namespace RelatedRecords.Data.Tests
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
             Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "sample");
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Tables_Test()
         {
             MainViewModel.ViewModel.Command = "_tables";
@@ -917,19 +926,23 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Top_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "top 100";
+            MainViewModel.ViewModel.SelectedDataset.name = "sample";
+            MainViewModel.ViewModel.Command = "top 10";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count == 10);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Top_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_top 100";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNull(MainViewModel.ViewModel.CurrentTable);
         }
 
         [TestMethod]

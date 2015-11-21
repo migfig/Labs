@@ -795,7 +795,7 @@ namespace RelatedRecords.Data.ViewModels
             if (null == srcDataset) return;
 
             var tgtDataset = findDataset(tgtCatalog);
-            if (null != tgtCatalog) return;
+            if (null != tgtDataset) return;
 
             tgtDataset = Extensions.Clone<CDataset>(srcDataset);
             var tgtDatasource = Extensions.Clone<CDatasource>(SelectedConfiguration
@@ -1312,12 +1312,13 @@ namespace RelatedRecords.Data.ViewModels
             DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(string), "is");
         }
 
-        private async void DoTableId(string tableName)
+        private async void DoTableId(string tableName, int topN = 1000)
         {
             var table = findTable(tableName);
             if (null == table) ThrowError("Invalid table {0}", tableName);
 
             var isCurrent = TableIsCurrent(tableName);
+            Extensions.MaxRowCount = topN;
             CurrentTable = await table.Query("".ToArray(), "".ToArray(), true);
 
             if (isCurrent)
@@ -1330,21 +1331,20 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoTopInt(string topN)
         {
+            DoTableId(SelectedDataset.defaultTable, int.Parse(topN));
         }
 
         private void DoTablesInt(string topN)
         {
-            _tableNavigation.Push(SelectedDataset
-                .ToDataTable(int.Parse(topN))
-                .ToDatatableEx(SelectedDataset.ToTable()));
+            DoTables(int.Parse(topN));
         }
 
-        private void DoTables()
+        private void DoTables(int topN = 1000)
         {
             var isCurrent = TableIsCurrent(SelectedDataset.name);
 
             CurrentTable = SelectedDataset
-                .ToDataTable()
+                .ToDataTable(topN)
                 .ToDatatableEx(SelectedDataset.ToTable());
 
             if(isCurrent)
