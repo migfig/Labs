@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RelatedRecords.Data.ViewModels;
+using System.IO;
 
 namespace RelatedRecords.Data.Tests
 {
@@ -19,7 +20,7 @@ namespace RelatedRecords.Data.Tests
         {
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Configuration_Is_Valid_Test()
         {
             Assert.IsNotNull(MainViewModel.ViewModel.SelectedConfiguration);
@@ -29,10 +30,39 @@ namespace RelatedRecords.Data.Tests
             Assert.IsNotNull(MainViewModel.ViewModel.SelectedDatasource);
         }
 
-        [TestMethod]
-        public async void DataProvider_Test()
+        [TestMethod, Ignore]
+        public void Create_DataSets_Test()
         {
-            var table = await DataSourceProvider.Data.Source.Load("", "Select * from [Table]");
+            Assert.IsNotNull(MainViewModel.ViewModel.SelectedConfiguration);
+            Assert.IsTrue(MainViewModel.ViewModel.SelectedConfiguration.Dataset.Any());
+            foreach(var ds in MainViewModel.ViewModel.SelectedConfiguration.Dataset)
+            {
+                var dataset = ds.ToDataSet();
+                Assert.IsNotNull(dataset);
+                Assert.IsTrue(dataset.Tables.Count > 0);
+                var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+                    dataset.DataSetName + ".dxml");
+                if(File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+                dataset.WriteXml(fileName, System.Data.XmlWriteMode.WriteSchema);
+                Assert.IsTrue(File.Exists(fileName));
+            }
+        }
+
+        [TestMethod, Ignore]
+        public void DataProvider_Test()
+        {
+            var table = DataSourceProvider.Data.Source.Load("sample", "Select * from Tickets")
+                .GetAwaiter()
+                .GetResult();
+            Assert.IsNotNull(table);
+            Assert.IsTrue(table.Rows.Count > 0);
+
+            table = DataSourceProvider.Data.Source.Load("sample-remote", "Select * from TicketsStatusCodes")
+                .GetAwaiter()
+                .GetResult();
             Assert.IsNotNull(table);
             Assert.IsTrue(table.Rows.Count > 0);
         }
@@ -832,19 +862,27 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21";
+            MainViewModel.ViewModel.Command = "table Tickets";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Tickets");
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
+
+            MainViewModel.ViewModel.CurrentTable = null;
+            MainViewModel.ViewModel.Command = "table Test21";
+            MainViewModel.ViewModel.ExecuteCommand();
+            Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNull(MainViewModel.ViewModel.CurrentTable);
         }
 
         [TestMethod]
@@ -862,12 +900,14 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Tables_Test()
         {
             MainViewModel.ViewModel.Command = "tables";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "sample");
         }
         [TestMethod]
         public void Invalid_Tables_Test()

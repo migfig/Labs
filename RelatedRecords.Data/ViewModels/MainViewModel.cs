@@ -123,13 +123,16 @@ namespace RelatedRecords.Data.ViewModels
 
         public bool LoadConfiguration()
         {
-            _state.SaveState();
+            var isStateSaved = _state.SaveState();
 
             var cfg = XmlHelper<CConfiguration>.Load(_configurationFile);
             cfg.Deflate();
             SelectedConfiguration = cfg;
 
-            _state.RestoreState();
+            if (isStateSaved)
+            {
+                _state.RestoreState();
+            }
 
             return cfg.Dataset.Any();
         }

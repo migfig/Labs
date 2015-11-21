@@ -23,22 +23,25 @@ namespace RelatedRecords
             }
         }
 
-        public Task<DataTable> Load(string connectionString, string query)
+        public Task<DataTable> Load(string dataSetName, string query)
         {
             var tableName = Extensions.ParseTableName(query);
 
             return Task.FromResult(
                 _dataSets
-                    .First(x => x.DataSetName == Extensions.SelectedDataset.name)
+                    .First(x => x.DataSetName == (!string.IsNullOrWhiteSpace(dataSetName)
+                            ? dataSetName
+                            : Extensions.SelectedDataset.name))
                         .Tables[tableName]);
         }
 
-        public Task<DataTable> LoadStoreProcedure(string connectionString, CQuery query, params IDbDataParameter[] pars)
+        public Task<DataTable> LoadStoreProcedure(string dataSetName, CQuery query, 
+            params IDbDataParameter[] pars)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> LoadXml(string connectionString, string query)
+        public Task<string> LoadXml(string dataSetName, string query)
         {
             throw new NotImplementedException();
         }

@@ -704,6 +704,18 @@ namespace RelatedRecords
             return table;
         }
 
+        public static DataSet ToDataSet(this CDataset dataset)
+        {
+            var ds = new DataSet(dataset.name);
+
+            foreach(var t in dataset.Table)
+            {
+                ds.Tables.Add(t.ToDataTable(100));
+            }
+
+            return ds;
+        }
+
         public static string ToSchemaString(this CDataset dataset)
         {
             var query = new StringBuilder();

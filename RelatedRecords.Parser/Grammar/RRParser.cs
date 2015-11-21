@@ -779,7 +779,8 @@ namespace RelatedRecords.Parser
                     return null;
 
             }
-            throw new SymbolException("Unknown symbol");
+            //throw new SymbolException("Unknown symbol");
+            return null;
         }
 
         public static Object CreateObject(NonterminalToken token)
@@ -1217,7 +1218,8 @@ namespace RelatedRecords.Parser
                     return null;
 
             }
-            throw new RuleException("Unknown rule");
+            //throw new RuleException("Unknown rule");
+            return null;
         }
     }
 }

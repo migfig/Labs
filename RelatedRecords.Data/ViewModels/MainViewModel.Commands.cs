@@ -53,7 +53,13 @@ namespace RelatedRecords.Data.ViewModels
                     .Cast<CommandAttribute>()
                     .First().ToString() == results.ToString());
 
-            method.Invoke(this, new object[] { results.Tokens });
+            try
+            {
+                method.Invoke(this, new object[] { results.Tokens });
+            } catch(Exception e)
+            {
+                ErrorLog.Error(e, "When running method {method} with {Tokens}", method, results.Tokens);
+            }
         }
 
         [Command(SymbolConstants.SYMBOL_BACK)]
@@ -1335,9 +1341,17 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoTables()
         {
-            _tableNavigation.Push(SelectedDataset
+            var isCurrent = TableIsCurrent(SelectedDataset.name);
+
+            CurrentTable = SelectedDataset
                 .ToDataTable()
-                .ToDatatableEx(SelectedDataset.ToTable()));
+                .ToDatatableEx(SelectedDataset.ToTable());
+
+            if(isCurrent)
+            {
+                _tableNavigation.Pop();
+            }
+            _tableNavigation.Push(CurrentTable);
         }
 
         private void DoUnrelateIdToId(string srcTblName, string tgtTblName)
@@ -1460,7 +1474,8 @@ namespace RelatedRecords.Data.ViewModels
 
         private void ThrowError(string format, params string[] args)
         {
-            throw new Exception(string.Format(format, args));
+            //throw new Exception(string.Format(format, args));
+            ErrorLog.Error(format, args);
         }
 
         #endregion utility methods
@@ -1479,13 +1494,19 @@ namespace RelatedRecords.Data.ViewModels
                 _model = model;
             }
 
-            public void SaveState()
+            public bool SaveState()
             {
-                _datasetName = _model.SelectedDataset.name;
-                _tableName = null != _model.CurrentTable
-                    ? _model.CurrentTable.Root.ConfigTable.name
-                    : _model.SelectedDataset.defaultTable;
-                _navigation = _model.TableNavigation.ToList();
+                if (null != _model.SelectedDataset)
+                {
+                    _datasetName = _model.SelectedDataset.name;
+                    _tableName = null != _model.CurrentTable
+                        ? _model.CurrentTable.Root.ConfigTable.name
+                        : _model.SelectedDataset.defaultTable;
+                    _navigation = _model.TableNavigation.ToList();
+                    return true;
+                }
+
+                return false;
             }
 
             public async void RestoreState()
