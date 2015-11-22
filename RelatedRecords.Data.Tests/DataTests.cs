@@ -86,7 +86,7 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Clone_As_Id_Test()
         {
             MainViewModel.ViewModel.Command = "clone as SomeOtherName";
@@ -95,7 +95,7 @@ namespace RelatedRecords.Data.Tests
             Assert.IsTrue(MainViewModel.ViewModel.SelectedConfiguration
                 .Dataset.Any(x => x.name == "SomeOtherName"));
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Clone_As_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_clone as SomeOtherName";
@@ -103,14 +103,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Clone_Catalog_Id_As_Id_Test()
         {
-            MainViewModel.ViewModel.Command = "clone catalog MyCatalog as SomeOther12_catName";
+            MainViewModel.ViewModel.Command = "clone catalog sample as SomeOther12_sample";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsTrue(MainViewModel.ViewModel.SelectedConfiguration
+                .Dataset.Any(x => x.name == "SomeOther12_sample"));
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Clone_Catalog_Id_As_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_clone catalog MyCatalog as SomeOther12_catName";
@@ -118,14 +120,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Clone_Catalog_Id_Test()
         {
-            MainViewModel.ViewModel.Command = "clone catalog SampleCat";
+            MainViewModel.ViewModel.Command = "clone catalog sample";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsTrue(MainViewModel.ViewModel.SelectedConfiguration
+                .Dataset.Any(x => x.name == "sample2"));
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Clone_Catalog_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_clone catalog SampleCat";
@@ -133,14 +137,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Clone_Test()
         {
             MainViewModel.ViewModel.Command = "clone";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsTrue(MainViewModel.ViewModel.SelectedConfiguration
+                .Dataset.Any(x => x.name == "sample2"));
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Clone_Test()
         {
             MainViewModel.ViewModel.Command = "_clone";
@@ -343,14 +349,18 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Load_Catalog_Id_Test()
         {
-            MainViewModel.ViewModel.Command = "load catalog CatalogName";
+            MainViewModel.ViewModel.Command = "load catalog sample_remote";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsTrue(MainViewModel.ViewModel.SelectedConfiguration
+                .Dataset.Any(x => x.name == "sample_remote"));
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Tickets");
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Load_Catalog_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_load catalog CatalogName";
@@ -358,14 +368,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Load_Test()
         {
             MainViewModel.ViewModel.Command = "load";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Tickets");
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Load_Test()
         {
             MainViewModel.ViewModel.Command = "_load";

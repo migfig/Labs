@@ -678,7 +678,7 @@ namespace RelatedRecords
         public static T Clone<T>(T source) where T: class
         {
             var obj = Activator.CreateInstance<T>();
-            var props = obj.GetType().GetProperties();
+            var props = obj.GetType().GetProperties().Where(p => p.CanWrite);
             foreach (var p in props)
                 p.SetValue(obj, p.GetValue(source));
 

@@ -804,6 +804,8 @@ namespace RelatedRecords.Data.ViewModels
             tgtDataset.name = tgtCatalog;
             tgtDataset.dataSourceName = tgtCatalog;
             tgtDatasource.name = tgtCatalog;
+            SelectedConfiguration.Dataset.Add(tgtDataset);
+            SelectedConfiguration.Datasource.Add(tgtDatasource);
             SaveConfiguration();
             LoadConfiguration();
         }
@@ -816,7 +818,8 @@ namespace RelatedRecords.Data.ViewModels
             var tgtCatalog = catalog.RemoveLastNumbers();
             var count = SelectedConfiguration
                 .Dataset
-                .Where(x => x.name.ToLower().Contains(tgtCatalog.ToLower()));
+                .Where(x => x.name.ToLower().Contains(tgtCatalog.ToLower()))
+                .Count();
             DoCloneCatalogIdAsId(catalog, tgtCatalog + count.ToString());
         }
 
@@ -998,23 +1001,23 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoLoadCatalogId(string catalog)
         {
-            var ds = SelectedConfiguration
-                .Dataset
-                .FirstOrDefault(x =>
-                    x.name.ToLower() == catalog.ToLower());
-            if (null != ds)
-            {
-                SelectedDataset = ds;
-            }
+            var ds = findDataset(catalog);
+            if (ds == null) ThrowError("Invalid catalog {0}", catalog);
+
+            SelectedDataset = ds;
+            DoLoad();
         }
 
         private async void DoLoad()
         {
-            CurrentTable = await SelectedDataset
-                .Table
-                .First(x => x.name == SelectedDataset.defaultTable)
+            var isCurrent = TableIsCurrent(SelectedDataset.defaultTable);
+            CurrentTable = await findTable(SelectedDataset.defaultTable)
                 .Query("".ToArray(), "".ToArray(), true);
 
+            if(isCurrent)
+            {
+                _tableNavigation.Pop();
+            }
             _tableNavigation.Push(CurrentTable);
         }
 
