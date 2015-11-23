@@ -154,14 +154,17 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Columns_Int_Test()
         {
+            Table_Id_Test();
             MainViewModel.ViewModel.Command = "columns 2";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count == 2);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Columns_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_columns 2";
@@ -169,14 +172,14 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Columns_Test()
         {
             MainViewModel.ViewModel.Command = "columns";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Columns_Test()
         {
             MainViewModel.ViewModel.Command = "_columns";
@@ -385,14 +388,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Relate_Id_To_Id_On_Id_Eq_Id_Test()
         {
-            MainViewModel.ViewModel.Command = "relate ThisTable to OtherTable12 on Column1 = column_2";
+            MainViewModel.ViewModel.Command = "relate Tickets to TicketsStatusCodes on StatusCodeId = StatusCodeId";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsTrue(MainViewModel.ViewModel.SelectedDataset
+                .Relationship.Any(x => x.name == "Tickets->TicketsStatusCodes"));
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Relate_Id_To_Id_On_Id_Eq_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_relate ThisTable to OtherTable12 on Column1 = column_2";
@@ -400,14 +405,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Relate_To_Id_On_Id_Eq_Id_Test()
         {
-            MainViewModel.ViewModel.Command = "relate to OtherTable12 on Column1 = column_2";
+            MainViewModel.ViewModel.Command = "relate to TicketsStatusCodes on StatusCodeId = StatusCodeId";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsTrue(MainViewModel.ViewModel.SelectedDataset
+                .Relationship.Any(x => x.name == "Tickets->TicketsStatusCodes"));
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Relate_To_Id_On_Id_Eq_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_relate to OtherTable12 on Column1 = column_2";
@@ -415,14 +422,14 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Remove_Catalog_Id_Test()
         {
-            MainViewModel.ViewModel.Command = "remove catalog CatalogName";
+            MainViewModel.ViewModel.Command = "remove catalog sample_remote";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Remove_Catalog_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_remove catalog CatalogName";
@@ -430,14 +437,14 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Remove_Test()
         {
             MainViewModel.ViewModel.Command = "remove";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Remove_Test()
         {
             MainViewModel.ViewModel.Command = "_remove";
@@ -475,14 +482,17 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Root_Test()
         {
+            Columns_Int_Test();
             MainViewModel.ViewModel.Command = "root";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Tickets");
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Root_Test()
         {
             MainViewModel.ViewModel.Command = "_root";
@@ -493,9 +503,11 @@ namespace RelatedRecords.Data.Tests
         [TestMethod]
         public void Table_Id_Default_Where_Id_Eq_StrLit_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 default where col1 = \"1.34\"";
+            MainViewModel.ViewModel.Command = "table Tickets default where Title = \"Tickets 3\"";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count == 1);
         }
         [TestMethod]
         public void Invalid_Table_Id_Default_Where_Id_Eq_StrLit_Test()
@@ -505,14 +517,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Default_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 default";
+            MainViewModel.ViewModel.Command = "table Users default";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Users");
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Default_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 default";
@@ -523,9 +537,11 @@ namespace RelatedRecords.Data.Tests
         [TestMethod]
         public void Table_Id_Where_Id_Between_Int_And_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 between 1 and 10";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber between 1 and 10";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count == 10);
         }
         [TestMethod]
         public void Invalid_Table_Id_Where_Id_Between_Int_And_Int_Test()
@@ -957,14 +973,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsNull(MainViewModel.ViewModel.CurrentTable);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Unrelate_Id_To_Id_Test()
         {
-            MainViewModel.ViewModel.Command = "unrelate This_Table12 to OtherTable12";
+            MainViewModel.ViewModel.Command = "unrelate Tickets to TicketsStatusCodes";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsFalse(MainViewModel.ViewModel.SelectedDataset
+                .Relationship.Any(x => x.name == "Tickets->TicketsStatusCodes"));
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Unrelate_Id_To_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_unrelate This_Table12 to OtherTable12";
@@ -972,14 +990,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Unrelate_To_Id_Test()
         {
-            MainViewModel.ViewModel.Command = "unrelate to OtherTable12";
+            MainViewModel.ViewModel.Command = "unrelate to TicketsStatusCodes";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsFalse(MainViewModel.ViewModel.SelectedDataset
+                .Relationship.Any(x => x.name == "Tickets->TicketsStatusCodes"));
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Unrelate_To_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_unrelate to OtherTable12";

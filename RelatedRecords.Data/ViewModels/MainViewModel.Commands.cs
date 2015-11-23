@@ -832,26 +832,25 @@ namespace RelatedRecords.Data.ViewModels
         {
             if (null != CurrentTable)
             {
-                _tableNavigation.Push(
+                var table = findTable(CurrentTable.Root.ConfigTable.name);
+
+                if (table != null)
+                {
+                    CurrentTable = _tableNavigation.Pop();
+                }
+                CurrentTable =
                     CurrentTable
                         .Root
                         .ConfigTable
                         .ToColumnsDataTable(int.Parse(topN))
-                        .ToDatatableEx(CurrentTable.Root.ConfigTable));
+                        .ToDatatableEx(CurrentTable.Root.ConfigTable);
+                _tableNavigation.Push(CurrentTable);
             }
         }
 
         private void DoColumns()
         {
-            if(null != CurrentTable)
-            {
-                _tableNavigation.Push(
-                    CurrentTable
-                        .Root
-                        .ConfigTable
-                        .ToColumnsDataTable()
-                        .ToDatatableEx(CurrentTable.Root.ConfigTable));
-            }
+            DoColumnsInt("100");
         }
 
         #region export features
@@ -1135,6 +1134,7 @@ namespace RelatedRecords.Data.ViewModels
         private void DoRoot()
         {
             _tableNavigation.Clear();
+            DoLoad();
         }
 
         private void DoTableIdDefaultWhereIdEqStrLit(string tableName, string column, string value)
@@ -1152,10 +1152,9 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoTableIdDefault(string tableName)
         {
-            var table = SelectedDataset
-                .Table
-                .FirstOrDefault(x =>
-                    x.name.ToLower() == tableName.ToLower());
+            DoTableId(tableName);
+            var table = findTable(tableName);
+
             if (null == table || SelectedDataset.defaultTable == table.name) return;
 
             SelectedDataset.defaultTable = table.name;
@@ -1167,7 +1166,7 @@ namespace RelatedRecords.Data.ViewModels
         private async void DoTableIdWhereIdBetweenIntAndInt(string tableName, string columnName, string minValue, string maxValue, Type type = null)
         {
             var table = findTable(tableName);
-            if (null == table || table.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
+            if (null == table || !table.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
                 ThrowError("Invalid table {0}, column: {1}", tableName, columnName);
 
             var isCurrent = TableIsCurrent(tableName);
