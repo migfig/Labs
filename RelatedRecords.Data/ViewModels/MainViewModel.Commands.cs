@@ -353,7 +353,7 @@ namespace RelatedRecords.Data.ViewModels
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
-            DoTableIdWhereIdBetweenIntAndInt(table, column, minValue, maxValue);
+            DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -370,7 +370,7 @@ namespace RelatedRecords.Data.ViewModels
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
-            DoTableIdWhereIdBetweenDecAndDec(table, column, minValue, maxValue);
+            DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue, typeof(double));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -385,7 +385,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdGtEqMinusInt(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, "-" + value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -400,7 +400,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdGtEqMinusDec(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), ">=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -414,7 +414,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdGtEqInt(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), ">=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -428,7 +428,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdGtEqDec(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), ">=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -443,7 +443,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdGtMinusInt(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -458,7 +458,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdGtMinusDec(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -472,7 +472,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdGtInt(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -486,7 +486,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdGtDec(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -501,7 +501,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdLtEqMinusInt(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -516,7 +516,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdLtEqMinusDec(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -530,7 +530,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdLtEqInt(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -544,7 +544,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdLtEqDec(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -558,7 +558,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdLtGtInt(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -572,7 +572,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdLtGtDec(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -587,7 +587,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdLtGtMinusInt(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -602,7 +602,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdLtGtMinusDec(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -617,7 +617,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdEqMinusInt(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -632,7 +632,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdEqMinusDec(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -646,7 +646,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdEqInt(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(long));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -660,7 +660,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdEqDec(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(double));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -675,7 +675,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            DoTableIdWhereIdIsNotNull(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(string), "is not");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -689,7 +689,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            DoTableIdWhereIdIsNull(table, column, value);
+            DoTableIdWhereIdOperatorValue(table, column, value, typeof(string), "is");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -1139,31 +1139,36 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoTableIdDefaultWhereIdEqStrLit(string tableName, string column, string value)
         {
-            var table = SelectedDataset
-                .Table
-                .FirstOrDefault(x =>
-                    x.name.ToLower() == tableName.ToLower());
-            if (null == table || SelectedDataset.defaultTable == table.name) return;
+            var table = findTable(tableName);
 
-            SelectedDataset.defaultTable = table.name;
-            SaveConfiguration();
-            LoadConfiguration();
+            if (null == table) return;
+
+            if (SelectedDataset.defaultTable != table.name)
+            {
+                SelectedDataset.defaultTable = table.name;
+                SaveConfiguration();
+            }
+            DoTableIdWhereIdOperatorValue(tableName, column, value.Replace("\"", string.Empty), typeof(string), "=");
         }
 
         private void DoTableIdDefault(string tableName)
         {
-            DoTableId(tableName);
             var table = findTable(tableName);
 
-            if (null == table || SelectedDataset.defaultTable == table.name) return;
+            if (null == table) return;
 
-            SelectedDataset.defaultTable = table.name;
-            SaveConfiguration();
+            if (SelectedDataset.defaultTable != table.name)
+            {
+                SelectedDataset.defaultTable = table.name;
+                SaveConfiguration();
+            }
+            DoTableId(tableName);
         }
 
         #endregion done methods
 
-        private async void DoTableIdWhereIdBetweenIntAndInt(string tableName, string columnName, string minValue, string maxValue, Type type = null)
+        private async void DoTableIdWhereIdBetweenValueAndValue(string tableName, string columnName, 
+            string minValue, string maxValue, Type type = null)
         {
             var table = findTable(tableName);
             if (null == table || !table.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
@@ -1171,8 +1176,8 @@ namespace RelatedRecords.Data.ViewModels
 
             var isCurrent = TableIsCurrent(tableName);
 
-            CurrentTable = await table.Query("between".ToArray(),
-                        "".ToArray(),
+            CurrentTable = await table.Query(">=,<=".ToArray(),
+                        "And".ToArray(),
                         false,
                         new SqlParameter(columnName, ParseValue(minValue, type)),
                         new SqlParameter(columnName, ParseValue(maxValue, type)));
@@ -1184,15 +1189,11 @@ namespace RelatedRecords.Data.ViewModels
             _tableNavigation.Push(CurrentTable);
         }
 
-        private void DoTableIdWhereIdBetweenDecAndDec(string tableName, string columnName, string minValue, string maxValue)
-        {
-            DoTableIdWhereIdBetweenIntAndInt(tableName, columnName, minValue, maxValue, typeof(double));
-        }
-
-        private async void DoTableIdWhereIdGtEqMinusInt(string tableName, string columnName, string value, Type type = null, string compOperator = "")
+        private async void DoTableIdWhereIdOperatorValue(string tableName, string columnName, 
+            string value, Type type = null, string compOperator = "")
         {
             var table = findTable(tableName);
-            if (null == table || table.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
+            if (null == table || !table.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
                 ThrowError("Invalid table {0}, column: {1}", tableName, columnName);
 
             var isCurrent = TableIsCurrent(tableName);
@@ -1207,111 +1208,6 @@ namespace RelatedRecords.Data.ViewModels
                 _tableNavigation.Pop();
             }
             _tableNavigation.Push(CurrentTable);
-        }
-
-        private void DoTableIdWhereIdGtEqMinusDec(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), ">=");
-        }
-
-        private void DoTableIdWhereIdGtEqInt(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), ">=");
-        }
-
-        private void DoTableIdWhereIdGtEqDec(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), ">=");
-        }
-
-        private void DoTableIdWhereIdGtMinusInt(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), ">");
-        }
-
-        private void DoTableIdWhereIdGtMinusDec(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), ">");
-        }
-
-        private void DoTableIdWhereIdGtInt(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), ">");
-        }
-
-        private void DoTableIdWhereIdGtDec(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), ">");
-        }
-
-        private void DoTableIdWhereIdLtEqMinusInt(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), "<=");
-        }
-
-        private void DoTableIdWhereIdLtEqMinusDec(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), "<=");
-        }
-
-        private void DoTableIdWhereIdLtEqInt(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), "<=");
-        }
-
-        private void DoTableIdWhereIdLtEqDec(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), "<=");
-        }
-
-        private void DoTableIdWhereIdLtGtInt(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), "<>");
-        }
-
-        private void DoTableIdWhereIdLtGtDec(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), "<>");
-        }
-
-        private void DoTableIdWhereIdLtGtMinusInt(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long), "<>");
-        }
-
-        private void DoTableIdWhereIdLtGtMinusDec(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double), "<>");
-        }
-
-        private void DoTableIdWhereIdEqMinusInt(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long));
-        }
-
-        private void DoTableIdWhereIdEqMinusDec(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double));
-        }
-
-        private void DoTableIdWhereIdEqInt(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(long));
-        }
-
-        private void DoTableIdWhereIdEqDec(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(double));
-        }
-
-        private void DoTableIdWhereIdIsNotNull(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(string), "is not");
-        }
-
-        private void DoTableIdWhereIdIsNull(string tableName, string columnName, string value)
-        {
-            DoTableIdWhereIdGtEqMinusInt(tableName, columnName, value, typeof(string), "is");
         }
 
         private async void DoTableId(string tableName, int topN = 1000)

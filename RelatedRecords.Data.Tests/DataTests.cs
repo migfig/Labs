@@ -76,7 +76,7 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Tickets");
+            Assert.AreEqual("Tickets", MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name);
         }
         [TestMethod, Ignore]
         public void Invalid_Back_Test()
@@ -162,7 +162,7 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count == 2);
+            Assert.AreEqual(2, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
         [TestMethod, Ignore]
         public void Invalid_Columns_Int_Test()
@@ -361,7 +361,7 @@ namespace RelatedRecords.Data.Tests
             Assert.IsTrue(MainViewModel.ViewModel.SelectedConfiguration
                 .Dataset.Any(x => x.name == "sample_remote"));
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Tickets");
+            Assert.AreEqual("Tickets", MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name);
         }
         [TestMethod, Ignore]
         public void Invalid_Load_Catalog_Id_Test()
@@ -378,7 +378,7 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Tickets");
+            Assert.AreEqual("Tickets", MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name);
         }
         [TestMethod, Ignore]
         public void Invalid_Load_Test()
@@ -490,7 +490,7 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Tickets");
+            Assert.AreEqual("Tickets", MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name);
         }
         [TestMethod, Ignore]
         public void Invalid_Root_Test()
@@ -500,16 +500,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Default_Where_Id_Eq_StrLit_Test()
         {
             MainViewModel.ViewModel.Command = "table Tickets default where Title = \"Tickets 3\"";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count == 1);
+            Assert.AreEqual(1, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Default_Where_Id_Eq_StrLit_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 default where col1 = \"1.34\"";
@@ -524,7 +524,7 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Users");
+            Assert.AreEqual("Users", MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name);
         }
         [TestMethod, Ignore]
         public void Invalid_Table_Id_Default_Test()
@@ -534,16 +534,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Between_Int_And_Int_Test()
         {
             MainViewModel.ViewModel.Command = "table Tickets where TicketNumber between 1 and 10";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count == 10);
+            Assert.AreEqual(10, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Between_Int_And_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 between 1 and 10";
@@ -551,14 +551,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Between_Dec_And_Dec_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 between 1.34 and 245.234";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber between 0.34 and 10.234";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(10, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Between_Dec_And_Dec_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 between 1.34 and 245.234";
@@ -566,14 +568,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_GtEq_Minus_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 >= -1";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber >= -1";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(100, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_GtEq_Minus_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 >= -1";
@@ -581,14 +585,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_GtEq_Minus_Dec_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 >= -121.340";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber >= -1.340";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(100, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_GtEq_Minus_Dec_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 >= -121.340";
@@ -596,14 +602,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_GtEq_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 >= 1";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber >= 1";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(100, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_GtEq_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 >= 1";
@@ -611,14 +619,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_GtEq_Dec_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 >= 121.340";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber  >= 98.340";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(1, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_GtEq_Dec_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 >= 121.340";
@@ -626,14 +636,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Gt_Minus_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 > -1";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber > -1";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(100, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Gt_Minus_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 > -1";
@@ -641,14 +653,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Gt_Minus_Dec_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 > -121.340";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber > -1.340";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(100, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Gt_Minus_Dec_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 > -121.340";
@@ -656,14 +670,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Gt_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 > 1";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber > 1";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(99, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Gt_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 > 1";
@@ -671,14 +687,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Gt_Dec_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 > 121.340";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber > 21.340";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(78, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Gt_Dec_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 > 121.340";
@@ -686,14 +704,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_LtEq_Minus_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 <= -1";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber <= 100";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(100, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_LtEq_Minus_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 <= -1";
@@ -701,14 +721,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_LtEq_Minus_Dec_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 <= -121.340";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber <= -121.340";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(0, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_LtEq_Minus_Dec_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 <= -121.340";
@@ -716,14 +738,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_LtEq_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 <= 1";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber <= 99";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(99, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_LtEq_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 <= 1";
@@ -731,14 +755,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_LtEq_Dec_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 <= 121.340";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber <= 21.340";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(21, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_LtEq_Dec_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 <= 121.340";
@@ -746,14 +772,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_LtGt_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 <> 1";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber <> 1";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(99, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_LtGt_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 <> 1";
@@ -761,14 +789,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_LtGt_Dec_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 <> 121.340";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber <> 121.340";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(100, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_LtGt_Dec_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 <> 121.340";
@@ -776,14 +806,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_LtGt_Minus_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 <> -1";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber <> -1";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(100, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_LtGt_Minus_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 <> -1";
@@ -791,14 +823,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_LtGt_Minus_Dec_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 <> -121.340";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber <> -121.340";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(100, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_LtGt_Minus_Dec_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 <> -121.340";
@@ -806,14 +840,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Eq_Minus_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 = -1";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber = -1";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(0, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Eq_Minus_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 = -1";
@@ -821,14 +857,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Eq_Minus_Dec_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 = -121.340";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber = -121.340";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(0, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Eq_Minus_Dec_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 = -121.340";
@@ -836,14 +874,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Eq_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 = 1";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber = 1";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(1, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Eq_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 = 1";
@@ -851,14 +891,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Eq_Dec_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col1 = 121.340";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber = 121.340";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(0, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Eq_Dec_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col1 = 121.340";
@@ -869,9 +911,11 @@ namespace RelatedRecords.Data.Tests
         [TestMethod]
         public void Table_Id_Where_Id_Is_Not_Null_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col_some12 is not null";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber is not null";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(100, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
         [TestMethod]
         public void Invalid_Table_Id_Where_Id_Is_Not_Null_Test()
@@ -884,9 +928,11 @@ namespace RelatedRecords.Data.Tests
         [TestMethod]
         public void Table_Id_Where_Id_Is_Null_Test()
         {
-            MainViewModel.ViewModel.Command = "table Test21 where col12xo is null";
+            MainViewModel.ViewModel.Command = "table Tickets where TicketNumber is null";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual(0, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
         [TestMethod]
         public void Invalid_Table_Id_Where_Id_Is_Null_Test()
