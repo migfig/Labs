@@ -96,6 +96,42 @@ namespace RelatedRecords
                 );
         }
 
+        public static DatatableEx ToDatatableEx(this string[] values)
+        {
+            var table = new DataTable("help");
+            table.Columns.AddRange(new DataColumn[] 
+            {
+                new DataColumn("Command", typeof(string)),
+                new DataColumn("Description", typeof(string))
+            });
+            var commands = values[0].Split(Environment.NewLine.ToCharArray());
+            var descriptions = values[1].Split(Environment.NewLine.ToCharArray());
+            for(var i=0; i<commands.Length; i++)
+            {
+                var nr = table.NewRow();
+                nr["Command"] = commands[i];
+                nr["Description"] = descriptions[i];
+                table.Rows.Add(nr);
+            }
+
+            return table.ToDatatableEx(table.ToTable());
+        }
+
+        public static CTable ToTable(this DataTable table)
+        {
+            var tbl = new CTable();
+            tbl.name = table.TableName;
+            foreach(DataColumn col in table.Columns)
+            {
+                tbl.Column.Add(new CColumn
+                {
+                    name = col.ColumnName,
+                    DbType = GetType(col.DataType)
+                });
+            }
+            return tbl;
+        } 
+
         public static DatatableEx ToDatatableEx(this DataTable dataTable, CTable table)
         {
             return new DatatableEx(new TableContainer(dataTable, table));
@@ -613,9 +649,33 @@ namespace RelatedRecords
             return typeof(string);
         }
 
+        private static eDbType GetType(Type type)
+        {
+            switch (type.ToString())
+            {
+                case "System.Guid":
+                    return eDbType.guid;
+                case "System.Int32":
+                    return eDbType.@int;
+                case "System.Int64":
+                    return eDbType.@long;
+                case "System.Boolean":
+                    return eDbType.@long;
+                case "System.DateTime":
+                    return eDbType.datetime;
+                case "System.Double":
+                    return eDbType.@float;
+                case "System.Byte[]":
+                    return eDbType.binary;
+                    //more types need to be added
+            }
+
+            return eDbType.@string;
+        }
+
         private static string QuoteValue(object value)
         {
-            if (value is string || value is Guid)
+            if ((value is string || value is Guid) && value.ToString().Trim().ToLower() != "null")
             {
                 return "'" + value.ToString() + "'";
             }
@@ -885,7 +945,7 @@ namespace RelatedRecords
             return concat.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
-        public static StringBuilder SqlInsert(this StringBuilder value, DatatableEx table)
+        public static StringBuilder SqlInsert(this StringBuilder value, DatatableEx table, bool includeChildren = true)
         {
             if (null != table
                 && table.Root.Table != null
@@ -899,8 +959,11 @@ namespace RelatedRecords
                     value.AppendFormat("SET IDENTITY_INSERT [dbo].{0} OFF{1}", table.Root.ConfigTable.name, Environment.NewLine);
                 value.Append(Environment.NewLine);
 
-                foreach (var child in table.Children)
-                    value.SqlInsert(child);
+                if (includeChildren)
+                {
+                    foreach (var child in table.Children)
+                        value.SqlInsert(child, includeChildren);
+                }
             }
 
             return value;

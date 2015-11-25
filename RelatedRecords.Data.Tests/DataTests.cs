@@ -187,14 +187,15 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Export_As_Html_Test()
         {
+            Table_Id_Test();
             MainViewModel.ViewModel.Command = "export as html";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Export_As_Html_Test()
         {
             MainViewModel.ViewModel.Command = "_export as html";
@@ -217,14 +218,15 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Export_As_Sql_Test()
         {
+            Table_Id_Test();
             MainViewModel.ViewModel.Command = "export as sql";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Export_As_Sql_Test()
         {
             MainViewModel.ViewModel.Command = "_export as sql";
@@ -232,14 +234,14 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Export_Id_As_Html_Test()
         {
-            MainViewModel.ViewModel.Command = "export Html_Table as html";
+            MainViewModel.ViewModel.Command = "export Tickets as html";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Export_Id_As_Html_Test()
         {
             MainViewModel.ViewModel.Command = "_export Html_Table as html";
@@ -262,14 +264,14 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Export_Id_As_Sql_Test()
         {
-            MainViewModel.ViewModel.Command = "export _Table_Name_12 as sql";
+            MainViewModel.ViewModel.Command = "export Tickets as sql";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Export_Id_As_Sql_Test()
         {
             MainViewModel.ViewModel.Command = "_export _Table_Name_12 as sql";
@@ -908,7 +910,7 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Is_Not_Null_Test()
         {
             MainViewModel.ViewModel.Command = "table Tickets where TicketNumber is not null";
@@ -917,7 +919,7 @@ namespace RelatedRecords.Data.Tests
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
             Assert.AreEqual(100, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Is_Not_Null_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col_some12 is not null";
@@ -925,7 +927,7 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Table_Id_Where_Id_Is_Null_Test()
         {
             MainViewModel.ViewModel.Command = "table Tickets where TicketNumber is null";
@@ -934,7 +936,7 @@ namespace RelatedRecords.Data.Tests
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
             Assert.AreEqual(0, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Table_Id_Where_Id_Is_Null_Test()
         {
             MainViewModel.ViewModel.Command = "_table Test21 where col12xo is null";
@@ -949,7 +951,7 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "Tickets");
+            Assert.AreEqual("Tickets", MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name);
         }
         [TestMethod, Ignore]
         public void Invalid_Table_Id_Test()
@@ -972,7 +974,7 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count == 2);
+            Assert.AreEqual(2, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
         [TestMethod, Ignore]
         public void Invalid_Tables_Int_Test()
@@ -990,7 +992,7 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name == "sample");
+            Assert.AreEqual("sample", MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name);
         }
         [TestMethod, Ignore]
         public void Invalid_Tables_Test()
@@ -1008,7 +1010,7 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
-            Assert.IsTrue(MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count == 10);
+            Assert.AreEqual(10, MainViewModel.ViewModel.CurrentTable.Root.Table.Rows.Count);
         }
         [TestMethod, Ignore]
         public void Invalid_Top_Int_Test()
@@ -1053,14 +1055,17 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Child_Test()
         {
+            Table_Id_Test();
             MainViewModel.ViewModel.Command = "child";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual("TicketsPriorities", MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Child_Test()
         {
             MainViewModel.ViewModel.Command = "_child";
@@ -1068,14 +1073,17 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Child_Int_Test()
         {
-            MainViewModel.ViewModel.Command = "child 2";
+            Table_Id_Test();
+            MainViewModel.ViewModel.Command = "child 1";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual("Users", MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Child_Int_Test()
         {
             MainViewModel.ViewModel.Command = "_child 2";
@@ -1083,14 +1091,17 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Child_Id_Test()
         {
-            MainViewModel.ViewModel.Command = "child MyTable";
+            Table_Id_Test();
+            MainViewModel.ViewModel.Command = "child Users";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual("Users", MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Child_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_child MyTable";
@@ -1098,14 +1109,16 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Help_Test()
         {
             MainViewModel.ViewModel.Command = "help";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
+            Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);
+            Assert.AreEqual("help", MainViewModel.ViewModel.CurrentTable.Root.ConfigTable.name);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Help_Test()
         {
             MainViewModel.ViewModel.Command = "_help";

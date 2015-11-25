@@ -871,7 +871,7 @@ namespace RelatedRecords.Data.ViewModels
             }
         }
 
-        private void DoExportAsHtml()
+        private void DoExportAsHtml(bool includeChildren = true)
         {
             if(null != CurrentTable)
             {
@@ -889,17 +889,16 @@ namespace RelatedRecords.Data.ViewModels
 
                 StringBuilder tables = new StringBuilder();
                 int level = 0;
-                fillHtml(CurrentTable, ref tables, ref level);
+                fillHtml(CurrentTable, ref tables, ref level, includeChildren);
 
                 string htmlFile = Path.Combine(basePath, string.Format("{0}.html", namePart));
                 File.WriteAllText(htmlFile, html.ToString().Replace("<$Tables>", tables.ToString()));
 
                 runProcess(ConfigurationManager.AppSettings["fileExplorer"], htmlFile, -1);
-
             }
         }
 
-        private void fillHtml(DatatableEx t, ref StringBuilder tables, ref int level)
+        private void fillHtml(DatatableEx t, ref StringBuilder tables, ref int level, bool includeChildren)
         {
             string[] levels = new string[] {
                 "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "nineth", "tenth"
@@ -909,46 +908,59 @@ namespace RelatedRecords.Data.ViewModels
                 .Replace("tableName", t.Root.Table.TableName.ToUpper())
                 .Replace("columnCount", t.Root.Table.Columns.Count.ToString()));
 
-            ++level;
-            foreach (var child in t.Children)
-                fillHtml(child, ref tables, ref level);
-            --level;
+            if (includeChildren)
+            {
+                ++level;
+                foreach (var child in t.Children)
+                    fillHtml(child, ref tables, ref level, includeChildren);
+                --level;
+            }
         }
 
-        private void DoExportAsJson()
+        private void DoExportAsJson(bool includeChildren = true)
         {
         }
 
-        private void DoExportAsSql()
+        private void DoExportAsSql(bool includeChildren = true)
         {
             TraceLog.Information("Exporting tables to SQL Insert");
 
             string sqlFile = Path.Combine(ExportPath, DateTime.Now.ToString("yyyy-MMM-dd.hh-mm-ss") + ".sql");
             using (var stream = new StreamWriter(sqlFile))
             {
-                stream.Write(new StringBuilder().SqlInsert(CurrentTable).ToString());
+                stream.Write(new StringBuilder().SqlInsert(CurrentTable, includeChildren).ToString());
             }
 
             runProcess(ConfigurationManager.AppSettings["fileExplorer"], sqlFile, -1);
         }
 
-        private void DoExportIdAsHtml(string table)
+        private void DoExportIdAsHtml(string tableName, bool includeChildren = true)
+        {
+            var table = findTable(tableName);
+            if (null == table) ThrowError("Invalid table {0}", tableName);
+
+            DoTableId(tableName);
+            DoExportAsHtml(includeChildren);
+        }
+
+        private void DoExportIdAsJson(string tableName, bool includeChildren = true)
         {
         }
 
-        private void DoExportIdAsJson(string table)
+        private void DoExportIdAsSql(string tableName, bool includeChildren = true)
+        {
+            var table = findTable(tableName);
+            if (null == table) ThrowError("Invalid table {0}", tableName);
+
+            DoTableId(tableName);
+            DoExportAsSql(includeChildren);
+        }
+
+        private void DoExportIdAsXml(string tableName, bool includeChildren = true)
         {
         }
 
-        private void DoExportIdAsSql(string table)
-        {
-        }
-
-        private void DoExportIdAsXml(string table)
-        {
-        }
-
-        private void DoExportAsXml()
+        private void DoExportAsXml(bool includeChildren = true)
         {
         }
 
@@ -1288,6 +1300,7 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoChild()
         {
+            DoChildInt("0");
         }
 
         private void DoChildInt(string index)
@@ -1310,6 +1323,64 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoHelp()
         {
+            #region commands
+            var commands = @"
+back
+child [TableName | index]
+clone
+clone as NewCatalogName
+clone catalog CatalogName as NewCatalogName
+clone catalog CatalogName
+columns [topN]
+export [TableName] as html | sql | json | xml
+help
+import catalog NewCatalogName
+import catalog NewCatalogName user UserName password Password
+import catalog NewCatalogName server ServerName user UserName password Password
+load [catalog CatalogName]
+refresh [catalog CatalogName]
+relate [SourceTableName] to TargetTableName on SourceColumn = TargetColumn
+remove [catalog CatalogName]
+root
+table TableName [default] [where Column Operator (Value | MinValue and MaxValue)]
+tables [topN]
+top topN
+unrelate [SourceTableName] to TargetTableName";
+
+            var descriptions = @"
+Navigates back (to parent/previous table)
+Drill down into children using name or index position
+Clones current catalog
+Clones current catalog as NewCatalogName
+Clones CatalogName as NewCatalogName
+Clones CatalogName as Default new catalog name
+Displays current table top N columns
+Exports current or specified table as html, sql, json or xml
+Displays this help
+Imports an existing Database catalog 
+Imports an existing Database catalog providing user and password values
+Imports an existing Database catalog providing server name, user and password values
+Loads current or specified catalog name and sets as default
+Refreshes current or specified catalog schema definition
+Relates current or specified table to another table using parent/child relationship on its columns
+Removes current or specified catalog name
+Navigate to root (default dataset table)
+Queries a table and optionally sets as default dataset table. Operator can be any standard T-Sql operator and Value is any standard T-Sql value
+Display top n dataset tables (its names and columns count)
+Displays top n records of current table
+Unrelates current or specified table to child table";
+            #endregion commands
+
+            var table = new string[] { commands, descriptions }
+                .ToDatatableEx();
+
+            if(TableIsCurrent("help"))
+            {
+                _tableNavigation.Pop();
+            }
+
+            CurrentTable = table;
+            _tableNavigation.Push(CurrentTable);
         }
 
         #endregion helper methods
