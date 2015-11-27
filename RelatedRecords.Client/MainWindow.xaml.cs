@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RelatedRecords.Data.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,12 @@ namespace RelatedRecords.Client
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = MainViewModel.ViewModel;
+        }
+
+        private void DataGrid_CurrentCellChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

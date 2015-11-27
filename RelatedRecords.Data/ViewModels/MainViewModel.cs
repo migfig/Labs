@@ -1,12 +1,15 @@
 ﻿using Common;
 using RelatedRecords.Parser;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace RelatedRecords.Data.ViewModels
 {
@@ -44,6 +47,20 @@ namespace RelatedRecords.Data.ViewModels
                 .Where(m => m.GetCustomAttribute<CommandAttribute>(false) != null);
             _state = new State(this);
         }
+
+        public string Title
+        {
+            get
+            {
+                var title = "Related Records";
+                if (null != SelectedDataset)
+                {
+                    title += " - " + Common.Extensions.CapitalizeWords(SelectedDataset.name);
+                }
+
+                return title;
+            }
+        }
         
         public CConfiguration SelectedConfiguration
         {
@@ -64,6 +81,7 @@ namespace RelatedRecords.Data.ViewModels
                 Extensions.SelectedDataset = value;
                 OnPropertyChanged();
                 OnPropertyChanged("SelectedDatasource");
+                OnPropertyChanged("Title");
             }
         }
 
@@ -85,6 +103,28 @@ namespace RelatedRecords.Data.ViewModels
             {
                 _currentTable = value;
                 OnPropertyChanged();
+            }
+        }
+
+        private DataRowView _selectedRootDataRowView;
+        public DataRowView SelectedRootDataRowView
+        {
+            get { return _selectedRootDataRowView; }
+            set
+            {
+                if (null != value && !value.AreEqual(_selectedRootDataRowView))
+                {
+                    var loadChildren = _selectedRootDataRowView != null;
+                    _selectedRootDataRowView = value;
+
+                    if (loadChildren && null != _selectedRootDataRowView)
+                    {
+                        IsBusy = true;
+                        CurrentTable.QueryChildren(_selectedRootDataRowView.Row);
+                        IsBusy = false;
+                    }
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -114,6 +154,77 @@ namespace RelatedRecords.Data.ViewModels
                 if (_isBusy == value) return;
                 _isBusy = value;
                 OnPropertyChanged("IsBusy");
+            }
+        }
+
+        public DataGridSelectionMode SelectionMode
+        {
+            get
+            {
+                return (DataGridSelectionMode)Enum.Parse(typeof(DataGridSelectionMode), 
+                    Properties.Settings.Default.DefaultSelectionMode);
+            }
+            set
+            {
+                if (value.ToString() == Properties.Settings.Default.DefaultSelectionMode) return;
+                Properties.Settings.Default.DefaultSelectionMode = value.ToString();
+                Properties.Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public List<DataGridSelectionMode> SelectionModes
+        {
+            get
+            {
+                var list = new List<DataGridSelectionMode>();
+                foreach (var item in Properties.Settings.Default.SelectionModes)
+                    list.Add((DataGridSelectionMode)Enum.Parse(typeof(DataGridSelectionMode), item));
+
+                return list;
+            }
+        }
+
+        public LogEventLevel LogLevel
+        {
+            get { return Common.Extensions.LogLevel; }
+            set
+            {
+                Common.Extensions.LogLevel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<LogEventLevel> LogLevels
+        {
+            get { return Common.Extensions.LogLevels; }
+        }
+
+        public DataGridClipboardCopyMode CopyMode
+        {
+            get
+            {
+                return (DataGridClipboardCopyMode)Enum.Parse(typeof(DataGridClipboardCopyMode), 
+                    Properties.Settings.Default.DefaultCopyMode);
+            }
+            set
+            {
+                if (value.ToString() == Properties.Settings.Default.DefaultCopyMode) return;
+                Properties.Settings.Default.DefaultCopyMode = value.ToString();
+                Properties.Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public List<DataGridClipboardCopyMode> CopyModes
+        {
+            get
+            {
+                var list = new List<DataGridClipboardCopyMode>();
+                foreach (var item in Properties.Settings.Default.CopyModes)
+                    list.Add((DataGridClipboardCopyMode)Enum.Parse(typeof(DataGridClipboardCopyMode), item));
+
+                return list;
             }
         }
 

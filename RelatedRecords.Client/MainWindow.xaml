@@ -5,8 +5,170 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RelatedRecords.Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="{Binding Title}" 
+        Height="350" 
+        Width="525"
+        WindowState="Maximized">
+    <DockPanel LastChildFill="True">        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="3"/>
+                <ColumnDefinition Width="50*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border 
+                Grid.ColumnSpan="3"
+                Padding="4" 
+                CornerRadius="2" 
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch" 
+                BorderBrush="DarkGray" 
+                BorderThickness="1">
+                <DockPanel LastChildFill="True">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
+                        <TextBlock Text="Command" Foreground="Gray" VerticalAlignment="Center"/>
+                        <ComboBox
+                            ItemsSource="{Binding Commands}"
+                            IsDropDownOpen="True"
+                            IsEditable="True"
+                            IsTextSearchEnabled="True"
+                            Text="{Binding Mode=TwoWay, Path=Command}"
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Stretch">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" Foreground="LightGray" VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <Border 
+                Grid.Row="1" 
+                Padding="4" 
+                CornerRadius="2" 
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch" 
+                BorderBrush="DarkGray" 
+                BorderThickness="1">
+                <DockPanel LastChildFill="True">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
+                        <TextBlock Text="{Binding CurrentTable.Root.Table.TableName}" Foreground="DarkGray" VerticalAlignment="Center"/>
+                        <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding CurrentTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
+                        <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    
+                    <DataGrid 
+                        ItemsSource="{Binding CurrentTable.Root.Table}"
+                        CanUserResizeRows="False" 
+                        AlternatingRowBackground="LemonChiffon" 
+                        ClipboardCopyMode="{Binding CopyMode}"                                      
+                        SelectionMode="{Binding SelectionMode}" 
+                        IsReadOnly="True" 
+                        IsTextSearchEnabled="True"
+                        AutoGenerateColumns="True"
+                        CurrentCellChanged="DataGrid_CurrentCellChanged"
+                        SelectedItem="{Binding SelectedRootDataRowView}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"/>
+                </DockPanel>
+            </Border>
+
+            <GridSplitter 
+                Grid.Row="1" 
+                Grid.Column="1" 
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch" 
+                BorderBrush="Gray" 
+                BorderThickness="1"
+                Style="{DynamicResource GridSplitterStyle}" 
+                Background="LightBlue"/>
+
+            <Border 
+                Grid.Row="1" 
+                Grid.Column="2" 
+                Padding="4" CornerRadius="2"  
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch" 
+                BorderBrush="DarkGray" 
+                BorderThickness="1">
+                <ListBox ItemsSource="{Binding CurrentTable.Children}" 
+                         SelectionMode="Single"
+                         VerticalAlignment="Stretch">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="OuterBackgroundBorder"
+                                    VerticalAlignment="Stretch"
+                                    BorderThickness="1" 
+                                    Margin="0,10,0,0">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Offset="0" Color="#9CA0A3"/>
+                                        <GradientStop Offset="1" Color="#7F8384"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Offset="0" Color="#FFFBFF"/>
+                                        <GradientStop Offset="0.5" Color="#FDFFFE"/>
+                                        <GradientStop Offset="0.5" Color="#F3F4F6"/>
+                                        <GradientStop Offset="1" Color="#D1D6DC"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border x:Name="InnerBackgroundBorder" 
+                                        BorderThickness="1"
+                                        VerticalAlignment="Stretch">
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Offset="0" Color="#80EBEFF0"/>
+                                            <GradientStop Offset="1" Color="#60889ca3"/>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                    <Grid VerticalAlignment="Stretch"
+                                          HorizontalAlignment="Stretch">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                            <TextBlock Text="{Binding Root.Table.TableName}" Foreground="Black" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                                            <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
+                                            <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <DataGrid 
+                                            Grid.Row="1" 
+                                            ItemsSource="{Binding Root.Table}"
+                                            AutoGenerateColumns="True"
+                                            IsReadOnly="True"
+                                            SelectionMode="{Binding SelectionMode}"
+                                            AlternatingRowBackground="LightCyan" 
+                                            CanUserAddRows="False" 
+                                            CanUserDeleteRows="False" 
+                                            CanUserResizeRows="False" 
+                                            ClipboardCopyMode="{Binding CopyMode}" 
+                                            IsTextSearchEnabled="True" 
+                                            SelectionUnit="CellOrRowHeader"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            MinHeight="50"  
+                                            MaxHeight="400"/>
+                                    </Grid>
+                                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+        </Grid>
+    </DockPanel>
 </Window>
