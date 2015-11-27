@@ -9,6 +9,9 @@
         Height="350" 
         Width="525"
         WindowState="Maximized">
+    <Window.Resources>
+        <local:IntToVisibilityConverter x:Key="IntConverter"/>
+    </Window.Resources>
     <DockPanel LastChildFill="True">        
         <Grid>
             <Grid.RowDefinitions>
@@ -30,7 +33,6 @@
                 BorderBrush="DarkGray" 
                 BorderThickness="1">
                 <DockPanel LastChildFill="True">
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
                         <TextBlock Text="Command" Foreground="Gray" VerticalAlignment="Center"/>
                         <ComboBox
                             ItemsSource="{Binding Commands}"
@@ -38,16 +40,21 @@
                             IsEditable="True"
                             IsTextSearchEnabled="True"
                             Text="{Binding Mode=TwoWay, Path=Command}"
+                            FontSize="14"
+                            FontWeight="DemiBold"
+                            KeyboardNavigation.AcceptsReturn="True"
+                            TextOptions.TextHintingMode="Animated"
+                            Keyboard.KeyUp="ComboBox_KeyUp"
+                            Foreground="Green"
                             Margin="8,0,0,0"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Stretch">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding}" Foreground="LightGray" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding}" Foreground="Black" VerticalAlignment="Center"/>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                    </StackPanel>
                 </DockPanel>
             </Border>
 
@@ -61,7 +68,7 @@
                 BorderThickness="1">
                 <DockPanel LastChildFill="True">
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
-                        <TextBlock Text="{Binding CurrentTable.Root.Table.TableName}" Foreground="DarkGray" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding CurrentTable.Root.Table.TableName}" FontWeight="DemiBold" Foreground="Black" VerticalAlignment="Center"/>
                         <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding CurrentTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
                         <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
@@ -144,6 +151,28 @@
                                             <TextBlock Text=" - " Foreground="Green" VerticalAlignment="Center"/>
                                             <TextBlock Text="{Binding Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
                                             <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
+
+                                            <Grid Width="8" 
+                                                  Height="8"
+                                                  Visibility="{Binding Root.ConfigTable.Children.Count, Converter={StaticResource IntConverter}}"
+                                                  Margin="4,0,0,0"
+                                                  VerticalAlignment="Center">
+                                                <Path Data="M0,0L516.999987125397,0 258.499987125397,318.999981067944z" 
+                                                      Stretch="Uniform" 
+                                                      Fill="#FFE3A010" 
+                                                      Width="8" 
+                                                      Height="8" 
+                                                      RenderTransformOrigin="0.5,0.5">
+                                                    <Path.RenderTransform>
+                                                        <TransformGroup>
+                                                            <TransformGroup.Children>
+                                                                <RotateTransform Angle="0" />
+                                                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                            </TransformGroup.Children>
+                                                        </TransformGroup>
+                                                    </Path.RenderTransform>
+                                                </Path>
+                                            </Grid>
                                         </StackPanel>
                                         <DataGrid 
                                             Grid.Row="1" 

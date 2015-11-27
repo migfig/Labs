@@ -1321,9 +1321,16 @@ namespace RelatedRecords.Data.ViewModels
             CurrentTable = table;
         }
 
-        private void DoHelp()
+        public IEnumerable<string> ExpandCommands()
+        {
+            return GetCommands().Split(Environment.NewLine.ToCharArray(), 
+                StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private string GetCommands()
         {
             #region commands
+
             var commands = @"
 back
 child [TableName | index]
@@ -1346,6 +1353,17 @@ table TableName [default] [where Column Operator (Value | MinValue and MaxValue)
 tables [topN]
 top topN
 unrelate [SourceTableName] to TargetTableName";
+
+            #endregion commands
+
+            return commands;
+        }
+
+        private void DoHelp()
+        {
+            #region commands
+
+            var commands = GetCommands();
 
             var descriptions = @"
 Navigates back (to parent/previous table)

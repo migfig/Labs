@@ -46,6 +46,7 @@ namespace RelatedRecords.Data.ViewModels
                 .GetMethods()
                 .Where(m => m.GetCustomAttribute<CommandAttribute>(false) != null);
             _state = new State(this);
+            LoadConfiguration();
         }
 
         public string Title
@@ -265,6 +266,20 @@ namespace RelatedRecords.Data.ViewModels
             {
                 _command = value;
                 OnPropertyChanged();
+                OnPropertyChanged("Commands");
+            }
+        }
+
+        private IEnumerable<string> _commands = new List<string>(); 
+        public IEnumerable<string> Commands
+        {
+            get
+            {
+                if(_commands.Count() == 0)
+                {
+                    _commands = ExpandCommands();
+                }
+                return _commands;
             }
         }
 

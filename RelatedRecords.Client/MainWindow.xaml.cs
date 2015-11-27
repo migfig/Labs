@@ -31,5 +31,14 @@ namespace RelatedRecords.Client
         {
 
         }
+
+        private void ComboBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter && !string.IsNullOrWhiteSpace(MainViewModel.ViewModel.Command))
+            {
+                MainViewModel.ViewModel.ExecuteCommand();
+                e.Handled = true;
+            }
+        }
     }
 }
