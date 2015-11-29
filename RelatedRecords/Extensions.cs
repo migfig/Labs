@@ -591,7 +591,7 @@ namespace RelatedRecords
             return query.ToString();
         }
 
-        private static object GetDefaultValue(CColumn column, int sequenceNum = 0, string tableName = "Value")
+        public static object GetDefaultValue(CColumn column, int sequenceNum = 0, string tableName = "Value")
         {
             var type = GetType(column.DbType);
             try
@@ -625,7 +625,7 @@ namespace RelatedRecords
             }
         }
 
-        private static Type GetType(eDbType type)
+        public static Type GetType(eDbType type)
         {
             switch (type)
             {
@@ -649,7 +649,7 @@ namespace RelatedRecords
             return typeof(string);
         }
 
-        private static eDbType GetType(Type type)
+        public static eDbType GetType(Type type)
         {
             switch (type.ToString())
             {
@@ -673,7 +673,7 @@ namespace RelatedRecords
             return eDbType.@string;
         }
 
-        private static string QuoteValue(object value)
+        public static string QuoteValue(object value)
         {
             if ((value is string || value is Guid) && value.ToString().Trim().ToLower() != "null")
             {

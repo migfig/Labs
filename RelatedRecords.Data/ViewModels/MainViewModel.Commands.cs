@@ -1513,6 +1513,65 @@ namespace RelatedRecords.Data.ViewModels
             return list;
         }
 
+        private IEnumerable<string> buildRelations(CTable table)
+        {
+            var list = new List<string>();
+            foreach (var t in SelectedDataset.Table.Where(x => x.name != table.name))
+            {
+                var commonCols = from sc in table.Column
+                                 let tc = t.Column.Where(x => x.name == sc.name).FirstOrDefault()
+                                 where null != tc && sc.DbType == tc.DbType
+                                 select new
+                                 {
+                                     SourceColumn = sc.name,
+                                     TargetColumn = tc.name
+                                 };
+
+                var primaryForeignCols = from sc in table.Column
+                                         let tc = t.Column.Where(x => x.isPrimaryKey && sc.isForeignKey)
+                                            .FirstOrDefault()
+                                         where null != tc && sc.DbType == tc.DbType
+                                         select new
+                                         {
+                                             SourceColumn = sc.name,
+                                             TargetColumn = tc.name
+                                         };
+
+                foreach (var c in commonCols)
+                {
+                    list.Add(string.Format("relate to {0} on {1} = {2}",
+                        t.name,
+                        c.SourceColumn,
+                        c.TargetColumn));
+                    list.Add(string.Format("relate {0} to {1} on {2} = {3}",
+                        table.name,
+                        t.name,
+                        c.SourceColumn,
+                        c.TargetColumn));
+                }
+                foreach (var c in primaryForeignCols)
+                {
+                    var rel = string.Format("relate to {0} on {1} = {2}",
+                        t.name,
+                        c.SourceColumn,
+                        c.TargetColumn);
+
+                    var relFull = string.Format("relate {0} to {1} on {2} = {3}",
+                        table.name,
+                        t.name,
+                        c.SourceColumn,
+                        c.TargetColumn);
+
+                    if (!list.Contains(rel))
+                        list.Add(rel);
+
+                    if (!list.Contains(relFull))
+                        list.Add(relFull);
+                }
+            }
+            return list;
+        }
+
         [HelpCommand("relate [{Table:source}] to {Table:target} on {Column:source} = {Column:target}")]
         [HelpDescriptionCommand("Relates current or specified table to another table using parent/child relationship on its columns")]
         public IEnumerable<string> ExpandRelate(string command)
@@ -1520,16 +1579,13 @@ namespace RelatedRecords.Data.ViewModels
             var list = new List<string>();
             if (null != CurrentTable)
             {
-                foreach (var t in SelectedDataset.Table.Where(x => x.name != CurrentTable.Root.ConfigTable.name))
-                {
-                    list.Add("relate to " + t.name);
-                }
+                list.AddRange(buildRelations(CurrentTable.Root.ConfigTable));
             }
             else
             {
-                foreach (var t in SelectedDataset.Table)
+                foreach (var s in SelectedDataset.Table)
                 {
-                    list.Add("relate " + t.name);
+                    list.AddRange(buildRelations(s));
                 }
             }
             return list;
@@ -1540,29 +1596,112 @@ namespace RelatedRecords.Data.ViewModels
         public IEnumerable<string> ExpandRemove(string command)
         {
             var list = new List<string>();
-            if (null != CurrentTable && CurrentTable.Children.Any())
+            list.Add("remove");
+            foreach (var ds in SelectedConfiguration.Dataset)
             {
-                for (var i = 0; i < CurrentTable.Children.Count; i++)
-                {
-                    list.Add("child " + CurrentTable.Children[i].Root.ConfigTable.name);
-                    list.Add("child " + i.ToString());
-                }
+                list.Add("remove catalog " + ds.name);
             }
 
             return list;
         }
+
+        private IEnumerable<string> GetColumnOperators(CColumn column)
+        {
+            var list = new List<string>();
+
+            string opString = string.Empty;
+            switch (GetMappingType(Extensions.GetType(column.DbType).ToString()).ToString())
+            {
+                case "System.DateTime":
+                case "System.Int32":
+                case "System.Double":
+                    opString = "=,<>,>,>=,<,<=,Is,Is Not";
+                    break;
+                case "System.Boolean":
+                    opString = "=,<>,Is,Is Not";
+                    break;
+                default:
+                    opString = "=,<>,Like %,Is,Is Not";
+                    break;
+            }
+
+            foreach (string op in opString.Split(new char[] { ',' }))
+                if (!list.Contains(op))
+                    list.Add(op);
+
+            return list;
+        }
+
+        private Type GetMappingType(string colType)
+        {
+            string typeName = colType.ToLower().Split(new char[] { '(' })[0];
+            var types = new Dictionary<Type, List<string>>{
+                {typeof(System.Int32), new List<string> {"int", "smallint"}}
+                ,{typeof(System.Byte[]), new List<string> {"image", "blob", "binary"}}
+                ,{typeof(System.DateTime), new List<string> {"datetime", "datetime2", "date", "timestamp", "datetimeoffset"}}
+                ,{typeof(System.Double), new List<string> {"money", "real", "number", "bigint", "decimal", "float", "uniqueidentifier"}}
+                ,{typeof(System.Boolean), new List<string> {"bit"}}
+            };
+
+            var theType = from key in types.Keys
+                          where types[key].Contains(colType)
+                          select key;
+
+            if (null != theType && null != theType.FirstOrDefault())
+                return theType.FirstOrDefault();
+
+            return typeof(System.String);
+        }
+
 
         [HelpCommand("table {Table} [default] [where {Column} {Operator} (Value | MinValue and MaxValue)]")]
         [HelpDescriptionCommand("Queries a table and optionally sets as default dataset table.Operator can be any standard T-Sql operator and Value is any standard T-Sql value")]
         public IEnumerable<string> ExpandTable(string command)
         {
             var list = new List<string>();
-            if (null != CurrentTable && CurrentTable.Children.Any())
+            foreach (var t in SelectedDataset.Table)
             {
-                for (var i = 0; i < CurrentTable.Children.Count; i++)
+                list.Add(string.Format("table {0}", t.name));
+                list.Add(string.Format("table {0} default", t.name));
+                foreach (var c in t.Column)
                 {
-                    list.Add("child " + CurrentTable.Children[i].Root.ConfigTable.name);
-                    list.Add("child " + i.ToString());
+                    var operators = GetColumnOperators(c);
+                    foreach (var o in operators)
+                    {
+                        list.Add(string.Format("table {0} where {1} {2} {3}",
+                            t.name,
+                            c.name,
+                            o,
+                            Extensions.GetDefaultValue(c)));
+                    }
+
+                    switch (c.DbType)
+                    {
+                        case eDbType.bigint:
+                        case eDbType.date:
+                        case eDbType.datetime:
+                        case eDbType.datetime2:
+                        case eDbType.datetimeoffset:
+                        case eDbType.@decimal:
+                        case eDbType.@float:
+                        case eDbType.@int:
+                        case eDbType.@long:
+                        case eDbType.money:
+                        case eDbType.numeric:
+                        case eDbType.real:
+                        case eDbType.smalldatetime:
+                        case eDbType.smallint:
+                        case eDbType.smallmoney:
+                        case eDbType.time:
+                        case eDbType.timestamp:
+                        case eDbType.tinyint:
+                            list.Add(string.Format("table {0} where {1} BETWEEN {2} and {3}",
+                                t.name,
+                                c.name,
+                                Extensions.GetDefaultValue(c),
+                                Extensions.GetDefaultValue(c)));
+                            break;
+                    }
                 }
             }
 
@@ -1574,14 +1713,8 @@ namespace RelatedRecords.Data.ViewModels
         public IEnumerable<string> ExpandTables(string command)
         {
             var list = new List<string>();
-            if (null != CurrentTable && CurrentTable.Children.Any())
-            {
-                for (var i = 0; i < CurrentTable.Children.Count; i++)
-                {
-                    list.Add("child " + CurrentTable.Children[i].Root.ConfigTable.name);
-                    list.Add("child " + i.ToString());
-                }
-            }
+            list.Add("tables");
+            list.Add("tables " + SelectedDataset.Table.Count.ToString());
 
             return list;
         }
@@ -1591,14 +1724,7 @@ namespace RelatedRecords.Data.ViewModels
         public IEnumerable<string> ExpandTopN(string command)
         {
             var list = new List<string>();
-            if (null != CurrentTable && CurrentTable.Children.Any())
-            {
-                for (var i = 0; i < CurrentTable.Children.Count; i++)
-                {
-                    list.Add("child " + CurrentTable.Children[i].Root.ConfigTable.name);
-                    list.Add("child " + i.ToString());
-                }
-            }
+            list.Add("top " + Extensions.MaxRowCount.ToString());
 
             return list;
         }
@@ -1610,13 +1736,26 @@ namespace RelatedRecords.Data.ViewModels
             var list = new List<string>();
             if (null != CurrentTable && CurrentTable.Children.Any())
             {
-                for (var i = 0; i < CurrentTable.Children.Count; i++)
+                var rels = from r in SelectedDataset.Relationship
+                           where r.fromTable == CurrentTable.Root.ConfigTable.name
+                           select r;
+                foreach (var r in rels)
                 {
-                    list.Add("child " + CurrentTable.Children[i].Root.ConfigTable.name);
-                    list.Add("child " + i.ToString());
+                    list.Add(string.Format("unrelate {0} to {1}",
+                        r.fromTable,
+                        r.toTable));
                 }
             }
+            else
+            {
+                foreach (var r in SelectedDataset.Relationship)
+                {
+                    list.Add(string.Format("unrelate {0} to {1}",
+                        r.fromTable,
+                        r.toTable));
+                }
 
+            }
             return list;
         }
 
