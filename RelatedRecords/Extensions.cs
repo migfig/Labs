@@ -104,8 +104,8 @@ namespace RelatedRecords
                 new DataColumn("Command", typeof(string)),
                 new DataColumn("Description", typeof(string))
             });
-            var commands = values[0].Split(Environment.NewLine.ToCharArray());
-            var descriptions = values[1].Split(Environment.NewLine.ToCharArray());
+            var commands = values[0].Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var descriptions = values[1].Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             for(var i=0; i<commands.Length; i++)
             {
                 var nr = table.NewRow();

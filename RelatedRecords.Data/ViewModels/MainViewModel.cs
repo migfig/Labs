@@ -36,15 +36,23 @@ namespace RelatedRecords.Data.ViewModels
         private readonly RRParser _parser;
         private readonly string _configurationFile;
         private IEnumerable<MethodInfo> _commandMethods;
+        private IEnumerable<MethodInfo> _helpCommandMethods;
+        private IEnumerable<MethodInfo> _helpDescCommandMethods;
         private readonly State _state;
 
         public MainViewModel(string configFile, string grammarFile)
         {
             _parser = new RRParser(grammarFile);
             _configurationFile = configFile;
-            _commandMethods = GetType()
-                .GetMethods()
+
+            var methods = GetType().GetMethods();
+            _commandMethods = methods
                 .Where(m => m.GetCustomAttribute<CommandAttribute>(false) != null);
+            _helpCommandMethods = methods
+                .Where(m => m.GetCustomAttribute<HelpCommandAttribute>(false) != null);
+            _helpDescCommandMethods = methods
+                .Where(m => m.GetCustomAttribute<HelpDescriptionCommandAttribute>(false) != null);
+
             _state = new State(this);
             LoadConfiguration();
         }
@@ -279,6 +287,12 @@ namespace RelatedRecords.Data.ViewModels
                 {
                     _commands = ExpandCommands();
                 }
+
+                if(!string.IsNullOrWhiteSpace(Command))
+                {
+                    return _commands.Where(x => x.ToLower().StartsWith(Command.ToLower()));
+                }
+
                 return _commands;
             }
         }

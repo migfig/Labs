@@ -40,6 +40,32 @@ namespace RelatedRecords.Data.ViewModels
         }
     }
 
+    public class HelpCommandAttribute: Attribute
+    {
+        private string[] _commands;
+        public string[] Commands
+        {
+            get { return _commands; }
+        }
+        public HelpCommandAttribute(params string[] commands)
+        {
+            _commands = commands;
+        }
+    }
+
+    public class HelpDescriptionCommandAttribute : Attribute
+    {
+        private string[] _descriptions;
+        public string[] Descriptions
+        {
+            get { return _descriptions; }
+        }
+        public HelpDescriptionCommandAttribute(params string[] descriptions)
+        {
+            _descriptions = descriptions;
+        }
+    }
+
     #endregion attributes
 
     public partial class MainViewModel
@@ -774,8 +800,6 @@ namespace RelatedRecords.Data.ViewModels
 
         #region helper methods
 
-        #region done methods
-
         private void DoBack()
         {
             if (_tableNavigation.Any())
@@ -1177,8 +1201,6 @@ namespace RelatedRecords.Data.ViewModels
             DoTableId(tableName);
         }
 
-        #endregion done methods
-
         private async void DoTableIdWhereIdBetweenValueAndValue(string tableName, string columnName, 
             string minValue, string maxValue, Type type = null)
         {
@@ -1321,73 +1343,319 @@ namespace RelatedRecords.Data.ViewModels
             CurrentTable = table;
         }
 
+
+        #region expand command methods
+
         public IEnumerable<string> ExpandCommands()
         {
-            return GetCommands().Split(Environment.NewLine.ToCharArray(), 
+            var cmdsArray = GetCommands().Split(Environment.NewLine.ToCharArray(), 
                 StringSplitOptions.RemoveEmptyEntries);
+
+            var list = new List<string>();
+            foreach(var cmd in cmdsArray)
+            {
+                list.AddRange(Expando(cmd));
+            }
+            return list;
+        }
+
+        private IEnumerable<string> Expando(string command)
+        {
+            var method = _helpCommandMethods.First(m =>
+                m.GetCustomAttributes(typeof(HelpCommandAttribute), false)
+                .Cast<HelpCommandAttribute>()
+                .First()
+                .Commands.Contains(command));
+
+            try
+            {
+               return (IEnumerable<string>)method.Invoke(this, new object[] { command });
+            }
+            catch (Exception e)
+            {
+                ErrorLog.Error(e, "When running method {method} with {command}", method, command);
+                return new List<string>();
+            }
+        }
+
+        [HelpCommand("child [{Table:current} | {index}]")]
+        [HelpDescriptionCommand("Drill down into children using name or index position")]
+        public IEnumerable<string> ExpandChild(string command)
+        {
+            var list = new List<string>();
+            if(null != CurrentTable && CurrentTable.Children.Any())
+            {
+                for(var i=0; i<CurrentTable.Children.Count;i++)
+                {
+                    list.Add("child " + CurrentTable.Children[i].Root.ConfigTable.name);
+                    list.Add("child " + i.ToString());
+                }
+            }
+
+            return list;
+        }
+
+        [HelpCommand("back",
+            "help",
+            "root")]
+        [HelpDescriptionCommand("Navigates back(to parent/previous table)",
+            "Displays this help",
+            "Navigate to root(default dataset table)")]
+        public IEnumerable<string> ExpandItem(string command)
+        {
+            return command.Split(new char[] { '`' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        [HelpCommand("clone [catalog {Dataset:current}] [as {Dataset:max}]")]
+        [HelpDescriptionCommand("Clones CatalogName as Default new catalog name")]
+        public IEnumerable<string> ExpandClone(string command)
+        {
+            var list = new List<string>();
+            list.Add("clone");
+            foreach(var ds in SelectedConfiguration.Dataset)
+            {                
+                list.Add("clone catalog " + ds.name);
+                list.Add(string.Format("clone catalog {0} as {0}{1}", 
+                    ds.name, 
+                    SelectedConfiguration.Dataset.Count+1));
+                list.Add(string.Format("clone as {0}{1}",
+                    ds.name,
+                    SelectedConfiguration.Dataset.Count + 1));
+            }
+
+            return list;
+        }
+
+        [HelpCommand("columns [max]")]
+        [HelpDescriptionCommand("Displays current table top N columns")]
+        public IEnumerable<string> ExpandColumns(string command)
+        {
+            var list = new List<string>();
+            if (null != CurrentTable)
+            {
+                list.Add("columns");
+                list.Add("columns " + CurrentTable.Root.ConfigTable.Column.Count.ToString());
+            }
+
+            return list;
+        }
+
+        [HelpCommand("export [{Table}] as (html | sql | json | xml)")]
+        [HelpDescriptionCommand("Exports current or specified table as html, sql, json or xml")]
+        public IEnumerable<string> ExpandExport(string command)
+        {
+            var list = new List<string>();
+            if (null != CurrentTable)
+            {
+                list.Add("export as html");
+                list.Add("export as sql");
+                list.Add("export as json");
+                list.Add("export as xml");
+                list.Add("export " + CurrentTable.Root.ConfigTable.name + " as html");
+                list.Add("export " + CurrentTable.Root.ConfigTable.name + " as sql");
+                list.Add("export " + CurrentTable.Root.ConfigTable.name + " as json");
+                list.Add("export " + CurrentTable.Root.ConfigTable.name + " as xml");
+            }
+            else { 
+                foreach(var t in SelectedDataset.Table)
+                {
+                    list.Add("export " + t.name + " as html");
+                    list.Add("export " + t.name + " as sql");
+                    list.Add("export " + t.name + " as json");
+                    list.Add("export " + t.name + " as xml");
+                }
+            }
+
+            return list;
+        }
+
+        [HelpCommand("import catalog {Dataset:max} [server ServerName] [user UserName password Password]")]
+        [HelpDescriptionCommand("Imports an existing Database catalog providing server name, user and password values")]
+        public IEnumerable<string> ExpandImport(string command)
+        {
+            var list = new List<string>();
+            foreach(var ds in SelectedConfiguration.Dataset)
+            {
+                list.Add("import catalog " + ds.name);
+                list.Add("import catalog " + ds.name + " server ");
+                list.Add("import catalog " + ds.name + " user  password ");
+                list.Add("import catalog " + ds.name + " server  user  password ");
+            }
+
+            return list;
+        }
+
+        [HelpCommand("load [catalog {Dataset}]")]
+        [HelpDescriptionCommand("Loads current or specified catalog name and sets as default")]
+        public IEnumerable<string> ExpandLoad(string command)
+        {
+            var list = new List<string>();
+            list.Add("load");
+            foreach (var ds in SelectedConfiguration.Dataset)
+            {
+                list.Add("load catalog " + ds.name);
+            }
+
+            return list;
+        }
+
+        [HelpCommand("refresh [catalog {Dataset}]")]
+        [HelpDescriptionCommand("Refreshes current or specified catalog schema definition")]
+        public IEnumerable<string> ExpandRefresh(string command)
+        {
+            var list = new List<string>();
+            list.Add("refresh");
+            foreach (var ds in SelectedConfiguration.Dataset)
+            {
+                list.Add("refresh catalog " + ds.name);
+            }
+
+            return list;
+        }
+
+        [HelpCommand("relate [{Table:source}] to {Table:target} on {Column:source} = {Column:target}")]
+        [HelpDescriptionCommand("Relates current or specified table to another table using parent/child relationship on its columns")]
+        public IEnumerable<string> ExpandRelate(string command)
+        {
+            var list = new List<string>();
+            if (null != CurrentTable)
+            {
+                foreach (var t in SelectedDataset.Table.Where(x => x.name != CurrentTable.Root.ConfigTable.name))
+                {
+                    list.Add("relate to " + t.name);
+                }
+            }
+            else
+            {
+                foreach (var t in SelectedDataset.Table)
+                {
+                    list.Add("relate " + t.name);
+                }
+            }
+            return list;
+        }
+
+        [HelpCommand("remove [catalog {Dataset}]")]
+        [HelpDescriptionCommand("Removes current or specified catalog name")]
+        public IEnumerable<string> ExpandRemove(string command)
+        {
+            var list = new List<string>();
+            if (null != CurrentTable && CurrentTable.Children.Any())
+            {
+                for (var i = 0; i < CurrentTable.Children.Count; i++)
+                {
+                    list.Add("child " + CurrentTable.Children[i].Root.ConfigTable.name);
+                    list.Add("child " + i.ToString());
+                }
+            }
+
+            return list;
+        }
+
+        [HelpCommand("table {Table} [default] [where {Column} {Operator} (Value | MinValue and MaxValue)]")]
+        [HelpDescriptionCommand("Queries a table and optionally sets as default dataset table.Operator can be any standard T-Sql operator and Value is any standard T-Sql value")]
+        public IEnumerable<string> ExpandTable(string command)
+        {
+            var list = new List<string>();
+            if (null != CurrentTable && CurrentTable.Children.Any())
+            {
+                for (var i = 0; i < CurrentTable.Children.Count; i++)
+                {
+                    list.Add("child " + CurrentTable.Children[i].Root.ConfigTable.name);
+                    list.Add("child " + i.ToString());
+                }
+            }
+
+            return list;
+        }
+
+        [HelpCommand("tables [max]")]
+        [HelpDescriptionCommand("Display top n dataset tables (its names and columns count)")]
+        public IEnumerable<string> ExpandTables(string command)
+        {
+            var list = new List<string>();
+            if (null != CurrentTable && CurrentTable.Children.Any())
+            {
+                for (var i = 0; i < CurrentTable.Children.Count; i++)
+                {
+                    list.Add("child " + CurrentTable.Children[i].Root.ConfigTable.name);
+                    list.Add("child " + i.ToString());
+                }
+            }
+
+            return list;
+        }
+
+        [HelpCommand("top max")]
+        [HelpDescriptionCommand("Displays top n records of current table")]
+        public IEnumerable<string> ExpandTopN(string command)
+        {
+            var list = new List<string>();
+            if (null != CurrentTable && CurrentTable.Children.Any())
+            {
+                for (var i = 0; i < CurrentTable.Children.Count; i++)
+                {
+                    list.Add("child " + CurrentTable.Children[i].Root.ConfigTable.name);
+                    list.Add("child " + i.ToString());
+                }
+            }
+
+            return list;
+        }
+
+        [HelpCommand("unrelate [{Table:source}] to {Table:target}")]
+        [HelpDescriptionCommand("Unrelates current or specified table to child table")]
+        public IEnumerable<string> ExpandUnrelate(string command)
+        {
+            var list = new List<string>();
+            if (null != CurrentTable && CurrentTable.Children.Any())
+            {
+                for (var i = 0; i < CurrentTable.Children.Count; i++)
+                {
+                    list.Add("child " + CurrentTable.Children[i].Root.ConfigTable.name);
+                    list.Add("child " + i.ToString());
+                }
+            }
+
+            return list;
         }
 
         private string GetCommands()
         {
-            #region commands
+            var atts = from m in _helpCommandMethods
+                       let att = m.GetCustomAttributes(typeof(HelpCommandAttribute), false)
+                            .Cast<HelpCommandAttribute>()
+                            .FirstOrDefault()
+                       where null != att
+                       select att.Commands;
 
-            var commands = @"
-back
-child [TableName | index]
-clone
-clone as NewCatalogName
-clone catalog CatalogName as NewCatalogName
-clone catalog CatalogName
-columns [topN]
-export [TableName] as html | sql | json | xml
-help
-import catalog NewCatalogName
-import catalog NewCatalogName user UserName password Password
-import catalog NewCatalogName server ServerName user UserName password Password
-load [catalog CatalogName]
-refresh [catalog CatalogName]
-relate [SourceTableName] to TargetTableName on SourceColumn = TargetColumn
-remove [catalog CatalogName]
-root
-table TableName [default] [where Column Operator (Value | MinValue and MaxValue)]
-tables [topN]
-top topN
-unrelate [SourceTableName] to TargetTableName";
+            var cmds = string.Empty;
+            foreach(var c in atts)
+            {
+                cmds += string.Join(Environment.NewLine, c) + Environment.NewLine;
+            }
 
-            #endregion commands
-
-            return commands;
+            return cmds;
         }
+
+        private string GetDescriptions()
+        {
+            var atts = from m in _helpDescCommandMethods
+                       let att = m.GetCustomAttributes(typeof(HelpDescriptionCommandAttribute), false)
+                            .Cast<HelpDescriptionCommandAttribute>()
+                            .FirstOrDefault()
+                       where null != att
+                       select att.Descriptions;
+
+            return string.Join(Environment.NewLine, atts);
+        }
+
+        #endregion expand command methods
 
         private void DoHelp()
         {
-            #region commands
-
             var commands = GetCommands();
-
-            var descriptions = @"
-Navigates back (to parent/previous table)
-Drill down into children using name or index position
-Clones current catalog
-Clones current catalog as NewCatalogName
-Clones CatalogName as NewCatalogName
-Clones CatalogName as Default new catalog name
-Displays current table top N columns
-Exports current or specified table as html, sql, json or xml
-Displays this help
-Imports an existing Database catalog 
-Imports an existing Database catalog providing user and password values
-Imports an existing Database catalog providing server name, user and password values
-Loads current or specified catalog name and sets as default
-Refreshes current or specified catalog schema definition
-Relates current or specified table to another table using parent/child relationship on its columns
-Removes current or specified catalog name
-Navigate to root (default dataset table)
-Queries a table and optionally sets as default dataset table. Operator can be any standard T-Sql operator and Value is any standard T-Sql value
-Display top n dataset tables (its names and columns count)
-Displays top n records of current table
-Unrelates current or specified table to child table";
-            #endregion commands
+            var descriptions = GetDescriptions();
 
             var table = new string[] { commands, descriptions }
                 .ToDatatableEx();
