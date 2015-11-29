@@ -591,6 +591,16 @@ namespace RelatedRecords
             return query.ToString();
         }
 
+        public static object GetDefaultValue(CColumn column, string @operator)
+        {
+            if (@operator.ToLower().StartsWith("is"))
+                return "NULL";
+            else if (@operator.ToLower().StartsWith("like"))
+                return "\"%" + GetDefaultValue(column, 0) + "%\"";
+            else
+                return QuoteValue(GetDefaultValue(column, 0), "\"");
+        }
+
         public static object GetDefaultValue(CColumn column, int sequenceNum = 0, string tableName = "Value")
         {
             var type = GetType(column.DbType);
@@ -673,11 +683,11 @@ namespace RelatedRecords
             return eDbType.@string;
         }
 
-        public static string QuoteValue(object value)
+        public static string QuoteValue(object value, string quoteChar = "'")
         {
             if ((value is string || value is Guid) && value.ToString().Trim().ToLower() != "null")
             {
-                return "'" + value.ToString() + "'";
+                return quoteChar + value.ToString() + quoteChar;
             }
 
             return value.ToString();

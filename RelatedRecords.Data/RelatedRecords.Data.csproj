@@ -77,6 +77,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainViewModel.Commands.cs" />
+    <Compile Include="ViewModels\MainViewModel.Commands.Expando.cs" />
+    <Compile Include="ViewModels\MainViewModel.Commands.Impl.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

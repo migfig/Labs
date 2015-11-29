@@ -45,7 +45,10 @@ remove
 refresh
 refresh catalog My_Catalog
 root
+table Test21 where col1 = '1.34'
+table Test21 where col1 like '%Price 1.34%'
 table Test21 default where col1 = '1.34'
+table Test21 default where col1 like '%Price 1.34%'
 table Test21 default
 table Test21 where col1 between 1 and 10
 table Test21 where col1 between 1.34 and 245.234
