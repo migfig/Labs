@@ -266,6 +266,20 @@ namespace RelatedRecords.Data.ViewModels
             return result;
         }
 
+        private bool _isDropDownOpen = true;
+        public bool IsDropDownOpen
+        {
+            get { return _isDropDownOpen; }
+            set
+            {
+                if (_isDropDownOpen != value)
+                {
+                    _isDropDownOpen = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private string _command;
         public string Command
         {
@@ -275,6 +289,8 @@ namespace RelatedRecords.Data.ViewModels
                 _command = value;
                 OnPropertyChanged();
                 OnPropertyChanged("Commands");
+                if(!string.IsNullOrWhiteSpace(value))
+                    IsDropDownOpen = true;
             }
         }
 

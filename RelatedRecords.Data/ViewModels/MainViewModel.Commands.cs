@@ -893,6 +893,29 @@ namespace RelatedRecords.Data.ViewModels
                 && CurrentTable.Root.ConfigTable.name.ToLower() == tableName.ToLower());
         }
 
+        private bool IsDefaultTable(string tableName)
+        {
+            return tableName.ToLower() == SelectedDataset.defaultTable.ToLower();
+        }
+
+        private void PushIfNotDefault(string tableName, bool isCurrent)
+        {
+            //if (!IsDefaultTable(tableName))
+            //{
+                if (isCurrent)
+                {
+                    _tableNavigation.Pop();
+                }
+                _tableNavigation.Push(CurrentTable);
+            //}
+        }
+
+        private void ClearState()
+        {
+            CurrentTable = null;
+            _tableNavigation.Clear();
+        }
+
         private void ThrowError(string format, params string[] args)
         {
             //throw new Exception(string.Format(format, args));

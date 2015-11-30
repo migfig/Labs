@@ -36,10 +36,12 @@
                         <TextBlock Text="Command" Foreground="Gray" VerticalAlignment="Center"/>
                         <ComboBox
                             ItemsSource="{Binding Commands}"
-                            IsDropDownOpen="True"
+                            IsDropDownOpen="{Binding Mode=TwoWay, Path=IsDropDownOpen}"
                             IsEditable="True"
                             IsTextSearchEnabled="True"
-                            Text="{Binding Mode=TwoWay, Path=Command}"
+                            IsTextSearchCaseSensitive="False"
+                            StaysOpenOnEdit="True"
+                            Text="{Binding Mode=TwoWay, Path=Command, UpdateSourceTrigger=PropertyChanged}"
                             FontSize="14"
                             FontWeight="DemiBold"
                             KeyboardNavigation.AcceptsReturn="True"

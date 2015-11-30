@@ -75,15 +75,30 @@ namespace RelatedRecords.Data.ViewModels
 
                 if (table != null)
                 {
-                    CurrentTable = _tableNavigation.Pop();
+                    CurrentTable =
+                        CurrentTable
+                            .Root
+                            .ConfigTable
+                            .ToColumnsDataTable(int.Parse(topN))
+                            .ToDatatableEx(CurrentTable.Root.ConfigTable);
+                    PushIfNotDefault(table.name, false);
                 }
-                CurrentTable =
-                    CurrentTable
-                        .Root
-                        .ConfigTable
-                        .ToColumnsDataTable(int.Parse(topN))
-                        .ToDatatableEx(CurrentTable.Root.ConfigTable);
-                _tableNavigation.Push(CurrentTable);
+                else
+                {
+                    CurrentTable = _tableNavigation.Peek();
+                    table = findTable(CurrentTable.Root.ConfigTable.name);
+
+                    if (table != null)
+                    {
+                        CurrentTable =
+                            CurrentTable
+                                .Root
+                                .ConfigTable
+                                .ToColumnsDataTable(int.Parse(topN))
+                                .ToDatatableEx(CurrentTable.Root.ConfigTable);
+                        PushIfNotDefault(table.name, false);
+                    }
+                }
             }
         }
 
@@ -260,15 +275,9 @@ namespace RelatedRecords.Data.ViewModels
 
         private async void DoLoad()
         {
-            var isCurrent = TableIsCurrent(SelectedDataset.defaultTable);
             CurrentTable = await findTable(SelectedDataset.defaultTable)
                 .Query("".ToArray(), "".ToArray(), true);
-
-            if (isCurrent)
-            {
-                _tableNavigation.Pop();
-            }
-            _tableNavigation.Push(CurrentTable);
+            PushIfNotDefault(SelectedDataset.defaultTable, false);
         }
 
         private void DoRelateIdToIdOnIdEqId(string srcTblName, string tgtTblName, string srcColName, string tgtColName)
@@ -388,18 +397,20 @@ namespace RelatedRecords.Data.ViewModels
             DoLoad();
         }
 
-        private void DoTableIdDefaultWhereIdOperatorStrLit(string tableName, string column, string value, string op = "=")
+        private void DoTableIdDefaultWhereIdOperatorStrLit(string tableName, string column, string value, string @operator = "=")
         {
             var table = findTable(tableName);
 
-            if (null == table) return;
+            if (null == table) ThrowError("Invalid Table {0}", tableName);
 
             if (SelectedDataset.defaultTable != table.name)
             {
+                ClearState();
+
                 SelectedDataset.defaultTable = table.name;
                 SaveConfiguration();
             }
-            DoTableIdWhereIdOperatorValue(tableName, column, value.Replace("\"", string.Empty), typeof(string), op);
+            DoTableIdWhereIdOperatorValue(tableName, column, value.Replace("\"", string.Empty), typeof(string), @operator);
         }
 
         private void DoTableIdDefault(string tableName)
@@ -410,6 +421,8 @@ namespace RelatedRecords.Data.ViewModels
 
             if (SelectedDataset.defaultTable != table.name)
             {
+                ClearState();
+
                 SelectedDataset.defaultTable = table.name;
                 SaveConfiguration();
             }
@@ -431,11 +444,7 @@ namespace RelatedRecords.Data.ViewModels
                         new SqlParameter(columnName, ParseValue(minValue, type)),
                         new SqlParameter(columnName, ParseValue(maxValue, type)));
 
-            if (isCurrent)
-            {
-                _tableNavigation.Pop();
-            }
-            _tableNavigation.Push(CurrentTable);
+            PushIfNotDefault(tableName, isCurrent);
         }
 
         private async void DoTableIdWhereIdOperatorValue(string tableName, string columnName,
@@ -452,11 +461,7 @@ namespace RelatedRecords.Data.ViewModels
                         false,
                         new SqlParameter(columnName, ParseValue(value, type)));
 
-            if (isCurrent)
-            {
-                _tableNavigation.Pop();
-            }
-            _tableNavigation.Push(CurrentTable);
+            PushIfNotDefault(tableName, isCurrent);
         }
 
         private async void DoTableId(string tableName, int topN = 1000)
@@ -468,12 +473,7 @@ namespace RelatedRecords.Data.ViewModels
             Extensions.MaxRowCount = topN;
             CurrentTable = await table.Query("".ToArray(), "".ToArray(), true);
 
-            if (isCurrent)
-            {
-                _tableNavigation.Pop();
-            }
-
-            _tableNavigation.Push(CurrentTable);
+            PushIfNotDefault(tableName, isCurrent);
         }
 
         private void DoTopInt(string topN)
