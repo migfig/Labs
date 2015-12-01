@@ -898,16 +898,10 @@ namespace RelatedRecords.Data.ViewModels
             return tableName.ToLower() == SelectedDataset.defaultTable.ToLower();
         }
 
-        private void PushIfNotDefault(string tableName, bool isCurrent)
+        private void PushCurrentTable(DatatableEx table)
         {
-            //if (!IsDefaultTable(tableName))
-            //{
-                if (isCurrent)
-                {
-                    _tableNavigation.Pop();
-                }
-                _tableNavigation.Push(CurrentTable);
-            //}
+            CurrentTable = table;
+            _tableNavigation.Push(CurrentTable);
         }
 
         private void ClearState()

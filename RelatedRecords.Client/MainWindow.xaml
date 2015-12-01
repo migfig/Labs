@@ -36,7 +36,7 @@
                         <TextBlock Text="Command" Foreground="Gray" VerticalAlignment="Center"/>
                         <ComboBox
                             ItemsSource="{Binding Commands}"
-                            IsDropDownOpen="{Binding Mode=TwoWay, Path=IsDropDownOpen}"
+                            IsDropDownOpen="{Binding Mode=OneWay, Path=IsDropDownOpen}"
                             IsEditable="True"
                             IsTextSearchEnabled="True"
                             IsTextSearchCaseSensitive="False"

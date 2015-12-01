@@ -75,13 +75,12 @@ namespace RelatedRecords.Data.ViewModels
 
                 if (table != null)
                 {
-                    CurrentTable =
-                        CurrentTable
+                    PushCurrentTable(CurrentTable
                             .Root
                             .ConfigTable
                             .ToColumnsDataTable(int.Parse(topN))
-                            .ToDatatableEx(CurrentTable.Root.ConfigTable);
-                    PushIfNotDefault(table.name, false);
+                            .ToDatatableEx(CurrentTable.Root.ConfigTable)
+                    );
                 }
                 else
                 {
@@ -90,13 +89,12 @@ namespace RelatedRecords.Data.ViewModels
 
                     if (table != null)
                     {
-                        CurrentTable =
-                            CurrentTable
+                        PushCurrentTable(CurrentTable
                                 .Root
                                 .ConfigTable
                                 .ToColumnsDataTable(int.Parse(topN))
-                                .ToDatatableEx(CurrentTable.Root.ConfigTable);
-                        PushIfNotDefault(table.name, false);
+                                .ToDatatableEx(CurrentTable.Root.ConfigTable)
+                        );
                     }
                 }
             }
@@ -275,9 +273,8 @@ namespace RelatedRecords.Data.ViewModels
 
         private async void DoLoad()
         {
-            CurrentTable = await findTable(SelectedDataset.defaultTable)
-                .Query("".ToArray(), "".ToArray(), true);
-            PushIfNotDefault(SelectedDataset.defaultTable, false);
+            PushCurrentTable(await findTable(SelectedDataset.defaultTable)
+                .Query("".ToArray(), "".ToArray(), true));
         }
 
         private void DoRelateIdToIdOnIdEqId(string srcTblName, string tgtTblName, string srcColName, string tgtColName)
@@ -436,15 +433,11 @@ namespace RelatedRecords.Data.ViewModels
             if (null == table || !table.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
                 ThrowError("Invalid table {0}, column: {1}", tableName, columnName);
 
-            var isCurrent = TableIsCurrent(tableName);
-
-            CurrentTable = await table.Query(">=,<=".ToArray(),
+            PushCurrentTable(await table.Query(">=,<=".ToArray(),
                         "And".ToArray(),
                         false,
                         new SqlParameter(columnName, ParseValue(minValue, type)),
-                        new SqlParameter(columnName, ParseValue(maxValue, type)));
-
-            PushIfNotDefault(tableName, isCurrent);
+                        new SqlParameter(columnName, ParseValue(maxValue, type))));
         }
 
         private async void DoTableIdWhereIdOperatorValue(string tableName, string columnName,
@@ -454,14 +447,11 @@ namespace RelatedRecords.Data.ViewModels
             if (null == table || !table.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
                 ThrowError("Invalid table {0}, column: {1}", tableName, columnName);
 
-            var isCurrent = TableIsCurrent(tableName);
-
-            CurrentTable = await table.Query(compOperator.ToArray(),
+            PushCurrentTable(await table.Query(compOperator.ToArray(),
                         "".ToArray(),
                         false,
-                        new SqlParameter(columnName, ParseValue(value, type)));
-
-            PushIfNotDefault(tableName, isCurrent);
+                        new SqlParameter(columnName, ParseValue(value, type)))
+            );
         }
 
         private async void DoTableId(string tableName, int topN = 1000)
@@ -469,11 +459,9 @@ namespace RelatedRecords.Data.ViewModels
             var table = findTable(tableName);
             if (null == table) ThrowError("Invalid table {0}", tableName);
 
-            var isCurrent = TableIsCurrent(tableName);
             Extensions.MaxRowCount = topN;
-            CurrentTable = await table.Query("".ToArray(), "".ToArray(), true);
 
-            PushIfNotDefault(tableName, isCurrent);
+            PushCurrentTable(await table.Query("".ToArray(), "".ToArray(), true));
         }
 
         private void DoTopInt(string topN)
@@ -488,17 +476,10 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoTables(int topN = 1000)
         {
-            var isCurrent = TableIsCurrent(SelectedDataset.name);
-
-            CurrentTable = SelectedDataset
+            PushCurrentTable(SelectedDataset
                 .ToDataTable(topN)
-                .ToDatatableEx(SelectedDataset.ToTable());
-
-            if (isCurrent)
-            {
-                _tableNavigation.Pop();
-            }
-            _tableNavigation.Push(CurrentTable);
+                .ToDatatableEx(SelectedDataset.ToTable())
+            );
         }
 
         private void DoUnrelateIdToId(string srcTblName, string tgtTblName)
@@ -545,8 +526,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = findDataTableByIndex(int.Parse(index));
             if (null == table) ThrowError("Invalid table at Index {0}", index);
 
-            _tableNavigation.Push(CurrentTable);
-            CurrentTable = table;
+            PushCurrentTable(table);
         }
 
         private void DoChildId(string tableName)
@@ -554,8 +534,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = findDataTable(tableName);
             if (null == table) ThrowError("Invalid table {0}", tableName);
 
-            _tableNavigation.Push(CurrentTable);
-            CurrentTable = table;
+            PushCurrentTable(table);
         }
 
         private void DoHelp()
@@ -566,13 +545,7 @@ namespace RelatedRecords.Data.ViewModels
             var table = new string[] { commands, descriptions }
                 .ToDatatableEx();
 
-            if (TableIsCurrent("help"))
-            {
-                _tableNavigation.Pop();
-            }
-
-            CurrentTable = table;
-            _tableNavigation.Push(CurrentTable);
+            PushCurrentTable(table);
         }
     }
 }
