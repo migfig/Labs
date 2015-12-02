@@ -12,7 +12,7 @@
     <Window.Resources>
         <local:IntToVisibilityConverter x:Key="IntConverter"/>
     </Window.Resources>
-    <DockPanel LastChildFill="True">        
+    <DockPanel LastChildFill="True">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -33,30 +33,30 @@
                 BorderBrush="DarkGray" 
                 BorderThickness="1">
                 <DockPanel LastChildFill="True">
-                        <TextBlock Text="Command" Foreground="Gray" VerticalAlignment="Center"/>
-                        <ComboBox
+                    <TextBlock Text="Command" Foreground="Gray" VerticalAlignment="Center"/>
+                    <ComboBox
                             ItemsSource="{Binding Commands}"
-                            IsDropDownOpen="{Binding Mode=OneWay, Path=IsDropDownOpen}"
+                            IsDropDownOpen="{Binding Mode=OneTime, Path=IsDropDownOpen}"
                             IsEditable="True"
                             IsTextSearchEnabled="True"
                             IsTextSearchCaseSensitive="False"
                             StaysOpenOnEdit="True"
                             Text="{Binding Mode=TwoWay, Path=Command, UpdateSourceTrigger=PropertyChanged}"
                             FontSize="14"
-                            FontWeight="DemiBold"
+                            FontWeight="DemiBold"                            
                             KeyboardNavigation.AcceptsReturn="True"
                             TextOptions.TextHintingMode="Animated"
                             Keyboard.KeyUp="ComboBox_KeyUp"
-                            Foreground="Green"
+                            Foreground="{Binding ForegroundColor}"
                             Margin="8,0,0,0"
                             VerticalAlignment="Center"
-                            HorizontalAlignment="Stretch">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}" Foreground="Black" VerticalAlignment="Center"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                            HorizontalAlignment="Stretch" Background="OrangeRed">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Foreground="Black" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </DockPanel>
             </Border>
 
@@ -75,7 +75,7 @@
                         <TextBlock Text="{Binding CurrentTable.Root.Table.Count}" Foreground="Green" VerticalAlignment="Center"/>
                         <TextBlock Text=" Rows" Foreground="Green" VerticalAlignment="Center"/>
                     </StackPanel>
-                    
+
                     <DataGrid 
                         ItemsSource="{Binding CurrentTable.Root.Table}"
                         CanUserResizeRows="False" 

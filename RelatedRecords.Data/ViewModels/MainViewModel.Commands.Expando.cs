@@ -19,7 +19,7 @@ namespace RelatedRecords.Data.ViewModels
             {
                 list.AddRange(Expando(cmd));
             }
-            return list;
+            return list.OrderBy(x => x);
         }
 
         private IEnumerable<string> Expando(string command)

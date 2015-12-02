@@ -9,7 +9,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace RelatedRecords.Data.ViewModels
 {
@@ -53,6 +55,7 @@ namespace RelatedRecords.Data.ViewModels
             _helpDescCommandMethods = methods
                 .Where(m => m.GetCustomAttribute<HelpDescriptionCommandAttribute>(false) != null);
 
+            _foregroundColor = _greenColor;
             _state = new State(this);
             LoadConfiguration();
         }
@@ -112,6 +115,11 @@ namespace RelatedRecords.Data.ViewModels
             {
                 _currentTable = value;
                 OnPropertyChanged();
+
+                if(null != _currentTable)
+                {
+                    _commands = ExpandCommands();
+                }
             }
         }
 
@@ -150,6 +158,21 @@ namespace RelatedRecords.Data.ViewModels
             set
             {
                 _isValidCommand = value;
+                OnPropertyChanged();
+                ForegroundColor = _isValidCommand ? _greenColor : _redColor;
+            }
+        }
+
+        private SolidColorBrush _greenColor = new SolidColorBrush(Color.FromRgb(34, 139, 34));
+        private SolidColorBrush _redColor = new SolidColorBrush(Color.FromRgb(255, 69, 0));
+
+        private SolidColorBrush _foregroundColor;
+        public SolidColorBrush ForegroundColor
+        {
+            get { return _foregroundColor; }
+            set
+            {
+                _foregroundColor = value;
                 OnPropertyChanged();
             }
         }
@@ -288,6 +311,11 @@ namespace RelatedRecords.Data.ViewModels
             {
                 _command = value;
                 OnPropertyChanged();
+                
+                ForegroundColor = _parser.Parse(Command).isAccepted
+                    ? _greenColor
+                    : _redColor;
+
                 OnPropertyChanged("Commands");
                 if(!string.IsNullOrWhiteSpace(value))
                     IsDropDownOpen = true;

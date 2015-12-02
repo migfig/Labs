@@ -900,8 +900,9 @@ namespace RelatedRecords.Data.ViewModels
 
         private void PushCurrentTable(DatatableEx table)
         {
+            if(null != CurrentTable)
+                _tableNavigation.Push(CurrentTable);
             CurrentTable = table;
-            _tableNavigation.Push(CurrentTable);
         }
 
         private void ClearState()
