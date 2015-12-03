@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.Commands;
 using RelatedRecords.Parser;
 using Serilog.Events;
 using System;
@@ -186,6 +187,15 @@ namespace RelatedRecords.Data.ViewModels
                 if (_isBusy == value) return;
                 _isBusy = value;
                 OnPropertyChanged("IsBusy");
+                OnPropertyChanged("IsBusyVisibility");
+            }
+        }
+
+        public Visibility IsBusyVisibility
+        {
+            get
+            {
+                return IsBusy ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -349,7 +359,28 @@ namespace RelatedRecords.Data.ViewModels
             IsValidCommand = parseResults.isAccepted;
             if(parseResults.isAccepted)
             {
+                IsBusy = true;
                 HandleCommand(parseResults);
+                IsBusy = false;
+                Command = string.Empty;
+            }
+        }
+
+        private RelayCommand _goBack;
+        public RelayCommand GoBack
+        {
+            get
+            {
+                _goBack = _goBack ??
+                    new RelayCommand(
+                            x => {
+                                Command = "back";
+                                ExecuteCommand();
+                            },
+                            x => _tableNavigation.Any() 
+                        );
+
+                return _goBack;
             }
         }
 

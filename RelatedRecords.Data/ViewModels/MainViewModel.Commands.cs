@@ -902,6 +902,8 @@ namespace RelatedRecords.Data.ViewModels
         {
             if(null != CurrentTable)
                 _tableNavigation.Push(CurrentTable);
+            _goBack.RaiseCanExecuteChanged();
+            IsBusy = false;
             CurrentTable = table;
         }
 

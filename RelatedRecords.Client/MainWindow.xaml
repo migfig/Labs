@@ -33,6 +33,12 @@
                 BorderBrush="DarkGray" 
                 BorderThickness="1">
                 <DockPanel LastChildFill="True">
+                    <ProgressBar IsIndeterminate="{Binding IsBusy}" Visibility="{Binding IsBusyVisibility}" Width="50"/>
+                    <Button Command="{Binding GoBack}" 
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Top" 
+                            Style="{DynamicResource backButtonStyle}"/>
+
                     <TextBlock Text="Command" Foreground="Gray" VerticalAlignment="Center"/>
                     <ComboBox
                             ItemsSource="{Binding Commands}"

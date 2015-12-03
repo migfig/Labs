@@ -46,4 +46,92 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="FocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <SolidColorBrush x:Key="Button.Static.Background" Color="White"/>
+    <SolidColorBrush x:Key="Button.Static.Border" Color="White"/>
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FF0BB4F3"/>
+    <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF0BB4F3"/>
+    <SolidColorBrush x:Key="Button.Pressed.Background" Color="White"/>
+    <SolidColorBrush x:Key="Button.Pressed.Border" Color="White"/>
+    <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+    <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+    <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+
+    <Style x:Key="backButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+        <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Width="32" Height="32" Visibility="Visible">
+                        <Grid Visibility="Visible">
+                            <Rectangle Fill="#FFFFFFFF" Visibility="Collapsed" />
+                            <Ellipse x:Name="innerCircle" Fill="#FF0BB4F3" Visibility="Visible" Margin="1" />
+                            <Path x:Name="circle" 
+                                  Data="M50.5,4.7500001C25.232973,4.75 4.75,25.232973 4.7500001,50.5 4.75,75.767029 25.232973,96.25 50.5,96.25 75.767029,96.25 96.25,75.767029 96.25,50.5 96.25,25.232973 75.767029,4.75 50.5,4.7500001z M50.5,0C78.390381,0 101,22.609621 101,50.5 101,78.390381 78.390381,101 50.5,101 22.609621,101 0,78.390381 0,50.5 0,22.609621 22.609621,0 50.5,0z" 
+                                  Stretch="Fill" 
+                                  Fill="{TemplateBinding Background}" 
+                                  Visibility="Visible" />
+                        </Grid>
+                        <Path x:Name="arrow" 
+                              Data="F1M-218.342,2910.79L-234.066,2926.52 -233.954,2926.63 -225.428,2926.63 -210.87,2912.07 -206.495,2907.7 -225.313,2888.88 -234.066,2888.88 -218.342,2904.6 -259.829,2904.6 -259.829,2910.79 -218.342,2910.79z" 
+                              Stretch="Uniform" 
+                              Fill="{TemplateBinding Background}" 
+                              Width="18" 
+                              Height="18" 
+                              Margin="0,0,0,0" 
+                              RenderTransformOrigin="0.5,0.5">
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <TransformGroup.Children>
+                                        <RotateTransform Angle="0" />
+                                        <ScaleTransform ScaleX="-1" ScaleY="1" />
+                                    </TransformGroup.Children>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted" Value="true">
+                            <Setter Property="Fill" TargetName="arrow" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            <Setter Property="Fill" TargetName="circle" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            <Setter Property="Fill" TargetName="innerCircle" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Fill" TargetName="arrow" Value="{StaticResource Button.MouseOver.Background}"/>
+                            <Setter Property="Fill" TargetName="circle" Value="{StaticResource Button.MouseOver.Background}"/>
+                            <Setter Property="Fill" TargetName="innerCircle" Value="{StaticResource Button.Static.Background}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Fill" TargetName="arrow" Value="{StaticResource Button.Pressed.Background}"/>
+                            <Setter Property="Fill" TargetName="circle" Value="{StaticResource Button.Pressed.Background}"/>
+                            <Setter Property="Fill" TargetName="innerCircle" Value="{StaticResource Button.Disabled.Background}"/>
+                        </Trigger>
+                        <!--<Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Fill" TargetName="arrow" Value="{StaticResource Button.Disabled.Background}"/>
+                            <Setter Property="Fill" TargetName="circle" Value="{StaticResource Button.Disabled.Background}"/>
+                            <Setter Property="Fill" TargetName="innerCircle" Value="{StaticResource Button.Disabled.Background}"/>
+                        </Trigger>-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

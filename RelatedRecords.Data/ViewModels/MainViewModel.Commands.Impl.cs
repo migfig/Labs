@@ -20,6 +20,7 @@ namespace RelatedRecords.Data.ViewModels
             if (_tableNavigation.Any())
             {
                 CurrentTable = _tableNavigation.Pop();
+                _goBack.RaiseCanExecuteChanged();
             }
         }
 
