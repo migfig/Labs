@@ -19,7 +19,7 @@ namespace RelatedRecords.Data.ViewModels
             {
                 list.AddRange(Expando(cmd));
             }
-            return list.OrderBy(x => x);
+            return list; //.OrderBy(x => x);
         }
 
         private IEnumerable<string> Expando(string command)
@@ -41,6 +41,17 @@ namespace RelatedRecords.Data.ViewModels
             }
         }
 
+        [HelpCommand("help",
+            "home",
+            "back")]
+        [HelpDescriptionCommand("Navigates back(to parent/previous table)",
+            "Displays this help",
+            "Navigate to root(default dataset table)")]
+        public IEnumerable<string> ExpandItem(string command)
+        {
+            return command.Split(new char[] { '`' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
         [HelpCommand("child [{Table:current} | {index}]")]
         [HelpDescriptionCommand("Drill down into children using name or index position")]
         public IEnumerable<string> ExpandChild(string command)
@@ -56,17 +67,6 @@ namespace RelatedRecords.Data.ViewModels
             }
 
             return list;
-        }
-
-        [HelpCommand("back",
-            "help",
-            "root")]
-        [HelpDescriptionCommand("Navigates back(to parent/previous table)",
-            "Displays this help",
-            "Navigate to root(default dataset table)")]
-        public IEnumerable<string> ExpandItem(string command)
-        {
-            return command.Split(new char[] { '`' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         [HelpCommand("clone [catalog {Dataset:current}] [as {Dataset:max}]")]
@@ -368,6 +368,11 @@ namespace RelatedRecords.Data.ViewModels
                                 c.name,
                                 Extensions.GetDefaultValue(c),
                                 Extensions.GetDefaultValue(c)));
+                            list.Add(string.Format("table {0} where {1} not BETWEEN {2} and {3}",
+                                t.name,
+                                c.name,
+                                Extensions.GetDefaultValue(c),
+                                Extensions.GetDefaultValue(c)));
                             break;
                     }
 
@@ -429,6 +434,64 @@ namespace RelatedRecords.Data.ViewModels
             return list;
         }
 
+        [HelpCommand("query {Column} [row {Index}]")]
+        [HelpDescriptionCommand("Creates a query string for the provided column and optionally row number and copies content into clipboard")]
+        public IEnumerable<string> ExpandQuery(string command)
+        {
+            var list = new List<string>();
+            if(null != CurrentTable)
+            {
+                foreach(var c in CurrentTable.Root.ConfigTable.Column)
+                {
+                    list.Add("query " + c.name);
+                    list.Add(string.Format("query {0} row {1}", 
+                        c.name, 
+                        CurrentTable.Root.Table.Rows.Count-1));
+                }
+            }
+            return list;
+        }
+
+        [HelpCommand("run {Query} [with <paramName> = <value> [,...]]")]
+        [HelpDescriptionCommand("Executes a query with or without parameters")]
+        public IEnumerable<string> ExpandRunQuery(string command)
+        {
+            var list = new List<string>();
+            if (SelectedDataset.Query.Any())
+            {
+                foreach (var q in SelectedDataset.Query)
+                {
+                    if (q.Parameter.Any())
+                    {
+                        list.Add(q.Parameter.Aggregate("run " + q.name, 
+                            (seed, i) => seed + string.Format("{0} = {1}", i.name, i.defaultValue)));
+                    }
+                    else
+                    {
+                        list.Add("run " + q.name);
+                    }
+                }
+            }
+            return list;
+        }
+
+        [HelpCommand("transform [[{SqlObject}] [template {Template}]")]
+        [HelpDescriptionCommand("Transforms a Sql Object into a code template using default or given template name")]
+        public IEnumerable<string> ExpandTransform(string command)
+        {
+            var list = new List<string>();
+            list.Add("transform");
+            list.Add("transform template [TemplateName]");
+            foreach (var o in SelectedDataset.Table)
+            {
+                list.Add("transform " + o.name);
+                list.Add(string.Format("transform {0} template {1}",
+                    o.name,
+                    "[TemplateName]"));
+            }
+            return list;
+        }
+
         private string GetCommands()
         {
             var atts = from m in _helpCommandMethods
@@ -456,7 +519,13 @@ namespace RelatedRecords.Data.ViewModels
                        where null != att
                        select att.Descriptions;
 
-            return string.Join(Environment.NewLine, atts);
+            var descs = string.Empty;
+            foreach (var c in atts)
+            {
+                descs += string.Join(Environment.NewLine, c) + Environment.NewLine;
+            }
+
+            return descs;
         }
     }
 }

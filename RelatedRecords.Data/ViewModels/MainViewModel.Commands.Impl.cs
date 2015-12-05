@@ -9,6 +9,7 @@ using static Common.Extensions;
 using www.serviciipeweb.ro.iafblog.ExportDLL;
 using Common;
 using System.Data.SqlClient;
+using System.Windows;
 #endregion usings
 
 namespace RelatedRecords.Data.ViewModels
@@ -549,19 +550,23 @@ namespace RelatedRecords.Data.ViewModels
             PushCurrentTable(table);
         }
        
-        private void DoQueryIdRowInt(string columnName, int row = -1)
+        private void DoQueryIdRowInt(string columnName, int row = 0)
         {
-
+            var query = GetClipboardText(string.IsNullOrWhiteSpace(columnName) 
+                ? CurrentColumn
+                : columnName, row-1);
+            if(!string.IsNullOrEmpty(query))
+            {
+                Clipboard.SetText(query, TextDataFormat.Text);
+            }
         }
 
         private void DoTransformIdTemplateId(string sqlObject = "", string template = "")
         {
-
         }
 
         private void DoRunIdWithParams(string queryName, params QueryParam[] p)
         {
-
         }
     }
 }

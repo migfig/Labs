@@ -1052,7 +1052,7 @@ namespace RelatedRecords.Data.ViewModels
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoRunIdWithParams(queryName, 
                 new QueryParam(paramName, value), 
-                new QueryParam(paramName2, value2));
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_DECIMAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1080,8 +1080,8 @@ namespace RelatedRecords.Data.ViewModels
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoRunIdWithParams(queryName, 
                 new QueryParam(paramName, value), 
-                new QueryParam(paramName2, value2),
-                new QueryParam(paranName3, value3));
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paranName3, value3, SymbolConstants.SYMBOL_STRINGLITERAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1115,9 +1115,9 @@ namespace RelatedRecords.Data.ViewModels
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
             DoRunIdWithParams(queryName, 
                 new QueryParam(paramName, value), 
-                new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3),
-                new QueryParam(paramName4, value4));
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName4, value4, SymbolConstants.SYMBOL_NULL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1261,7 +1261,7 @@ namespace RelatedRecords.Data.ViewModels
             var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoRunIdWithParams(queryName, new QueryParam(paramName, value));
+            DoRunIdWithParams(queryName, new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1282,7 +1282,7 @@ namespace RelatedRecords.Data.ViewModels
             var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
                 new QueryParam(paramName2, value2));
         }
 
@@ -1310,9 +1310,9 @@ namespace RelatedRecords.Data.ViewModels
             var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
                 new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3));
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_STRINGLITERAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1345,10 +1345,10 @@ namespace RelatedRecords.Data.ViewModels
             var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3),
-                new QueryParam(paramName4, value4));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_INTEGER),
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName4, value4, SymbolConstants.SYMBOL_NULL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1369,8 +1369,8 @@ namespace RelatedRecords.Data.ViewModels
             var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_DECIMAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1397,9 +1397,9 @@ namespace RelatedRecords.Data.ViewModels
             var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 2).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_DECIMAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1432,10 +1432,10 @@ namespace RelatedRecords.Data.ViewModels
             var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 3).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3),
-                new QueryParam(paramName4, value4));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName4, value4, SymbolConstants.SYMBOL_DECIMAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1474,11 +1474,11 @@ namespace RelatedRecords.Data.ViewModels
             var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 5).Text;
             var value5 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 4).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3),
-                new QueryParam(paramName4, value4),
-                new QueryParam(paramName5, value5));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName4, value4, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName5, value5, SymbolConstants.SYMBOL_DECIMAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1492,7 +1492,7 @@ namespace RelatedRecords.Data.ViewModels
             var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            DoRunIdWithParams(queryName, new QueryParam(paramName, value));
+            DoRunIdWithParams(queryName, new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1513,7 +1513,7 @@ namespace RelatedRecords.Data.ViewModels
             var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
                 new QueryParam(paramName2, value2));
         }
 
@@ -1541,9 +1541,9 @@ namespace RelatedRecords.Data.ViewModels
             var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
                 new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3));
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_DECIMAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1576,10 +1576,10 @@ namespace RelatedRecords.Data.ViewModels
             var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
                 new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3),
-                new QueryParam(paramName4, value4));
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName4, value4, SymbolConstants.SYMBOL_NULL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1600,8 +1600,8 @@ namespace RelatedRecords.Data.ViewModels
             var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_STRINGLITERAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1628,9 +1628,9 @@ namespace RelatedRecords.Data.ViewModels
             var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName3, value2),
-                new QueryParam(paramName3, value3));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName3, value2, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_STRINGLITERAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1663,10 +1663,10 @@ namespace RelatedRecords.Data.ViewModels
             var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3),
-                new QueryParam(paramName4, value4));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName4, value4, SymbolConstants.SYMBOL_STRINGLITERAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1705,11 +1705,11 @@ namespace RelatedRecords.Data.ViewModels
             var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 5).Text;
             var value5 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3),
-                new QueryParam(paramName4, value4),
-                new QueryParam(paramName5, value5));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName4, value4, SymbolConstants.SYMBOL_STRINGLITERAL),
+                new QueryParam(paramName5, value5, SymbolConstants.SYMBOL_STRINGLITERAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1723,7 +1723,7 @@ namespace RelatedRecords.Data.ViewModels
             var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            DoRunIdWithParams(queryName, new QueryParam(paramName, value));
+            DoRunIdWithParams(queryName, new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1744,7 +1744,7 @@ namespace RelatedRecords.Data.ViewModels
             var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
                 new QueryParam(paramName2, value2));
         }
 
@@ -1772,9 +1772,9 @@ namespace RelatedRecords.Data.ViewModels
             var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
                 new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3));
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_DECIMAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1807,10 +1807,10 @@ namespace RelatedRecords.Data.ViewModels
             var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
                 new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3),
-                new QueryParam(paramName4, value4));
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_DECIMAL),
+                new QueryParam(paramName4, value4, SymbolConstants.SYMBOL_STRINGLITERAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1831,8 +1831,8 @@ namespace RelatedRecords.Data.ViewModels
             var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 1).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_NULL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1859,9 +1859,9 @@ namespace RelatedRecords.Data.ViewModels
             var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 2).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_NULL),
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_NULL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1894,10 +1894,10 @@ namespace RelatedRecords.Data.ViewModels
             var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 3).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3),
-                new QueryParam(paramName4, value4));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_NULL),
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_NULL),
+                new QueryParam(paramName4, value4, SymbolConstants.SYMBOL_NULL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
@@ -1936,11 +1936,11 @@ namespace RelatedRecords.Data.ViewModels
             var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 5).Text;
             var value5 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 4).Text;
             DoRunIdWithParams(queryName,
-                new QueryParam(paramName, value),
-                new QueryParam(paramName2, value2),
-                new QueryParam(paramName3, value3),
-                new QueryParam(paramName4, value4),
-                new QueryParam(paramName5, value5));
+                new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
+                new QueryParam(paramName2, value2, SymbolConstants.SYMBOL_NULL),
+                new QueryParam(paramName3, value3, SymbolConstants.SYMBOL_NULL),
+                new QueryParam(paramName4, value4, SymbolConstants.SYMBOL_NULL),
+                new QueryParam(paramName5, value5, SymbolConstants.SYMBOL_NULL));
         }
 
         #endregion run commands

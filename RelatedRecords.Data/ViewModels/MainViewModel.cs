@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using static RelatedRecords.Extensions;
 
 namespace RelatedRecords.Data.ViewModels
 {
@@ -310,6 +311,47 @@ namespace RelatedRecords.Data.ViewModels
                     _isDropDownOpen = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        private string GetClipboardText(string columnName, int row)
+        {
+            if (null != CurrentTable
+                    && null != _selectedRootDataRowView
+                    && !string.IsNullOrWhiteSpace(columnName)
+                    && CurrentTable.Root.ConfigTable.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
+            {
+                var columnValue = row >= 0 && CurrentTable.Root.Table.Rows.Count >= row
+                    ? CurrentTable.Root.Table.Rows[row].Value(columnName)
+                    : CurrentColumnValue;
+
+                return string.Format("SELECT * FROM {0} WHERE {1};",
+                    CurrentTable.Root.ConfigTable.name,
+                    string.Format("{0} = {1}", columnName, columnValue));
+            }
+
+            return string.Empty;
+        }
+
+        private string _currentColumnValue;
+        public string CurrentColumnValue
+        {
+            get { return _currentColumnValue; }
+            set
+            {
+                _currentColumnValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _currentColumn;
+        public string CurrentColumn
+        {
+            get { return _currentColumn; }
+            set
+            {
+                _currentColumn = value;
+                OnPropertyChanged();
             }
         }
 

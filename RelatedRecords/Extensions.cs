@@ -1018,7 +1018,7 @@ namespace RelatedRecords
             return value;
         }
 
-        public static string Value(this DataRow row, string columnName)
+        public static string Value(this DataRow row, string columnName, string quoteChar = "'")
         {
             var value = "NULL";
             if (!row.Table.Columns.Contains(columnName)) return value;
@@ -1047,7 +1047,7 @@ namespace RelatedRecords
                 case "System.DateTimeOffset":
                 case "System.Guid":
                 case "System.Object":
-                    return string.Format("'{0}'", row[columnName]);
+                    return string.Format("{0}{1}{0}", quoteChar, row[columnName]);
             }
 
             return value;

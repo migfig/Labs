@@ -1,6 +1,7 @@
 ﻿using RelatedRecords.Data.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,14 @@ namespace RelatedRecords.Client
 
         private void DataGrid_CurrentCellChanged(object sender, EventArgs e)
         {
-
+            try
+            {
+                var cell = (sender as DataGrid).CurrentCell;
+                var colName = cell.Column.Header.ToString();
+                MainViewModel.ViewModel.CurrentColumnValue = colName;
+                MainViewModel.ViewModel.CurrentColumnValue = (cell.Item as DataRowView)[colName].ToString();
+            }
+            catch (Exception) {; }
         }
 
         private void ComboBox_KeyUp(object sender, KeyEventArgs e)
