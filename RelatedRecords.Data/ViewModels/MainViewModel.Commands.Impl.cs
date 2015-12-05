@@ -548,5 +548,10 @@ namespace RelatedRecords.Data.ViewModels
 
             PushCurrentTable(table);
         }
+       
+        private void DoQueryIdRowInt(string columnName, int row = -1)
+        {
+
+        }
     }
 }

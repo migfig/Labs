@@ -28,9 +28,11 @@ columns
 export as html
 export as json
 export as sql
+export as sql nochild
 export Html_Table as html
 export _Tablename as json
 export _Table_Name_12 as sql
+export _Table_Name_12 as sql nochild
 export ThisTable as xml
 export as xml
 import catalog SampleZ server localhostz user devz password pwdz
@@ -44,14 +46,16 @@ remove catalog CatalogName
 remove
 refresh
 refresh catalog My_Catalog
-root
+home
 table Test21 where col1 = '1.34'
 table Test21 where col1 like '%Price 1.34%'
 table Test21 default where col1 = '1.34'
 table Test21 default where col1 like '%Price 1.34%'
 table Test21 default
 table Test21 where col1 between 1 and 10
+table Test21 where col1 not between 1 and 10
 table Test21 where col1 between 1.34 and 245.234
+table Test21 where col1 not between 1.34 and 245.234
 table Test21 where col1 >= -1
 table Test21 where col1 >= -121.340
 table Test21 where col1 >= 1
@@ -84,7 +88,45 @@ child
 child 2
 child MyTable
 help
+run qry_Name2Test
+query TicketNumber
+query TicketNumber row 10
 ";
+            var parms = new string[] 
+            {
+                "_paramInt = 3",
+                "param_Dec = 1.0",
+                "paramStrId = 'sample'",
+                "param_IdNull = null"
+            };
+
+            var parmStr = new StringBuilder();
+            for(var i=0; i<parms.Length; i++)
+            {
+                var single = "run qry_Name2Test with " + parms[i];
+                var agg = single;
+                parmStr.AppendFormat("{0}{1}", single, Environment.NewLine);
+                for(var j=0; j<4; j++)
+                {
+                    if (i != j)
+                    {
+                        agg += ", " + parms[j];
+                        parmStr.AppendFormat("{0}{1}", agg, Environment.NewLine);
+                    }
+                }
+                parmStr.AppendFormat("{0}{1}", agg, Environment.NewLine);
+
+                agg = single;
+                for (var j = 0; j < 4; j++)
+                {
+                    if (i != j)
+                        agg += ", " + parms[j];
+                }
+
+            }
+
+            commands += parmStr.ToString();
+
             #endregion text commands
 
             var parser = new RRParser(

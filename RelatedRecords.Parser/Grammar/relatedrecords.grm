@@ -13,6 +13,7 @@
 {ID Tail}      = {Alphanumeric} + [_]
 {String Chars} = {Printable} + {HT} - ["]
 {Quoted String Chars} = {Printable} + {HT} - ['']
+{Bracket String Chars} = {Printable} + {HT} - ['['] - [']']
 ! -------------------------------------------------
 ! Terminals
 ! -------------------------------------------------
@@ -21,6 +22,7 @@ NewLine       = {CR}{LF} | {CR} | {LF}
 Identifier    = {ID Head}{ID Tail}*
 StringLiteral = '"' {String Chars}* '"'
               | '''' {Quoted String Chars}* ''''
+              | '[' {Bracket String Chars}* ']'
 Integer       = {Digit} + {Digit}*
 Decimal       = {Digit} + {Digit}* [.] {Digit}* 
 ! -------------------------------------------------
@@ -52,6 +54,8 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
               | <TopnExp>
               | <ChildExp>
               | <HelpExp>
+              | <QueryExp>
+              | <RunQueryExp>
               
 ! import catalog <catalogname> [server <servername> [user <username> password <password>]]
 <ImportExp>   ::= import <CatalogExp> !using localhost and trusted creds
@@ -100,12 +104,20 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
                | export Identifier as html
                | export Identifier as json
                | export Identifier as xml
+               | export as sql nochild
+               | export as html nochild
+               | export as json nochild
+               | export as xml nochild
+               | export Identifier as sql nochild
+               | export Identifier as html nochild
+               | export Identifier as json nochild
+               | export Identifier as xml nochild
 
 ! back
 <BackExp>    ::= back
               
 ! root
-<RootExp>    ::= root
+<RootExp>    ::= home
 
 ! tables
 <TablesExp>  ::= tables
@@ -130,6 +142,40 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
 <AsExp>       ::= as Identifier
 <HelpExp>     ::= help
 
+<QueryExp>    ::= query Identifier
+               | query Identifier row Integer
+
+<RunQueryExp> ::= run Identifier
+               | run Identifier with <ParamExpression>
+               | run Identifier with <ParamExpression> ',' <ParamExpression2>
+               | run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3>
+               | run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4>
+               | run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4> ',' <ParamExpression5>
+
+<ParamExpression> ::= <ParamExpression> '=' <ParamValue>
+               | <ParamValue>
+
+<ParamExpression2> ::= <ParamExpression2> '=' <ParamValue>
+               | <ParamValue>
+
+<ParamExpression3> ::= <ParamExpression3> '=' <ParamValue>
+               | <ParamValue>
+
+<ParamExpression4> ::= <ParamExpression4> '=' <ParamValue>
+               | <ParamValue>
+
+<ParamExpression5> ::= <ParamExpression5> '=' <ParamValue>
+               | <ParamValue>
+
+<ParamValue>  ::= '-' <PValue>
+               | <PValue>
+               
+<PValue>      ::= Identifier
+               | null
+               | Integer
+               | Decimal
+               | StringLiteral
+                              
 <Expression>  ::= <Expression> '>'  <Negate Exp> 
                |  <Expression> '<'  <Negate Exp>
                |  <Expression> '<=' <Negate Exp>
@@ -137,6 +183,7 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
                |  <Expression> '=' <Negate Exp>    !Equal
                |  <Expression> '<>' <Negate Exp>    !Not equal
                |  <Expression> is <Negate Exp>
+               |  <Expression> not between <Negate Exp> and <Negate Exp>
                |  <Expression> between <Negate Exp> and <Negate Exp>
                |  <Expression> like StringLiteral
                |  <Negate Exp>

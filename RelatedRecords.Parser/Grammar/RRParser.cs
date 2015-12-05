@@ -102,80 +102,95 @@ namespace RelatedRecords.Parser
         SYMBOL_MINUS = 3, // '-'
         SYMBOL_LPAREN = 4, // '('
         SYMBOL_RPAREN = 5, // ')'
-        SYMBOL_LT = 6, // '<'
-        SYMBOL_LTEQ = 7, // '<='
-        SYMBOL_LTGT = 8, // '<>'
-        SYMBOL_EQ = 9, // '='
-        SYMBOL_GT = 10, // '>'
-        SYMBOL_GTEQ = 11, // '>='
-        SYMBOL_AND = 12, // and
-        SYMBOL_AS = 13, // as
-        SYMBOL_BACK = 14, // back
-        SYMBOL_BETWEEN = 15, // between
-        SYMBOL_CATALOG = 16, // catalog
-        SYMBOL_CHILD = 17, // child
-        SYMBOL_CLONE = 18, // clone
-        SYMBOL_COLUMNS = 19, // columns
-        SYMBOL_DECIMAL = 20, // Decimal
-        SYMBOL_DEFAULT = 21, // default
-        SYMBOL_EXPORT = 22, // export
-        SYMBOL_HELP = 23, // help
-        SYMBOL_HTML = 24, // html
-        SYMBOL_IDENTIFIER = 25, // Identifier
-        SYMBOL_IMPORT = 26, // import
-        SYMBOL_INTEGER = 27, // Integer
-        SYMBOL_IS = 28, // is
-        SYMBOL_JSON = 29, // json
-        SYMBOL_LIKE = 30, // like
-        SYMBOL_LOAD = 31, // load
-        SYMBOL_NEWLINE = 32, // NewLine
-        SYMBOL_NOT = 33, // not
-        SYMBOL_NULL = 34, // null
-        SYMBOL_ON = 35, // on
-        SYMBOL_PASSWORD = 36, // password
-        SYMBOL_REFRESH = 37, // refresh
-        SYMBOL_RELATE = 38, // relate
-        SYMBOL_REMOVE = 39, // remove
-        SYMBOL_ROOT = 40, // root
-        SYMBOL_SERVER = 41, // server
-        SYMBOL_SQL = 42, // sql
-        SYMBOL_STRINGLITERAL = 43, // StringLiteral
-        SYMBOL_TABLE = 44, // table
-        SYMBOL_TABLES = 45, // tables
-        SYMBOL_TO = 46, // to
-        SYMBOL_TOP = 47, // top
-        SYMBOL_UNRELATE = 48, // unrelate
-        SYMBOL_USER = 49, // user
-        SYMBOL_WHERE = 50, // where
-        SYMBOL_XML = 51, // xml
-        SYMBOL_ASEXP = 52, // <AsExp>
-        SYMBOL_BACKEXP = 53, // <BackExp>
-        SYMBOL_CATALOGEXP = 54, // <CatalogExp>
-        SYMBOL_CHILDEXP = 55, // <ChildExp>
-        SYMBOL_CLONEEXP = 56, // <CloneExp>
-        SYMBOL_COLUMNSEXP = 57, // <ColumnsExp>
-        SYMBOL_COMMANDEXP = 58, // <CommandExp>
-        SYMBOL_EXPORTEXP = 59, // <ExportExp>
-        SYMBOL_EXPRESSION = 60, // <Expression>
-        SYMBOL_HELPEXP = 61, // <HelpExp>
-        SYMBOL_IMPORTEXP = 62, // <ImportExp>
-        SYMBOL_LOADEXP = 63, // <LoadExp>
-        SYMBOL_NEGATEEXP = 64, // <Negate Exp>
-        SYMBOL_NL = 65, // <nl>
-        SYMBOL_NLOPT = 66, // <nl Opt>
-        SYMBOL_PASSWORDEXP = 67, // <PasswordExp>
-        SYMBOL_REFRESHEXP = 68, // <RefreshExp>
-        SYMBOL_RELATEEXP = 69, // <RelateExp>
-        SYMBOL_REMOVEEXP = 70, // <RemoveExp>
-        SYMBOL_ROOTEXP = 71, // <RootExp>
-        SYMBOL_SERVEREXP = 72, // <ServerExp>
-        SYMBOL_START = 73, // <Start>
-        SYMBOL_TABLEEXP = 74, // <TableExp>
-        SYMBOL_TABLESEXP = 75, // <TablesExp>
-        SYMBOL_TOPNEXP = 76, // <TopnExp>
-        SYMBOL_UNRELATEEXP = 77, // <UnrelateExp>
-        SYMBOL_USEREXP = 78, // <UserExp>
-        SYMBOL_VALUE = 79  // <Value>
+        SYMBOL_COMMA = 6, // ','
+        SYMBOL_LT = 7, // '<'
+        SYMBOL_LTEQ = 8, // '<='
+        SYMBOL_LTGT = 9, // '<>'
+        SYMBOL_EQ = 10, // '='
+        SYMBOL_GT = 11, // '>'
+        SYMBOL_GTEQ = 12, // '>='
+        SYMBOL_AND = 13, // and
+        SYMBOL_AS = 14, // as
+        SYMBOL_BACK = 15, // back
+        SYMBOL_BETWEEN = 16, // between
+        SYMBOL_CATALOG = 17, // catalog
+        SYMBOL_CHILD = 18, // child
+        SYMBOL_CLONE = 19, // clone
+        SYMBOL_COLUMNS = 20, // columns
+        SYMBOL_DECIMAL = 21, // Decimal
+        SYMBOL_DEFAULT = 22, // default
+        SYMBOL_EXPORT = 23, // export
+        SYMBOL_HELP = 24, // help
+        SYMBOL_HOME = 25, // home
+        SYMBOL_HTML = 26, // html
+        SYMBOL_IDENTIFIER = 27, // Identifier
+        SYMBOL_IMPORT = 28, // import
+        SYMBOL_INTEGER = 29, // Integer
+        SYMBOL_IS = 30, // is
+        SYMBOL_JSON = 31, // json
+        SYMBOL_LIKE = 32, // like
+        SYMBOL_LOAD = 33, // load
+        SYMBOL_NEWLINE = 34, // NewLine
+        SYMBOL_NOCHILD = 35, // nochild
+        SYMBOL_NOT = 36, // not
+        SYMBOL_NULL = 37, // null
+        SYMBOL_ON = 38, // on
+        SYMBOL_PASSWORD = 39, // password
+        SYMBOL_QUERY = 40, // query
+        SYMBOL_REFRESH = 41, // refresh
+        SYMBOL_RELATE = 42, // relate
+        SYMBOL_REMOVE = 43, // remove
+        SYMBOL_ROW = 44, // row
+        SYMBOL_RUN = 45, // run
+        SYMBOL_SERVER = 46, // server
+        SYMBOL_SQL = 47, // sql
+        SYMBOL_STRINGLITERAL = 48, // StringLiteral
+        SYMBOL_TABLE = 49, // table
+        SYMBOL_TABLES = 50, // tables
+        SYMBOL_TO = 51, // to
+        SYMBOL_TOP = 52, // top
+        SYMBOL_UNRELATE = 53, // unrelate
+        SYMBOL_USER = 54, // user
+        SYMBOL_WHERE = 55, // where
+        SYMBOL_WITH = 56, // with
+        SYMBOL_XML = 57, // xml
+        SYMBOL_ASEXP = 58, // <AsExp>
+        SYMBOL_BACKEXP = 59, // <BackExp>
+        SYMBOL_CATALOGEXP = 60, // <CatalogExp>
+        SYMBOL_CHILDEXP = 61, // <ChildExp>
+        SYMBOL_CLONEEXP = 62, // <CloneExp>
+        SYMBOL_COLUMNSEXP = 63, // <ColumnsExp>
+        SYMBOL_COMMANDEXP = 64, // <CommandExp>
+        SYMBOL_EXPORTEXP = 65, // <ExportExp>
+        SYMBOL_EXPRESSION = 66, // <Expression>
+        SYMBOL_HELPEXP = 67, // <HelpExp>
+        SYMBOL_IMPORTEXP = 68, // <ImportExp>
+        SYMBOL_LOADEXP = 69, // <LoadExp>
+        SYMBOL_NEGATEEXP = 70, // <Negate Exp>
+        SYMBOL_NL = 71, // <nl>
+        SYMBOL_NLOPT = 72, // <nl Opt>
+        SYMBOL_PARAMEXPRESSION = 73, // <ParamExpression>
+        SYMBOL_PARAMEXPRESSION2 = 74, // <ParamExpression2>
+        SYMBOL_PARAMEXPRESSION3 = 75, // <ParamExpression3>
+        SYMBOL_PARAMEXPRESSION4 = 76, // <ParamExpression4>
+        SYMBOL_PARAMEXPRESSION5 = 77, // <ParamExpression5>
+        SYMBOL_PARAMVALUE = 78, // <ParamValue>
+        SYMBOL_PASSWORDEXP = 79, // <PasswordExp>
+        SYMBOL_PVALUE = 80, // <PValue>
+        SYMBOL_QUERYEXP = 81, // <QueryExp>
+        SYMBOL_REFRESHEXP = 82, // <RefreshExp>
+        SYMBOL_RELATEEXP = 83, // <RelateExp>
+        SYMBOL_REMOVEEXP = 84, // <RemoveExp>
+        SYMBOL_ROOTEXP = 85, // <RootExp>
+        SYMBOL_RUNQUERYEXP = 86, // <RunQueryExp>
+        SYMBOL_SERVEREXP = 87, // <ServerExp>
+        SYMBOL_START = 88, // <Start>
+        SYMBOL_TABLEEXP = 89, // <TableExp>
+        SYMBOL_TABLESEXP = 90, // <TablesExp>
+        SYMBOL_TOPNEXP = 91, // <TopnExp>
+        SYMBOL_UNRELATEEXP = 92, // <UnrelateExp>
+        SYMBOL_USEREXP = 93, // <UserExp>
+        SYMBOL_VALUE = 94  // <Value>
     };
 
     public enum RuleConstants : int
@@ -201,71 +216,107 @@ namespace RelatedRecords.Parser
         RULE_COMMANDEXP14 = 18, // <CommandExp> ::= <TopnExp>
         RULE_COMMANDEXP15 = 19, // <CommandExp> ::= <ChildExp>
         RULE_COMMANDEXP16 = 20, // <CommandExp> ::= <HelpExp>
-        RULE_IMPORTEXP_IMPORT = 21, // <ImportExp> ::= import <CatalogExp>
-        RULE_IMPORTEXP_IMPORT2 = 22, // <ImportExp> ::= import <CatalogExp> <UserExp> <PasswordExp>
-        RULE_IMPORTEXP_IMPORT3 = 23, // <ImportExp> ::= import <CatalogExp> <ServerExp> <UserExp> <PasswordExp>
-        RULE_CLONEEXP_CLONE = 24, // <CloneExp> ::= clone
-        RULE_CLONEEXP_CLONE2 = 25, // <CloneExp> ::= clone <CatalogExp>
-        RULE_CLONEEXP_CLONE3 = 26, // <CloneExp> ::= clone <AsExp>
-        RULE_CLONEEXP_CLONE4 = 27, // <CloneExp> ::= clone <CatalogExp> <AsExp>
-        RULE_REMOVEEXP_REMOVE = 28, // <RemoveExp> ::= remove
-        RULE_REMOVEEXP_REMOVE2 = 29, // <RemoveExp> ::= remove <CatalogExp>
-        RULE_REFRESHEXP_REFRESH = 30, // <RefreshExp> ::= refresh
-        RULE_REFRESHEXP_REFRESH2 = 31, // <RefreshExp> ::= refresh <CatalogExp>
-        RULE_LOADEXP_LOAD = 32, // <LoadExp> ::= load
-        RULE_LOADEXP_LOAD2 = 33, // <LoadExp> ::= load <CatalogExp>
-        RULE_TABLEEXP_TABLE = 34, // <TableExp> ::= table
-        RULE_TABLEEXP_TABLE_IDENTIFIER = 35, // <TableExp> ::= table Identifier
-        RULE_TABLEEXP_TABLE_IDENTIFIER_DEFAULT = 36, // <TableExp> ::= table Identifier default
-        RULE_TABLEEXP_TABLE_IDENTIFIER_DEFAULT_WHERE = 37, // <TableExp> ::= table Identifier default where <Expression>
-        RULE_TABLEEXP_TABLE_IDENTIFIER_WHERE = 38, // <TableExp> ::= table Identifier where <Expression>
-        RULE_RELATEEXP_RELATE_TO_IDENTIFIER_ON_IDENTIFIER_EQ_IDENTIFIER = 39, // <RelateExp> ::= relate to Identifier on Identifier '=' Identifier
-        RULE_RELATEEXP_RELATE_IDENTIFIER_TO_IDENTIFIER_ON_IDENTIFIER_EQ_IDENTIFIER = 40, // <RelateExp> ::= relate Identifier to Identifier on Identifier '=' Identifier
-        RULE_UNRELATEEXP_UNRELATE_TO_IDENTIFIER = 41, // <UnrelateExp> ::= unrelate to Identifier
-        RULE_UNRELATEEXP_UNRELATE_IDENTIFIER_TO_IDENTIFIER = 42, // <UnrelateExp> ::= unrelate Identifier to Identifier
-        RULE_EXPORTEXP_EXPORT_AS_SQL = 43, // <ExportExp> ::= export as sql
-        RULE_EXPORTEXP_EXPORT_AS_HTML = 44, // <ExportExp> ::= export as html
-        RULE_EXPORTEXP_EXPORT_AS_JSON = 45, // <ExportExp> ::= export as json
-        RULE_EXPORTEXP_EXPORT_AS_XML = 46, // <ExportExp> ::= export as xml
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_SQL = 47, // <ExportExp> ::= export Identifier as sql
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_HTML = 48, // <ExportExp> ::= export Identifier as html
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_JSON = 49, // <ExportExp> ::= export Identifier as json
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_XML = 50, // <ExportExp> ::= export Identifier as xml
-        RULE_BACKEXP_BACK = 51, // <BackExp> ::= back
-        RULE_ROOTEXP_ROOT = 52, // <RootExp> ::= root
-        RULE_TABLESEXP_TABLES = 53, // <TablesExp> ::= tables
-        RULE_TABLESEXP_TABLES_INTEGER = 54, // <TablesExp> ::= tables Integer
-        RULE_COLUMNSEXP_COLUMNS = 55, // <ColumnsExp> ::= columns
-        RULE_COLUMNSEXP_COLUMNS_INTEGER = 56, // <ColumnsExp> ::= columns Integer
-        RULE_TOPNEXP_TOP_INTEGER = 57, // <TopnExp> ::= top Integer
-        RULE_CHILDEXP_CHILD = 58, // <ChildExp> ::= child
-        RULE_CHILDEXP_CHILD_INTEGER = 59, // <ChildExp> ::= child Integer
-        RULE_CHILDEXP_CHILD_IDENTIFIER = 60, // <ChildExp> ::= child Identifier
-        RULE_CATALOGEXP_CATALOG_IDENTIFIER = 61, // <CatalogExp> ::= catalog Identifier
-        RULE_USEREXP_USER_IDENTIFIER = 62, // <UserExp> ::= user Identifier
-        RULE_PASSWORDEXP_PASSWORD_IDENTIFIER = 63, // <PasswordExp> ::= password Identifier
-        RULE_SERVEREXP_SERVER_IDENTIFIER = 64, // <ServerExp> ::= server Identifier
-        RULE_ASEXP_AS_IDENTIFIER = 65, // <AsExp> ::= as Identifier
-        RULE_HELPEXP_HELP = 66, // <HelpExp> ::= help
-        RULE_EXPRESSION_GT = 67, // <Expression> ::= <Expression> '>' <Negate Exp>
-        RULE_EXPRESSION_LT = 68, // <Expression> ::= <Expression> '<' <Negate Exp>
-        RULE_EXPRESSION_LTEQ = 69, // <Expression> ::= <Expression> '<=' <Negate Exp>
-        RULE_EXPRESSION_GTEQ = 70, // <Expression> ::= <Expression> '>=' <Negate Exp>
-        RULE_EXPRESSION_EQ = 71, // <Expression> ::= <Expression> '=' <Negate Exp>
-        RULE_EXPRESSION_LTGT = 72, // <Expression> ::= <Expression> '<>' <Negate Exp>
-        RULE_EXPRESSION_IS = 73, // <Expression> ::= <Expression> is <Negate Exp>
-        RULE_EXPRESSION_BETWEEN_AND = 74, // <Expression> ::= <Expression> between <Negate Exp> and <Negate Exp>
-        RULE_EXPRESSION_LIKE_STRINGLITERAL = 75, // <Expression> ::= <Expression> like StringLiteral
-        RULE_EXPRESSION = 76, // <Expression> ::= <Negate Exp>
-        RULE_NEGATEEXP_MINUS = 77, // <Negate Exp> ::= '-' <Value>
-        RULE_NEGATEEXP_NOT = 78, // <Negate Exp> ::= not <Value>
-        RULE_NEGATEEXP = 79, // <Negate Exp> ::= <Value>
-        RULE_VALUE_IDENTIFIER = 80, // <Value> ::= Identifier
-        RULE_VALUE_LPAREN_RPAREN = 81, // <Value> ::= '(' <Expression> ')'
-        RULE_VALUE_NULL = 82, // <Value> ::= null
-        RULE_VALUE_INTEGER = 83, // <Value> ::= Integer
-        RULE_VALUE_DECIMAL = 84, // <Value> ::= Decimal
-        RULE_VALUE_STRINGLITERAL = 85  // <Value> ::= StringLiteral
+        RULE_COMMANDEXP17 = 21, // <CommandExp> ::= <QueryExp>
+        RULE_COMMANDEXP18 = 22, // <CommandExp> ::= <RunQueryExp>
+        RULE_IMPORTEXP_IMPORT = 23, // <ImportExp> ::= import <CatalogExp>
+        RULE_IMPORTEXP_IMPORT2 = 24, // <ImportExp> ::= import <CatalogExp> <UserExp> <PasswordExp>
+        RULE_IMPORTEXP_IMPORT3 = 25, // <ImportExp> ::= import <CatalogExp> <ServerExp> <UserExp> <PasswordExp>
+        RULE_CLONEEXP_CLONE = 26, // <CloneExp> ::= clone
+        RULE_CLONEEXP_CLONE2 = 27, // <CloneExp> ::= clone <CatalogExp>
+        RULE_CLONEEXP_CLONE3 = 28, // <CloneExp> ::= clone <AsExp>
+        RULE_CLONEEXP_CLONE4 = 29, // <CloneExp> ::= clone <CatalogExp> <AsExp>
+        RULE_REMOVEEXP_REMOVE = 30, // <RemoveExp> ::= remove
+        RULE_REMOVEEXP_REMOVE2 = 31, // <RemoveExp> ::= remove <CatalogExp>
+        RULE_REFRESHEXP_REFRESH = 32, // <RefreshExp> ::= refresh
+        RULE_REFRESHEXP_REFRESH2 = 33, // <RefreshExp> ::= refresh <CatalogExp>
+        RULE_LOADEXP_LOAD = 34, // <LoadExp> ::= load
+        RULE_LOADEXP_LOAD2 = 35, // <LoadExp> ::= load <CatalogExp>
+        RULE_TABLEEXP_TABLE = 36, // <TableExp> ::= table
+        RULE_TABLEEXP_TABLE_IDENTIFIER = 37, // <TableExp> ::= table Identifier
+        RULE_TABLEEXP_TABLE_IDENTIFIER_DEFAULT = 38, // <TableExp> ::= table Identifier default
+        RULE_TABLEEXP_TABLE_IDENTIFIER_DEFAULT_WHERE = 39, // <TableExp> ::= table Identifier default where <Expression>
+        RULE_TABLEEXP_TABLE_IDENTIFIER_WHERE = 40, // <TableExp> ::= table Identifier where <Expression>
+        RULE_RELATEEXP_RELATE_TO_IDENTIFIER_ON_IDENTIFIER_EQ_IDENTIFIER = 41, // <RelateExp> ::= relate to Identifier on Identifier '=' Identifier
+        RULE_RELATEEXP_RELATE_IDENTIFIER_TO_IDENTIFIER_ON_IDENTIFIER_EQ_IDENTIFIER = 42, // <RelateExp> ::= relate Identifier to Identifier on Identifier '=' Identifier
+        RULE_UNRELATEEXP_UNRELATE_TO_IDENTIFIER = 43, // <UnrelateExp> ::= unrelate to Identifier
+        RULE_UNRELATEEXP_UNRELATE_IDENTIFIER_TO_IDENTIFIER = 44, // <UnrelateExp> ::= unrelate Identifier to Identifier
+        RULE_EXPORTEXP_EXPORT_AS_SQL = 45, // <ExportExp> ::= export as sql
+        RULE_EXPORTEXP_EXPORT_AS_HTML = 46, // <ExportExp> ::= export as html
+        RULE_EXPORTEXP_EXPORT_AS_JSON = 47, // <ExportExp> ::= export as json
+        RULE_EXPORTEXP_EXPORT_AS_XML = 48, // <ExportExp> ::= export as xml
+        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_SQL = 49, // <ExportExp> ::= export Identifier as sql
+        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_HTML = 50, // <ExportExp> ::= export Identifier as html
+        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_JSON = 51, // <ExportExp> ::= export Identifier as json
+        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_XML = 52, // <ExportExp> ::= export Identifier as xml
+        RULE_EXPORTEXP_EXPORT_AS_SQL_NOCHILD = 53, // <ExportExp> ::= export as sql nochild
+        RULE_EXPORTEXP_EXPORT_AS_HTML_NOCHILD = 54, // <ExportExp> ::= export as html nochild
+        RULE_EXPORTEXP_EXPORT_AS_JSON_NOCHILD = 55, // <ExportExp> ::= export as json nochild
+        RULE_EXPORTEXP_EXPORT_AS_XML_NOCHILD = 56, // <ExportExp> ::= export as xml nochild
+        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_SQL_NOCHILD = 57, // <ExportExp> ::= export Identifier as sql nochild
+        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_HTML_NOCHILD = 58, // <ExportExp> ::= export Identifier as html nochild
+        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_JSON_NOCHILD = 59, // <ExportExp> ::= export Identifier as json nochild
+        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_XML_NOCHILD = 60, // <ExportExp> ::= export Identifier as xml nochild
+        RULE_BACKEXP_BACK = 61, // <BackExp> ::= back
+        RULE_ROOTEXP_HOME = 62, // <RootExp> ::= home
+        RULE_TABLESEXP_TABLES = 63, // <TablesExp> ::= tables
+        RULE_TABLESEXP_TABLES_INTEGER = 64, // <TablesExp> ::= tables Integer
+        RULE_COLUMNSEXP_COLUMNS = 65, // <ColumnsExp> ::= columns
+        RULE_COLUMNSEXP_COLUMNS_INTEGER = 66, // <ColumnsExp> ::= columns Integer
+        RULE_TOPNEXP_TOP_INTEGER = 67, // <TopnExp> ::= top Integer
+        RULE_CHILDEXP_CHILD = 68, // <ChildExp> ::= child
+        RULE_CHILDEXP_CHILD_INTEGER = 69, // <ChildExp> ::= child Integer
+        RULE_CHILDEXP_CHILD_IDENTIFIER = 70, // <ChildExp> ::= child Identifier
+        RULE_CATALOGEXP_CATALOG_IDENTIFIER = 71, // <CatalogExp> ::= catalog Identifier
+        RULE_USEREXP_USER_IDENTIFIER = 72, // <UserExp> ::= user Identifier
+        RULE_PASSWORDEXP_PASSWORD_IDENTIFIER = 73, // <PasswordExp> ::= password Identifier
+        RULE_SERVEREXP_SERVER_IDENTIFIER = 74, // <ServerExp> ::= server Identifier
+        RULE_ASEXP_AS_IDENTIFIER = 75, // <AsExp> ::= as Identifier
+        RULE_HELPEXP_HELP = 76, // <HelpExp> ::= help
+        RULE_QUERYEXP_QUERY_IDENTIFIER = 77, // <QueryExp> ::= query Identifier
+        RULE_QUERYEXP_QUERY_IDENTIFIER_ROW_INTEGER = 78, // <QueryExp> ::= query Identifier row Integer
+        RULE_RUNQUERYEXP_RUN_IDENTIFIER = 79, // <RunQueryExp> ::= run Identifier
+        RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH = 80, // <RunQueryExp> ::= run Identifier with <ParamExpression>
+        RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA = 81, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2>
+        RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA = 82, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3>
+        RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA_COMMA = 83, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4>
+        RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA_COMMA_COMMA = 84, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4> ',' <ParamExpression5>
+        RULE_PARAMEXPRESSION_EQ = 85, // <ParamExpression> ::= <ParamExpression> '=' <ParamValue>
+        RULE_PARAMEXPRESSION = 86, // <ParamExpression> ::= <ParamValue>
+        RULE_PARAMEXPRESSION2_EQ = 87, // <ParamExpression2> ::= <ParamExpression2> '=' <ParamValue>
+        RULE_PARAMEXPRESSION2 = 88, // <ParamExpression2> ::= <ParamValue>
+        RULE_PARAMEXPRESSION3_EQ = 89, // <ParamExpression3> ::= <ParamExpression3> '=' <ParamValue>
+        RULE_PARAMEXPRESSION3 = 90, // <ParamExpression3> ::= <ParamValue>
+        RULE_PARAMEXPRESSION4_EQ = 91, // <ParamExpression4> ::= <ParamExpression4> '=' <ParamValue>
+        RULE_PARAMEXPRESSION4 = 92, // <ParamExpression4> ::= <ParamValue>
+        RULE_PARAMEXPRESSION5_EQ = 93, // <ParamExpression5> ::= <ParamExpression5> '=' <ParamValue>
+        RULE_PARAMEXPRESSION5 = 94, // <ParamExpression5> ::= <ParamValue>
+        RULE_PARAMVALUE_MINUS = 95, // <ParamValue> ::= '-' <PValue>
+        RULE_PARAMVALUE = 96, // <ParamValue> ::= <PValue>
+        RULE_PVALUE_IDENTIFIER = 97, // <PValue> ::= Identifier
+        RULE_PVALUE_NULL = 98, // <PValue> ::= null
+        RULE_PVALUE_INTEGER = 99, // <PValue> ::= Integer
+        RULE_PVALUE_DECIMAL = 100, // <PValue> ::= Decimal
+        RULE_PVALUE_STRINGLITERAL = 101, // <PValue> ::= StringLiteral
+        RULE_EXPRESSION_GT = 102, // <Expression> ::= <Expression> '>' <Negate Exp>
+        RULE_EXPRESSION_LT = 103, // <Expression> ::= <Expression> '<' <Negate Exp>
+        RULE_EXPRESSION_LTEQ = 104, // <Expression> ::= <Expression> '<=' <Negate Exp>
+        RULE_EXPRESSION_GTEQ = 105, // <Expression> ::= <Expression> '>=' <Negate Exp>
+        RULE_EXPRESSION_EQ = 106, // <Expression> ::= <Expression> '=' <Negate Exp>
+        RULE_EXPRESSION_LTGT = 107, // <Expression> ::= <Expression> '<>' <Negate Exp>
+        RULE_EXPRESSION_IS = 108, // <Expression> ::= <Expression> is <Negate Exp>
+        RULE_EXPRESSION_NOT_BETWEEN_AND = 109, // <Expression> ::= <Expression> not between <Negate Exp> and <Negate Exp>
+        RULE_EXPRESSION_BETWEEN_AND = 110, // <Expression> ::= <Expression> between <Negate Exp> and <Negate Exp>
+        RULE_EXPRESSION_LIKE_STRINGLITERAL = 111, // <Expression> ::= <Expression> like StringLiteral
+        RULE_EXPRESSION = 112, // <Expression> ::= <Negate Exp>
+        RULE_NEGATEEXP_MINUS = 113, // <Negate Exp> ::= '-' <Value>
+        RULE_NEGATEEXP_NOT = 114, // <Negate Exp> ::= not <Value>
+        RULE_NEGATEEXP = 115, // <Negate Exp> ::= <Value>
+        RULE_VALUE_IDENTIFIER = 116, // <Value> ::= Identifier
+        RULE_VALUE_LPAREN_RPAREN = 117, // <Value> ::= '(' <Expression> ')'
+        RULE_VALUE_NULL = 118, // <Value> ::= null
+        RULE_VALUE_INTEGER = 119, // <Value> ::= Integer
+        RULE_VALUE_DECIMAL = 120, // <Value> ::= Decimal
+        RULE_VALUE_STRINGLITERAL = 121  // <Value> ::= StringLiteral
     };
 
     public class RRParser
@@ -408,6 +459,11 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object that corresponds to the symbol
                     return null;
 
+                case (int)SymbolConstants.SYMBOL_COMMA:
+                    //','
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
                 case (int)SymbolConstants.SYMBOL_LT:
                     //'<'
                     //todo: Create a new object that corresponds to the symbol
@@ -498,6 +554,11 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object that corresponds to the symbol
                     return null;
 
+                case (int)SymbolConstants.SYMBOL_HOME:
+                    //home
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
                 case (int)SymbolConstants.SYMBOL_HTML:
                     //html
                     //todo: Create a new object that corresponds to the symbol
@@ -543,6 +604,11 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object that corresponds to the symbol
                     return null;
 
+                case (int)SymbolConstants.SYMBOL_NOCHILD:
+                    //nochild
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
                 case (int)SymbolConstants.SYMBOL_NOT:
                     //not
                     //todo: Create a new object that corresponds to the symbol
@@ -563,6 +629,11 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object that corresponds to the symbol
                     return null;
 
+                case (int)SymbolConstants.SYMBOL_QUERY:
+                    //query
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
                 case (int)SymbolConstants.SYMBOL_REFRESH:
                     //refresh
                     //todo: Create a new object that corresponds to the symbol
@@ -578,8 +649,13 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object that corresponds to the symbol
                     return null;
 
-                case (int)SymbolConstants.SYMBOL_ROOT:
-                    //root
+                case (int)SymbolConstants.SYMBOL_ROW:
+                    //row
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
+                case (int)SymbolConstants.SYMBOL_RUN:
+                    //run
                     //todo: Create a new object that corresponds to the symbol
                     return null;
 
@@ -630,6 +706,11 @@ namespace RelatedRecords.Parser
 
                 case (int)SymbolConstants.SYMBOL_WHERE:
                     //where
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
+                case (int)SymbolConstants.SYMBOL_WITH:
+                    //with
                     //todo: Create a new object that corresponds to the symbol
                     return null;
 
@@ -713,8 +794,48 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object that corresponds to the symbol
                     return null;
 
+                case (int)SymbolConstants.SYMBOL_PARAMEXPRESSION:
+                    //<ParamExpression>
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
+                case (int)SymbolConstants.SYMBOL_PARAMEXPRESSION2:
+                    //<ParamExpression2>
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
+                case (int)SymbolConstants.SYMBOL_PARAMEXPRESSION3:
+                    //<ParamExpression3>
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
+                case (int)SymbolConstants.SYMBOL_PARAMEXPRESSION4:
+                    //<ParamExpression4>
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
+                case (int)SymbolConstants.SYMBOL_PARAMEXPRESSION5:
+                    //<ParamExpression5>
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
+                case (int)SymbolConstants.SYMBOL_PARAMVALUE:
+                    //<ParamValue>
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
                 case (int)SymbolConstants.SYMBOL_PASSWORDEXP:
                     //<PasswordExp>
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
+                case (int)SymbolConstants.SYMBOL_PVALUE:
+                    //<PValue>
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
+                case (int)SymbolConstants.SYMBOL_QUERYEXP:
+                    //<QueryExp>
                     //todo: Create a new object that corresponds to the symbol
                     return null;
 
@@ -735,6 +856,11 @@ namespace RelatedRecords.Parser
 
                 case (int)SymbolConstants.SYMBOL_ROOTEXP:
                     //<RootExp>
+                    //todo: Create a new object that corresponds to the symbol
+                    return null;
+
+                case (int)SymbolConstants.SYMBOL_RUNQUERYEXP:
+                    //<RunQueryExp>
                     //todo: Create a new object that corresponds to the symbol
                     return null;
 
@@ -892,6 +1018,16 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object using the stored user objects.
                     return null;
 
+                case (int)RuleConstants.RULE_COMMANDEXP17:
+                    //<CommandExp> ::= <QueryExp>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_COMMANDEXP18:
+                    //<CommandExp> ::= <RunQueryExp>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
                 case (int)RuleConstants.RULE_IMPORTEXP_IMPORT:
                     //<ImportExp> ::= import <CatalogExp>
                     //todo: Create a new object using the stored user objects.
@@ -1042,13 +1178,53 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object using the stored user objects.
                     return null;
 
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_AS_SQL_NOCHILD:
+                    //<ExportExp> ::= export as sql nochild
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_AS_HTML_NOCHILD:
+                    //<ExportExp> ::= export as html nochild
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_AS_JSON_NOCHILD:
+                    //<ExportExp> ::= export as json nochild
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_AS_XML_NOCHILD:
+                    //<ExportExp> ::= export as xml nochild
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_SQL_NOCHILD:
+                    //<ExportExp> ::= export Identifier as sql nochild
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_HTML_NOCHILD:
+                    //<ExportExp> ::= export Identifier as html nochild
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_JSON_NOCHILD:
+                    //<ExportExp> ::= export Identifier as json nochild
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_XML_NOCHILD:
+                    //<ExportExp> ::= export Identifier as xml nochild
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
                 case (int)RuleConstants.RULE_BACKEXP_BACK:
                     //<BackExp> ::= back
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_ROOTEXP_ROOT:
-                    //<RootExp> ::= root
+                case (int)RuleConstants.RULE_ROOTEXP_HOME:
+                    //<RootExp> ::= home
                     //todo: Create a new object using the stored user objects.
                     return null;
 
@@ -1122,6 +1298,131 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object using the stored user objects.
                     return null;
 
+                case (int)RuleConstants.RULE_QUERYEXP_QUERY_IDENTIFIER:
+                    //<QueryExp> ::= query Identifier
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_QUERYEXP_QUERY_IDENTIFIER_ROW_INTEGER:
+                    //<QueryExp> ::= query Identifier row Integer
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER:
+                    //<RunQueryExp> ::= run Identifier
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH:
+                    //<RunQueryExp> ::= run Identifier with <ParamExpression>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA:
+                    //<RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA:
+                    //<RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA_COMMA:
+                    //<RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA_COMMA_COMMA:
+                    //<RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4> ',' <ParamExpression5>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMEXPRESSION_EQ:
+                    //<ParamExpression> ::= <ParamExpression> '=' <ParamValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMEXPRESSION:
+                    //<ParamExpression> ::= <ParamValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMEXPRESSION2_EQ:
+                    //<ParamExpression2> ::= <ParamExpression2> '=' <ParamValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMEXPRESSION2:
+                    //<ParamExpression2> ::= <ParamValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMEXPRESSION3_EQ:
+                    //<ParamExpression3> ::= <ParamExpression3> '=' <ParamValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMEXPRESSION3:
+                    //<ParamExpression3> ::= <ParamValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMEXPRESSION4_EQ:
+                    //<ParamExpression4> ::= <ParamExpression4> '=' <ParamValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMEXPRESSION4:
+                    //<ParamExpression4> ::= <ParamValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMEXPRESSION5_EQ:
+                    //<ParamExpression5> ::= <ParamExpression5> '=' <ParamValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMEXPRESSION5:
+                    //<ParamExpression5> ::= <ParamValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMVALUE_MINUS:
+                    //<ParamValue> ::= '-' <PValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PARAMVALUE:
+                    //<ParamValue> ::= <PValue>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PVALUE_IDENTIFIER:
+                    //<PValue> ::= Identifier
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PVALUE_NULL:
+                    //<PValue> ::= null
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PVALUE_INTEGER:
+                    //<PValue> ::= Integer
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PVALUE_DECIMAL:
+                    //<PValue> ::= Decimal
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_PVALUE_STRINGLITERAL:
+                    //<PValue> ::= StringLiteral
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
                 case (int)RuleConstants.RULE_EXPRESSION_GT:
                     //<Expression> ::= <Expression> '>' <Negate Exp>
                     //todo: Create a new object using the stored user objects.
@@ -1154,6 +1455,11 @@ namespace RelatedRecords.Parser
 
                 case (int)RuleConstants.RULE_EXPRESSION_IS:
                     //<Expression> ::= <Expression> is <Negate Exp>
+                    //todo: Create a new object using the stored user objects.
+                    return null;
+
+                case (int)RuleConstants.RULE_EXPRESSION_NOT_BETWEEN_AND:
+                    //<Expression> ::= <Expression> not between <Negate Exp> and <Negate Exp>
                     //todo: Create a new object using the stored user objects.
                     return null;
 

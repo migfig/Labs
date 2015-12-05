@@ -150,6 +150,15 @@ namespace RelatedRecords.Data.ViewModels
 
         [Command(SymbolConstants.SYMBOL_EXPORT
         , SymbolConstants.SYMBOL_AS
+        , SymbolConstants.SYMBOL_HTML
+        ,SymbolConstants.SYMBOL_NOCHILD)]
+        public void ExportAsHtmlNoChild(IEnumerable<TerminalToken> tokens)
+        {
+            DoExportAsHtml(false);
+        }
+
+        [Command(SymbolConstants.SYMBOL_EXPORT
+        , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_JSON)]
         public void ExportAsJson(IEnumerable<TerminalToken> tokens)
         {
@@ -158,10 +167,28 @@ namespace RelatedRecords.Data.ViewModels
 
         [Command(SymbolConstants.SYMBOL_EXPORT
         , SymbolConstants.SYMBOL_AS
+        , SymbolConstants.SYMBOL_JSON
+        , SymbolConstants.SYMBOL_NOCHILD)]
+        public void ExportAsJsonNoChild(IEnumerable<TerminalToken> tokens)
+        {
+            DoExportAsJson(false);
+        }
+
+        [Command(SymbolConstants.SYMBOL_EXPORT
+        , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_SQL)]
         public void ExportAsSql(IEnumerable<TerminalToken> tokens)
         {
             DoExportAsSql();
+        }
+
+        [Command(SymbolConstants.SYMBOL_EXPORT
+        , SymbolConstants.SYMBOL_AS
+        , SymbolConstants.SYMBOL_SQL
+        , SymbolConstants.SYMBOL_NOCHILD)]
+        public void ExportAsSqlNochild(IEnumerable<TerminalToken> tokens)
+        {
+            DoExportAsSql(false);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
@@ -177,11 +204,33 @@ namespace RelatedRecords.Data.ViewModels
         [Command(SymbolConstants.SYMBOL_EXPORT
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_AS
+        , SymbolConstants.SYMBOL_HTML
+        , SymbolConstants.SYMBOL_NOCHILD)]
+        public void ExportIdAsHtmlNoChild(IEnumerable<TerminalToken> tokens)
+        {
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoExportIdAsHtml(table, false);
+        }
+
+        [Command(SymbolConstants.SYMBOL_EXPORT
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_JSON)]
         public void ExportIdAsJson(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             DoExportIdAsJson(table);
+        }
+
+        [Command(SymbolConstants.SYMBOL_EXPORT
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_AS
+        , SymbolConstants.SYMBOL_JSON
+        , SymbolConstants.SYMBOL_NOCHILD)]
+        public void ExportIdAsJsonNoChild(IEnumerable<TerminalToken> tokens)
+        {
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoExportIdAsJson(table, false);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
@@ -197,8 +246,31 @@ namespace RelatedRecords.Data.ViewModels
         [Command(SymbolConstants.SYMBOL_EXPORT
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_AS
+        , SymbolConstants.SYMBOL_SQL
+        , SymbolConstants.SYMBOL_NOCHILD)]
+        public void ExportIdAsSqlNochild(IEnumerable<TerminalToken> tokens)
+        {
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoExportIdAsSql(table, false);
+        }
+
+
+        [Command(SymbolConstants.SYMBOL_EXPORT
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_XML)]
         public void ExportIdAsXml(IEnumerable<TerminalToken> tokens)
+        {
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoExportIdAsXml(table);
+        }
+
+        [Command(SymbolConstants.SYMBOL_EXPORT
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_AS
+        , SymbolConstants.SYMBOL_XML
+        , SymbolConstants.SYMBOL_NOCHILD)]
+        public void ExportIdAsXmlNoChild(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             DoExportIdAsXml(table);
@@ -208,6 +280,15 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_XML)]
         public void ExportAsXml(IEnumerable<TerminalToken> tokens)
+        {
+            DoExportAsXml();
+        }
+
+        [Command(SymbolConstants.SYMBOL_EXPORT
+        , SymbolConstants.SYMBOL_AS
+        , SymbolConstants.SYMBOL_XML
+        , SymbolConstants.SYMBOL_NOCHILD)]
+        public void ExportAsXmlNoChild(IEnumerable<TerminalToken> tokens)
         {
             DoExportAsXml();
         }
@@ -331,7 +412,7 @@ namespace RelatedRecords.Data.ViewModels
             DoRefreshCatalogId(catalog);
         }
 
-        [Command(SymbolConstants.SYMBOL_ROOT)]
+        [Command(SymbolConstants.SYMBOL_HOME)]
         public void Root(IEnumerable<TerminalToken> tokens)
         {
             DoRoot();
@@ -425,11 +506,47 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_NOT
+        , SymbolConstants.SYMBOL_BETWEEN
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_AND
+        , SymbolConstants.SYMBOL_INTEGER)]
+        public void TableIdWhereIdNotBetweenIntAndInt(IEnumerable<TerminalToken> tokens)
+        {
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
+            DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue);
+        }
+
+        [Command(SymbolConstants.SYMBOL_TABLE
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WHERE
+        , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_BETWEEN
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_AND
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdBetweenDecAndDec(IEnumerable<TerminalToken> tokens)
+        {
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
+            DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue, typeof(double));
+        }
+
+        [Command(SymbolConstants.SYMBOL_TABLE
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WHERE
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_NOT
+        , SymbolConstants.SYMBOL_BETWEEN
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_AND
+        , SymbolConstants.SYMBOL_DECIMAL)]
+        public void TableIdWhereIdNotBetweenDecAndDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
@@ -834,6 +951,26 @@ namespace RelatedRecords.Data.ViewModels
         {
             DoHelp();
         }
+
+        [Command(SymbolConstants.SYMBOL_QUERY
+        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        public void QueryId(IEnumerable<TerminalToken> tokens)
+        {
+            var columnName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoQueryIdRowInt(columnName);
+        }
+
+        [Command(SymbolConstants.SYMBOL_QUERY
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_ROW
+        , SymbolConstants.SYMBOL_INTEGER)]
+        public void QueryIdRowInt(IEnumerable<TerminalToken> tokens)
+        {
+            var columnName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var row = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoQueryIdRowInt(columnName, int.Parse(row));
+        }
+
 
         #endregion command handlers
 
