@@ -553,5 +553,15 @@ namespace RelatedRecords.Data.ViewModels
         {
 
         }
+
+        private void DoTransformIdTemplateId(string sqlObject = "", string template = "")
+        {
+
+        }
+
+        private void DoRunIdWithParams(string queryName, params QueryParam[] p)
+        {
+
+        }
     }
 }

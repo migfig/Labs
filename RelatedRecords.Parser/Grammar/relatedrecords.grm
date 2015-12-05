@@ -56,6 +56,7 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
               | <HelpExp>
               | <QueryExp>
               | <RunQueryExp>
+              | <TransformExp>
               
 ! import catalog <catalogname> [server <servername> [user <username> password <password>]]
 <ImportExp>   ::= import <CatalogExp> !using localhost and trusted creds
@@ -144,6 +145,11 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
 
 <QueryExp>    ::= query Identifier
                | query Identifier row Integer
+
+<TransformExp> ::= transform
+                | transform template Identifier
+                | transform Identifier
+                | transform Identifier template Identifier
 
 <RunQueryExp> ::= run Identifier
                | run Identifier with <ParamExpression>

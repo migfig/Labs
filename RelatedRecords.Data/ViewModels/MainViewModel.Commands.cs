@@ -418,6 +418,8 @@ namespace RelatedRecords.Data.ViewModels
             DoRoot();
         }
 
+        #region table commands
+
         [Command(SymbolConstants.SYMBOL_TABLE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_DEFAULT
@@ -882,6 +884,8 @@ namespace RelatedRecords.Data.ViewModels
             DoTableId(table);
         }
 
+        #endregion table commands
+
         [Command(SymbolConstants.SYMBOL_TABLES
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TablesInt(IEnumerable<TerminalToken> tokens)
@@ -971,6 +975,975 @@ namespace RelatedRecords.Data.ViewModels
             DoQueryIdRowInt(columnName, int.Parse(row));
         }
 
+        [Command(SymbolConstants.SYMBOL_TRANSFORM)]
+        public void Transform(IEnumerable<TerminalToken> tokens)
+        {
+            DoTransformIdTemplateId();
+        }
+
+        [Command(SymbolConstants.SYMBOL_TRANSFORM
+        , SymbolConstants.SYMBOL_TEMPLATE
+        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        public void TransformTemplateId(IEnumerable<TerminalToken> tokens)
+        {
+            var template = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            DoTransformIdTemplateId(string.Empty, template);
+        }
+
+        [Command(SymbolConstants.SYMBOL_TRANSFORM
+        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        public void TransformId(IEnumerable<TerminalToken> tokens)
+        {
+            var sqlObject = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoTransformIdTemplateId(sqlObject);
+        }
+
+        [Command(SymbolConstants.SYMBOL_TRANSFORM
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_TEMPLATE
+        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        public void TransformIdTemplateId(IEnumerable<TerminalToken> tokens)
+        {
+            var sqlObject = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var template = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            DoTransformIdTemplateId(sqlObject, template);
+        }
+
+        #region run commands
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        public void RunId(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoRunIdWithParams(queryName);
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER)]
+        public void RunIdWithIdEqInt(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoRunIdWithParams(queryName, new QueryParam(paramName, value));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL)]
+        public void RunIdWithIdEqIntCommaIdEqDec(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoRunIdWithParams(queryName, 
+                new QueryParam(paramName, value), 
+                new QueryParam(paramName2, value2));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
+        public void RunIdWithIdEqIntCommaIdEqDecCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var paranName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            DoRunIdWithParams(queryName, 
+                new QueryParam(paramName, value), 
+                new QueryParam(paramName2, value2),
+                new QueryParam(paranName3, value3));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL)]
+        public void RunIdWithIdEqIntCommaIdEqDecCommaIdEqStrLitCommaIdEqNull(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            DoRunIdWithParams(queryName, 
+                new QueryParam(paramName, value), 
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER)]
+        public void RunIdWithIdEqIntCommaIdEqInt(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
+            DoRunIdWithParams(queryName, 
+                new QueryParam(paramName, value), 
+                new QueryParam(paramName2, value2));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER)]
+        public void RunIdWithIdEqIntCommaIdEqIntCommaIdEqInt(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 2).Text;
+            DoRunIdWithParams(queryName, 
+                new QueryParam(paramName, value), 
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER)]
+        public void RunIdWithIdEqIntCommaIdEqIntCommaIdEqIntCommaIdEqInt(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 2).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 3).Text;
+            DoRunIdWithParams(queryName, 
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER)]
+        public void RunIdWithIdEqIntCommaIdEqIntCommaIdEqIntCommaIdEqIntCommaIdEqInt(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 2).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 3).Text;
+            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 5).Text;
+            var value5 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 4).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4),
+                new QueryParam(paramName5, value5));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL)]
+        public void RunIdWithIdEqDec(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoRunIdWithParams(queryName, new QueryParam(paramName, value));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER)]
+        public void RunIdWithIdEqDecCommaIdEqInt(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
+        public void RunIdWithIdEqDecCommaIdEqIntCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL)]
+        public void RunIdWithIdEqDecCommaIdEqIntCommaIdEqStrLitCommaIdEqNull(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL)]
+        public void RunIdWithIdEqDecCommaIdEqDec(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL)]
+        public void RunIdWithIdEqDecCommaIdEqDecCommaIdEqDec(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 2).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL)]
+        public void RunIdWithIdEqDecCommaIdEqDecCommaIdEqDecCommaIdEqDec(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 2).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 3).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL)]
+        public void RunIdWithIdEqDecCommaIdEqDecCommaIdEqDecCommaIdEqDecCommaIdEqDec(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 2).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 3).Text;
+            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 5).Text;
+            var value5 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 4).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4),
+                new QueryParam(paramName5, value5));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
+        public void RunIdWithIdEqStrLit(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            DoRunIdWithParams(queryName, new QueryParam(paramName, value));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER)]
+        public void RunIdWithIdEqStrLitCommaIdEqInt(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL)]
+        public void RunIdWithIdEqStrLitCommaIdEqIntCommaIdEqDec(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL)]
+        public void RunIdWithIdEqStrLitCommaIdEqIntCommaIdEqDecCommaIdEqNull(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
+        public void RunIdWithIdEqStrLitCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
+        public void RunIdWithIdEqStrLitCommaIdEqStrLitCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName3, value2),
+                new QueryParam(paramName3, value3));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
+        public void RunIdWithIdEqStrLitCommaIdEqStrLitCommaIdEqStrLitCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
+        public void RunIdWithIdEqStrLitCommaIdEqStrLitCommaIdEqStrLitCommaIdEqStrLitCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
+            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 5).Text;
+            var value5 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4),
+                new QueryParam(paramName5, value5));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL)]
+        public void RunIdWithIdEqNull(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            DoRunIdWithParams(queryName, new QueryParam(paramName, value));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER)]
+        public void RunIdWithIdEqNullCommaIdEqInt(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL)]
+        public void RunIdWithIdEqNullCommaIdEqIntCommaIdEqDec(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_INTEGER
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_DECIMAL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
+        public void RunIdWithIdEqNullCommaIdEqIntCommaIdEqDecCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL)]
+        public void RunIdWithIdEqNullCommaIdEqNull(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 1).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL)]
+        public void RunIdWithIdEqNullCommaIdEqNullCommaIdEqNull(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 2).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL)]
+        public void RunIdWithIdEqNullCommaIdEqNullCommaIdEqNullCommaIdEqNull(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 2).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 3).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4));
+        }
+
+        [Command(SymbolConstants.SYMBOL_RUN
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_WITH
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL
+        , SymbolConstants.SYMBOL_COMMA
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_EQ
+        , SymbolConstants.SYMBOL_NULL)]
+        public void RunIdWithIdEqNullCommaIdEqNullCommaIdEqNullCommaIdEqNullCommaIdEqNull(IEnumerable<TerminalToken> tokens)
+        {
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 1).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 2).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 3).Text;
+            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 5).Text;
+            var value5 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 4).Text;
+            DoRunIdWithParams(queryName,
+                new QueryParam(paramName, value),
+                new QueryParam(paramName2, value2),
+                new QueryParam(paramName3, value3),
+                new QueryParam(paramName4, value4),
+                new QueryParam(paramName5, value5));
+        }
+
+        #endregion run commands
 
         #endregion command handlers
 
@@ -1108,6 +2081,20 @@ namespace RelatedRecords.Data.ViewModels
                 _model.CurrentTable = _navigation.FirstOrDefault(x => x.Root.ConfigTable.name == _tableName);
             }
         }
+
+        internal class QueryParam
+        {
+            private readonly SymbolConstants _symbol;
+            public string Name { get; private set; }
+            public object Value { get; private set; }
+
+            public QueryParam(string name, string value, SymbolConstants symbol = SymbolConstants.SYMBOL_INTEGER)
+            {
+                Name = name;
+                _symbol = symbol;
+                Value = value;
+            }
+        } 
 
         #endregion utility classes
     }

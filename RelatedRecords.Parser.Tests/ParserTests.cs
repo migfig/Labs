@@ -88,11 +88,17 @@ child
 child 2
 child MyTable
 help
-run qry_Name2Test
+transform
+transform template Controller
+transform Tickets
+transform Tickets template Controller
+transform qrySample
+transform qrySample template Controller
 query TicketNumber
 query TicketNumber row 10
+run qry_Name2Test
 ";
-            var parms = new string[] 
+            var parms = new string[]
             {
                 "_paramInt = 3",
                 "param_Dec = 1.0",
@@ -101,12 +107,12 @@ query TicketNumber row 10
             };
 
             var parmStr = new StringBuilder();
-            for(var i=0; i<parms.Length; i++)
+            for (var i = 0; i < parms.Length; i++)
             {
                 var single = "run qry_Name2Test with " + parms[i];
                 var agg = single;
                 parmStr.AppendFormat("{0}{1}", single, Environment.NewLine);
-                for(var j=0; j<4; j++)
+                for (var j = 0; j < 4; j++)
                 {
                     if (i != j)
                     {
@@ -114,15 +120,16 @@ query TicketNumber row 10
                         parmStr.AppendFormat("{0}{1}", agg, Environment.NewLine);
                     }
                 }
-                parmStr.AppendFormat("{0}{1}", agg, Environment.NewLine);
 
                 agg = single;
-                for (var j = 0; j < 4; j++)
+                for (var j = 0; j < 5; j++)
                 {
                     if (i != j)
-                        agg += ", " + parms[j];
+                    {
+                        agg += ", " + parms[i];
+                        parmStr.AppendFormat("{0}{1}", agg, Environment.NewLine);
+                    }
                 }
-
             }
 
             commands += parmStr.ToString();
@@ -133,7 +140,13 @@ query TicketNumber row 10
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "relatedrecords.cgt"));
 
             using (var stream = File.CreateText(
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "methods.cs")))
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "commands.cs")))
+            {
+                stream.Write(commands);
+            }
+
+            using (var stream = File.CreateText(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "methods.cs")))
             {
                 var methods = new StringBuilder();
                 var hlpMethods = new StringBuilder();
@@ -313,6 +326,7 @@ query TicketNumber row 10
                     .Replace("Decimal", "Dec")
                     .Replace("Password", "Pwd")
                     .Replace("Server", "Svr")
+                    .Replace(",", "Comma")
                     ;
         }
     }
