@@ -34,8 +34,9 @@
                 BorderBrush="DarkGray" 
                 BorderThickness="1">
                 <DockPanel LastChildFill="True">
-                    <ProgressBar IsIndeterminate="True" 
-                                 Visibility="Visible"
+                    <controls:BusyProgress IsIndeterminate="{Binding IsBusy}" 
+                                 Visibility="{Binding IsBusyVisibility}"
+                                 Style="{DynamicResource BusyProgressStyle}"
                                  Foreground="#FF0BB4F3"
                                  Width="50"
                                  Height="20"/>

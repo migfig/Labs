@@ -484,6 +484,12 @@ namespace RelatedRecords.Data.ViewModels
             );
         }
 
+        private void DoCatalogsInt(int topN = 1000)
+        {
+            var table = SelectedConfiguration.ToDataTable(topN);
+            PushCurrentTable(table.ToDatatableEx(table.ToTable()));
+        }
+
         private void DoUnrelateIdToId(string srcTblName, string tgtTblName)
         {
             var srcTable = SelectedDataset

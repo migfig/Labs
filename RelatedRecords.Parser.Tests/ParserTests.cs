@@ -81,6 +81,8 @@ table Test21 where col12xo is null
 table Test21
 tables 10
 tables
+catalogs
+catalogs 10
 top 100
 unrelate This_Table12 to OtherTable12
 unrelate to OtherTable12

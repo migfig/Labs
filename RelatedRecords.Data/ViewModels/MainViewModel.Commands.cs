@@ -900,6 +900,20 @@ namespace RelatedRecords.Data.ViewModels
             DoTables();
         }
 
+        [Command(SymbolConstants.SYMBOL_CATALOGS)]
+        public void Catalogs(IEnumerable<TerminalToken> tokens)
+        {
+            DoCatalogsInt();
+        }
+
+        [Command(SymbolConstants.SYMBOL_CATALOGS
+        , SymbolConstants.SYMBOL_INTEGER)]
+        public void CatalogsInt(IEnumerable<TerminalToken> tokens)
+        {
+            var topN = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
+            DoCatalogsInt(int.Parse(topN));
+        }
+
         [Command(SymbolConstants.SYMBOL_TOP
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TopInt(IEnumerable<TerminalToken> tokens)

@@ -50,6 +50,7 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
               | <BackExp>
               | <RootExp>
               | <TablesExp>
+              | <CatalogsExp>
               | <ColumnsExp>
               | <TopnExp>
               | <ChildExp>
@@ -123,7 +124,10 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
 ! tables
 <TablesExp>  ::= tables
               | tables Integer
-              
+
+! cataglos
+<CatalogsExp> ::= catalogs
+               | catalogs Integer              
 ! columns
 <ColumnsExp> ::= columns
               | columns Integer

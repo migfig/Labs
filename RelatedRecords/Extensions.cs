@@ -721,30 +721,6 @@ namespace RelatedRecords
             return table;
         }
 
-        //public static CDataset Clone(this CDataset dataset)
-        //{
-        //    var newds = new CDataset
-        //    {
-        //        dataSourceName = dataset.dataSourceName,
-        //        defaultTable = dataset.defaultTable,
-        //        isDefault = dataset.isDefault,
-        //        isDisabled = dataset.isDisabled,
-        //        isSelected = dataset.isSelected,
-        //        name = dataset.name               
-        //    };
-
-        //    foreach(var t in dataset.Table)
-        //        newds.Table.Add(t.Clone());
-
-        //    foreach (var r in dataset.Relationship)
-        //        newds.Relationship.Add(r.Clone());
-
-        //    foreach (var q in dataset.Query)
-        //        newds.Query.Add(q.Clone());
-
-        //    return newds;
-        //}
-
         public static T Clone<T>(T source) where T: class
         {
             var obj = Activator.CreateInstance<T>();
@@ -753,6 +729,29 @@ namespace RelatedRecords
                 p.SetValue(obj, p.GetValue(source));
 
             return obj as T;
+        }
+
+        public static DataTable ToDataTable(this CConfiguration configuration, int top = 100)
+        {
+            var table = new DataTable("configuration");
+            table.Columns.AddRange(new DataColumn[] {
+                new DataColumn("name", typeof(string)),
+                new DataColumn("tables", typeof(int)),
+                new DataColumn("relations", typeof(int)),
+                new DataColumn("queries", typeof(int))
+            });
+
+            foreach (var d in configuration.Dataset.Take(top))
+            {
+                var row = table.NewRow();
+                row["name"] = d.name;
+                row["tables"] = d.Table.Count;
+                row["relations"] = d.Relationship.Count;
+                row["queries"] = d.Query.Count;
+                table.Rows.Add(row);
+            }
+
+            return table;
         }
 
         public static DataTable ToDataTable(this CDataset dataset, int top = 100)
