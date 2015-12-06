@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RelatedRecords.Client"
+        xmlns:controls="clr-namespace:RelatedRecords.Client.Controls"
         mc:Ignorable="d"
         Title="{Binding Title}" 
         Height="350" 
@@ -33,7 +34,11 @@
                 BorderBrush="DarkGray" 
                 BorderThickness="1">
                 <DockPanel LastChildFill="True">
-                    <ProgressBar IsIndeterminate="{Binding IsBusy}" Visibility="{Binding IsBusyVisibility}" Width="50"/>
+                    <ProgressBar IsIndeterminate="True" 
+                                 Visibility="Visible"
+                                 Foreground="#FF0BB4F3"
+                                 Width="50"
+                                 Height="20"/>
                     <Button Command="{Binding GoBack}" 
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Top" 
