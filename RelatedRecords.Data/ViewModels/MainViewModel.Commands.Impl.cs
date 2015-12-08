@@ -264,12 +264,16 @@ namespace RelatedRecords.Data.ViewModels
                 ConfigurationManager.AppSettings["localdb"].ToString());
         }
 
-        private void DoLoadCatalogId(string catalog)
+        private void DoLoadCatalogId(string catalog, bool isDefault = false)
         {
             var ds = findDataset(catalog);
             if (ds == null) ThrowError("Invalid catalog {0}", catalog);
 
             SelectedDataset = ds;
+            SelectedConfiguration.defaultDataset = ds.name;
+            SelectedConfiguration.defaultDatasource = ds.dataSourceName;
+            SaveConfiguration();
+            LoadConfiguration();
             DoLoad();
         }
 

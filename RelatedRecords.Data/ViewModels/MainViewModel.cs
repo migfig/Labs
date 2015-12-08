@@ -400,7 +400,7 @@ namespace RelatedRecords.Data.ViewModels
             {
                 IsBusy = true;
                 HandleCommand(parseResults);
-                IsBusy = false;
+                //IsBusy = false;
                 Command = string.Empty;
             }
         }

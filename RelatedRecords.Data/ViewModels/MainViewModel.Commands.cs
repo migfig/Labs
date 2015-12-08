@@ -5,6 +5,7 @@ using System.Linq;
 using RelatedRecords.Parser;
 using com.calitha.goldparser;
 using static Common.Extensions;
+using System.ComponentModel;
 #endregion usings
 
 namespace RelatedRecords.Data.ViewModels
@@ -75,7 +76,17 @@ namespace RelatedRecords.Data.ViewModels
             {
                 try
                 {
-                    method.Invoke(this, new object[] { results.Tokens });
+                    IsBusy = true;
+                    var worker = new BackgroundWorker();
+                    worker.DoWork += (s, o) =>
+                    {
+                        method.Invoke(this, new object[] { results.Tokens });
+                    };
+                    worker.RunWorkerCompleted += (s, o) =>
+                    {
+                        IsBusy = false;
+                    };
+                    worker.RunWorkerAsync(this);
                 }
                 catch (Exception e)
                 {
@@ -335,6 +346,16 @@ namespace RelatedRecords.Data.ViewModels
             DoImportCatalogId(catalog);
         }
 
+        [Command(SymbolConstants.SYMBOL_LOAD
+        , SymbolConstants.SYMBOL_CATALOG
+        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_DEFAULT)]
+        public void LoadCatalogIdDefault(IEnumerable<TerminalToken> tokens)
+        {
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            DoLoadCatalogId(catalog, true);
+        }
+        
         [Command(SymbolConstants.SYMBOL_LOAD
         , SymbolConstants.SYMBOL_CATALOG
         , SymbolConstants.SYMBOL_IDENTIFIER)]
@@ -2027,7 +2048,7 @@ namespace RelatedRecords.Data.ViewModels
             if(null != CurrentTable)
                 _tableNavigation.Push(CurrentTable);
             _goBack.RaiseCanExecuteChanged();
-            IsBusy = false;
+            //IsBusy = false;
             CurrentTable = table;
         }
 

@@ -6,6 +6,7 @@ using System.Text;
 using static Common.Extensions;
 using System.Collections.Generic;
 using com.calitha.goldparser;
+using System.Diagnostics;
 
 namespace RelatedRecords.Parser.Tests
 {
@@ -38,6 +39,7 @@ export as xml
 import catalog SampleZ server localhostz user devz password pwdz
 import catalog SampleY user devy password pwdy
 import catalog SampleX
+load catalog _Catalog_Name default
 load catalog CatalogName
 load
 relate ThisTable to OtherTable12 on Column1 = column_2
@@ -158,6 +160,10 @@ run qry_Name2Test
                     StringSplitOptions.RemoveEmptyEntries))
                 {
                     var results = parser.Parse(cmd);
+                    if(!results.isAccepted)
+                    {
+                        var x = cmd;
+                    }
                     Assert.IsTrue(results.isAccepted);
 
                     DumpCommandMethods(results.Tokens, methods);

@@ -169,7 +169,7 @@ namespace RelatedRecords
                 , RegexOptions.IgnoreCase);
 
             var dataSourceName = regEx.Match(connectionString).Groups["servername"].Value.Split('.').First().Split('\\').First() 
-                + "-" + regEx.Match(connectionString).Groups["catalogname"].Value;
+                + "_" + regEx.Match(connectionString).Groups["catalogname"].Value;
 
             return new XElement("Configuration",
                         new XAttribute("defaultDatasource", dataSourceName),

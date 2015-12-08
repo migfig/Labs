@@ -316,7 +316,7 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Import_Catalog_Id_Svr_Id_User_Id_Pwd_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_import catalog SampleZ server localhostz user devz password pwdz";
@@ -331,7 +331,7 @@ namespace RelatedRecords.Data.Tests
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Import_Catalog_Id_User_Id_Pwd_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_import catalog SampleY user devy password pwdy";
@@ -339,14 +339,14 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Import_Catalog_Id_Test()
         {
             MainViewModel.ViewModel.Command = "import catalog SampleX";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Import_Catalog_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_import catalog SampleX";
@@ -454,14 +454,14 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Refresh_Test()
         {
             MainViewModel.ViewModel.Command = "refresh";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Refresh_Test()
         {
             MainViewModel.ViewModel.Command = "_refresh";
@@ -469,14 +469,14 @@ namespace RelatedRecords.Data.Tests
             Assert.IsFalse(MainViewModel.ViewModel.IsValidCommand);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Refresh_Catalog_Id_Test()
         {
             MainViewModel.ViewModel.Command = "refresh catalog My_Catalog";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void Invalid_Refresh_Catalog_Id_Test()
         {
             MainViewModel.ViewModel.Command = "_refresh catalog My_Catalog";
@@ -488,7 +488,7 @@ namespace RelatedRecords.Data.Tests
         public void Root_Test()
         {
             Columns_Int_Test();
-            MainViewModel.ViewModel.Command = "root";
+            MainViewModel.ViewModel.Command = "home";
             MainViewModel.ViewModel.ExecuteCommand();
             Assert.IsTrue(MainViewModel.ViewModel.IsValidCommand);
             Assert.IsNotNull(MainViewModel.ViewModel.CurrentTable);

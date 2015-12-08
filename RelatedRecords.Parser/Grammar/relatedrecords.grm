@@ -81,6 +81,7 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
 ! load [catalog <catalogname>] 
 <LoadExp>     ::= load !default catalog
                | load <CatalogExp>
+               | load <CatalogExp> default
 
 ! table <tablename> [default] [where <column> ((<operator> <value>) | (is [not] NULL) | (between <value1> and <value2>)]
 <TableExp>    ::= table !default table

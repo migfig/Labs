@@ -21,7 +21,8 @@ namespace RelatedRecords
         }
 
         public DataSourceProvider()
-            :this(new DataSetDataSource())
+            //:this(new DataSetDataSource())
+            : this(new SqlDataSource())
         {
         }
 

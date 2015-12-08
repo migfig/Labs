@@ -18,7 +18,6 @@ namespace RelatedRecords
 
                 return table;
             }
-
         }
 
         public async Task<DataTable> LoadStoreProcedure(string connectionString, CQuery query, params IDbDataParameter[] pars)
