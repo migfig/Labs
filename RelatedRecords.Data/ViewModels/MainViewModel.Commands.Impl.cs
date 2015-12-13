@@ -77,12 +77,13 @@ namespace RelatedRecords.Data.ViewModels
 
                 if (table != null)
                 {
-                    PushCurrentTable(CurrentTable
+                    _worker.Run(() => {
+                        return CurrentTable
                             .Root
                             .ConfigTable
                             .ToColumnsDataTable(int.Parse(topN))
-                            .ToDatatableEx(CurrentTable.Root.ConfigTable)
-                    );
+                            .ToDatatableEx(CurrentTable.Root.ConfigTable);
+                    });
                 }
                 else
                 {
@@ -91,12 +92,13 @@ namespace RelatedRecords.Data.ViewModels
 
                     if (table != null)
                     {
-                        PushCurrentTable(CurrentTable
+                        _worker.Run(() => {
+                            return CurrentTable
                                 .Root
                                 .ConfigTable
                                 .ToColumnsDataTable(int.Parse(topN))
-                                .ToDatatableEx(CurrentTable.Root.ConfigTable)
-                        );
+                                .ToDatatableEx(CurrentTable.Root.ConfigTable);
+                        });
                     }
                 }
             }
@@ -277,10 +279,15 @@ namespace RelatedRecords.Data.ViewModels
             DoLoad();
         }
 
-        private async void DoLoad()
+        private void DoLoad()
         {
-            PushCurrentTable(await findTable(SelectedDataset.defaultTable)
-                .Query("".ToArray(), "".ToArray(), true));
+            _worker.Run(() =>
+            {
+                return findTable(SelectedDataset.defaultTable)
+                    .Query("".ToArray(), "".ToArray(), true)
+                    .GetAwaiter()
+                    .GetResult();
+            });
         }
 
         private void DoRelateIdToIdOnIdEqId(string srcTblName, string tgtTblName, string srcColName, string tgtColName)
@@ -432,18 +439,22 @@ namespace RelatedRecords.Data.ViewModels
             DoTableId(tableName);
         }
 
-        private async void DoTableIdWhereIdBetweenValueAndValue(string tableName, string columnName,
+        private void DoTableIdWhereIdBetweenValueAndValue(string tableName, string columnName,
             string minValue, string maxValue, Type type = null)
         {
             var table = findTable(tableName);
             if (null == table || !table.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
                 ThrowError("Invalid table {0}, column: {1}", tableName, columnName);
 
-            PushCurrentTable(await table.Query(">=,<=".ToArray(),
+            _worker.Run(() => {
+                return table.Query(">=,<=".ToArray(),
                         "And".ToArray(),
                         false,
                         new SqlParameter(columnName, ParseValue(minValue, type)),
-                        new SqlParameter(columnName, ParseValue(maxValue, type))));
+                        new SqlParameter(columnName, ParseValue(maxValue, type)))
+                        .GetAwaiter()
+                        .GetResult();
+            });
         }
 
         private async void DoTableIdWhereIdOperatorValue(string tableName, string columnName,
@@ -453,21 +464,29 @@ namespace RelatedRecords.Data.ViewModels
             if (null == table || !table.Column.Any(x => x.name.ToLower() == columnName.ToLower()))
                 ThrowError("Invalid table {0}, column: {1}", tableName, columnName);
 
-            PushCurrentTable(await table.Query(compOperator.ToArray(),
+            _worker.Run(() =>
+            {
+                return table.Query(compOperator.ToArray(),
                         "".ToArray(),
                         false,
                         new SqlParameter(columnName, ParseValue(value, type)))
-            );
+                        .GetAwaiter()
+                        .GetResult();
+            });
         }
 
-        private async void DoTableId(string tableName, int topN = 1000)
+        private void DoTableId(string tableName, int topN = 1000)
         {
             var table = findTable(tableName);
             if (null == table) ThrowError("Invalid table {0}", tableName);
 
             Extensions.MaxRowCount = topN;
-
-            PushCurrentTable(await table.Query("".ToArray(), "".ToArray(), true));
+            _worker.Run(() =>
+            {
+                return table.Query("".ToArray(), "".ToArray(), true)
+                    .GetAwaiter()
+                    .GetResult();
+            });
         }
 
         private void DoTopInt(string topN)
@@ -482,16 +501,20 @@ namespace RelatedRecords.Data.ViewModels
 
         private void DoTables(int topN = 1000)
         {
-            PushCurrentTable(SelectedDataset
+            _worker.Run(() =>
+            {
+                return SelectedDataset
                 .ToDataTable(topN)
-                .ToDatatableEx(SelectedDataset.ToTable())
-            );
+                .ToDatatableEx(SelectedDataset.ToTable());
+            });
         }
 
         private void DoCatalogsInt(int topN = 1000)
         {
             var table = SelectedConfiguration.ToDataTable(topN);
-            PushCurrentTable(table.ToDatatableEx(table.ToTable()));
+            _worker.Run(() => {
+                return table.ToDatatableEx(table.ToTable());
+            });
         }
 
         private void DoUnrelateIdToId(string srcTblName, string tgtTblName)
@@ -554,10 +577,11 @@ namespace RelatedRecords.Data.ViewModels
             var commands = GetCommands();
             var descriptions = GetDescriptions();
 
-            var table = new string[] { commands, descriptions }
+            _worker.Run(() =>
+            {
+                return new string[] { commands, descriptions }
                 .ToDatatableEx();
-
-            PushCurrentTable(table);
+            });
         }
        
         private void DoQueryIdRowInt(string columnName, int row = 0)

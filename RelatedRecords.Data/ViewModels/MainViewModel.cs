@@ -40,6 +40,7 @@ namespace RelatedRecords.Data.ViewModels
         private IEnumerable<MethodInfo> _helpCommandMethods;
         private IEnumerable<MethodInfo> _helpDescCommandMethods;
         private readonly State _state;
+        private readonly Worker _worker;
 
         public MainViewModel(string configFile, string grammarFile)
         {
@@ -56,6 +57,7 @@ namespace RelatedRecords.Data.ViewModels
 
             _foregroundColor = _greenColor;
             _state = new State(this);
+            _worker = new Worker(this);
             LoadConfiguration();
         }
 
@@ -135,9 +137,9 @@ namespace RelatedRecords.Data.ViewModels
 
                     if (loadChildren && null != _selectedRootDataRowView)
                     {
-                        IsBusy = true;
+                        //IsBusy = true;
                         CurrentTable.QueryChildren(_selectedRootDataRowView.Row);
-                        IsBusy = false;
+                        //IsBusy = false;
                     }
                     OnPropertyChanged();
                 }
@@ -398,7 +400,7 @@ namespace RelatedRecords.Data.ViewModels
             IsValidCommand = parseResults.isAccepted;
             if(parseResults.isAccepted)
             {
-                IsBusy = true;
+                //IsBusy = true;
                 HandleCommand(parseResults);
                 //IsBusy = false;
                 Command = string.Empty;

@@ -6,6 +6,7 @@ using RelatedRecords.Parser;
 using com.calitha.goldparser;
 using static Common.Extensions;
 using System.ComponentModel;
+using System.Windows.Threading;
 #endregion usings
 
 namespace RelatedRecords.Data.ViewModels
@@ -76,17 +77,7 @@ namespace RelatedRecords.Data.ViewModels
             {
                 try
                 {
-                    IsBusy = true;
-                    var worker = new BackgroundWorker();
-                    worker.DoWork += (s, o) =>
-                    {
-                        method.Invoke(this, new object[] { results.Tokens });
-                    };
-                    worker.RunWorkerCompleted += (s, o) =>
-                    {
-                        IsBusy = false;
-                    };
-                    worker.RunWorkerAsync(this);
+                    method.Invoke(this, new object[] { results.Tokens });
                 }
                 catch (Exception e)
                 {
@@ -2129,7 +2120,60 @@ namespace RelatedRecords.Data.ViewModels
                 _symbol = symbol;
                 Value = value;
             }
-        } 
+        }
+
+        internal class Worker
+        {
+            private readonly BackgroundWorker _worker;
+            private readonly MainViewModel _model;
+
+            public Worker(MainViewModel model)
+            {
+                _model = model;
+                _worker = new BackgroundWorker();
+            }
+
+            public delegate void SetBusyDelegate();
+            public void SetBusy()
+            {
+                _model.IsBusy = true;
+            }
+
+            public void Run(Func<object> workBlock, Action<object> completedBlock = null)
+            {
+                try
+                {
+                    Dispatcher.CurrentDispatcher
+                        .BeginInvoke(DispatcherPriority.Send, new SetBusyDelegate(SetBusy));
+
+                    _worker.DoWork += (s, o) =>
+                    {
+                        if (null != workBlock)
+                        {
+                            o.Result = workBlock.Invoke();
+                        }
+                    };
+                    _worker.RunWorkerCompleted += (s, o) =>
+                    {
+                        if (null != completedBlock)
+                        {
+                            completedBlock.Invoke(o.Result);
+                        }
+                        else if(o.Result is DatatableEx)
+                        {
+                            _model.PushCurrentTable(o.Result as DatatableEx);
+                        }
+                        _model.IsBusy = false;
+                    };
+                    _worker.RunWorkerAsync(this);
+                }
+                catch (Exception e)
+                {
+                    ErrorLog.Error(e, "When running method");
+                }
+            }
+
+        }
 
         #endregion utility classes
     }
