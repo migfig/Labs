@@ -46,9 +46,10 @@
                             Style="{DynamicResource backButtonStyle}"/>
 
                     <TextBlock Text="Command" Foreground="Gray" VerticalAlignment="Center"/>
+                    <!--SelectedItem="{Binding Mode=TwoWay, Path=SelectedCommand}"-->
                     <ComboBox
                             ItemsSource="{Binding Commands}"
-                            IsDropDownOpen="{Binding Mode=OneTime, Path=IsDropDownOpen}"
+                            IsDropDownOpen="{Binding Mode=TwoWay, Path=IsDropDownOpen}"
                             IsEditable="True"
                             IsTextSearchEnabled="True"
                             IsTextSearchCaseSensitive="False"

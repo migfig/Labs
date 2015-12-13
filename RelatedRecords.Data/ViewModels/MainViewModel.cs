@@ -380,15 +380,36 @@ namespace RelatedRecords.Data.ViewModels
             {
                 if(_commands.Count() == 0)
                 {
-                    _commands = ExpandCommands();
+                    _worker.Run(() =>
+                    {
+                        return ExpandCommands();
+                    }, (o) =>
+                    {
+                        _commands = o as IEnumerable<string>;
+                        OnPropertyChanged("Commands");
+                    });
                 }
 
                 if(!string.IsNullOrWhiteSpace(Command))
                 {
-                    return _commands.Where(x => x.ToLower().StartsWith(Command.ToLower()));
+                    var cmds = _commands.Where(x => x.ToLower().StartsWith(Command.ToLower()));
+                    //SelectedCommand = cmds.FirstOrDefault();
+                    return cmds;
                 }
 
+                //SelectedCommand = _commands.FirstOrDefault();
                 return _commands;
+            }
+        }
+
+        private string _selectedCommand;
+        public string SelectedCommand
+        {
+            get { return _selectedCommand; }
+            set
+            {
+                _selectedCommand = value;
+                OnPropertyChanged();
             }
         }
 
@@ -400,10 +421,7 @@ namespace RelatedRecords.Data.ViewModels
             IsValidCommand = parseResults.isAccepted;
             if(parseResults.isAccepted)
             {
-                //IsBusy = true;
                 HandleCommand(parseResults);
-                //IsBusy = false;
-                Command = string.Empty;
             }
         }
 
@@ -412,16 +430,14 @@ namespace RelatedRecords.Data.ViewModels
         {
             get
             {
-                _goBack = _goBack ??
+                return _goBack ?? (_goBack = 
                     new RelayCommand(
                             x => {
                                 Command = "back";
                                 ExecuteCommand();
                             },
                             x => _tableNavigation.Any() 
-                        );
-
-                return _goBack;
+                        ));
             }
         }
 

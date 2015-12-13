@@ -77,7 +77,17 @@ namespace RelatedRecords.Data.ViewModels
             {
                 try
                 {
-                    method.Invoke(this, new object[] { results.Tokens });
+                    Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+                    {
+                        IsBusy = true;
+                    }, DispatcherPriority.Send);
+
+                    Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+                    {
+                        method.Invoke(this, new object[] { results.Tokens });
+                        IsBusy = false;
+                        Command = string.Empty;
+                    }, DispatcherPriority.ApplicationIdle);
                 }
                 catch (Exception e)
                 {
@@ -2039,7 +2049,7 @@ namespace RelatedRecords.Data.ViewModels
             if(null != CurrentTable)
                 _tableNavigation.Push(CurrentTable);
             _goBack.RaiseCanExecuteChanged();
-            //IsBusy = false;
+           
             CurrentTable = table;
         }
 
