@@ -390,12 +390,12 @@ namespace RelatedRecords.Data.ViewModels
                     });
                 }
 
-                if(!string.IsNullOrWhiteSpace(Command))
-                {
-                    var cmds = _commands.Where(x => x.ToLower().StartsWith(Command.ToLower()));
-                    //SelectedCommand = cmds.FirstOrDefault();
-                    return cmds;
-                }
+                //if(false && !string.IsNullOrWhiteSpace(Command))
+                //{
+                //    var cmds = _commands.Where(x => x.ToLower().StartsWith(Command.ToLower()));
+                //    //SelectedCommand = cmds.FirstOrDefault();
+                //    return cmds;
+                //}
 
                 //SelectedCommand = _commands.FirstOrDefault();
                 return _commands;

@@ -50,7 +50,7 @@
                     <ComboBox
                             ItemsSource="{Binding Commands}"
                             IsDropDownOpen="{Binding Mode=TwoWay, Path=IsDropDownOpen}"
-                            IsEditable="True"
+                            IsEditable="True"                       
                             IsTextSearchEnabled="True"
                             IsTextSearchCaseSensitive="False"
                             StaysOpenOnEdit="True"

@@ -45,8 +45,8 @@ namespace RelatedRecords.Client
             if(e.Key == Key.Enter && !string.IsNullOrWhiteSpace(MainViewModel.ViewModel.Command))
             {
                 MainViewModel.ViewModel.ExecuteCommand();
-                e.Handled = true;
             }
+            e.Handled = true;
         }
     }
 }
