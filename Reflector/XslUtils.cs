@@ -109,5 +109,32 @@ namespace Reflector
         {
             return Environment.NewLine;
         }
+        public string Default(string type)
+        {
+            try
+            {
+                var t = Type.GetType(type);
+                var value = t == typeof(DateTime) || t == typeof(DateTime?)
+                            ? "DateTime.Now.AddHours(-8)"
+                            : Activator.CreateInstance(t).ToString();
+
+                return QuoteValue(value, "\"");
+            }
+            catch (Exception)
+            {
+            }
+
+            return "\"\"";
+        }
+
+        private string QuoteValue(object value, string quoteChar = "'")
+        {
+            if ((value is string || value is Guid) && value.ToString().Trim().ToLower() != "null")
+            {
+                return quoteChar + value.ToString() + quoteChar;
+            }
+
+            return value.ToString();
+        }
     }
 }

@@ -50,4 +50,20 @@
       <taskParameter>json</taskParameter>
     </taskItem>
   </taskItem>
+  <taskItem name="Reflect Assembly Constructors">
+    <taskParameter>{0}</taskParameter>
+    <taskParameter>-r</taskParameter>
+    <taskParameter>ctorxml</taskParameter>
+    <taskParameter>-t</taskParameter>
+    <taskParameter>Controller</taskParameter>
+    <taskItem name="Generate Unit Testing Code" foreachType="true">
+      <taskParameter>{0}</taskParameter>
+      <taskParameter>-r</taskParameter>
+      <taskParameter>xslt</taskParameter>
+      <taskParameter>-x</taskParameter>
+      <taskParameter>controller-unittest.xslt</taskParameter>
+      <taskParameter>-o</taskParameter>
+      <taskParameter>cs</taskParameter>
+    </taskItem>
+  </taskItem>
 </buildWorkflow>

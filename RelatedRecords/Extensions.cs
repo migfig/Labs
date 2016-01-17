@@ -954,6 +954,17 @@ namespace RelatedRecords
             return concat.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
+        public static StringBuilder ToJSon(this StringBuilder value, DatatableEx table, bool includeChidren = true)
+        {
+            if (null != table
+                && table.Root.Table != null
+                && table.Root.Table.Rows.Count > 0)
+            {
+            }
+
+            return value;
+        }
+
         public static StringBuilder SqlInsert(this StringBuilder value, DatatableEx table, bool includeChildren = true)
         {
             if (null != table

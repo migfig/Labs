@@ -13,6 +13,7 @@ namespace Reflector.Console
             //args = "WebApi.Example.dll -t Controller".Split(' ');
             //args = "WebApi.Example.Controllers.ProductsController.xml -r xslt -x iodocuments.xslt -o json".Split(' ');
             //args = "WebApi.Example.Controllers.ProductsController.xml -r xslt -x apitester.xslt -o xml".Split(' ');
+            args = "WebApi.Example.dll -r ctorxml -t Controller".Split(' ');
 #endif
             if (null == args || !args.Any())
             {
@@ -50,6 +51,13 @@ namespace Reflector.Console
                         options.ContainsKey("includeflag")
                     );
                     break;
+                case "ctorxml":
+                    renderer = new XmlCtorRenderer(
+                         options.ContainsKey("file") ? options["file"] : options["path"],
+                         options.ContainsKey("includeflag")
+                     );
+                    break;
+
                 default:
                     renderer = new XmlRenderer(
                         options.ContainsKey("file") ? options["file"] : options["path"],
@@ -59,6 +67,7 @@ namespace Reflector.Console
             }
 
             var parser = new Parser(renderer);
+            System.Console.WriteLine("Rendering as " + options["render"] + "..." + Environment.NewLine);
             System.Console.WriteLine(parser.Render(
                 options.ContainsKey("types") ? options["types"].Split(',') : null,
                 options.ContainsKey("methods") ? options["methods"].Split(','): null

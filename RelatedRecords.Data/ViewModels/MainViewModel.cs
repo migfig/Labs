@@ -378,7 +378,7 @@ namespace RelatedRecords.Data.ViewModels
         {
             get
             {
-                if(_commands.Count() == 0)
+                if(null == _commands || _commands.Count() == 0)
                 {
                     _worker.Run(() =>
                     {
