@@ -1,0 +1,181 @@
+1.0	Framework Fundamentals
+1.1	Managed vs non managed
+1.1.1	What is a managed framework and what is a non-managed framework?
+1.1.2	Is .Net framework a managed framework?
+1.1.3	C++ development runs in a managed environment
+1.1.4	What’s the main characteristic of a managed framework?
+1.1.5	What are its advantages and disadvantages of a managed framework?
+1.1.6	How code is built in the .net framework and how is executed?
+1.2	Object's life cycle
+1.2.1	What’s the life cycle of an object in the .net framework?
+1.3	Garbage collection
+1.3.1	What’s the garbage collection function in .net framework?
+1.3.2	Does garbage collection run automatically, how frequently?
+1.3.3	Can I force the garbage collection execution?
+1.3.4	If my class uses resources that need to be disposed when my instance is no longer needed, what interface does it need to implement?
+1.4	Base objects/root object
+1.4.1	What class is the root class of all the .net classes
+1.4.2	What is boxing/unboxing/casting in .net
+1.5	Base object methods
+1.5.1	What are the main methods of the base (root) class?
+1.5.2	What methods can I override from the base (root) class?
+1.5.3	What is the meaning of overriding a method?
+1.5.4	What is the meaning of overloading a method?
+1.5.5	How do you define optional parameters in a method?
+1.5.6	If you have multiple optional parameters what should you do to specify them at use in any order you wish?
+1.6	Main namespaces
+1.6.1	Which are the principal name spaces available in .net framework?
+1.6.2	In which namespace resides the DateTime class?
+1.6.3	In which namespace resides the Int32 class?
+1.6.4	In which namespace resides the StringBuilder class?
+1.6.5	In which namespace resides the Stream class?
+1.6.6	Is the Stream class abstract?
+1.6.7	Can you tell me some class which implements the Stream class?
+1.6.8	What is the use of those classes inheriting from Stream class?
+1.6.9	In your class definition what keyword you use to import a specific namespace/library?
+1.6.10	Can I load or unload dynamically a namespace/library?
+1.6.11	In a console if you want to write a text line into output, what instruction should you use?
+1.7	Reflection
+1.7.1	What is reflection in .net framework and why is so powerful?
+1.7.2	Is reflection technology available only in .net framework or is also available in other platforms?
+1.7.3	What is the main method exposed by the .net framework for start reflecting an object?
+1.7.4	What are the main methods you can use when discovering/describing an object?
+1.7.5	What is code obfuscation of an assembly and how can be implemented?
+2.0	C# knowledge
+2.1	Variable declarations
+2.1.1	What is the use of the var keyword in C#?
+2.1.2	Can you give me one reason you may declare a variable using var instead of specifying the type?
+2.2	Keywords
+2.2.1	Could you enumerate at least 5 C# keywords and its uses?
+2.2.2	What are the main uses of the using keyword/statement?
+2.2.3	Over what kind of objects works the foreach statement?
+2.2.4	How is a typical foreach statement definition?
+2.2.5	What happens when you use the break and/or continue keywords inside a for/foreach statement?
+2.2.6	Where can you initialize a private variable you’ve prefixed with the readonly keyword in your class definition?
+2.2.7	What the keyword async is used for and which other keyword needs to be set when you use it?
+2.2.8	What is the use of the static keyword in C#?
+2.2.9	If you want to pass multiple parameters of a specific type into a method what keyword you may use, what should be a standard definition for string parameters?
+2.3	Static classes/methods
+2.3.1	Why you may need to use static classes in C#?
+2.3.2	What is the lifecycle of a static instance of your class?
+2.3.3	Can also a class methods or properties be prefixed as static?
+2.3.4	If you define a class as static can you use the “this” keyword to refer to the current instance?
+2.4	Value and reference types
+2.4.1	What are value types and reference types?
+2.4.2	The .net framework primitive types are value types or reference types?
+2.5	Data types
+2.5.1	To what type maps the int type in the .net framework?
+2.5.2	To what type maps the long type in the .net framework?
+2.5.3	Please enumerate at least 5 primitive types of the .net framework.
+2.6	String vs StringBuilder
+2.6.1	What are immutable values in .net framework?
+2.6.2	String type is immutable or mutable?
+2.6.3	When should I use String class and when the StringBuilder class?
+2.6.4	What method of the string class you use to split a string sentence separated by spaces?
+2.6.5	What method should you use to join that split string back again?
+2.6.6	What are the most common used methods of the stringbuilder class?
+2.7	Collections
+2.7.1	What should be the main difference between a string array and a list of strings, i.e. between arrays and collections?
+2.7.2	Please enumerate at least 4 most used .net framework collection classes.
+2.7.3	What is the difference between a list and a dictionary?
+2.8	Generics
+2.8.1	What are the generic classes and where does make sense to use them?
+2.8.2	Do generic class implementations improve code maintenance and readability?
+2.8.3	If you want to implement a stack class of items where they can be integers, strings or custom classes, how do you implement it using generics? 
+2.9	LinQ
+2.9.1	What is LinQ used for?
+2.9.2	What are anonymous variables?
+2.9.3	When you use the let keyword in a linq expression?
+2.9.4	What namespace you need to import to use a standard array of integers with linq expressions?
+2.9.5	What linq instruction should you use to get the maximum value from an array of integers?
+2.9.6	What linq instruction should you use to get the sum of all values from an array of integers?
+2.9.7	If you have a dictionary of string keys and its values as integers, can you summarize the values grouped by keys?
+2.9.8	When you should use the First() and when you should use FirstOrDefault() methods within LinQ?
+2.10	Regular Expressions
+2.10.1	What is a regular expression and what is their usage?
+2.10.2	What is a regular expression pattern?
+2.10.3	How do you define in a regular expression pattern you only accept alphabetic characters in lower and upper case?
+2.10.4	How do you define in a regular expression pattern you only accept from 2 to 8 digits (numbers)?
+3.0	Algorithms
+3.1	Array declarations
+3.1.1	How you define an array of integers?
+3.1.2	How you make sure you initialize that array before being used?
+3.1.3	If you define a List<string> what returns the ToArray() method of that list?
+3.1.4	If you define a string[] what returns the ToList() method of that instance?
+3.2	Word/char counting
+3.2.1	What should be a standard way to count words on a text file?
+3.2.2	What else should I do to also fill a dictionary of letters and its incidences?
+3.3	String splitting
+3.3.1	What is the standard method to split a string?
+3.3.2	What do I need to do to avoid retrieving empty strings?
+3.3.3	Can a split a string using some specific string or char?
+3.4	Word reversing
+3.4.1	What should be a standard way to reverse a string you have received?
+3.4.2	How do you sort a split string by its words length?
+4.0	Object oriented programming
+4.1	Encapsulation
+4.1.1	In OOO what is encapsulation and why is one of the pillars of OOO?
+4.1.2	In .net framework what is the visibility of a private var?
+4.1.3	In .net framework what is the usage of a protected var?
+4.1.4	What is shadowing of a class property in .net framework?
+4.1.5	In .net framework, what is the standard definition of a public property getter, setter (int property for example)?
+4.1.6	What is a constructor and destructor of a class?
+4.1.7	Can constructors be declared as private in C#?
+4.1.8	Can multiple constructors be declared in C#?
+4.2	Inheritance
+4.2.1	What is the meaning of the inheritance term in OOO?
+4.2.2	What is a base class?
+4.2.3	What is a root class of a hierarchy of classes?
+4.2.4	Why you may need to implement a hierarchy of classes?
+4.2.5	What (items) should be defined in a base class?
+4.2.6	What (methods) should be implemented in a base class?
+4.2.7	In .net framework what C# keyword you use to define your class can not be instantiated?
+4.2.8	In .net framework what C# keyword you use to define your class can not be inherited anymore?
+4.2.9	In .net framework what C# keyword you use to define your derived classes must implement a specific method?
+4.3	Polymorphism
+4.3.1	What is the meaning of the polymorphism term in OOO?
+4.3.2	How the polymorphism is implemented in a derived class?
+4.3.3	How do you define optional implementation and how you define strict implementation of a derived class method?
+4.4	Loosely/Tightly coupled
+4.4.1	What is a loosely coupled design of classes and what are its main benefits?
+4.5	Interfaces
+4.5.1	What is an interface in OOO?
+4.5.2	What C# keyword is used to define an interface?
+4.5.3	What items can be defined in an interface?
+4.5.4	In .net framework, can properties be declared in an interface?
+4.5.5	Can interface methods be declared as private or protected?
+4.5.6	When you use an interface instead of an abstract class?
+4.5.7	What are the main differences between an interface and an abstract class?
+4.6	SOLID
+4.6.1	In software development SOLID what the S stands for
+4.6.2	In software development SOLID what the O stands for
+4.6.3	In software development SOLID what the L stands for
+4.6.4	In software development SOLID what the I stands for
+4.6.5	In software development SOLID what the D stands for
+5.0	Patterns
+5.1	Concepts
+5.1.1	What is the meaning of software patterns, what its benefits?
+5.2	Factory method
+5.2.1	Please describe in what cases is recommended to implement the factory method pattern
+5.2.2	Please enumerate at least 2 classes in .net framework or third party components which implement the factory method pattern
+5.3	Singleton
+5.3.1	Please describe what is the singleton pattern and when should be used?
+5.3.2	Please describe the standard implementation of the singleton pattern
+5.4	Builder
+5.4.1	Please describe in what cases is recommended to implement the builder pattern
+5.4.2	Please enumerate at least 2 classes/frameworks/platforms you know implement the builder pattern
+6.0	Application Design
+6.1	Performance/Caching
+6.1.1	What should be an acceptable time for a web page to be rendered in a web site?
+6.1.2	What is the caching technology and how it may be implemented?
+6.1.3	What items should be cached in an application?
+6.1.4	What may be the difference between a Session/Application (web development) and a cache store?
+6.1.5	Please enumerate at least 2 ways in .net framework to implement caching.
+6.2	Messaging
+6.2.1	What is the main usage of the messaging technology?
+6.2.2	In what cases you should incorporate messaging within your application?
+6.2.3	Please enumerate at least 2 technologies/platforms for messaging.
+6.3	Scheduling
+6.3.1	Why scheduling technology should be used in complex systems/services?
+6.3.2	Please enumerate at least 2 technologies/platforms for scheduling.
+6.3.3	What is a standard way to implement in .net framework a scheduled service, what kind of visual studio project can be used?
