@@ -119,9 +119,9 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock VerticalAlignment="Center" Text="{Binding level}" />
                         <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding value}" />
-                        <Button Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource RatingUpButton}" Height="30" Command="{Binding QuestionUpCommand}" CommandParameter="{Binding}" />
-                        <Button Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource RatingDownButton}" Height="30" Command="{Binding QuestionDownCommand}" CommandParameter="{Binding}" />
-                        <Button Grid.Column="4" HorizontalAlignment="Left" Style="{DynamicResource RatingUndefButton}" Height="30" Command="{Binding QuestionUndefCommand}" CommandParameter="{Binding}" />
+                        <Button Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource RatingUpButtonSmall}" Height="30" Command="{Binding QuestionUpCommand}" CommandParameter="{Binding}" />
+                        <Button Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource RatingDownButtonSmall}" Height="30" Command="{Binding QuestionDownCommand}" CommandParameter="{Binding}" />
+                        <Button Grid.Column="4" HorizontalAlignment="Left" Style="{DynamicResource RatingUndefButtonSmall}" Height="30" Command="{Binding QuestionUndefCommand}" CommandParameter="{Binding}" />
                         <TextBlock Grid.Column="5" Text="{Binding Value}" />
                     </Grid>
                 </DataTemplate>

@@ -39,7 +39,7 @@ namespace WpfInterviewer
 
 			public bool CanExecute(object parameter)
 			{
-				return true;
+				return MainViewModel.ViewModel.SelectedQuestion != null;
 			}
 
 			public void Execute(object parameter)
@@ -70,38 +70,21 @@ namespace WpfInterviewer
 		private static MainViewModel _viewModel;
 
 		private configuration _selectedConfiguration;
-
 		private Profile _selectedProfile;
-
 		private Platform _selectedPlatform;
-
 		private KnowledgeArea _selectedKnowledgeArea;
-
 		private Area _selectedArea;
-
 		private Question _selectedQuestion;
 
 		private int _maxQuestionsCount = 10;
-
 		private int _questionsCount = 5;
-
 		private bool _isLoaded = false;
-
 		private bool _isRunning = false;
 
-		private ICommand _runQuestionsCommand;
-
-		private ICommand _questionUpCommand;
-
-		private ICommand _questionDownCommand;
-
-		private ICommand _questionUndefCommand;
-
 		private int _passedCount = 0;
-
 		private int _failedCount = 0;
-
 		private int _undefinedCount = 0;
+        private int _totalQuestions = 0;
 
 		private string _interviewedPerson;
 
@@ -279,35 +262,39 @@ namespace WpfInterviewer
 			}
 		}
 
-		public ICommand RunQuestionsCommand
+        private ICommand _runQuestionsCommand;
+        public ICommand RunQuestionsCommand
 		{
 			get
 			{
-				return _runQuestionsCommand ?? new MainViewModel.RunTestCommand();
+				return _runQuestionsCommand ?? (_runQuestionsCommand = new MainViewModel.RunTestCommand());
 			}
 		}
 
-		public ICommand QuestionUpCommand
+        private ICommand _questionUpCommand;
+        public ICommand QuestionUpCommand
 		{
 			get
 			{
-				return _questionUpCommand ?? new MainViewModel.RunQuestionCommand(1);
+				return _questionUpCommand ?? (_questionUpCommand = new MainViewModel.RunQuestionCommand(1));
 			}
 		}
 
-		public ICommand QuestionDownCommand
+        private ICommand _questionDownCommand;
+        public ICommand QuestionDownCommand
 		{
 			get
 			{
-                return _questionDownCommand ?? new MainViewModel.RunQuestionCommand(0);
+                return _questionDownCommand ?? (_questionDownCommand = new MainViewModel.RunQuestionCommand(0));
 			}
 		}
 
-		public ICommand QuestionUndefCommand
+        private ICommand _questionUndefCommand;
+        public ICommand QuestionUndefCommand
 		{
 			get
 			{
-                return _questionUndefCommand ?? new MainViewModel.RunQuestionCommand(-1);
+                return _questionUndefCommand ?? (_questionUndefCommand = new MainViewModel.RunQuestionCommand(-1));
 			}
 		}
 
@@ -316,7 +303,7 @@ namespace WpfInterviewer
         {
             get
             {
-                return _showAddQuestionsCommand ?? new MainViewModel.RunShowAddQuestionsCommand();
+                return _showAddQuestionsCommand ?? (_showAddQuestionsCommand = new MainViewModel.RunShowAddQuestionsCommand());
             }
         }
 
@@ -330,7 +317,8 @@ namespace WpfInterviewer
 			{
 				_passedCount = value;
 				OnPropertyChanged("PassedCount");
-			}
+                OnPropertyChanged("AppliedQuestions");
+            }
 		}
 
 		public int FailedCount
@@ -343,7 +331,8 @@ namespace WpfInterviewer
 			{
 				_failedCount = value;
 				OnPropertyChanged("FailedCount");
-			}
+                OnPropertyChanged("AppliedQuestions");
+            }
 		}
 
 		public int UndefinedCount
@@ -356,10 +345,36 @@ namespace WpfInterviewer
 			{
 				_undefinedCount = value;
 				OnPropertyChanged("UndefinedCount");
-			}
+                OnPropertyChanged("AppliedQuestions");
+            }
 		}
 
-		public string InterviewedPerson
+        public int TotalQuestions
+        {
+            get
+            {
+                return _totalQuestions;
+            }
+            set
+            {
+                _totalQuestions = value;
+                PassedCount = 0;
+                FailedCount = 0;
+                UndefinedCount = 0;
+                OnPropertyChanged("TotalQuestions");
+                OnPropertyChanged("AppliedQuestions");
+            }
+        }
+
+        public int AppliedQuestions
+        {
+            get
+            {
+                return Math.Min(TotalQuestions, PassedCount + FailedCount + UndefinedCount + 1);
+            }
+        }
+
+        public string InterviewedPerson
 		{
 			get
 			{
@@ -390,9 +405,9 @@ namespace WpfInterviewer
 
 		private void QuestionAnswered(int rating, Question question)
 		{
-			question.AlreadyAnswered = true;
-			question.rating = rating;
-			SelectedQuestion = question;
+            SelectedQuestion = question;
+            SelectedQuestion.AlreadyAnswered = true;
+            SelectedQuestion.rating = rating;
 			switch (rating)
 			{
 			case -1:
@@ -405,6 +420,8 @@ namespace WpfInterviewer
 				PassedCount++;
 				break;
 			}
+
+            SelectedQuestion = GetNextQuestion();
 		}
 
 		private void RunQuestions(int mode)
@@ -412,7 +429,7 @@ namespace WpfInterviewer
 			IsRunning = true;
 			try
 			{
-				if (mode == 1)
+				if (mode == 1) //get random questions
 				{
 					ToogleAnsweredFlag(true);
 
@@ -429,12 +446,23 @@ namespace WpfInterviewer
 				            q.ElementAt(i).AlreadyAnswered = false;
 				        }
 				    }
+
+                    TotalQuestions = GetPendingQuestions();
 				}
 				else
 				{
 					ToogleAnsweredFlag(false);
 				}
 				OnPropertyChanged("Platforms");
+
+                if(mode == 1)
+                {
+                    var window = new AskQuestions();
+                    var result = window.ShowDialog();
+                    if(result.HasValue && result.Value)
+                    {
+                    }
+                }
 			}
 			finally
 			{
@@ -492,5 +520,51 @@ namespace WpfInterviewer
 				q2.AlreadyAnswered = answered;
 			}
 		}
-	}
+
+        private int GetPendingQuestions()
+        {
+            var pendingQuestions = 0;
+            foreach (var q2 in from p in Platforms
+                               from ka in p.knowledgeArea
+                               from a in ka.area
+                               from q in a.question
+                               select q)
+            {
+                pendingQuestions += q2.AlreadyAnswered ? 0 : 1;
+            }
+
+            return pendingQuestions;
+        }
+
+        private Question GetNextQuestion()
+        {
+            foreach(var p in Platforms)
+            {
+                foreach(var ka in p.knowledgeArea)
+                {
+                    foreach(var a in ka.area)
+                    {
+                        foreach(var q in a.question)
+                        {
+                            if (!q.AlreadyAnswered)
+                            {
+                                if (p != SelectedPlatform)
+                                    SelectedPlatform = p;
+
+                                if (ka != SelectedKnowledgeArea)
+                                    SelectedKnowledgeArea = ka;
+
+                                if (a != SelectedArea)
+                                    SelectedArea = a;
+
+                                return q;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+    }
 }

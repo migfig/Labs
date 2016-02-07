@@ -40,6 +40,7 @@
     <SolidColorBrush x:Key="GlyphBrush" Color="#444" />
     <SolidColorBrush x:Key="GlyphSucceedBrush" Color="#FF6EBF20" />
     <SolidColorBrush x:Key="GlyphFailedBrush" Color="#FFC65325" />
+    
     <Style x:Key="DefaultRadioButton" TargetType="{x:Type RadioButton}">
         <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
         <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
@@ -78,6 +79,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="SucceededRadioButton" TargetType="{x:Type RadioButton}">
         <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
         <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
@@ -116,6 +118,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="FailedRadioButton" TargetType="{x:Type RadioButton}">
         <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
         <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
@@ -154,6 +157,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="CheckBoxFocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -165,6 +169,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="DefaultCheckBox" TargetType="{x:Type CheckBox}">
         <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
         <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource CheckBoxFocusVisual}" />
@@ -202,6 +207,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="SimpleButtonFocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -213,6 +219,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="DefaultButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
         <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
         <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
@@ -246,7 +253,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="RatingUpButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+    
+    <Style x:Key="RatingUpButtonSmall" TargetType="{x:Type Button}" BasedOn="{x:Null}">
         <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
         <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
         <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
@@ -275,7 +283,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="RatingDownButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+    
+    <Style x:Key="RatingDownButtonSmall" TargetType="{x:Type Button}" BasedOn="{x:Null}">
         <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
         <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
         <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
@@ -304,7 +313,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="RatingUndefButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+    
+    <Style x:Key="RatingUndefButtonSmall" TargetType="{x:Type Button}" BasedOn="{x:Null}">
         <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
         <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
         <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
@@ -333,6 +343,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="QuestionButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
         <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
         <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
@@ -362,4 +373,119 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="RatingUpButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Name="Grid" Width="60" Height="30">
+                        <Border Name="Border">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Name="Content" Source="/Images/up.png" />
+                                <TextBlock  Grid.Column="1" Text="Yes" FontSize="16" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Border" Property="Border.Background" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource PressedBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource DisabledBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RatingDownButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Name="Grid" Width="60" Height="30">
+                        <Border Name="Border">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Name="Content" Source="/Images/down.png" />
+                                <TextBlock  Grid.Column="1" Text="No" FontSize="16" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Border" Property="Border.Background" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource PressedBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource DisabledBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RatingUndefButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}" />
+        <Setter Property="Control.Background" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Control.BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Name="Grid" Width="110" Height="30">
+                        <Border Name="Border">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Name="Content" Source="/Images/undef.png" />
+                                <TextBlock  Grid.Column="1" Text="Undefined" FontSize="16" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MouseOverBrush}" TargetName="Border" Property="Border.Background" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource PressedBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource PressedBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border" Property="Border.Background" />
+                            <Setter Value="{DynamicResource DisabledBorderBrush}" TargetName="Border" Property="Border.BorderBrush" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
