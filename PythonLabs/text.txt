@@ -1,46 +1,69 @@
 1.0	Framework Fundamentals
 1.1	Managed vs non managed
 1.1.1	What is a managed framework and what is a non-managed framework?
-1.1.2	Is .Net framework a managed framework?
-1.1.3	C++ development runs in a managed environment
-1.1.4	What’s the main characteristic of a managed framework?
-1.1.5	What are its advantages and disadvantages of a managed framework?
-1.1.6	How code is built in the .net framework and how is executed?
+1.1.2	How is memory allocated and accessed in a non-managed framework?
+1.1.3	Is the .net framework a managed framework?
+1.1.4	Please describe what is the .net framework and its characteristics?
+1.1.5	Does C++ run in a managed environment?
+1.1.6	What’s the principal characteristic of a managed framework?
+1.1.7	What are the advantages and disadvantages of a managed framework?
+1.1.8	How code is built in the .net framework and how is executed?
+1.1.9	Does the .net framework binary code generated at compilation is native code? 
+1.1.10	In Java, code is generated in byte code and then interpreted by the JVM, what is the name of the intermediate code generated in the .net framework?
+1.1.11	What is the common language runtime (CLR) in .net framework?
+1.1.12	Please describe up to 3 languages you can use to develop applications in .net framework
+1.1.13	Why is possible you can develop a library in F# and you can use it in a C# project?
+1.1.14	Do you consider the .net framework as a successful development platform and what could be the reason of its success?
+1.1.15	If speed is critical for one application or service, would you consider its implementation in the .net framework or you better go the native way?
+1.1.16	If security is critical for one application or service, would you consider its implementation in the .net framework or you better go the native way or choose another platform?
+1.1.17	Does the .net framework run in embedded systems?
+1.1.18	Please enumerate up to four types of visual studio projects you can create targeting the .net framework?
+1.1.19	How do you think applications/services development will be done in 30 years?
 1.2	Object's life cycle
 1.2.1	What’s the life cycle of an object in the .net framework?
 1.3	Garbage collection
-1.3.1	What’s the garbage collection function in .net framework?
-1.3.2	Does garbage collection run automatically, how frequently?
-1.3.3	Can I force the garbage collection execution?
+1.3.1	What’s the function of the garbage collection in the .net framework?
+1.3.2	Does the garbage collection process run automatically, what are the conditions that trigger this process?
+1.3.3	Can I force the execution of the garbage collection process?
 1.3.4	If my class uses resources that need to be disposed when my instance is no longer needed, what interface does it need to implement?
 1.4	Base objects/root object
-1.4.1	What class is the root class of all the .net classes
-1.4.2	What is boxing/unboxing/casting in .net
+1.4.1	What class is the root class of all the .net classes?
+1.4.2	What is boxing/unboxing/casting in .net?
 1.5	Base object methods
-1.5.1	What are the main methods of the base (root) class?
-1.5.2	What methods can I override from the base (root) class?
+1.5.1	Please enumerate up to 3 public methods of the Object class?
+1.5.2	What methods can I override from the Object class?
 1.5.3	What is the meaning of overriding a method?
 1.5.4	What is the meaning of overloading a method?
 1.5.5	How do you define optional parameters in a method?
-1.5.6	If you have multiple optional parameters what should you do to specify them at use in any order you wish?
+1.5.6	If you have multiple optional parameters in a method, how can you call them in any order you wish?
+1.5.7	Once you have defined an optional parameter in some specific method of your class, can you define another non-optional parameter to the right of the optional one?
+1.5.8	What should be the signature of a class method which supports receiving any number of parameters of the same type (string.Format() for example)?
+1.5.9	How can you compare that two objects are from the same type?
 1.6	Main namespaces
-1.6.1	Which are the principal name spaces available in .net framework?
+1.6.1	Please enumerate most common used (up to 4) name spaces available in .net framework?
 1.6.2	In which namespace resides the DateTime class?
 1.6.3	In which namespace resides the Int32 class?
 1.6.4	In which namespace resides the StringBuilder class?
 1.6.5	In which namespace resides the Stream class?
 1.6.6	Is the Stream class abstract?
-1.6.7	Can you tell me some class which implements the Stream class?
+1.6.7	Please tell me one class which implements the Stream class?
 1.6.8	What is the use of those classes inheriting from Stream class?
 1.6.9	In your class definition what keyword you use to import a specific namespace/library?
 1.6.10	Can I load or unload dynamically a namespace/library?
-1.6.11	In a console if you want to write a text line into output, what instruction should you use?
+1.6.11	What is an App Domain?
+1.6.12	In a console if you want to write a text line into output, what instruction should you use?
+1.6.13	What is a nuget package?
 1.7	Reflection
-1.7.1	What is reflection in .net framework and why is so powerful?
-1.7.2	Is reflection technology available only in .net framework or is also available in other platforms?
-1.7.3	What is the main method exposed by the .net framework for start reflecting an object?
-1.7.4	What are the main methods you can use when discovering/describing an object?
-1.7.5	What is code obfuscation of an assembly and how can be implemented?
+1.7.1	Do you think is possible to generate code in any language or an html page from a .net assembly you have built?
+1.7.2	What is reflection in .net framework and why is so powerful?
+1.7.3	Is reflection technology available only in .net framework or is also available in other platforms like Java?
+1.7.4	What is the main method exposed by the .net framework for start reflecting an object?
+1.7.5	What are the main methods you can use when discovering/describing an object?
+1.7.6	What is code obfuscation of an assembly and how can be implemented?
+1.7.7	When should you create classes inheriting from System.Attribute class?
+1.8	Localization
+1.8.1	What is needed in a visual studio solution to support more than one speaking language (English and Spanish for example) when displaying text to end users?
+1.8.2	How do you handle dates so they display properly in different speaking languages (British and American English for example)?
 2.0	C# knowledge
 2.1	Variable declarations
 2.1.1	What is the use of the var keyword in C#?
@@ -53,13 +76,13 @@
 2.2.5	What happens when you use the break and/or continue keywords inside a for/foreach statement?
 2.2.6	Where can you initialize a private variable you’ve prefixed with the readonly keyword in your class definition?
 2.2.7	What the keyword async is used for and which other keyword needs to be set when you use it?
-2.2.8	What is the use of the static keyword in C#?
-2.2.9	If you want to pass multiple parameters of a specific type into a method what keyword you may use, what should be a standard definition for string parameters?
+2.2.8	What is the use of the static keyword in C# when applied to a class, method and field?
+2.2.9	When should you prefix a class as sealed?
 2.3	Static classes/methods
 2.3.1	Why you may need to use static classes in C#?
 2.3.2	What is the lifecycle of a static instance of your class?
 2.3.3	Can also a class methods or properties be prefixed as static?
-2.3.4	If you define a class as static can you use the “this” keyword to refer to the current instance?
+2.3.4	If you define a class method as static can you use the “this” keyword to refer to the current instance?
 2.4	Value and reference types
 2.4.1	What are value types and reference types?
 2.4.2	The .net framework primitive types are value types or reference types?
@@ -67,24 +90,28 @@
 2.5.1	To what type maps the int type in the .net framework?
 2.5.2	To what type maps the long type in the .net framework?
 2.5.3	Please enumerate at least 5 primitive types of the .net framework.
+2.5.4	How do you handle date time types when you have several clients working on different world time zones?
+2.5.5	What date should return DateTime.MinDate?
 2.6	String vs StringBuilder
 2.6.1	What are immutable values in .net framework?
 2.6.2	String type is immutable or mutable?
 2.6.3	When should I use String class and when the StringBuilder class?
 2.6.4	What method of the string class you use to split a string sentence separated by spaces?
 2.6.5	What method should you use to join that split string back again?
-2.6.6	What are the most common used methods of the stringbuilder class?
+2.6.6	What are the most common used methods of the StringBuilder class?
 2.7	Collections
-2.7.1	What should be the main difference between a string array and a list of strings, i.e. between arrays and collections?
+2.7.1	What is the main difference between a string array and a list of strings, i.e. between arrays and collections?
 2.7.2	Please enumerate at least 4 most used .net framework collection classes.
 2.7.3	What is the difference between a list and a dictionary?
 2.8	Generics
 2.8.1	What are the generic classes and where does make sense to use them?
 2.8.2	Do generic class implementations improve code maintenance and readability?
-2.8.3	If you want to implement a stack class of items where they can be integers, strings or custom classes, how do you implement it using generics? 
+2.8.3	What is the main advantage of using generics?
+2.8.4	If you want to implement a stack class of items where they can be integers, strings or custom classes, how do you implement it using generics? 
+2.8.5	What should be the header signature of a stack class of any type of items implemented using generics?
 2.9	LinQ
 2.9.1	What is LinQ used for?
-2.9.2	What are anonymous variables?
+2.9.2	What are anonymous variables and how you define them in a LinQ select clause?
 2.9.3	When you use the let keyword in a linq expression?
 2.9.4	What namespace you need to import to use a standard array of integers with linq expressions?
 2.9.5	What linq instruction should you use to get the maximum value from an array of integers?
@@ -94,36 +121,42 @@
 2.10	Regular Expressions
 2.10.1	What is a regular expression and what is their usage?
 2.10.2	What is a regular expression pattern?
-2.10.3	How do you define in a regular expression pattern you only accept alphabetic characters in lower and upper case?
-2.10.4	How do you define in a regular expression pattern you only accept from 2 to 8 digits (numbers)?
+2.10.3	How do you define a regular expression pattern to only accept alphabetic characters in lower and upper case?
+2.10.4	How do you define a regular expression pattern to only accept from 2 to 8 digits (numbers)?
+2.11	Exceptions
+2.11.1	What is the base class of all .net framework exceptions?
+2.11.2	How do you throw an exception in the .net framework?
+2.11.3	How do you handle exceptions in your code?
+2.11.4	What is the usage of the finally statement in an exception handling block?
+2.11.5	What common action(s) you may take when you handle an exception?
 3.0	Algorithms
 3.1	Array declarations
 3.1.1	How you define an array of integers?
-3.1.2	How you make sure you initialize that array before being used?
-3.1.3	If you define a List<string> what returns the ToArray() method of that list?
-3.1.4	If you define a string[] what returns the ToList() method of that instance?
+3.1.2	How you make sure you initialize an array of integers before being used?
+3.1.3	If you define a List<string>, what returns the ToArray() method of that list?
+3.1.4	If you define a string[], what returns the ToList() method of that instance?
 3.2	Word/char counting
-3.2.1	What should be a standard way to count words on a text file?
+3.2.1	Please describe the steps you must do to count the words on a text file?
 3.2.2	What else should I do to also fill a dictionary of letters and its incidences?
 3.3	String splitting
 3.3.1	What is the standard method to split a string?
-3.3.2	What do I need to do to avoid retrieving empty strings?
-3.3.3	Can a split a string using some specific string or char?
+3.3.2	What do I need to do to avoid retrieving empty strings when splitting a string?
+3.3.3	When splitting a string, can I split the string using some specific string or some specific char?
 3.4	Word reversing
-3.4.1	What should be a standard way to reverse a string you have received?
-3.4.2	How do you sort a split string by its words length?
+3.4.1	Please describe the steps you must do to reverse a string?
+3.4.2	Please describe the steps you must do to sort a split string by its words length?
 4.0	Object oriented programming
 4.1	Encapsulation
-4.1.1	In OOO what is encapsulation and why is one of the pillars of OOO?
+4.1.1	In OOP what is encapsulation and why is one of the pillars of OOP?
 4.1.2	In .net framework what is the visibility of a private var?
 4.1.3	In .net framework what is the usage of a protected var?
 4.1.4	What is shadowing of a class property in .net framework?
 4.1.5	In .net framework, what is the standard definition of a public property getter, setter (int property for example)?
-4.1.6	What is a constructor and destructor of a class?
+4.1.6	What is a constructor and a destructor of a class?
 4.1.7	Can constructors be declared as private in C#?
-4.1.8	Can multiple constructors be declared in C#?
+4.1.8	Can multiple constructors be declared in C# for some given class?
 4.2	Inheritance
-4.2.1	What is the meaning of the inheritance term in OOO?
+4.2.1	What is the meaning of the inheritance term in OOP?
 4.2.2	What is a base class?
 4.2.3	What is a root class of a hierarchy of classes?
 4.2.4	Why you may need to implement a hierarchy of classes?
@@ -133,28 +166,30 @@
 4.2.8	In .net framework what C# keyword you use to define your class can not be inherited anymore?
 4.2.9	In .net framework what C# keyword you use to define your derived classes must implement a specific method?
 4.3	Polymorphism
-4.3.1	What is the meaning of the polymorphism term in OOO?
+4.3.1	What is the meaning of the polymorphism term in OOP?
 4.3.2	How the polymorphism is implemented in a derived class?
-4.3.3	How do you define optional implementation and how you define strict implementation of a derived class method?
+4.3.3	In a base class, how do you define that “A” method has a default implementation and how you define that “B” method has no default implementation so, once that class is derived you have to provide the non-default implementation?
+4.3.4	Does C# support your class inherit from multiple classes?
+4.3.5	In C# how do you implement multiple inheritance?
 4.4	Loosely/Tightly coupled
 4.4.1	What is a loosely coupled design of classes and what are its main benefits?
 4.5	Interfaces
-4.5.1	What is an interface in OOO?
+4.5.1	What is an interface?
 4.5.2	What C# keyword is used to define an interface?
 4.5.3	What items can be defined in an interface?
-4.5.4	In .net framework, can properties be declared in an interface?
+4.5.4	In the .net framework, can properties be declared in an interface?
 4.5.5	Can interface methods be declared as private or protected?
-4.5.6	When you use an interface instead of an abstract class?
+4.5.6	When you may use an interface instead of an abstract class?
 4.5.7	What are the main differences between an interface and an abstract class?
 4.6	SOLID
-4.6.1	In software development SOLID what the S stands for
-4.6.2	In software development SOLID what the O stands for
-4.6.3	In software development SOLID what the L stands for
-4.6.4	In software development SOLID what the I stands for
-4.6.5	In software development SOLID what the D stands for
+4.6.1	In software development SOLID what the S stands for?
+4.6.2	In software development SOLID what the O stands for?
+4.6.3	In software development SOLID what the L stands for?
+4.6.4	In software development SOLID what the I stands for?
+4.6.5	In software development SOLID what the D stands for?
 5.0	Patterns
 5.1	Concepts
-5.1.1	What is the meaning of software patterns, what its benefits?
+5.1.1	What is the meaning of software patterns, what are their benefits?
 5.2	Factory method
 5.2.1	Please describe in what cases is recommended to implement the factory method pattern
 5.2.2	Please enumerate at least 2 classes in .net framework or third party components which implement the factory method pattern
@@ -166,16 +201,105 @@
 5.4.2	Please enumerate at least 2 classes/frameworks/platforms you know implement the builder pattern
 6.0	Application Design
 6.1	Performance/Caching
-6.1.1	What should be an acceptable time for a web page to be rendered in a web site?
-6.1.2	What is the caching technology and how it may be implemented?
+6.1.1	What should be an acceptable time duration for a web page to be rendered in a web site?
+6.1.2	What is the caching technology and how it may be implemented in a C# project?
 6.1.3	What items should be cached in an application?
 6.1.4	What may be the difference between a Session/Application (web development) and a cache store?
 6.1.5	Please enumerate at least 2 ways in .net framework to implement caching.
+6.1.6	How values are saved/retrieved commonly from a cache store?
+6.1.7	What conditions you may set on your cache items to set its expiration?
 6.2	Messaging
 6.2.1	What is the main usage of the messaging technology?
-6.2.2	In what cases you should incorporate messaging within your application?
+6.2.2	In what cases you should incorporate the messaging stack within your application?
 6.2.3	Please enumerate at least 2 technologies/platforms for messaging.
+6.2.4	What event model does messaging commonly uses?
 6.3	Scheduling
 6.3.1	Why scheduling technology should be used in complex systems/services?
 6.3.2	Please enumerate at least 2 technologies/platforms for scheduling.
-6.3.3	What is a standard way to implement in .net framework a scheduled service, what kind of visual studio project can be used?
+6.3.3	What is a standard way to implement in .net framework a scheduled service and what kind of visual studio project can be used?
+7.0	Web Development
+7.1	Web Concepts
+7.1.1	What is a Request object?
+7.1.2	What is a Response object?
+7.1.3	In a web communication, who creates the request object and who creates the response object?
+7.1.4	What are the Header attributes of a request or response and what is its use?
+7.1.5	What is the lifecycle of a Request?
+7.1.6	Why we said the web is stateless?
+7.1.7	Please enumerate the principal http verbs when making a request to a server and its use.
+7.1.8	Please enumerate the most common Response code statuses
+7.1.9	In IIS what is the default port number for a web application?
+7.1.10	In IIS what is the default port number for a secured web application (TLS/SSL)
+7.1.11	In IIS what is an application pool and what is used for?
+7.1.12	How many web.config files can a web application have?
+7.2	Web API
+7.2.1	What is an API controller?
+7.2.2	What is the base class of the API controller?
+7.2.3	Does a Web API controller inherit the same base class than the MVC controller?
+7.2.4	What is a Web API Route?
+7.2.5	How do you define a Route for a controller method?
+7.2.6	What is the use of the Response Type attribute for a controller method?
+7.2.7	What type of objects can be returned from a Web API controller method?
+7.2.8	Please enumerate the 2 common methods of serialization used by the Web API?
+7.2.9	What is the JSON and Xml serialization?
+7.2.10	Why Web API is considered as a REST API?
+7.2.11	If speed is critical for your web project, would you use Web API or WCF?
+7.2.12	If security is critical for your web project, would you use Web API or WCF?
+7.2.13	Speaking of security, what’s the difference between Authentication and Authorization?
+7.2.14	In a web project, can I implement custom Authentication and Authorization? 
+7.3	MVC Development
+7.3.1	What is a MVC controller?
+7.3.2	What is a MVC view?
+7.3.3	What is a POCO class?
+7.4	WCF
+7.4.1	What is a WSDL definition of a WCF project?
+7.4.2	In what format messages are serialized in WCF?
+7.4.3	Commonly in what part of a Soap message do you send security credentials?
+7.5	HTML 5
+7.5.1	What are the principal tags available in HTML 5?
+7.5.2	What does SVG is in HTML 5?
+7.5.3	What is a SPA application?
+7.5.4	What is a Responsive application?
+7.6	AngularJS
+7.6.1	What is a $scope object in angular?
+7.6.2	What do you need to apply to your html page to support angular?
+7.6.3	What is an angular module?
+7.6.4	What is an angular controller?
+8.0	SQL Development
+8.1	Concepts
+8.1.1	What is a View?
+8.1.2	What is a Primary Key?
+8.1.3	What is an Index?
+8.1.4	What is the difference between a Primary Key and an Index?
+8.1.5	What is a SQL constraint?
+8.1.6	What’s the reason you may set the unique constraint on a table column?
+8.1.7	What are the primary types for columns in a data table?
+8.1.8	What is the difference between a SQL function and a store procedure?
+8.1.9	What is the Normalization Term in SQL?
+8.1.10	Should you always have normalized schemas or may not apply in all circumstances?
+8.1.11	What is a Trigger and when is executed?
+8.1.12	What is a SQL transacted operation and its common statements?
+8.1.13	When you should run SQL operations using transaction statements?
+8.1.14	What are the common CRUD SQL operation statements?
+8.1.15	When matching tables, what are the most common types of joins you can apply?
+8.1.16	When you create a database oriented project, what stack or performant framework should you use?
+8.1.17	What is the recommended way to save/retrieve data, using SQL queries or call store procedures?
+9.0	Unit Testing
+9.1	Concepts and Frameworks
+9.1.1	What attribute you need to set to mark a class as a test class?
+9.1.2	What is the purpose of using the Setup attribute on a test class method?
+9.1.3	How do you tell the testing framework you want to ignore this test class method to be ignored when running all tests?
+9.1.4	What is an assertion?
+9.1.5	What are the common methods of the Assert class (or equivalent)?
+9.1.6	What is the difference between Unit Test and Integration Test?
+9.1.7	What is a Fake class?
+9.1.8	What testing frameworks have you used?
+9.1.9	How do you ensure you code is friendlier to unit testing?
+9.1.10	What is TDD?
+9.1.11	Does help using interfaces in your code the unit testing process?
+10.0	Agile Development
+10.1	What agile development frameworks have you used in your career?
+10.2	What is the Scrum agile framework?
+10.3	What is the Scrum master?
+10.4	What is the Backlog?
+10.5	What is a Sprint and its common length in days?
+10.6	What is a feature in Scrum?

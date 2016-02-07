@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         Title="Asking Questions"
         Width="400"
-        Height="400"
+        Height="500"
         d:DesignHeight="300" d:DesignWidth="300" 
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Border Padding="4" 
@@ -17,8 +17,8 @@
             BorderThickness="1">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50*"/>
-                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="35*"/>
+                <ColumnDefinition Width="65*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -111,6 +111,7 @@
                  Margin="4,2,4,2"
                  FontSize="20" 
                  Foreground="#FF224B8B"
+                 Background="AliceBlue"                
                  TextWrapping="WrapWithOverflow"
                  HorizontalAlignment="Stretch"
                  Text="{Binding Mode=OneWay, Path=SelectedQuestion.Value}" />

@@ -5,7 +5,7 @@ import os, re, sys
 #1.1.1	What is a managed framework and what is a non-managed framework?
 dict = {} #{ '1.0', 'Framework Fundamentals' }
 
-lineRegex = re.compile(r'(\d{1,3}.\d{1,3}(.\d{1,3})?)\s+([\sa-zA-Z0-9\.\-_\\/,;\?#\'\+\<\>\[\]\(\)’]*)')
+lineRegex = re.compile(r'(\d{1,3}.\d{1,3}(.\d{1,3})?)\s+([\sa-zA-Z0-9\.\-_\\/,;\?#\'\+\<\>\[\]\(\)\$’“”]*)')
 
 def handleLine(line):
     match = lineRegex.search(line)
