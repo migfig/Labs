@@ -29,6 +29,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <Optimize>true</Optimize>
+    <DefineConstants>WPF</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework" />
@@ -47,21 +48,21 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Annotations\NotifyPropertyChangedInvocatorAttribute.cs" />
-    <Compile Include="Converters\BoolToStyleConverter.cs" />
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Models\Area.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\configuration.cs" />
     <Compile Include="Models\KnowledgeArea.cs" />
-    <Compile Include="Properties\Resources.Designer.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Models\Optional.cs" />
     <Compile Include="Models\Platform.cs" />
     <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Requirement.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Annotations\NotifyPropertyChangedInvocatorAttribute.cs" />
+    <Compile Include="Converters\BoolToStyleConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\AskQuestions.xaml.cs">
       <DependentUpon>AskQuestions.xaml</DependentUpon>
     </Compile>

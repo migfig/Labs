@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using InterviewerHubApp.Data;
 using InterviewerHubApp.Common;
+using WpfInterviewer;
 
 // The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
 
@@ -48,6 +49,9 @@ namespace InterviewerHubApp
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+
+            var x = MainViewModel.ViewModel.Platforms;
+            var y = x.Count();
         }
 
         /// <summary>
