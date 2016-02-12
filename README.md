@@ -233,3 +233,28 @@ Notice Controllers and its methods are decorated with some **Attributes** to ful
         }
 
 **What's missing**: For its purpose is fine what is being coded, some extra objects/data types may need to be included to fully help with the **ApiTester** project. Xml repository needs to be well coded to be really consistent for implementing full/good testing.
+
+## Related Records (Gold Parser) Project ##
+The **Related Records (Gold Parser)** relates to the **Related Records** original project, due uses its **XML** configuration, but code functionality is based on parsing expressions in a command fashion way through the [Golden Parser](http://www.goldparser.org/ "Gold Parser") library. This is also a **WPF** Windows application.
+![relatedrecords](relatedrecordsgoldparser.png)
+
+Same features are available than in the **Related Records** project.
+
+Available commands are auto generated in some sort of intellisense fashion.
+
+**What's missing**: This code is some sort of **Proof of Concept** demonstration and needs further debugging/testing.
+
+## WPF Interviewer Project ##
+The **WPF Interviewer** project allows an interviewer ask questions to a possible candidate for a business position on any area of interest depending on what you configure in its **XML** configuration. Once you choose to get random questions then you are able to start the interview process.  This is also a **WPF** Windows application.
+![relatedrecords](wpfinterviewer.png)
+
+**What's missing**: This code is some sort of **Proof of Concept** demonstration although is fully functional. Some persistence needs to be set in place so the asked questions and its approval/dismissal/etc. are saved and from them generate some sort of report. 
+
+Some **XML schema** changes also need to be done to support required and optional questions.
+
+There is also a **WUP** Windows Universal Project (One app for Windows Store and another for a Windows Phone platform) for this interviewer app, already in progress of development which basically should reuse the models and view models of the **WPF interviewer** project.
+
+## Python Labs Project ##
+The **Python Labs** project converts plain **Text** into an    **XML** configuration file for the **WPF Interviewer**.
+
+This project will use Python classes instead of procedural code for generating the **XML** tags.
