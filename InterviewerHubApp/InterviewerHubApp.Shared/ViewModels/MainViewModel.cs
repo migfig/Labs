@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml;
 using System.Xml.Serialization;
@@ -96,17 +97,20 @@ namespace WpfInterviewer
 			    if (null == _viewModel)
 			    {
 			        _viewModel = new MainViewModel();
-
-                    Uri dataUri = new Uri("ms-appx:///DataModel/profiles.xml");
-
-                    var file = StorageFile.GetFileFromApplicationUriAsync(dataUri).GetResults();
-                    var text = FileIO.ReadTextAsync(file).GetResults();
-
-                    _viewModel.LoadConfiguration(text);
+                    _viewModel.LoadConfiguration(GetXmlText().Result);
                 }
                 return _viewModel;
 			}
 		}
+
+        private static async Task<string> GetXmlText()
+        {
+            var dataUri = new Uri("ms-appx:///DataModel/profiles.xml");
+            var file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
+            var text = await FileIO.ReadTextAsync(file);
+
+            return text;
+        }
 
 		public configuration SelectedConfiguration
 		{
@@ -399,6 +403,11 @@ namespace WpfInterviewer
                 using (var stream = XmlReader.Create(new StringReader(text)))
                 {
                     SelectedConfiguration = (configuration)ser.Deserialize(stream);
+
+                    if(null != SelectedConfiguration)
+                    {
+                        RunQuestionsCommand.Execute(1);
+                    }
                 }
                 _isLoaded = true;
             }

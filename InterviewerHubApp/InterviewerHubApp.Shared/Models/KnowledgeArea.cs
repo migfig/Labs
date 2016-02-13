@@ -36,7 +36,7 @@ namespace WpfInterviewer
 			}
 		}
 
-		public KnowledgeArea()
+        public KnowledgeArea()
 		{
 			this.areaField = new ObservableCollection<Area>();
 		}

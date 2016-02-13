@@ -13,6 +13,10 @@ The projects created up to this moment are:
 > Reflector
 > 
 > Web Api Example
+> 
+> Related Records (Gold Parser) Project
+> 
+> WPF Interviewer Project
 
 
 **Disclaimer**:

@@ -239,7 +239,7 @@
     <value>Section 2</value>
   </data>
   <data name="Section3Header.Header" xml:space="preserve">
-    <value>Section 3</value>
+    <value>Platforms</value>
   </data>
   <data name="Section3Subtitle.Text" xml:space="preserve">
     <value>Section subtitle</value>
@@ -263,7 +263,7 @@
     <value>SECTION 2</value>
   </data>
   <data name="HubSection3" xml:space="preserve">
-    <value>SECTION 3</value>
+    <value>PLATFORMS</value>
   </data>
   <data name="HubSection4" xml:space="preserve">
     <value>SECTION 4</value>

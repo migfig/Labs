@@ -49,9 +49,7 @@ namespace InterviewerHubApp
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-
-            var x = MainViewModel.ViewModel.Platforms;
-            var y = x.Count();
+            this.DefaultViewModel["ViewModel"] = MainViewModel.ViewModel;
         }
 
         /// <summary>
@@ -79,9 +77,9 @@ namespace InterviewerHubApp
         /// <param name="e">Event data that describes how the click was initiated.</param>
         void Hub_SectionHeaderClick(object sender, HubSectionHeaderClickEventArgs e)
         {
-            HubSection section = e.Section;
-            var group = section.DataContext;
-            this.Frame.Navigate(typeof(SectionPage), ((SampleDataGroup)group).UniqueId);
+            //HubSection section = e.Section;
+            //var group = section.DataContext;
+            //this.Frame.Navigate(typeof(SectionPage), ((SampleDataGroup)group).UniqueId);
         }
 
         /// <summary>
@@ -94,7 +92,7 @@ namespace InterviewerHubApp
         {
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
-            var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
+            var itemId = ((Platform)e.ClickedItem).Id;
             this.Frame.Navigate(typeof(ItemPage), itemId);
         }
         #region NavigationHelper registration

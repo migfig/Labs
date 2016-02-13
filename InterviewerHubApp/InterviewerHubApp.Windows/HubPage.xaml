@@ -19,11 +19,14 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="150">
-                    <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                    <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding name}"/>
                 </Border>
                 <StackPanel Grid.Row="1" Margin="0,10,0,0">
-                    <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap"/>
-                    <TextBlock Text="{Binding Description}" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60" />
+                    <TextBlock Text="{Binding name}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Knowledge Areas" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60" />
+                        <TextBlock Text="{Binding knowledgeArea.Count}" Margin="8,0,0,0" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60" />
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -57,12 +60,144 @@
                         VerticalAlignment="Top" IsHitTestVisible="false" TextWrapping="NoWrap" />
                 </Grid>
             </Hub.Header>
-            <HubSection Width="780" Margin="0,0,80,0">
-                <HubSection.Background>
+            <HubSection Width="500" Header="Interview" DataContext="{Binding ViewModel}" Margin="0,0,80,0">
+                <!--<HubSection.Background>
                     <ImageBrush ImageSource="Assets/MediumGray.png" Stretch="UniformToFill" />
-                </HubSection.Background>
+                </HubSection.Background>-->
+                <DataTemplate>
+                    <Border Padding="4" 
+                        CornerRadius="2"  
+                        VerticalAlignment="Stretch" 
+                        HorizontalAlignment="Stretch" 
+                        BorderBrush="DarkGray" 
+                        BorderThickness="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="35*"/>
+                                <ColumnDefinition Width="65*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Profile" TextBlock.FontSize="16" />
+                            <ComboBox Grid.Column="1" 
+                                  ItemsSource="{Binding Profiles}" 
+                                  SelectedItem="{Binding Mode=TwoWay, Path=SelectedProfile}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding level}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="1" Text="Person" TextBlock.FontSize="16" />
+                            <TextBox Grid.Row="1" 
+                                 Grid.Column="1" 
+                                 FontSize="16" 
+                                 Foreground="#FF228B22" 
+                                 Text="{Binding Mode=TwoWay, Path=InterviewedPerson, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <TextBlock Grid.Row="2" Text="Platform" TextBlock.FontSize="16" />
+                            <ComboBox Grid.Row="2" 
+                                  Grid.Column="1" 
+                                  ItemsSource="{Binding Platforms}" 
+                                  SelectedItem="{Binding Mode=TwoWay, Path=SelectedPlatform}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="3" Text="Knowledge Area" TextBlock.FontSize="16" />
+                            <ComboBox Grid.Row="3" 
+                                  Grid.Column="1" 
+                                  ItemsSource="{Binding SelectedPlatform.knowledgeArea}" 
+                                  SelectedItem="{Binding Mode=TwoWay, Path=SelectedKnowledgeArea}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="4" Text="Area" TextBlock.FontSize="16" />
+                            <ComboBox Grid.Row="4" 
+                                  Grid.Column="1" 
+                                  ItemsSource="{Binding SelectedKnowledgeArea.area}" 
+                                  SelectedItem="{Binding Mode=TwoWay, Path=SelectedArea}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="5" Text="Question #" TextBlock.FontSize="16" />
+                            <StackPanel Grid.Row="5"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Stretch">
+                                <TextBlock 
+                                     FontSize="16" 
+                                     Foreground="#FF228B22" 
+                                     Text="{Binding Mode=OneWay, Path=AppliedQuestions}" />
+                                <TextBlock 
+                                     FontSize="16" 
+                                     Foreground="#FF228B22" 
+                                     Text=" of " />
+                                <TextBlock 
+                                     FontSize="16" 
+                                     Foreground="#FF228B22" 
+                                     Text="{Binding Mode=OneWay, Path=TotalQuestions}" />
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="6" Grid.ColumnSpan="2" Text="Question" TextBlock.FontSize="16" />
+                            <TextBlock Grid.Row="7" 
+                                 Grid.ColumnSpan="2"
+                                 Margin="4,2,4,2"
+                                 FontSize="20" 
+                                 Foreground="#FF224B8B"
+                                 TextWrapping="WrapWholeWords"
+                                 HorizontalAlignment="Stretch"
+                                 Text="{Binding Mode=OneWay, Path=SelectedQuestion.Value}" />
+
+                            <StackPanel Grid.Row="8" 
+                                    Grid.ColumnSpan="2"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    Margin="4">
+<!--Style="{DynamicResource RatingUpButton}"
+Style="{DynamicResource RatingDownButton}"
+Style="{DynamicResource RatingUndefButton}"-->
+                                <Button Content="Yes"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,8,0"
+                                    Command="{Binding QuestionUpCommand}" 
+                                    CommandParameter="{Binding Path=SelectedQuestion}" />
+                                <Button Content="No"
+                                    VerticalAlignment="Center" 
+                                    Margin="0,0,8,0"
+                                    Command="{Binding QuestionDownCommand}" 
+                                    CommandParameter="{Binding Path=SelectedQuestion}" />
+                                <Button Content="Undefined"
+                                    Command="{Binding QuestionUndefCommand}" 
+                                    CommandParameter="{Binding Path=SelectedQuestion}" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
             </HubSection>
-            <HubSection Width="500" x:Uid="Section1Header" Header="Section 1">
+            <HubSection Width="500" x:Uid="Section1Header" Header="Section 1" Visibility="Collapsed">
                 <DataTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -81,7 +216,7 @@
                     </Grid>
                 </DataTemplate>
             </HubSection>
-            <HubSection Width="520" x:Uid="Section2Header" Header="Section 2">
+            <HubSection Width="520" x:Uid="Section2Header" Header="Section 2" Visibility="Collapsed">
                 <DataTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -101,12 +236,12 @@
                     </Grid>
                 </DataTemplate>
             </HubSection>
-            <HubSection IsHeaderInteractive="True" DataContext="{Binding Section3Items}" d:DataContext="{Binding Groups[3], Source={d:DesignData Source=../InterviewerHubApp.Shared/DataModel/SampleData.json, Type=data:SampleDataSource}}"
-                        x:Uid="Section3Header" Header="Section 3" Padding="40,40,40,32">
+            <HubSection IsHeaderInteractive="True" DataContext="{Binding ViewModel}" d:DataContext="{Binding Groups[3], Source={d:DesignData Source=../InterviewerHubApp.Shared/DataModel/SampleData.json, Type=data:SampleDataSource}}"
+                        x:Uid="Section3Header" Header="Platforms" Padding="40,40,40,32">
                 <DataTemplate>
                     <GridView
                         x:Name="itemGridView"
-                        ItemsSource="{Binding Items}"
+                        ItemsSource="{Binding Platforms}"
                         Margin="-9,-14,0,0"
                         AutomationProperties.AutomationId="ItemGridView"
                         AutomationProperties.Name="Items In Group"
@@ -116,36 +251,6 @@
                         IsItemClickEnabled="True"
                         ItemClick="ItemView_ItemClick">
                     </GridView>
-                </DataTemplate>
-            </HubSection>
-            <HubSection x:Uid="Section4Header" Header="Section 4">
-                <DataTemplate>
-                    <!-- width of 400 -->
-                    <StackPanel Orientation="Vertical">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="130"/>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition Width="130"/>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition Width="130"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="270"/>
-                                <RowDefinition Height="95"/>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Image Source="Assets/MediumGray.png" Grid.ColumnSpan="5" Margin="0,0,0,10" Stretch="Fill" />
-                            <Image Source="Assets/MediumGray.png" Grid.Row="1" Stretch="Fill"/>
-                            <Image Source="Assets/MediumGray.png" Grid.Row="1" Grid.Column="2" Stretch="Fill"/>
-                            <Image Source="Assets/MediumGray.png" Grid.Row="1" Grid.Column="4" Stretch="Fill"/>
-                            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Grid.Row="2" Grid.ColumnSpan="5"  Margin="0,15,0,0"
-                                       x:Uid="DescriptionHeader" Text="Description text:"/>
-                            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Row="3" Grid.ColumnSpan="5"
-                                       x:Uid="LongText" Text="Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper."/>
-                        </Grid>
-                    </StackPanel>
                 </DataTemplate>
             </HubSection>
         </Hub>
