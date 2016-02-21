@@ -93,7 +93,7 @@ namespace InterviewerHubApp
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
             var itemId = ((Platform)e.ClickedItem).Id;
-            this.Frame.Navigate(typeof(ItemPage), itemId);
+            this.Frame.Navigate(typeof(SectionPage), itemId);
         }
         #region NavigationHelper registration
 

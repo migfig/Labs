@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<knowledge>
+  <education>
+    <degree title="Bachelors Degree in Computer Science">
+      <date fromDate="1990" toDate="1996"/>
+      <institution name="Instituto Tecnologico de Cd. Juarez">
+        <location>Cd. Juarez, Chihuahua Mexico</location>
+      </institution>
+    </degree>
+    <degree title="English 5th Level">
+      <date fromDate="1997" toDate="1997"/>
+      <institution name="Instituto Tecnologico de Monterrey">
+        <location>Cd. Juarez, Chihuahua Mexico</location>
+      </institution>
+    </degree>
+  </education>
+  <qualifications>
+    <training title="Project Management for non Project Managers">
+      <date fromDate="2008" toDate="2008"/>
+      <company>ADC/Skillsoft</company>
+    </training>
+    <training title="Six Sigma/Lean Manufacturing">
+      <date fromDate="2006" toDate="2006"/>
+      <company>Genpact</company>
+    </training>
+    <training title="Programming Filenet P8 Content Management/Process Engine with Java">
+      <date fromDate="2005" toDate="2005"/>
+      <company>Genpact/Filenet</company>
+    </training>
+    <training title="Filenet P8 Records Management Administration">
+      <date fromDate="2005" toDate="2005"/>
+      <company>Genpact/Filenet</company>
+    </training>
+    <training title="Subscriptions">
+      <date fromDate="2016" toDate="2017"/>
+      <company>Safari Books online/Pluralsight/Microsoft MVA</company>
+    </training>
+  </qualifications>
+</knowledge>

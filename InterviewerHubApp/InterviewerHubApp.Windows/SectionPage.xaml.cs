@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WpfInterviewer;
 
 namespace InterviewerHubApp
 {
@@ -33,6 +34,7 @@ namespace InterviewerHubApp
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this.DefaultViewModel["ViewModel"] = MainViewModel.ViewModel;
         }
 
         /// <summary>
@@ -65,9 +67,13 @@ namespace InterviewerHubApp
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
-            var group = await SampleDataSource.GetGroupAsync((string)e.NavigationParameter);
-            this.DefaultViewModel["Group"] = group;
-            this.DefaultViewModel["Items"] = group.Items;
+            //var group = await SampleDataSource.GetGroupAsync((string)e.NavigationParameter);
+            //this.DefaultViewModel["Group"] = group;
+            //this.DefaultViewModel["Items"] = group.Items;
+
+            var platform = (this.DefaultViewModel["ViewModel"] as MainViewModel)
+                .Platforms.First(p => p.Id == (string)e.NavigationParameter);
+            this.DefaultViewModel["Platform"] = platform;            
         }
 
         /// <summary>
