@@ -448,7 +448,9 @@ namespace WpfInterviewer
 				    }
 
                     TotalQuestions = GetPendingQuestions();
-				}
+                    TransformInterviewDataToCsv();
+                    TransformInterviewDataToSQL();
+                }
 				else
 				{
 					ToogleAnsweredFlag(false);
@@ -566,5 +568,98 @@ namespace WpfInterviewer
 
             return null;
         }
+
+        private void TransformInterviewDataToCsv()
+        {
+            var pc = 0;
+            var kac = 0;
+            var ac = 0;
+            var qc = 0;
+            using (var pstream = File.CreateText(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "platforms.csv")))
+            {
+                using (var kastream = File.CreateText(
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "knowledgeareas.csv")))
+                {
+                    using (var astream = File.CreateText(
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "areas.csv")))
+                    {
+                        using (var qstream = File.CreateText(
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "questions.csv")))
+                        {
+                            pstream.WriteLine("Id,Name");
+                            kastream.WriteLine("PlatformId,Id,Name");
+                            astream.WriteLine("KnowledgeAreaId,Id,Name");
+                            qstream.WriteLine("AreaId,Id,Weight,Level,Value,Name");
+                            foreach (var p in Platforms)
+                            {
+                                pstream.WriteLine("{0},\"{1}\"", ++pc, p.name);
+                                foreach (var ka in p.knowledgeArea)
+                                {
+                                    kastream.WriteLine("{0},{1},\"{2}\"", pc, ++kac, ka.name);
+                                    foreach (var a in ka.area)
+                                    {
+                                        astream.WriteLine("{0},{1},\"{2}\"", kac, ++ac, a.name);
+                                        foreach (var q in a.question)
+                                        {
+                                            qstream.WriteLine("{0},{1},{2},{3},{4},{5}", ac, ++qc, q.value, q.level, q.Value, "");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void TransformInterviewDataToSQL()
+        {
+            var pc = 0;
+            var kac = 0;
+            var ac = 0;
+            var qc = 0;
+            using (var pstream = File.CreateText(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "platforms.sql")))
+            {
+                using (var kastream = File.CreateText(
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "knowledgeareas.sql")))
+                {
+                    using (var astream = File.CreateText(
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "areas.sql")))
+                    {
+                        using (var qstream = File.CreateText(
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "questions.sql")))
+                        {
+                            pstream.WriteLine("SET IDENTITY_INSERT [dbo].[Platforms] ON");
+                            kastream.WriteLine("SET IDENTITY_INSERT [dbo].[KnowledgeAreas] ON");
+                            astream.WriteLine("SET IDENTITY_INSERT [dbo].[Areas] ON");
+                            qstream.WriteLine("SET IDENTITY_INSERT [dbo].[Questions] ON");
+                            foreach (var p in Platforms)
+                            {
+                                pstream.WriteLine("insert into [Platforms] (Id,Name) values({0},N'{1}');", ++pc, p.name);
+                                foreach (var ka in p.knowledgeArea)
+                                {
+                                    kastream.WriteLine("insert into [KnowledgeAreas] (PlatformId,Id,Name) values({0},{1},N'{2}');", pc, ++kac, ka.name);
+                                    foreach (var a in ka.area)
+                                    {
+                                        astream.WriteLine("insert into [Areas] (KnowledgeAreaId,Id,Name) values({0},{1},N'{2}');", kac, ++ac, a.name);
+                                        foreach (var q in a.question)
+                                        {
+                                            qstream.WriteLine("insert into [Questions] (AreaId,Id,Weight,Level,Value,Name) values({0},{1},{2},{3},N'{4}',N'{5}');", ac, ++qc, q.value, q.level, q.Value, "");
+                                        }
+                                    }
+                                }
+                            }
+                            pstream.WriteLine("SET IDENTITY_INSERT [dbo].[Platforms] OFF");
+                            kastream.WriteLine("SET IDENTITY_INSERT [dbo].[KnowledgeAreas] OFF");
+                            astream.WriteLine("SET IDENTITY_INSERT [dbo].[Areas] OFF");
+                            qstream.WriteLine("SET IDENTITY_INSERT [dbo].[Questions] OFF");
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
