@@ -169,7 +169,7 @@
                                  Foreground="#FF224B8B"
                                  TextWrapping="WrapWholeWords"
                                  HorizontalAlignment="Stretch"
-                                 Text="{Binding Mode=OneWay, Path=SelectedQuestion.Value}" />
+                                 Text="{Binding Mode=OneWay, Path=SelectedQuestion.value}" />
 
                             <StackPanel Grid.Row="8" 
                                     Grid.ColumnSpan="2"

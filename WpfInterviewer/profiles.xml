@@ -3,379 +3,381 @@
   <platform name="Net Framework">
     <knowledgeArea name="Framework Fundamentals">
       <area name="Managed vs non managed">
-        <question value="1" level="1">Please describe what is the .net framework and its characteristics?</question>
-        <question value="1" level="1">What is a managed framework and what is a non-managed framework?</question>
-        <question value="1" level="1">What’s the principal characteristic of a managed framework?</question>
-        <question value="1" level="1">What are the advantages and disadvantages of a managed framework?</question>
-        <question value="1" level="1">How is memory allocated and accessed in a non-managed framework?</question>
-        <question value="1" level="1">Is the .net framework a managed framework?</question>
-        <question value="1" level="1">Does C++ run in a managed environment?</question>
-        <question value="1" level="1">What is the common language runtime (CLR) in .net framework?</question>
-        <question value="1" level="1">Please describe up to 3 languages you can use to develop applications in .net framework</question>
-        <question value="1" level="1">Why is possible you can develop a library in F# and you can use it in a C# project?</question>
-        <question value="1" level="1">How code is built in the .net framework and how is executed?</question>
-        <question value="1" level="1">Does the .net framework binary code generated at compilation is native code? </question>
-        <question value="1" level="1">In Java, code is generated in byte code and then interpreted by the JVM, what is the name of the intermediate code generated in the .net framework?</question>
-        <question value="1" level="1">If speed is critical for one application or service, would you consider its implementation in the .net framework or you better go the native way?</question>
-        <question value="1" level="1">If security is critical for one application or service, would you consider its implementation in the .net framework or you better go the native way or choose another platform?</question>
-        <question value="1" level="1">Please enumerate up to four types of visual studio projects you can create targeting the .net framework?</question>
-        <question value="1" level="1">Do you consider the .net framework as a successful development platform and what could be the reason of its success?</question>
-        <question value="1" level="1">Does the .net framework run in embedded systems?</question>
-        <question value="1" level="1">How do you think applications/services development will be done in 30 years?</question>
+        <question weight="1" level="1" value="Please describe what is the .net framework and its characteristics?"/>
+        <question weight="1" level="1" value="What is a managed framework and what is a non-managed framework?"/>
+        <question weight="1" level="1" value="What’s the principal characteristic of a managed framework?"/>
+        <question weight="1" level="1" value="What are the advantages and disadvantages of a managed framework?"/>
+        <question weight="1" level="1" value="How is memory allocated and accessed in a non-managed framework?"/>
+        <question weight="1" level="1" value="Is the .net framework a managed framework?"/>
+        <question weight="1" level="1" value="Does C++ run in a managed environment?"/>
+        <question weight="1" level="1" value="What is the common language runtime (CLR) in .net framework?"/>
+        <question weight="1" level="1" value="Please describe up to 3 languages you can use to develop applications in .net framework"/>
+        <question weight="1" level="1" value="Why is possible you can develop a library in F# and you can use it in a C# project?"/>
+        <question weight="1" level="1" value="How code is built in the .net framework and how is executed?"/>
+        <question weight="1" level="1" value="Does the .net framework binary code generated at compilation is native code? "/>
+        <question weight="1" level="1" value="In Java, code is generated in byte code and then interpreted by the JVM, what is the name of the intermediate code generated in the .net framework?"/>
+        <question weight="1" level="1" value="If speed is critical for one application or service, would you consider its implementation in the .net framework or you better go the native way?"/>
+        <question weight="1" level="1" value="If security is critical for one application or service, would you consider its implementation in the .net framework or you better go the native way or choose another platform?"/>
+        <question weight="1" level="1" value="Please enumerate up to four types of visual studio projects you can create targeting the .net framework?"/>
+        <question weight="1" level="1" value="Do you consider the .net framework as a successful development platform and what could be the reason of its success?"/>
+        <question weight="1" level="1" value="Does the .net framework run in embedded systems?"/>
+        <question weight="1" level="1" value="How do you think applications/services development will be done in 30 years?"/>
       </area>
       <area name="Object's life cycle">
-        <question value="1" level="1">What’s the life cycle of an object in the .net framework?</question>
+        <question weight="1" level="1" value="What’s the life cycle of an object in the .net framework?"/>
       </area>
       <area name="Garbage collection">
-        <question value="1" level="1">What’s the function of the garbage collection in the .net framework?</question>
-        <question value="1" level="1">Does the garbage collection process run automatically, what are the conditions that trigger this process?</question>
-        <question value="1" level="1">Can I force the execution of the garbage collection process?</question>
-        <question value="1" level="1">If my class uses resources that need to be disposed when my instance is no longer needed, what interface does it need to implement?</question>
+        <question weight="1" level="1" value="What’s the function of the garbage collection in the .net framework?"/>
+        <question weight="1" level="1" value="Does the garbage collection process run automatically, what are the conditions that trigger this process?"/>
+        <question weight="1" level="1" value="Can I force the execution of the garbage collection process?"/>
+        <question weight="1" level="1" value="If my class uses resources that need to be disposed when my instance is no longer needed, what interface does it need to implement?"/>
       </area>
       <area name="Base objects/root object">
-        <question value="1" level="1">What class is the root class of all the .net classes?</question>
-        <question value="1" level="1">What is boxing/unboxing/casting in .net?</question>
+        <question weight="1" level="1" value="What class is the root class of all the .net classes?"/>
+        <question weight="1" level="1" value="What is boxing/unboxing/casting in .net?"/>
       </area>
       <area name="Base object methods">
-        <question value="1" level="1">Please enumerate up to 3 public methods of the Object class?</question>
-        <question value="1" level="1">What methods can I override from the Object class?</question>
-        <question value="1" level="1">What is the meaning of overriding a method?</question>
-        <question value="1" level="1">What is the meaning of overloading a method?</question>
-        <question value="1" level="1">How do you define optional parameters in a method?</question>
-        <question value="1" level="1">If you have multiple optional parameters in a method, how can you call them in any order you wish?</question>
-        <question value="1" level="1">Once you have defined an optional parameter in some specific method of your class, can you define another non-optional parameter to the right of the optional one?</question>
-        <question value="1" level="1">What should be the signature of a class method which supports receiving any number of parameters of the same type (string.Format() for example)?</question>
-        <question value="1" level="1">How can you compare that two objects are from the same type?</question>
+        <question weight="1" level="1" value="Please enumerate up to 3 public methods of the Object class?"/>
+        <question weight="1" level="1" value="What methods can I override from the Object class?"/>
+        <question weight="1" level="1" value="What is the meaning of overriding a method?"/>
+        <question weight="1" level="1" value="What is the meaning of overloading a method?"/>
+        <question weight="1" level="1" value="How do you define optional parameters in a method?"/>
+        <question weight="1" level="1" value="If you have multiple optional parameters in a method, how can you call them in any order you wish?"/>
+        <question weight="1" level="1" value="Once you have defined an optional parameter in some specific method of your class, can you define another non-optional parameter to the right of the optional one?"/>
+        <question weight="1" level="1" value="What should be the signature of a class method which supports receiving any number of parameters of the same type (string.Format() for example)?"/>
+        <question weight="1" level="1" value="How can you compare that two objects are from the same type?"/>
       </area>
       <area name="Main namespaces">
-        <question value="1" level="1">Please enumerate most common used (up to 4) name spaces available in .net framework?</question>
-        <question value="1" level="1">Can I load or unload dynamically a namespace/library?</question>
-        <question value="1" level="1">What is an App Domain?</question>
-        <question value="1" level="1">In your class definition what keyword you use to import a specific namespace/library?</question>
-        <question value="1" level="1">In a console if you want to write a text line into output, what instruction should you use?</question>
-        <question value="1" level="1">What is a nuget package?</question>
-        <question value="1" level="1">In which namespace resides the DateTime class?</question>
-        <question value="1" level="1">In which namespace resides the Int32 class?</question>
-        <question value="1" level="1">In which namespace resides the StringBuilder class?</question>
-        <question value="1" level="1">In which namespace resides the Stream class?</question>
-        <question value="1" level="1">Is the Stream class abstract?</question>
-        <question value="1" level="1">Please tell me one class which implements the Stream class?</question>
-        <question value="1" level="1">What is the use of those classes inheriting from Stream class?</question>
+        <question weight="1" level="1" value="Please enumerate most common used (up to 4) name spaces available in .net framework?"/>
+        <question weight="1" level="1" value="Can I load or unload dynamically a namespace/library?"/>
+        <question weight="1" level="1" value="What is an App Domain?"/>
+        <question weight="1" level="1" value="In your class definition what keyword you use to import a specific namespace/library?"/>
+        <question weight="1" level="1" value="In a console if you want to write a text line into output, what instruction should you use?"/>
+        <question weight="1" level="1" value="What is a nuget package?"/>
+        <question weight="1" level="1" value="In which namespace resides the DateTime class?"/>
+        <question weight="1" level="1" value="In which namespace resides the Int32 class?"/>
+        <question weight="1" level="1" value="In which namespace resides the StringBuilder class?"/>
+        <question weight="1" level="1" value="In which namespace resides the Stream class?"/>
+        <question weight="1" level="1" value="Is the Stream class abstract?"/>
+        <question weight="1" level="1" value="Please tell me one class which implements the Stream class?"/>
+        <question weight="1" level="1" value="What is the use of those classes inheriting from Stream class?"/>
       </area>
       <area name="Reflection">
-        <question value="1" level="1">Do you think is possible to generate code in any language or an html page from a .net assembly you have built?</question>
-        <question value="1" level="1">What is reflection in .net framework and why is so powerful?</question>
-        <question value="1" level="1">Is reflection technology available only in .net framework or is also available in other platforms like Java?</question>
-        <question value="1" level="1">What is the main method exposed by the .net framework for start reflecting an object?</question>
-        <question value="1" level="1">What are the main methods you can use when discovering/describing an object?</question>
-        <question value="1" level="1">What is code obfuscation of an assembly and how can be implemented?</question>
-        <question value="1" level="1">When should you create classes inheriting from System.Attribute class?</question>
+        <question weight="1" level="1" value="Do you think is possible to generate code in any language or an html page from a .net assembly you have built?"/>
+        <question weight="1" level="1" value="What is reflection in .net framework and why is so powerful?"/>
+        <question weight="1" level="1" value="Is reflection technology available only in .net framework or is also available in other platforms like Java?"/>
+        <question weight="1" level="1" value="What is the main method exposed by the .net framework for start reflecting an object?"/>
+        <question weight="1" level="1" value="What are the main methods you can use when discovering/describing an object?"/>
+        <question weight="1" level="1" value="What is code obfuscation of an assembly and how can be implemented?"/>
+        <question weight="1" level="1" value="When should you create classes inheriting from System.Attribute class?"/>
       </area>
       <area name="Localization">
-        <question value="1" level="1">What is needed in a visual studio solution to support more than one speaking language (English and Spanish for example) when displaying text to end users?</question>
-        <question value="1" level="1">How do you handle dates so they display properly in different speaking languages (British and American English for example)?</question>
+        <question weight="1" level="1" value="What is needed in a visual studio solution to support more than one speaking language (English and Spanish for example) when displaying text to end users?"/>
+        <question weight="1" level="1" value="How do you handle dates so they display properly in different speaking languages (British and American English for example)?"/>
       </area>
     </knowledgeArea>
     <knowledgeArea name="C# knowledge">
       <area name="Variable declarations">
-        <question value="1" level="1">What is the use of the var keyword in C#?</question>
-        <question value="1" level="1">Can you give me one reason you may declare a variable using var instead of specifying the type?</question>
+        <question weight="1" level="1" value="What is the use of the var keyword in C#?"/>
+        <question weight="1" level="1" value="Can you give me one reason you may declare a variable using var instead of specifying the type?"/>
       </area>
       <area name="Regular Expressions">
-        <question value="1" level="1">What is a regular expression and what is their usage?</question>
-        <question value="1" level="1">What is a regular expression pattern?</question>
-        <question value="1" level="1">How do you define a regular expression pattern to only accept alphabetic characters in lower and upper case?</question>
-        <question value="1" level="1">How do you define a regular expression pattern to only accept from 2 to 8 digits (numbers)?</question>
+        <question weight="1" level="1" value="What is a regular expression and what is their usage?"/>
+        <question weight="1" level="1" value="What is a regular expression pattern?"/>
+        <question weight="1" level="1" value="How do you define a regular expression pattern to only accept alphabetic characters in lower and upper case?"/>
+        <question weight="1" level="1" value="How do you define a regular expression pattern to only accept from 2 to 8 digits (numbers)?"/>
       </area>
       <area name="Exceptions">
-        <question value="1" level="1">What is the base class of all .net framework exceptions?</question>
-        <question value="1" level="1">How do you throw an exception in the .net framework?</question>
-        <question value="1" level="1">How do you handle exceptions in your code?</question>
-        <question value="1" level="1">What is the usage of the finally statement in an exception handling block?</question>
-        <question value="1" level="1">What common action(s) you may take when you handle an exception?</question>
+        <question weight="1" level="1" value="What is the base class of all .net framework exceptions?"/>
+        <question weight="1" level="1" value="How do you throw an exception in the .net framework?"/>
+        <question weight="1" level="1" value="How do you handle exceptions in your code?"/>
+        <question weight="1" level="1" value="What is the usage of the finally statement in an exception handling block?"/>
+        <question weight="1" level="1" value="What common action(s) you may take when you handle an exception?"/>
       </area>
       <area name="Keywords">
-        <question value="1" level="1">Could you enumerate at least 5 C# keywords and its uses?</question>
-        <question value="1" level="1">What are the main uses of the using keyword/statement?</question>
-        <question value="1" level="1">Over what kind of objects works the foreach statement?</question>
-        <question value="1" level="1">How is a typical foreach statement definition?</question>
-        <question value="1" level="1">What happens when you use the break and/or continue keywords inside a for/foreach statement?</question>
-        <question value="1" level="1">Where can you initialize a private variable you’ve prefixed with the readonly keyword in your class definition?</question>
-        <question value="1" level="1">What the keyword async is used for and which other keyword needs to be set when you use it?</question>
-        <question value="1" level="1">What is the use of the static keyword in C# when applied to a class, method and field?</question>
-        <question value="1" level="1">When should you prefix a class as sealed?</question>
+        <question weight="1" level="1" value="Could you enumerate at least 5 C# keywords and its uses?"/>
+        <question weight="1" level="1" value="What are the main uses of the using keyword/statement?"/>
+        <question weight="1" level="1" value="Over what kind of objects works the foreach statement?"/>
+        <question weight="1" level="1" value="How is a typical foreach statement definition?"/>
+        <question weight="1" level="1" value="What happens when you use the break and/or continue keywords inside a for/foreach statement?"/>
+        <question weight="1" level="1" value="Where can you initialize a private variable you’ve prefixed with the readonly keyword in your class definition?"/>
+        <question weight="1" level="1" value="What the keyword async is used for and which other keyword needs to be set when you use it?"/>
+        <question weight="1" level="1" value="What is the use of the static keyword in C# when applied to a class, method and field?"/>
+        <question weight="1" level="1" value="When should you prefix a class as sealed?"/>
       </area>
       <area name="Static classes/methods">
-        <question value="1" level="1">Why you may need to use static classes in C#?</question>
-        <question value="1" level="1">What is the lifecycle of a static instance of your class?</question>
-        <question value="1" level="1">Can also a class methods or properties be prefixed as static?</question>
-        <question value="1" level="1">If you define a class method as static can you use the “this” keyword to refer to the current instance?</question>
+        <question weight="1" level="1" value="Why you may need to use static classes in C#?"/>
+        <question weight="1" level="1" value="What is the lifecycle of a static instance of your class?"/>
+        <question weight="1" level="1" value="Can also a class methods or properties be prefixed as static?"/>
+        <question weight="1" level="1" value="If you define a class method as static can you use the “this” keyword to refer to the current instance?"/>
       </area>
       <area name="Value and reference types">
-        <question value="1" level="1">What are value types and reference types?</question>
-        <question value="1" level="1">The .net framework primitive types are value types or reference types?</question>
+        <question weight="1" level="1" value="What are value types and reference types?"/>
+        <question weight="1" level="1" value="The .net framework primitive types are value types or reference types?"/>
       </area>
       <area name="Data types">
-        <question value="1" level="1">Please enumerate at least 5 primitive types of the .net framework.</question>
-        <question value="1" level="1">To what type maps the int type in the .net framework?</question>
-        <question value="1" level="1">To what type maps the long type in the .net framework?</question>
-        <question value="1" level="1">How do you handle date time types when you have several clients working on different world time zones?</question>
-        <question value="1" level="1">What date should return DateTime.MinDate?</question>
+        <question weight="1" level="1" value="Please enumerate at least 5 primitive types of the .net framework."/>
+        <question weight="1" level="1" value="To what type maps the int type in the .net framework?"/>
+        <question weight="1" level="1" value="To what type maps the long type in the .net framework?"/>
+        <question weight="1" level="1" value="How do you handle date time types when you have several clients working on different world time zones?"/>
+        <question weight="1" level="1" value="What date should return DateTime.MinDate?"/>
       </area>
       <area name="String vs StringBuilder">
-        <question value="1" level="1">What are immutable values in .net framework?</question>
-        <question value="1" level="1">String type is immutable or mutable?</question>
-        <question value="1" level="1">When should I use String class and when the StringBuilder class?</question>
-        <question value="1" level="1">What are the most common used methods of the StringBuilder class?</question>
-        <question value="1" level="1">What method of the string class you use to split a string sentence separated by spaces?</question>
-        <question value="1" level="1">What method should you use to join that split string back again?</question>
+        <question weight="1" level="1" value="What are immutable values in .net framework?"/>
+        <question weight="1" level="1" value="String type is immutable or mutable?"/>
+        <question weight="1" level="1" value="When should I use String class and when the StringBuilder class?"/>
+        <question weight="1" level="1" value="What are the most common used methods of the StringBuilder class?"/>
+        <question weight="1" level="1" value="What method of the string class you use to split a string sentence separated by spaces?"/>
+        <question weight="1" level="1" value="What method should you use to join that split string back again?"/>
       </area>
       <area name="Collections">
-        <question value="1" level="1">What is the main difference between a string array and a list of strings, i.e. between arrays and collections?</question>
-        <question value="1" level="1">Please enumerate at least 4 most used .net framework collection classes.</question>
-        <question value="1" level="1">What is the difference between a list and a dictionary?</question>
+        <question weight="1" level="1" value="What is the main difference between a string array and a list of strings, i.e. between arrays and collections?"/>
+        <question weight="1" level="1" value="Please enumerate at least 4 most used .net framework collection classes."/>
+        <question weight="1" level="1" value="What is the difference between a list and a dictionary?"/>
       </area>
       <area name="Generics">
-        <question value="1" level="1">What are the generic classes and where does make sense to use them?</question>
-        <question value="1" level="1">Do generic class implementations improve code maintenance and readability?</question>
-        <question value="1" level="1">What is the main advantage of using generics?</question>
-        <question value="1" level="1">If you want to implement a stack class of items where they can be integers, strings or custom classes, how do you implement it using generics? </question>
-        <question value="1" level="1">What should be the header signature of a stack class of any type of items implemented using generics?</question>
+        <question weight="1" level="1" value="What are the generic classes and where does make sense to use them?"/>
+        <question weight="1" level="1" value="Do generic class implementations improve code maintenance and readability?"/>
+        <question weight="1" level="1" value="What is the main advantage of using generics?"/>
+        <question weight="1" level="1" value="If you want to implement a stack class of items where they can be integers, strings or custom classes, how do you implement it using generics? "/>
+        <question weight="1" level="1" value="What should be the header signature of a stack class of any type of items implemented using generics?"/>
       </area>
       <area name="LinQ">
-        <question value="1" level="1">What is LinQ used for?</question>
-        <question value="1" level="1">What are anonymous variables and how you define them in a LinQ select clause?</question>
-        <question value="1" level="1">When you use the let keyword in a linq expression?</question>
-        <question value="1" level="1">What namespace you need to import to use a standard array of integers with linq expressions?</question>
-        <question value="1" level="1">What linq instruction should you use to get the maximum value from an array of integers?</question>
-        <question value="1" level="1">What linq instruction should you use to get the sum of all values from an array of integers?</question>
-        <question value="1" level="1">If you have a dictionary of string keys and its values as integers, can you summarize the values grouped by keys?</question>
-        <question value="1" level="1">When you should use the First() and when you should use FirstOrDefault() methods within LinQ?</question>
+        <question weight="1" level="1" value="What is LinQ used for?"/>
+        <question weight="1" level="1" value="What are anonymous variables and how you define them in a LinQ select clause?"/>
+        <question weight="1" level="1" value="When you use the let keyword in a linq expression?"/>
+        <question weight="1" level="1" value="What namespace you need to import to use a standard array of integers with linq expressions?"/>
+        <question weight="1" level="1" value="What linq instruction should you use to get the maximum value from an array of integers?"/>
+        <question weight="1" level="1" value="What linq instruction should you use to get the sum of all values from an array of integers?"/>
+        <question weight="1" level="1" value="If you have a dictionary of string keys and its values as integers, can you summarize the values grouped by keys?"/>
+        <question weight="1" level="1" value="When you should use the First() and when you should use FirstOrDefault() methods within LinQ?"/>
       </area>
     </knowledgeArea>
   </platform>
   <platform name="Applications Development">
     <knowledgeArea name="Object Oriented Programming">
       <area name="Encapsulation">
-        <question value="1" level="1">In OOP what is encapsulation and why is one of the pillars of OOP?</question>
-        <question value="1" level="1">In .net framework what is the visibility of a private var?</question>
-        <question value="1" level="1">In .net framework what is the usage of a protected var?</question>
-        <question value="1" level="1">What is shadowing of a class property in .net framework?</question>
-        <question value="1" level="1">In .net framework, what is the standard definition of a public property getter, setter (int property for example)?</question>
-        <question value="1" level="1">What is a constructor and a destructor of a class?</question>
-        <question value="1" level="1">Can constructors be declared as private in C#?</question>
-        <question value="1" level="1">Can multiple constructors be declared in C# for some given class?</question>
+        <question weight="1" level="1" value="In OOP what is encapsulation and why is one of the pillars of OOP?"/>
+        <question weight="1" level="1" value="In .net framework what is the visibility of a private var?"/>
+        <question weight="1" level="1" value="In .net framework what is the usage of a protected var?"/>
+        <question weight="1" level="1" value="What is shadowing of a class property in .net framework?"/>
+        <question weight="1" level="1" value="In .net framework, what is the standard definition of a public property getter, setter (int property for example)?"/>
+        <question weight="1" level="1" value="What is a constructor and a destructor of a class?"/>
+        <question weight="1" level="1" value="Can constructors be declared as private in C#?"/>
+        <question weight="1" level="1" value="Can multiple constructors be declared in C# for some given class?"/>
       </area>
       <area name="Inheritance">
-        <question value="1" level="1">What is the meaning of the inheritance term in OOP?</question>
-        <question value="1" level="1">What is a base class?</question>
-        <question value="1" level="1">What is a root class of a hierarchy of classes?</question>
-        <question value="1" level="1">Why you may need to implement a hierarchy of classes?</question>
-        <question value="1" level="1">What (items) should be defined in a base class?</question>
-        <question value="1" level="1">What (methods) should be implemented in a base class?</question>
-        <question value="1" level="1">In .net framework what C# keyword you use to define your class can not be instantiated?</question>
-        <question value="1" level="1">In .net framework what C# keyword you use to define your class can not be inherited anymore?</question>
-        <question value="1" level="1">In .net framework what C# keyword you use to define your derived classes must implement a specific method?</question>
+        <question weight="1" level="1" value="What is the meaning of the inheritance term in OOP?"/>
+        <question weight="1" level="1" value="What is a base class?"/>
+        <question weight="1" level="1" value="What is a root class of a hierarchy of classes?"/>
+        <question weight="1" level="1" value="Why you may need to implement a hierarchy of classes?"/>
+        <question weight="1" level="1" value="What (items) should be defined in a base class?"/>
+        <question weight="1" level="1" value="What (methods) should be implemented in a base class?"/>
+        <question weight="1" level="1" value="In .net framework what C# keyword you use to define your class can not be instantiated?"/>
+        <question weight="1" level="1" value="In .net framework what C# keyword you use to define your class can not be inherited anymore?"/>
+        <question weight="1" level="1" value="In .net framework what C# keyword you use to define your derived classes must implement a specific method?"/>
       </area>
       <area name="Polymorphism">
-        <question value="1" level="1">What is the meaning of the polymorphism term in OOP?</question>
-        <question value="1" level="1">How the polymorphism is implemented in a derived class?</question>
-        <question value="1" level="1">In a base class, how do you define that “A” method has a default implementation and how you define that “B” method has no default implementation so, once that class is derived you have to provide the non-default implementation?</question>
-        <question value="1" level="1">Does C# support your class inherit from multiple classes?</question>
-        <question value="1" level="1">In C# how do you implement multiple inheritance?</question>
+        <question weight="1" level="1" value="What is the meaning of the polymorphism term in OOP?"/>
+        <question weight="1" level="1" value="How the polymorphism is implemented in a derived class?"/>
+        <question weight="1" level="1" value="In a base class, how do you define that “A” method has a default implementation and how you define that “B” method has no default implementation so, once that class is derived you have to provide the non-default implementation?"/>
+        <question weight="1" level="1" value="Does C# support your class inherit from multiple classes?"/>
+        <question weight="1" level="1" value="In C# how do you implement multiple inheritance?"/>
       </area>
       <area name="Interfaces">
-        <question value="1" level="1">What is an interface?</question>
-        <question value="1" level="1">What C# keyword is used to define an interface?</question>
-        <question value="1" level="1">What items can be defined in an interface?</question>
-        <question value="1" level="1">In the .net framework, can properties be declared in an interface?</question>
-        <question value="1" level="1">Can interface methods be declared as private or protected?</question>
-        <question value="1" level="1">When you may use an interface instead of an abstract class?</question>
-        <question value="1" level="1">What are the main differences between an interface and an abstract class?</question>
+        <question weight="1" level="1" value="What is an interface?"/>
+        <question weight="1" level="1" value="What C# keyword is used to define an interface?"/>
+        <question weight="1" level="1" value="What items can be defined in an interface?"/>
+        <question weight="1" level="1" value="In the .net framework, can properties be declared in an interface?"/>
+        <question weight="1" level="1" value="Can interface methods be declared as private or protected?"/>
+        <question weight="1" level="1" value="When you may use an interface instead of an abstract class?"/>
+        <question weight="1" level="1" value="What are the main differences between an interface and an abstract class?"/>
       </area>
     </knowledgeArea>
     <knowledgeArea name="Patterns">
       <area name="Concepts">
-        <question value="1" level="1">What is the meaning of software patterns, what are their benefits?</question>
+        <question weight="1" level="1" value="What is the meaning of software patterns, what are their benefits?"/>
       </area>
       <area name="Factory method">
-        <question value="1" level="1">Please describe in what cases is recommended to implement the factory method pattern</question>
-        <question value="1" level="1">Please enumerate at least 2 classes in .net framework or third party components which implement the factory method pattern</question>
+        <question weight="1" level="1" value="Please describe in what cases is recommended to implement the factory method pattern"/>
+        <question weight="1" level="1" value="Please enumerate at least 2 classes in .net framework or third party components which implement the factory method pattern"/>
       </area>
       <area name="Singleton">
-        <question value="1" level="1">Please describe what is the singleton pattern and when should be used?</question>
-        <question value="1" level="1">Please describe the standard implementation of the singleton pattern</question>
+        <question weight="1" level="1" value="Please describe what is the singleton pattern and when should be used?"/>
+        <question weight="1" level="1" value="Please describe the standard implementation of the singleton pattern"/>
       </area>
       <area name="Builder">
-        <question value="1" level="1">Please describe in what cases is recommended to implement the builder pattern</question>
-        <question value="1" level="1">Please enumerate at least 2 classes/frameworks/platforms you know implement the builder pattern</question>
+        <question weight="1" level="1" value="Please describe in what cases is recommended to implement the builder pattern"/>
+        <question weight="1" level="1" value="Please enumerate at least 2 classes/frameworks/platforms you know implement the builder pattern"/>
       </area>
     </knowledgeArea>
     <knowledgeArea name="Application Design">
       <area name="SOLID">
-        <question value="1" level="1">What is a loosely coupled design of classes and what are its main benefits?</question>
-        <question value="1" level="1">In software development SOLID what the S stands for?</question>
-        <question value="1" level="1">In software development SOLID what the O stands for?</question>
-        <question value="1" level="1">In software development SOLID what the L stands for?</question>
-        <question value="1" level="1">In software development SOLID what the I stands for?</question>
-        <question value="1" level="1">In software development SOLID what the D stands for?</question>
+        <question weight="1" level="1" value="What is a loosely coupled design of classes and what are its main benefits?"/>
+        <question weight="1" level="1" value="In software development SOLID what the S stands for?"/>
+        <question weight="1" level="1" value="In software development SOLID what the O stands for?"/>
+        <question weight="1" level="1" value="In software development SOLID what the L stands for?"/>
+        <question weight="1" level="1" value="In software development SOLID what the I stands for?"/>
+        <question weight="1" level="1" value="In software development SOLID what the D stands for?"/>
       </area>
       <area name="Performance/Caching">
-        <question value="1" level="1">What should be an acceptable time duration for a web page to be rendered in a web site?</question>
-        <question value="1" level="1">What is the caching technology and how it may be implemented in a C# project?</question>
-        <question value="1" level="1">What items should be cached in an application?</question>
-        <question value="1" level="1">Please enumerate at least 2 ways in .net framework to implement caching.</question>
-        <question value="1" level="1">What may be the difference between a Session/Application (web development) and a cache store?</question>
-        <question value="1" level="1">How values are saved/retrieved commonly from a cache store?</question>
-        <question value="1" level="1">What conditions you may set on your cache items to set its expiration?</question>
+        <question weight="1" level="1" value="What should be an acceptable time duration for a web page to be rendered in a web site?"/>
+        <question weight="1" level="1" value="What is the caching technology and how it may be implemented in a C# project?"/>
+        <question weight="1" level="1" value="What items should be cached in an application?"/>
+        <question weight="1" level="1" value="Please enumerate at least 2 ways in .net framework to implement caching."/>
+        <question weight="1" level="1" value="What may be the difference between a Session/Application (web development) and a cache store?"/>
+        <question weight="1" level="1" value="How values are saved/retrieved commonly from a cache store?"/>
+        <question weight="1" level="1" value="What conditions you may set on your cache items to set its expiration?"/>
       </area>
       <area name="Messaging">
-        <question value="1" level="1">What is the main usage of the messaging technology?</question>
-        <question value="1" level="1">What event model does messaging commonly uses?</question>
-        <question value="1" level="1">In what cases you should incorporate the messaging stack within your application?</question>
-        <question value="1" level="1">Please enumerate at least 2 technologies/platforms for messaging.</question>
+        <question weight="1" level="1" value="What is the main usage of the messaging technology?"/>
+        <question weight="1" level="1" value="What event model does messaging commonly uses?"/>
+        <question weight="1" level="1" value="In what cases you should incorporate the messaging stack within your application?"/>
+        <question weight="1" level="1" value="Please enumerate at least 2 technologies/platforms for messaging."/>
       </area>
       <area name="Scheduling">
-        <question value="1" level="1">Why scheduling technology should be used in complex systems/services?</question>
-        <question value="1" level="1">Please enumerate at least 2 technologies/platforms for scheduling.</question>
-        <question value="1" level="1">What is a standard way to implement in .net framework a scheduled service and what kind of visual studio project can be used?</question>
+        <question weight="1" level="1" value="Why scheduling technology should be used in complex systems/services?"/>
+        <question weight="1" level="1" value="Please enumerate at least 2 technologies/platforms for scheduling."/>
+        <question weight="1" level="1" value="What is a standard way to implement in .net framework a scheduled service and what kind of visual studio project can be used?"/>
       </area>
     </knowledgeArea>
   </platform>
   <platform name="Web Development">
     <knowledgeArea name="Web Applications">
       <area name="Web Concepts">
-        <question value="1" level="1">What is a Request object?</question>
-        <question value="1" level="1">What is a Response object?</question>
-        <question value="1" level="1">In a web communication, who creates the request object and who creates the response object?</question>
-        <question value="1" level="1">What are the Header attributes of a request or response and what is its use?</question>
-        <question value="1" level="1">What is the lifecycle of a Request?</question>
-        <question value="1" level="1">Why we said the web is stateless?</question>
-        <question value="1" level="1">How many web.config files can a web application have?</question>
-        <question value="1" level="1">Please enumerate the principal http verbs when making a request to a server and its use.</question>
-        <question value="1" level="1">Please enumerate the most common Response code statuses</question>
-        <question value="1" level="1">In IIS what is the default port number for a web application?</question>
-        <question value="1" level="1">In IIS what is the default port number for a secured web application (TLS/SSL)</question>
-        <question value="1" level="1">In IIS what is an application pool and what is used for?</question>
+        <question weight="1" level="1" value="What is a Request object?"/>
+        <question weight="1" level="1" value="What is a Response object?"/>
+        <question weight="1" level="1" value="In a web communication, who creates the request object and who creates the response object?"/>
+        <question weight="1" level="1" value="What are the Header attributes of a request or response and what is its use?"/>
+        <question weight="1" level="1" value="What is the lifecycle of a Request?"/>
+        <question weight="1" level="1" value="Why we said the web is stateless?"/>
+        <question weight="1" level="1" value="How many web.config files can a web application have?"/>
+        <question weight="1" level="1" value="Please enumerate the principal http verbs when making a request to a server and its use."/>
+        <question weight="1" level="1" value="Please enumerate the most common Response code statuses"/>
+        <question weight="1" level="1" value="In IIS what is the default port number for a web application?"/>
+        <question weight="1" level="1" value="In IIS what is the default port number for a secured web application (TLS/SSL)"/>
+        <question weight="1" level="1" value="In IIS what is an application pool and what is used for?"/>
       </area>
       <area name="Web API">
-        <question value="1" level="1">What is an API controller?</question>
-        <question value="1" level="1">Why Web API is considered as a REST API?</question>
-        <question value="1" level="1">What is the base class of the API controller?</question>
-        <question value="1" level="1">Does a Web API controller inherit the same base class than the MVC controller?</question>
-        <question value="1" level="1">What is a Web API Route?</question>
-        <question value="1" level="1">How do you define a Route for a controller method?</question>
-        <question value="1" level="1">What type of objects can be returned from a Web API controller method?</question>
-        <question value="1" level="1">What is the use of the Response Type attribute for a controller method?</question>
-        <question value="1" level="1">Please enumerate the 2 common methods of serialization used by the Web API?</question>
-        <question value="1" level="1">What is the JSON and Xml serialization?</question>
-        <question value="1" level="1">Speaking of security, what’s the difference between Authentication and Authorization?</question>
-        <question value="1" level="1">In a web project, can I implement custom Authentication and Authorization? </question>
-        <question value="1" level="1">If speed is critical for your web project, would you use Web API or WCF?</question>
-        <question value="1" level="1">If security is critical for your web project, would you use Web API or WCF?</question>
+        <question weight="1" level="1" value="What is an API controller?"/>
+        <question weight="1" level="1" value="Why Web API is considered as a REST API?"/>
+        <question weight="1" level="1" value="What is the base class of the API controller?"/>
+        <question weight="1" level="1" value="Does a Web API controller inherit the same base class than the MVC controller?"/>
+        <question weight="1" level="1" value="What is a Web API Route?"/>
+        <question weight="1" level="1" value="How do you define a Route for a controller method?"/>
+        <question weight="1" level="1" value="What type of objects can be returned from a Web API controller method?"/>
+        <question weight="1" level="1" value="What is the use of the Response Type attribute for a controller method?"/>
+        <question weight="1" level="1" value="Please enumerate the 2 common methods of serialization used by the Web API?"/>
+        <question weight="1" level="1" value="What is the JSON and Xml serialization?"/>
+        <question weight="1" level="1" value="Speaking of security, what’s the difference between Authentication and Authorization?"/>
+        <question weight="1" level="1" value="In a web project, can I implement custom Authentication and Authorization? "/>
+        <question weight="1" level="1" value="If speed is critical for your web project, would you use Web API or WCF?"/>
+        <question weight="1" level="1" value="If security is critical for your web project, would you use Web API or WCF?"/>
       </area>
       <area name="MVC Development">
-        <question value="1" level="1">What is a MVC controller?</question>
-        <question value="1" level="1">What is a MVC view?</question>
-        <question value="1" level="1">What is a POCO class?</question>
+        <question weight="1" level="1" value="What is a MVC controller?"/>
+        <question weight="1" level="1" value="What is a MVC view?"/>
+        <question weight="1" level="1" value="What is a POCO class?"/>
       </area>
       <area name="WCF">
-        <question value="1" level="1">What is a WSDL definition of a WCF project?</question>
-        <question value="1" level="1">In what format messages are serialized in WCF?</question>
-        <question value="1" level="1">Commonly in what part of a Soap message do you send security credentials?</question>
+        <question weight="1" level="1" value="What is a WSDL definition of a WCF project?"/>
+        <question weight="1" level="1" value="In what format messages are serialized in WCF?"/>
+        <question weight="1" level="1" value="Commonly in what part of a Soap message do you send security credentials?"/>
       </area>
       <area name="HTML 5">
-        <question value="1" level="1">What are the principal tags available in HTML 5?</question>
-        <question value="1" level="1">What does SVG is in HTML 5?</question>
-        <question value="1" level="1">What is a SPA application?</question>
-        <question value="1" level="1">What is a Responsive application?</question>
+        <question weight="1" level="1" value="What are the principal tags available in HTML 5?"/>
+        <question weight="1" level="1" value="What does SVG is in HTML 5?"/>
+        <question weight="1" level="1" value="What is a SPA application?"/>
+        <question weight="1" level="1" value="What is a Responsive application?"/>
       </area>
       <area name="AngularJS">
-        <question value="1" level="1">What is a $scope object in angular?</question>
-        <question value="1" level="1">What do you need to apply to your html page to support angular?</question>
-        <question value="1" level="1">What is an angular module?</question>
-        <question value="1" level="1">What is an angular controller?</question>
+        <question weight="1" level="1" value="What is a $scope object in angular?"/>
+        <question weight="1" level="1" value="What do you need to apply to your html page to support angular?"/>
+        <question weight="1" level="1" value="What is an angular module?"/>
+        <question weight="1" level="1" value="What is an angular controller?"/>
       </area>
     </knowledgeArea>
   </platform>
   <platform name="Database Development">
     <knowledgeArea name="SQL Development">
       <area name="Concepts">
-        <question value="1" level="1">What is the Normalization Term in SQL?</question>
-        <question value="1" level="1">Should you always have normalized schemas or may not apply in all circumstances?</question>
-        <question value="1" level="1">What are the common CRUD SQL operation statements?</question>
-        <question value="1" level="1">What is a Primary Key?</question>
-        <question value="1" level="1">What is an Index?</question>
-        <question value="1" level="1">What is the difference between a Primary Key and an Index?</question>
-        <question value="1" level="1">What is a SQL constraint?</question>
-        <question value="1" level="1">What’s the reason you may set the unique constraint on a table column?</question>
-        <question value="1" level="1">What are the primary types for columns in a data table?</question>
-        <question value="1" level="1">What is a View?</question>
-        <question value="1" level="1">What is a Trigger and when is executed?</question>
-        <question value="1" level="1">What is the difference between a SQL function and a store procedure?</question>
-        <question value="1" level="1">What is a SQL transacted operation and its common statements?</question>
-        <question value="1" level="1">When you should run SQL operations using transaction statements?</question>
-        <question value="1" level="1">When matching tables, what are the most common types of joins you can apply?</question>
-        <question value="1" level="1">When you create a database oriented project, what stack or performant framework should you use?</question>
-        <question value="1" level="1">What is the recommended way to save/retrieve data, using SQL queries or call store procedures?</question>
+        <question weight="1" level="1" value="What is the Normalization Term in SQL?"/>
+        <question weight="1" level="1" value="Should you always have normalized schemas or may not apply in all circumstances?"/>
+        <question weight="1" level="1" value="What are the common CRUD SQL operation statements?"/>
+        <question weight="1" level="1" value="What is a Primary Key?"/>
+        <question weight="1" level="1" value="What is an Index?"/>
+        <question weight="1" level="1" value="What is the difference between a Primary Key and an Index?"/>
+        <question weight="1" level="1" value="What is a SQL constraint?"/>
+        <question weight="1" level="1" value="What’s the reason you may set the unique constraint on a table column?"/>
+        <question weight="1" level="1" value="What are the primary types for columns in a data table?"/>
+        <question weight="1" level="1" value="What is a View?"/>
+        <question weight="1" level="1" value="What is a Trigger and when is executed?"/>
+        <question weight="1" level="1" value="What is the difference between a SQL function and a store procedure?"/>
+        <question weight="1" level="1" value="What is a SQL transacted operation and its common statements?"/>
+        <question weight="1" level="1" value="When you should run SQL operations using transaction statements?"/>
+        <question weight="1" level="1" value="When matching tables, what are the most common types of joins you can apply?"/>
+        <question weight="1" level="1" value="When you create a database oriented project, what stack or performant framework should you use?"/>
+        <question weight="1" level="1" value="What is the recommended way to save/retrieve data, using SQL queries or call store procedures?"/>
       </area>
     </knowledgeArea>
   </platform>
   <platform name="Algorithms Solution">
     <knowledgeArea name="Basic Algorithms">
       <area name="Array declarations">
-        <question value="1" level="1">How you define an array of integers?</question>
-        <question value="1" level="1">How you make sure you initialize an array of integers before being used?</question>
-        <question value="1" level="1">If you define a List&lt;string&gt;, what returns the ToArray() method of that list?</question>
-        <question value="1" level="1">If you define a string[], what returns the ToList() method of that instance?</question>
+        <question weight="1" level="1" value="How you define an array of integers?"/>
+        <question weight="1" level="1" value="How you make sure you initialize an array of integers before being used?"/>
+        <question weight="1" level="1" value="If you define a List&lt;string&gt;, what returns the ToArray() method of that list?"/>
+        <question weight="1" level="1" value="If you define a string[], what returns the ToList() method of that instance?"/>
       </area>
       <area name="Word/char counting">
-        <question value="1" level="1">Please describe the steps you must do to count the words on a text file?</question>
-        <question value="1" level="1">What else should I do to also fill a dictionary of letters and its incidences?</question>
+        <question weight="1" level="1" value="Please describe the steps you must do to count the words on a text file?"/>
+        <question weight="1" level="1" value="What else should I do to also fill a dictionary of letters and its incidences?"/>
       </area>
       <area name="String splitting">
-        <question value="1" level="1">What is the standard method to split a string?</question>
-        <question value="1" level="1">What do I need to do to avoid retrieving empty strings when splitting a string?</question>
-        <question value="1" level="1">When splitting a string, can I split the string using some specific string or some specific char?</question>
+        <question weight="1" level="1" value="What is the standard method to split a string?"/>
+        <question weight="1" level="1" value="What do I need to do to avoid retrieving empty strings when splitting a string?"/>
+        <question weight="1" level="1" value="When splitting a string, can I split the string using some specific string or some specific char?"/>
       </area>
       <area name="Word reversing">
-        <question value="1" level="1">Please describe the steps you must do to reverse a string?</question>
-        <question value="1" level="1">Please describe the steps you must do to sort a split string by its words length?</question>
+        <question weight="1" level="1" value="Please describe the steps you must do to reverse a string?"/>
+        <question weight="1" level="1" value="Please describe the steps you must do to sort a split string by its words length?"/>
       </area>
     </knowledgeArea>
   </platform>
   <platform name="Testing">
     <knowledgeArea name="Unit Testing">
       <area name="Concepts and Frameworks">
-        <question value="1" level="1">What is the difference between Unit Test and Integration Test?</question>
-        <question value="1" level="1">What is TDD?</question>
-        <question value="1" level="1">How do you ensure you code is friendlier to unit testing?</question>
-        <question value="1" level="1">What attribute you need to set to mark a class as a test class?</question>
-        <question value="1" level="1">What is the purpose of using the Setup attribute on a test class method?</question>
-        <question value="1" level="1">How do you tell the testing framework you want to ignore this test class method to be ignored when running all tests?</question>
-        <question value="1" level="1">What is an assertion?</question>
-        <question value="1" level="1">What are the common methods of the Assert class (or equivalent)?</question>
-        <question value="1" level="1">What is a Fake class?</question>
-        <question value="1" level="1">Does help using interfaces in your code the unit testing process?</question>
-        <question value="1" level="1">What testing frameworks have you used?</question>
+        <question weight="1" level="1" value="What is the difference between Unit Test and Integration Test?"/>
+        <question weight="1" level="1" value="What is TDD?"/>
+        <question weight="1" level="1" value="How do you ensure you code is friendlier to unit testing?"/>
+        <question weight="1" level="1" value="What attribute you need to set to mark a class as a test class?"/>
+        <question weight="1" level="1" value="What is the purpose of using the Setup attribute on a test class method?"/>
+        <question weight="1" level="1" value="How do you tell the testing framework you want to ignore this test class method to be ignored when running all tests?"/>
+        <question weight="1" level="1" value="What is an assertion?"/>
+        <question weight="1" level="1" value="What are the common methods of the Assert class (or equivalent)?"/>
+        <question weight="1" level="1" value="What is a Fake class?"/>
+        <question weight="1" level="1" value="Does help using interfaces in your code the unit testing process?"/>
+        <question weight="1" level="1" value="What testing frameworks have you used?"/>
       </area>
     </knowledgeArea>
   </platform>
   <platform name="Agile">
     <knowledgeArea name="Agile Development">
-      <area name="What agile development frameworks have you used in your career?"></area>
-      <area name="What is the Scrum agile framework?"></area>
-      <area name="What is the Scrum master?"></area>
-      <area name="What is the Backlog?"></area>
-      <area name="What is a Sprint and its common length in days?"></area>
-      <area name="What is a feature in Scrum?"></area>
+      <area name="Agile">
+        <question weight="1" level="1" value="What agile development frameworks have you used in your career?"/>
+        <question weight="1" level="1" value="What is the Scrum agile framework?"/>
+        <question weight="1" level="1" value="What is the Scrum master?"/>
+        <question weight="1" level="1" value="What is the Backlog?"/>
+        <question weight="1" level="1" value="What is a Sprint and its common length in days?"/>
+        <question weight="1" level="1" value="What is a feature in Scrum?"/>
+      </area>
     </knowledgeArea>
   </platform>
-  <profile level="DevIII">
+  <profile name="DevIII">
     <requirement platform="" knowledgeArea="" area="*"/>
     <optional platform="Web" knowledgeArea="ASP"/>
   </profile>
-  <profile level="DevIV">
+  <profile name="DevIV">
     <requirement platform="*" knowledgeArea="*" area="*"/>
     <optional platform="Web" knowledgeArea="ASP"/>
   </profile>

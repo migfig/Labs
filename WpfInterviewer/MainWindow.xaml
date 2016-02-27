@@ -39,7 +39,7 @@
             <ComboBox Grid.Column="1" ItemsSource="{Binding Profiles}" SelectedItem="{Binding Mode=TwoWay, Path=SelectedProfile}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding level}" />
+                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding name}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
@@ -98,7 +98,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         
-                        <TextBlock Text="{Binding name}" />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding name}" />
                         <Button Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{DynamicResource QuestionButton}" Height="30" Command="{Binding ShowAddQuestionsCommand}"/>
                     </Grid>
                 </DataTemplate>
@@ -118,11 +118,11 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock VerticalAlignment="Center" Text="{Binding level}" />
-                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding value}" />
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding weight}" />
                         <Button Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource RatingUpButtonSmall}" Height="30" Command="{Binding QuestionUpCommand}" CommandParameter="{Binding}" />
                         <Button Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource RatingDownButtonSmall}" Height="30" Command="{Binding QuestionDownCommand}" CommandParameter="{Binding}" />
                         <Button Grid.Column="4" HorizontalAlignment="Left" Style="{DynamicResource RatingUndefButtonSmall}" Height="30" Command="{Binding QuestionUndefCommand}" CommandParameter="{Binding}" />
-                        <TextBlock Grid.Column="5" Text="{Binding Value}" />
+                        <TextBlock Grid.Column="5" VerticalAlignment="Center" Text="{Binding value}" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

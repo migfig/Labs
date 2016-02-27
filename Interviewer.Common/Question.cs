@@ -1,7 +1,7 @@
 using System.Windows.Input;
 using System.Xml.Serialization;
 
-namespace WpfInterviewer
+namespace Interviewer.Common
 {
 	public class Question : BaseModel
 	{
@@ -81,31 +81,31 @@ namespace WpfInterviewer
 			}
 		}
 
-		[XmlIgnore]
-		public ICommand QuestionUpCommand
-		{
-			get
-			{
-				return MainViewModel.ViewModel.QuestionUpCommand;
-			}
-		}
+		//[XmlIgnore]
+		//public ICommand QuestionUpCommand
+		//{
+		//	get
+		//	{
+		//		return MainViewModel.ViewModel.QuestionUpCommand;
+		//	}
+		//}
 
-		[XmlIgnore]
-		public ICommand QuestionDownCommand
-		{
-			get
-			{
-				return MainViewModel.ViewModel.QuestionDownCommand;
-			}
-		}
+		//[XmlIgnore]
+		//public ICommand QuestionDownCommand
+		//{
+		//	get
+		//	{
+		//		return MainViewModel.ViewModel.QuestionDownCommand;
+		//	}
+		//}
 
-		[XmlIgnore]
-		public ICommand QuestionUndefCommand
-		{
-			get
-			{
-				return MainViewModel.ViewModel.QuestionUndefCommand;
-			}
-		}
+		//[XmlIgnore]
+		//public ICommand QuestionUndefCommand
+		//{
+		//	get
+		//	{
+		//		return MainViewModel.ViewModel.QuestionUndefCommand;
+		//	}
+		//}
 	}
 }

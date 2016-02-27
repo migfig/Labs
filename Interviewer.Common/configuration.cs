@@ -1,15 +1,10 @@
-using System;
-using System.CodeDom.Compiler;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace WpfInterviewer
+namespace Interviewer.Common
 {
-	[GeneratedCode("Xsd2Code", "3.4.0.32990"), DesignerCategory("code"), XmlRoot(Namespace = "", IsNullable = false), XmlType(AnonymousType = true)]
-	[Serializable]
-	public class configuration : BaseModel
+    public class configuration : BaseModel
 	{
 		private ObservableCollection<object> itemsField;
 

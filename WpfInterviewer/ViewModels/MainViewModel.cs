@@ -1,3 +1,4 @@
+using Interviewer.Common;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -448,8 +449,8 @@ namespace WpfInterviewer
 				    }
 
                     TotalQuestions = GetPendingQuestions();
-                    TransformInterviewDataToCsv();
-                    TransformInterviewDataToSQL();
+                    //TransformInterviewDataToCsv();
+                    //TransformInterviewDataToSQL();
                 }
 				else
 				{
@@ -602,7 +603,7 @@ namespace WpfInterviewer
                                         astream.WriteLine("{0},{1},\"{2}\"", kac, ++ac, a.name);
                                         foreach (var q in a.question)
                                         {
-                                            qstream.WriteLine("{0},{1},{2},{3},{4},{5}", ac, ++qc, q.value, q.level, q.Value, "");
+                                            qstream.WriteLine("{0},{1},{2},{3},{4},{5}", ac, ++qc, q.weight, q.level, q.value, "");
                                         }
                                     }
                                 }
@@ -646,7 +647,7 @@ namespace WpfInterviewer
                                         astream.WriteLine("insert into [Areas] (KnowledgeAreaId,Id,Name) values({0},{1},N'{2}');", kac, ++ac, a.name);
                                         foreach (var q in a.question)
                                         {
-                                            qstream.WriteLine("insert into [Questions] (AreaId,Id,Weight,Level,Value,Name) values({0},{1},{2},{3},N'{4}',N'{5}');", ac, ++qc, q.value, q.level, q.Value, "");
+                                            qstream.WriteLine("insert into [Questions] (AreaId,Id,Weight,Level,Value,Name) values({0},{1},{2},{3},N'{4}',N'{5}');", ac, ++qc, q.weight, q.level, q.value, "");
                                         }
                                     }
                                 }

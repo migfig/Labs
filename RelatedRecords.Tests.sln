@@ -68,6 +68,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interviewer.Services.Web", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interviewer.Services.Web.Tests", "Interviewer.Services.Web.Tests\Interviewer.Services.Web.Tests.csproj", "{FE6B1FD8-FF66-4637-ADF0-BA38A911C2D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interviewer.Common", "Interviewer.Common\Interviewer.Common.csproj", "{F1EAC94B-F09D-4C06-A875-4F3D37878255}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		InterviewerHubApp\InterviewerHubApp.Shared\InterviewerHubApp.Shared.projitems*{e52dc726-b95a-4957-9729-d03f32231a1b}*SharedItemsImports = 13
@@ -977,6 +979,38 @@ Global
 		{FE6B1FD8-FF66-4637-ADF0-BA38A911C2D9}.StronglyNamedAssembly|x64.Build.0 = Release|Any CPU
 		{FE6B1FD8-FF66-4637-ADF0-BA38A911C2D9}.StronglyNamedAssembly|x86.ActiveCfg = Release|Any CPU
 		{FE6B1FD8-FF66-4637-ADF0-BA38A911C2D9}.StronglyNamedAssembly|x86.Build.0 = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Debug|ARM.Build.0 = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Debug|x64.Build.0 = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Debug|x86.Build.0 = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Documentation|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Documentation|Any CPU.Build.0 = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Documentation|ARM.ActiveCfg = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Documentation|ARM.Build.0 = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Documentation|x64.ActiveCfg = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Documentation|x64.Build.0 = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Documentation|x86.ActiveCfg = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Documentation|x86.Build.0 = Debug|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Release|ARM.ActiveCfg = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Release|ARM.Build.0 = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Release|x64.ActiveCfg = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Release|x64.Build.0 = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Release|x86.ActiveCfg = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.Release|x86.Build.0 = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.StronglyNamedAssembly|Any CPU.ActiveCfg = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.StronglyNamedAssembly|Any CPU.Build.0 = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.StronglyNamedAssembly|ARM.ActiveCfg = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.StronglyNamedAssembly|ARM.Build.0 = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.StronglyNamedAssembly|x64.ActiveCfg = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.StronglyNamedAssembly|x64.Build.0 = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.StronglyNamedAssembly|x86.ActiveCfg = Release|Any CPU
+		{F1EAC94B-F09D-4C06-A875-4F3D37878255}.StronglyNamedAssembly|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Interviewer.Data
+namespace Interviewer.Data.Repositories
 {
-    public class Platform: BaseClass
+    public interface IDbConnection
     {
-        public IEnumerable<KnowledgeArea> KnowledgeAreas { get; set; }
+        string ConnectionString { get; }
     }
 }

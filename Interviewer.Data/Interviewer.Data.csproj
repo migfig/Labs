@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -49,21 +53,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Area.cs" />
-    <Compile Include="BaseClass.cs" />
     <Compile Include="InterViewerContext.cs" />
-    <Compile Include="KnowledgeArea.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Platform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Question.cs" />
+    <Compile Include="Repositories\IDbConnection.cs" />
+    <Compile Include="Repositories\InterviewerRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="platforms.sql" />
+    <None Include="interviewer.sql" />
+    <None Include="platforms.sql" />
+    <None Include="usp_GetInterviewerData.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Interviewer.Common\Interviewer.Common.csproj">
+      <Project>{f1eac94b-f09d-4c06-a875-4f3d37878255}</Project>
+      <Name>Interviewer.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

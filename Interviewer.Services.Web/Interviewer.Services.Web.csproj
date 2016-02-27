@@ -111,9 +111,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Interviewer.Common\Interviewer.Common.csproj">
+      <Project>{f1eac94b-f09d-4c06-a875-4f3d37878255}</Project>
+      <Name>Interviewer.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Interviewer.Data\Interviewer.Data.csproj">
       <Project>{8e0fbb1f-7c1f-4430-a392-251bc9118137}</Project>
       <Name>Interviewer.Data</Name>
