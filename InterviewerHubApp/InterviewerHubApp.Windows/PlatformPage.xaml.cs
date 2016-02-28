@@ -1,8 +1,12 @@
-﻿using System;
+﻿using InterviewerHubApp.Data;
+using InterviewerHubApp.Common;
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -12,22 +16,27 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using InterviewerHubApp.Data;
-using InterviewerHubApp.Common;
 using WpfInterviewer;
 using Interviewer.Common;
-
-// The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
 
 namespace InterviewerHubApp
 {
     /// <summary>
-    /// A page that displays a grouped collection of items.
+    /// A page that displays an overview of a single group, including a preview of the items
+    /// within the group.
     /// </summary>
-    public sealed partial class HubPage : Page
+    public sealed partial class PlatformPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+
+        public PlatformPage()
+        {
+            this.InitializeComponent();
+            this.navigationHelper = new NavigationHelper(this);
+            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this.DefaultViewModel["ViewModel"] = MainViewModel.ViewModel;
+        }
 
         /// <summary>
         /// Gets the NavigationHelper used to aid in navigation and process lifetime management.
@@ -45,14 +54,6 @@ namespace InterviewerHubApp
             get { return this.defaultViewModel; }
         }
 
-        public HubPage()
-        {
-            this.InitializeComponent();
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            MainViewModel.ViewModel.LoadConfiguration();
-        }
-
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
         /// provided when recreating a page from a prior session.
@@ -67,38 +68,30 @@ namespace InterviewerHubApp
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
-            var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-4");
-            this.DefaultViewModel["Section3Items"] = sampleDataGroup;            
-            this.DefaultViewModel["ViewModel"] = MainViewModel.ViewModel;
+            //var group = await SampleDataSource.GetGroupAsync((string)e.NavigationParameter);
+            //this.DefaultViewModel["Group"] = group;
+            //this.DefaultViewModel["Items"] = group.Items;
+
+            var platform = (this.DefaultViewModel["ViewModel"] as MainViewModel)
+                .Platforms.First(p => p.Id == (int)e.NavigationParameter);
+            this.DefaultViewModel["Platform"] = platform;            
         }
 
         /// <summary>
-        /// Invoked when a HubSection header is clicked.
+        /// Invoked when an item is clicked.
         /// </summary>
-        /// <param name="sender">The Hub that contains the HubSection whose header was clicked.</param>
-        /// <param name="e">Event data that describes how the click was initiated.</param>
-        void Hub_SectionHeaderClick(object sender, HubSectionHeaderClickEventArgs e)
-        {
-            //HubSection section = e.Section;
-            //var group = section.DataContext;
-            //this.Frame.Navigate(typeof(SectionPage), ((SampleDataGroup)group).UniqueId);
-        }
-
-        /// <summary>
-        /// Invoked when an item within a section is clicked.
-        /// </summary>
-        /// <param name="sender">The GridView or ListView
-        /// displaying the item clicked.</param>
+        /// <param name="sender">The GridView displaying the item clicked.</param>
         /// <param name="e">Event data that describes the item clicked.</param>
-        void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
-            var platform = (Platform)e.ClickedItem;
-            MainViewModel.ViewModel.SelectedPlatform = platform;
-            var itemId = platform.Id;
-            this.Frame.Navigate(typeof(PlatformPage), itemId);
+            var knowledgeArea = (KnowledgeArea)e.ClickedItem;
+            MainViewModel.ViewModel.SelectedKnowledgeArea = knowledgeArea;
+            var itemId = knowledgeArea.Id;
+            this.Frame.Navigate(typeof(KnowledgeAreaPage), itemId);
         }
+
         #region NavigationHelper registration
 
         /// <summary>

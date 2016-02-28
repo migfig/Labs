@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using WpfInterviewer;
+using Interviewer.Common;
 
 namespace InterviewerHubApp
 {
@@ -24,12 +25,12 @@ namespace InterviewerHubApp
     /// A page that displays an overview of a single group, including a preview of the items
     /// within the group.
     /// </summary>
-    public sealed partial class SectionPage : Page
+    public sealed partial class QuestionPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public SectionPage()
+        public QuestionPage()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -71,9 +72,9 @@ namespace InterviewerHubApp
             //this.DefaultViewModel["Group"] = group;
             //this.DefaultViewModel["Items"] = group.Items;
 
-            var platform = (this.DefaultViewModel["ViewModel"] as MainViewModel)
-                .Platforms.First(p => p.Id == (int)e.NavigationParameter);
-            this.DefaultViewModel["Platform"] = platform;            
+            var question = (this.DefaultViewModel["ViewModel"] as MainViewModel)
+                .SelectedArea.Question.First(p => p.Id == (int)e.NavigationParameter);
+            this.DefaultViewModel["Question"] = question;            
         }
 
         /// <summary>
@@ -85,8 +86,8 @@ namespace InterviewerHubApp
         {
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
-            var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
-            this.Frame.Navigate(typeof(ItemPage), itemId);
+            var question = (Question)e.ClickedItem;
+            this.Frame.Navigate(typeof(ItemPage), question.Id);
         }
 
         #region NavigationHelper registration

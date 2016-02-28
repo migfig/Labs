@@ -3,20 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml;
-using System.Xml.Serialization;
-using Windows.Storage;
-//using WpfInterviewer.Views;
 
 namespace WpfInterviewer
 {
-	public class MainViewModel : BaseModel
+    public class MainViewModel : BaseModel
 	{
 		private class RunTestCommand : ICommand
 		{
@@ -119,29 +114,17 @@ namespace WpfInterviewer
                 var ser = new DataContractJsonSerializer(typeof(configuration));
                 var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(text));
                 SelectedConfiguration = (configuration)ser.ReadObject(stream);
-
-                //var ser = new XmlSerializer(typeof(configuration));
-                //using (var stream = XmlReader.Create(new StringReader(text)))
-                //{
-                //    SelectedConfiguration = (configuration)ser.Deserialize(stream);
-
-                //    if (null != SelectedConfiguration)
-                //    {
-                        RunQuestionsCommand.Execute(1);
-                //    }
-                //}
+                
+                RunQuestionsCommand.Execute(1);
+                
                 _isLoaded = true;
             }
         }
 
         private static async Task<string> GetXmlText()
-        {
-            //var dataUri = new Uri("ms-appx:///DataModel/profiles.xml");
-            //var file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
-            //var text = await FileIO.ReadTextAsync(file);            
+        {                       
             using (var client = new HttpClient())
             {
-                //client.DefaultRequestHeaders.Add("Accept", "application/xml");
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
 
                 var response = await client.GetAsync("http://localhost:52485/api/configuration");

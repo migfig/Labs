@@ -1,4 +1,4 @@
-SELECT [platform].Name name 
+SELECT [platform].Id id, [platform].Name name
 ,(
 	SELECT [knowledgeArea].Name name
 	,(
@@ -18,6 +18,14 @@ SELECT [platform].Name name
 	FROM [KnowledgeAreas] [knowledgeArea]
 	WHERE [knowledgeArea].PlatformId = [platform].Id
 	FOR XML AUTO, TYPE
-) 
-FROM Platforms [platform]
+),
+(
+	SELECT [profile].Name name, [item].ProfileId, [item].PlatformId
+	FROM [Profiles] [profile]
+		INNER JOIN [ProfileItem] [item] ON [profile].Id = [item].ProfileId 
+		RIGHT JOIN Platforms [platform] ON [item].PlatformId = [platform].Id
+	WHERE [item].PlatformId = [platform].Id
+	FOR XML AUTO, TYPE
+)  
+FROM Platforms [platform]	
 FOR XML AUTO, TYPE, ROOT('configuration')
