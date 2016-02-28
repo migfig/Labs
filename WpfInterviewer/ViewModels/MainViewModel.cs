@@ -126,13 +126,8 @@ namespace WpfInterviewer
 		{
 			get
 			{
-				var profiles = from i in SelectedConfiguration.Items
-				    let p = i as Profile
-				    where p != null
-				    select p;
-				
-                SelectedProfile = profiles.FirstOrDefault();
-				return profiles;
+                SelectedProfile = SelectedConfiguration.Profile.FirstOrDefault();
+				return SelectedConfiguration.Profile;
 			}
 		}
 
@@ -153,13 +148,8 @@ namespace WpfInterviewer
 		{
 			get
 			{
-				var platforms = from i in SelectedConfiguration.Items
-				    let p = i as Platform
-				    where p != null
-				    select p;
-				
-                SelectedPlatform = platforms.FirstOrDefault();
-				return platforms;
+                SelectedPlatform = SelectedConfiguration.Platform.FirstOrDefault();
+				return SelectedConfiguration.Platform;
 			}
 		}
 
@@ -175,7 +165,7 @@ namespace WpfInterviewer
 				OnPropertyChanged("SelectedPlatform");
 			    if (value == null) return;
 
-				SelectedKnowledgeArea = value.knowledgeArea.FirstOrDefault();
+				SelectedKnowledgeArea = value.KnowledgeArea.FirstOrDefault();
 			}
 		}
 
@@ -191,7 +181,7 @@ namespace WpfInterviewer
 				OnPropertyChanged("SelectedKnowledgeArea");
 			    if (value == null) return;
 
-				SelectedArea = value.area.FirstOrDefault();
+				SelectedArea = value.Area.FirstOrDefault();
 			}
 		}
 
@@ -207,7 +197,7 @@ namespace WpfInterviewer
 				OnPropertyChanged("SelectedArea");
                 if (value == null) return;
                 
-                SelectedQuestion = value.question.FirstOrDefault();
+                SelectedQuestion = value.Question.FirstOrDefault();
 			}
 		}
 
@@ -435,9 +425,9 @@ namespace WpfInterviewer
 					ToogleAnsweredFlag(true);
 
 				    var questions = from p in Platforms
-				        from ka in p.knowledgeArea
-				        from a in ka.area
-				        select a.question;
+				        from ka in p.KnowledgeArea
+				        from a in ka.Area
+				        select a.Question;
 
 				    foreach (var q in questions.Where(x => x.Count > 0))
 				    {
@@ -515,9 +505,9 @@ namespace WpfInterviewer
 		private void ToogleAnsweredFlag(bool answered)
 		{
 			foreach (var q2 in from p in Platforms
-			    from ka in p.knowledgeArea
-			    from a in ka.area
-			    from q in a.question
+			    from ka in p.KnowledgeArea
+			    from a in ka.Area
+			    from q in a.Question
 			select q)
 			{
 				q2.AlreadyAnswered = answered;
@@ -528,9 +518,9 @@ namespace WpfInterviewer
         {
             var pendingQuestions = 0;
             foreach (var q2 in from p in Platforms
-                               from ka in p.knowledgeArea
-                               from a in ka.area
-                               from q in a.question
+                               from ka in p.KnowledgeArea
+                               from a in ka.Area
+                               from q in a.Question
                                select q)
             {
                 pendingQuestions += q2.AlreadyAnswered ? 0 : 1;
@@ -543,11 +533,11 @@ namespace WpfInterviewer
         {
             foreach(var p in Platforms)
             {
-                foreach(var ka in p.knowledgeArea)
+                foreach(var ka in p.KnowledgeArea)
                 {
-                    foreach(var a in ka.area)
+                    foreach(var a in ka.Area)
                     {
-                        foreach(var q in a.question)
+                        foreach(var q in a.Question)
                         {
                             if (!q.AlreadyAnswered)
                             {
@@ -594,16 +584,16 @@ namespace WpfInterviewer
                             qstream.WriteLine("AreaId,Id,Weight,Level,Value,Name");
                             foreach (var p in Platforms)
                             {
-                                pstream.WriteLine("{0},\"{1}\"", ++pc, p.name);
-                                foreach (var ka in p.knowledgeArea)
+                                pstream.WriteLine("{0},\"{1}\"", ++pc, p.Name);
+                                foreach (var ka in p.KnowledgeArea)
                                 {
-                                    kastream.WriteLine("{0},{1},\"{2}\"", pc, ++kac, ka.name);
-                                    foreach (var a in ka.area)
+                                    kastream.WriteLine("{0},{1},\"{2}\"", pc, ++kac, ka.Name);
+                                    foreach (var a in ka.Area)
                                     {
-                                        astream.WriteLine("{0},{1},\"{2}\"", kac, ++ac, a.name);
-                                        foreach (var q in a.question)
+                                        astream.WriteLine("{0},{1},\"{2}\"", kac, ++ac, a.Name);
+                                        foreach (var q in a.Question)
                                         {
-                                            qstream.WriteLine("{0},{1},{2},{3},{4},{5}", ac, ++qc, q.weight, q.level, q.value, "");
+                                            qstream.WriteLine("{0},{1},{2},{3},{4},{5}", ac, ++qc, q.Weight, q.Level, q.Value, "");
                                         }
                                     }
                                 }
@@ -638,16 +628,16 @@ namespace WpfInterviewer
                             qstream.WriteLine("SET IDENTITY_INSERT [dbo].[Questions] ON");
                             foreach (var p in Platforms)
                             {
-                                pstream.WriteLine("insert into [Platforms] (Id,Name) values({0},N'{1}');", ++pc, p.name);
-                                foreach (var ka in p.knowledgeArea)
+                                pstream.WriteLine("insert into [Platforms] (Id,Name) values({0},N'{1}');", ++pc, p.Name);
+                                foreach (var ka in p.KnowledgeArea)
                                 {
-                                    kastream.WriteLine("insert into [KnowledgeAreas] (PlatformId,Id,Name) values({0},{1},N'{2}');", pc, ++kac, ka.name);
-                                    foreach (var a in ka.area)
+                                    kastream.WriteLine("insert into [KnowledgeAreas] (PlatformId,Id,Name) values({0},{1},N'{2}');", pc, ++kac, ka.Name);
+                                    foreach (var a in ka.Area)
                                     {
-                                        astream.WriteLine("insert into [Areas] (KnowledgeAreaId,Id,Name) values({0},{1},N'{2}');", kac, ++ac, a.name);
-                                        foreach (var q in a.question)
+                                        astream.WriteLine("insert into [Areas] (KnowledgeAreaId,Id,Name) values({0},{1},N'{2}');", kac, ++ac, a.Name);
+                                        foreach (var q in a.Question)
                                         {
-                                            qstream.WriteLine("insert into [Questions] (AreaId,Id,Weight,Level,Value,Name) values({0},{1},{2},{3},N'{4}',N'{5}');", ac, ++qc, q.weight, q.level, q.value, "");
+                                            qstream.WriteLine("insert into [Questions] (AreaId,Id,Weight,Level,Value,Name) values({0},{1},{2},{3},N'{4}',N'{5}');", ac, ++qc, q.Weight, q.Level, q.Value, "");
                                         }
                                     }
                                 }

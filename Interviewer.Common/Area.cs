@@ -8,10 +8,10 @@ namespace Interviewer.Common
 	{
 		private ObservableCollection<Question> questionField;
 
-		private string nameField;
+		private int knowledgeAreaIdField;
 
-		[XmlElement("question", Form = XmlSchemaForm.Unqualified, IsNullable = true)]
-		public ObservableCollection<Question> question
+		[XmlElement("Question", Form = XmlSchemaForm.Unqualified, IsNullable = true)]
+		public ObservableCollection<Question> Question
 		{
 			get
 			{
@@ -24,15 +24,15 @@ namespace Interviewer.Common
 		}
 
 		[XmlAttribute]
-		public string name
-		{
+		public int KnowledgeAreaId
+        {
 			get
 			{
-				return this.nameField;
+				return this.knowledgeAreaIdField;
 			}
 			set
 			{
-				this.nameField = value;
+				this.knowledgeAreaIdField = value;
 			}
 		}
 

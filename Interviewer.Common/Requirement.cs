@@ -1,55 +1,78 @@
-using System;
-using System.CodeDom.Compiler;
-using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace Interviewer.Common
-{
-	public class Requirement : BaseModel
+{    
+    public class Requirement : BaseModel
 	{
-		private string platformField;
+        private int profileIdField;
+        private int platformIdField;
+		private int knowledgeAreaIdField;
+		private int areaIdField;
+        private bool isRequiredField;
 
-		private string knowledgeAreaField;
+        [XmlAttribute]
+        public int ProfileId
+        {
+            get
+            {
+                return this.profileIdField;
+            }
+            set
+            {
+                this.profileIdField = value;
+            }
+        }
 
-		private string areaField;
-
-		[XmlAttribute]
-		public string platform
+        [XmlAttribute]
+		public int PlatformId
 		{
 			get
 			{
-				return this.platformField;
+				return this.platformIdField;
 			}
 			set
 			{
-				this.platformField = value;
+				this.platformIdField = value;
 			}
 		}
 
 		[XmlAttribute]
-		public string knowledgeArea
+		public int KnowledgeAreaId
 		{
 			get
 			{
-				return this.knowledgeAreaField;
+				return this.knowledgeAreaIdField;
 			}
 			set
 			{
-				this.knowledgeAreaField = value;
+				this.knowledgeAreaIdField = value;
 			}
 		}
 
 		[XmlAttribute]
-		public string area
+		public int AreaId
 		{
 			get
 			{
-				return this.areaField;
+				return this.areaIdField;
 			}
 			set
 			{
-				this.areaField = value;
+				this.areaIdField = value;
 			}
 		}
-	}
+
+        [XmlAttribute]
+        public bool IsRequired
+        {
+            get
+            {
+                return this.isRequiredField;
+            }
+            set
+            {
+                this.isRequiredField = value;
+            }
+        }
+    }
 }

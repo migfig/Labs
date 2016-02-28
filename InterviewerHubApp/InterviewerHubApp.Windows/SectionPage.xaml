@@ -44,7 +44,7 @@
             TabIndex="1"
             Grid.RowSpan="2"
             Padding="120,126,120,50"
-            ItemsSource="{Binding knowledgeArea}"
+            ItemsSource="{Binding KnowledgeArea}"
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
@@ -57,12 +57,12 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="110" Height="110">
-                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding name}"/>
+                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Name}"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,0,0">
-                            <TextBlock Text="{Binding name}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap"/>
+                            <TextBlock Text="{Binding Name}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap"/>
                             <TextBlock Text="Areas" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap"/>
-                            <TextBlock Text="{Binding area.Count}" Margin="4,0,0,0" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60"/>
+                            <TextBlock Text="{Binding Area.Count}" Margin="4,0,0,0" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

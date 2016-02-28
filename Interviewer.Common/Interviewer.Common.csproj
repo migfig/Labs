@@ -41,7 +41,6 @@
     <Compile Include="BaseModel.cs" />
     <Compile Include="configuration.cs" />
     <Compile Include="KnowledgeArea.cs" />
-    <Compile Include="Optional.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

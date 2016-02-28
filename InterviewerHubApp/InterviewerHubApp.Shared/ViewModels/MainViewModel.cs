@@ -1,7 +1,12 @@
+using Interviewer.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml;
@@ -96,20 +101,59 @@ namespace WpfInterviewer
 			{
 			    if (null == _viewModel)
 			    {
-			        _viewModel = new MainViewModel();
-                    _viewModel.LoadConfiguration(GetXmlText().Result);
+			        _viewModel = new MainViewModel();                    
                 }
                 return _viewModel;
 			}
 		}
 
+        public async void LoadConfiguration()
+        {
+            LoadConfiguration(await GetXmlText());
+        }
+
+        private void LoadConfiguration(string text)
+        {
+            if (!_isLoaded)
+            {
+                var ser = new DataContractJsonSerializer(typeof(configuration));
+                var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(text));
+                SelectedConfiguration = (configuration)ser.ReadObject(stream);
+
+                //var ser = new XmlSerializer(typeof(configuration));
+                //using (var stream = XmlReader.Create(new StringReader(text)))
+                //{
+                //    SelectedConfiguration = (configuration)ser.Deserialize(stream);
+
+                //    if (null != SelectedConfiguration)
+                //    {
+                        RunQuestionsCommand.Execute(1);
+                //    }
+                //}
+                _isLoaded = true;
+            }
+        }
+
         private static async Task<string> GetXmlText()
         {
-            var dataUri = new Uri("ms-appx:///DataModel/profiles.xml");
-            var file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
-            var text = await FileIO.ReadTextAsync(file);
+            //var dataUri = new Uri("ms-appx:///DataModel/profiles.xml");
+            //var file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
+            //var text = await FileIO.ReadTextAsync(file);            
+            using (var client = new HttpClient())
+            {
+                //client.DefaultRequestHeaders.Add("Accept", "application/xml");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
 
-            return text;
+                var response = await client.GetAsync("http://localhost:52485/api/configuration");
+                if (response.IsSuccessStatusCode)
+                {
+                    var text = await response.Content.ReadAsStringAsync();
+
+                    return text;
+                }
+            }        
+
+            return string.Empty;
         }
 
 		public configuration SelectedConfiguration
@@ -132,14 +176,9 @@ namespace WpfInterviewer
 		public IEnumerable<Profile> Profiles
 		{
 			get
-			{
-				var profiles = from i in SelectedConfiguration.Items
-				    let p = i as Profile
-				    where p != null
-				    select p;
-				
-                SelectedProfile = profiles.FirstOrDefault();
-				return profiles;
+			{				
+                SelectedProfile = SelectedConfiguration.Profile.FirstOrDefault();
+				return SelectedConfiguration.Profile.AsEnumerable();
 			}
 		}
 
@@ -160,13 +199,8 @@ namespace WpfInterviewer
 		{
 			get
 			{
-				var platforms = from i in SelectedConfiguration.Items
-				    let p = i as Platform
-				    where p != null
-				    select p;
-				
-                SelectedPlatform = platforms.FirstOrDefault();
-				return platforms;
+                SelectedPlatform = SelectedConfiguration.Platform.FirstOrDefault();
+				return SelectedConfiguration.Platform;
 			}
 		}
 
@@ -182,7 +216,7 @@ namespace WpfInterviewer
 				OnPropertyChanged("SelectedPlatform");
 			    if (value == null) return;
 
-				SelectedKnowledgeArea = value.knowledgeArea.FirstOrDefault();
+				SelectedKnowledgeArea = value.KnowledgeArea.FirstOrDefault();
 			}
 		}
 
@@ -198,7 +232,7 @@ namespace WpfInterviewer
 				OnPropertyChanged("SelectedKnowledgeArea");
 			    if (value == null) return;
 
-				SelectedArea = value.area.FirstOrDefault();
+				SelectedArea = value.Area.FirstOrDefault();
 			}
 		}
 
@@ -214,7 +248,7 @@ namespace WpfInterviewer
 				OnPropertyChanged("SelectedArea");
                 if (value == null) return;
                 
-                SelectedQuestion = value.question.FirstOrDefault();
+                SelectedQuestion = value.Question.FirstOrDefault();
 			}
 		}
 
@@ -393,25 +427,7 @@ namespace WpfInterviewer
 				_interviewedPerson = value;
 				OnPropertyChanged("InterviewedPerson");
 			}
-		}
-
-		private void LoadConfiguration(string text)
-		{
-            if (!_isLoaded)
-            {
-                var ser = new XmlSerializer(typeof(configuration));
-                using (var stream = XmlReader.Create(new StringReader(text)))
-                {
-                    SelectedConfiguration = (configuration)ser.Deserialize(stream);
-
-                    if(null != SelectedConfiguration)
-                    {
-                        RunQuestionsCommand.Execute(1);
-                    }
-                }
-                _isLoaded = true;
-            }
-		}
+		}		
 
 		private void QuestionAnswered(int rating, Question question)
 		{
@@ -444,13 +460,13 @@ namespace WpfInterviewer
 					ToogleAnsweredFlag(true);
 
 				    var questions = from p in Platforms
-				        from ka in p.knowledgeArea
-				        from a in ka.area
-				        select a.question;
+				        from ka in p.KnowledgeArea
+				        from a in ka.Area
+				        select a.Question;
 
-				    foreach (var q in questions.Where(x => x.Count > 0))
+				    foreach (var q in questions.Where(x => x.Count() > 0))
 				    {
-				        var randomIndexes = GetRandomIndexes(q.Count);
+				        var randomIndexes = GetRandomIndexes(q.Count());
 				        foreach (var i in randomIndexes)
 				        {
 				            q.ElementAt(i).AlreadyAnswered = false;
@@ -519,9 +535,9 @@ namespace WpfInterviewer
 		private void ToogleAnsweredFlag(bool answered)
 		{
 			foreach (var q2 in from p in Platforms
-			    from ka in p.knowledgeArea
-			    from a in ka.area
-			    from q in a.question
+			    from ka in p.KnowledgeArea
+			    from a in ka.Area
+			    from q in a.Question
 			select q)
 			{
 				q2.AlreadyAnswered = answered;
@@ -532,9 +548,9 @@ namespace WpfInterviewer
         {
             var pendingQuestions = 0;
             foreach (var q2 in from p in Platforms
-                               from ka in p.knowledgeArea
-                               from a in ka.area
-                               from q in a.question
+                               from ka in p.KnowledgeArea
+                               from a in ka.Area
+                               from q in a.Question
                                select q)
             {
                 pendingQuestions += q2.AlreadyAnswered ? 0 : 1;
@@ -547,11 +563,11 @@ namespace WpfInterviewer
         {
             foreach(var p in Platforms)
             {
-                foreach(var ka in p.knowledgeArea)
+                foreach(var ka in p.KnowledgeArea)
                 {
-                    foreach(var a in ka.area)
+                    foreach(var a in ka.Area)
                     {
-                        foreach(var q in a.question)
+                        foreach(var q in a.Question)
                         {
                             if (!q.AlreadyAnswered)
                             {

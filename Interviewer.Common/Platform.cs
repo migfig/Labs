@@ -3,15 +3,14 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace Interviewer.Common
-{
+{    
 	public class Platform : BaseModel
 	{
 		private ObservableCollection<KnowledgeArea> knowledgeAreaField;
+        private ObservableCollection<Profile> profileField;
 
-		private string nameField;
-
-		[XmlElement("knowledgeArea", Form = XmlSchemaForm.Unqualified)]
-		public ObservableCollection<KnowledgeArea> knowledgeArea
+		[XmlElement("KnowledgeArea", Form = XmlSchemaForm.Unqualified, Order = 0)]
+		public ObservableCollection<KnowledgeArea> KnowledgeArea
 		{
 			get
 			{
@@ -23,22 +22,23 @@ namespace Interviewer.Common
 			}
 		}
 
-		[XmlAttribute]
-		public string name
-		{
-			get
-			{
-				return this.nameField;
-			}
-			set
-			{
-				this.nameField = value;
-			}
-		}
+        [XmlElement("Profile", Form = XmlSchemaForm.Unqualified, Order = 1)]
+        public ObservableCollection<Profile> Profile
+        {
+            get
+            {
+                return this.profileField;
+            }
+            set
+            {
+                this.profileField = value;
+            }
+        }
 
-		public Platform()
+        public Platform()
 		{
 			this.knowledgeAreaField = new ObservableCollection<KnowledgeArea>();
+            this.profileField = new ObservableCollection<Profile>();
 		}
 	}
 }

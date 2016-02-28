@@ -6,15 +6,11 @@ namespace Interviewer.Common
 {
 	public class BaseModel : INotifyPropertyChanged
 	{
-        private string idField;
+        private int idField;
+        private string nameField;
 
-        public BaseModel()
-        {
-            this.idField = System.Guid.NewGuid().ToString();
-        }
-
-        [XmlIgnore]
-        public string Id
+        [XmlAttribute]
+        public int Id
         {
             get
             {
@@ -23,6 +19,19 @@ namespace Interviewer.Common
             set
             {
                 this.idField = value;
+            }
+        }
+
+        [XmlAttribute]
+        public string Name
+        {
+            get
+            {
+                return this.nameField;
+            }
+            set
+            {
+                this.nameField = value;
             }
         }
 

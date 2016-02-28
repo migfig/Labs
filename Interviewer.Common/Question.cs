@@ -1,22 +1,32 @@
-using System.Windows.Input;
 using System.Xml.Serialization;
 
 namespace Interviewer.Common
 {
 	public class Question : BaseModel
 	{
+        private int areaIdField;
 		private int weightField = 0;
-
 		private int levelField = 1;
-
 		private string valueField;
 
 		private bool alreadyAnsweredField;
-
 		private int ratingField;
 
-		[XmlAttribute]
-		public int weight
+        [XmlAttribute]
+        public int AreaId
+        {
+            get
+            {
+                return this.areaIdField;
+            }
+            set
+            {
+                this.areaIdField = value;
+            }
+        }
+
+        [XmlAttribute]
+		public int Weight
 		{
 			get
 			{
@@ -29,7 +39,7 @@ namespace Interviewer.Common
 		}
 
 		[XmlAttribute]
-		public int level
+		public int Level
 		{
 			get
 			{
@@ -42,7 +52,7 @@ namespace Interviewer.Common
 		}
 
 		[XmlAttribute]
-		public string value
+		public string Value
 		{
 			get
 			{

@@ -6,6 +6,6 @@ namespace Interviewer.Data.Repositories
     public interface IRepository
     {
         Task<configuration> GetConfiguration();
-        Task<configuration> GetConfiguration(string platform, string knowledgeArea, string area, string question);
+        Task<configuration> GetConfiguration(string platform, string knowledgeArea, string area, string question, string profile);
     }
 }

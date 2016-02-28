@@ -38,7 +38,7 @@
                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedProfile}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding name}" />
+                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding Name}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
@@ -57,7 +57,7 @@
                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedPlatform}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding name}" />
+                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding Name}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
@@ -65,11 +65,11 @@
             <TextBlock Grid.Row="3" Text="Knowledge Area" TextBlock.FontSize="16" />
             <ComboBox Grid.Row="3" 
                   Grid.Column="1" 
-                  ItemsSource="{Binding SelectedPlatform.knowledgeArea}" 
+                  ItemsSource="{Binding SelectedPlatform.KnowledgeArea}" 
                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedKnowledgeArea}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding name}" />
+                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding Name}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
@@ -77,11 +77,11 @@
             <TextBlock Grid.Row="4" Text="Area" TextBlock.FontSize="16" />
             <ComboBox Grid.Row="4" 
                   Grid.Column="1" 
-                  ItemsSource="{Binding SelectedKnowledgeArea.area}" 
+                  ItemsSource="{Binding SelectedKnowledgeArea.Area}" 
                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedArea}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding name}" />
+                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding Name}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
@@ -114,7 +114,7 @@
                  Background="AliceBlue"                
                  TextWrapping="WrapWithOverflow"
                  HorizontalAlignment="Stretch"
-                 Text="{Binding Mode=OneWay, Path=SelectedQuestion.value}" />
+                 Text="{Binding Mode=OneWay, Path=SelectedQuestion.Value}" />
 
             <StackPanel Grid.Row="8" 
                     Grid.ColumnSpan="2"

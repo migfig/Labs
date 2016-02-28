@@ -6,24 +6,40 @@ namespace Interviewer.Common
 {
     public class configuration : BaseModel
 	{
-		private ObservableCollection<object> itemsField;
+		private ObservableCollection<Platform> platformField;
+        private ObservableCollection<Profile> profileField;
 
-		[XmlElement("platform", typeof(Platform), Form = XmlSchemaForm.Unqualified), XmlElement("profile", typeof(Profile), Form = XmlSchemaForm.Unqualified)]
-		public ObservableCollection<object> Items
+        [XmlElement("Platform")]
+		public ObservableCollection<Platform> Platform
 		{
 			get
 			{
-				return this.itemsField;
+				return this.platformField;
 			}
 			set
 			{
-				this.itemsField = value;
+				this.platformField = value;
 			}
 		}
 
-		public configuration()
+        [XmlElement("Profile")]
+        public ObservableCollection<Profile> Profile
+        {
+            get
+            {
+                return this.profileField;
+            }
+            set
+            {
+                this.profileField = value;
+
+            }
+        }
+
+        public configuration()
 		{
-			this.itemsField = new ObservableCollection<object>();
+			this.platformField = new ObservableCollection<Platform>();
+            this.profileField = new ObservableCollection<Profile>();
 		}
 	}
 }

@@ -72,7 +72,7 @@ namespace InterviewerHubApp
             //this.DefaultViewModel["Items"] = group.Items;
 
             var platform = (this.DefaultViewModel["ViewModel"] as MainViewModel)
-                .Platforms.First(p => p.Id == (string)e.NavigationParameter);
+                .Platforms.First(p => p.Id == (int)e.NavigationParameter);
             this.DefaultViewModel["Platform"] = platform;            
         }
 

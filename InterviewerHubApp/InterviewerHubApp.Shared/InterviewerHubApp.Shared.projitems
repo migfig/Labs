@@ -16,15 +16,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Area.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\BaseModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\configuration.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\KnowledgeArea.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Optional.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Platform.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Profile.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Question.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Requirement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Models.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
     <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\LightGray.png" />

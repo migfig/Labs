@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using InterviewerHubApp.Data;
 using InterviewerHubApp.Common;
 using WpfInterviewer;
+using Interviewer.Common;
 
 // The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
 
@@ -49,7 +50,7 @@ namespace InterviewerHubApp
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this.DefaultViewModel["ViewModel"] = MainViewModel.ViewModel;
+            MainViewModel.ViewModel.LoadConfiguration();
         }
 
         /// <summary>
@@ -67,7 +68,8 @@ namespace InterviewerHubApp
         {
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
             var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-4");
-            this.DefaultViewModel["Section3Items"] = sampleDataGroup;
+            this.DefaultViewModel["Section3Items"] = sampleDataGroup;            
+            this.DefaultViewModel["ViewModel"] = MainViewModel.ViewModel;
         }
 
         /// <summary>
