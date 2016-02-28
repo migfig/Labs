@@ -1,28 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace Interviewer.Common
 {    
     public class configuration: BaseModel
     {
-        public Platform[] Platform { get; set; }
-        public Profile[] Profile { get; set; }
+        public ObservableCollection<Platform> Platform { get; set; }
+        public ObservableCollection<Profile> Profile { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
     }
 
     public class Platform : BaseModel
     {
-        public KnowledgeArea[] KnowledgeArea { get; set; }
-        public Profile[] Profile { get; set; }
+        public ObservableCollection<KnowledgeArea> KnowledgeArea { get; set; }
+        public ObservableCollection<Profile> Profile { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
     }
 
     public class KnowledgeArea : BaseModel
     {
-        public Area[] Area { get; set; }
+        public ObservableCollection<Area> Area { get; set; }
         public int PlatformId { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -30,7 +31,7 @@ namespace Interviewer.Common
 
     public class Area : BaseModel
     {
-        public Question[] Question { get; set; }
+        public ObservableCollection<Question> Question { get; set; }
         public int KnowledgeAreaId { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -50,7 +51,7 @@ namespace Interviewer.Common
 
     public class Profile : BaseModel
     {
-        public Requirement[] Requirement { get; set; }
+        public ObservableCollection<Requirement> Requirement { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
     }

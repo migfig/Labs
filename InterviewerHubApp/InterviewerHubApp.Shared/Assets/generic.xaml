@@ -1,0 +1,165 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:InterviewerHubApp.Assets">
+
+    <SolidColorBrush x:Key="XCustomApplicationPageBackgroundThemeBrush" Color="#FF1D1D1D" />
+    <LinearGradientBrush x:Key="ApplicationPageBackgroundThemeBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FF3E6E96" Offset="0.022"/>
+        <GradientStop Color="#FF033781" Offset="1"/>
+    </LinearGradientBrush>
+
+    <Style x:Key="AddChildButtonNormalStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent" x:Name="RootGrid">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Ellipse">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPointerOverForegroundThemeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Ellipse">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Ellipse">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPressedForegroundThemeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisualWhite"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisualBlack"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused"/>
+                                <VisualState x:Name="PointerFocused"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid Height="41" 
+                                    Width="41">
+                            <Ellipse x:Name="Ellipse"
+                                    Fill="{ThemeResource AppBarItemBackgroundThemeBrush}"
+                                    Stroke="{ThemeResource AppBarItemForegroundThemeBrush}"
+                                    StrokeThickness="2"
+                                    UseLayoutRounding="False" />
+                            <ContentPresenter x:Name="Content" 
+                                    Foreground="{TemplateBinding Foreground}" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center">
+                                <PathIcon Data="M2.33213806152344,1.68746864795685L1.86598432064056,2.109375 1.86598432064056,17.890625 2.33213806152344,18.3125247955322 15.3885936737061,18.3125247955322 15.8554420471191,17.890625 15.8554420471191,7.44065093994141 13.3152599334717,7.50320243835449 11.576434135437,7.2931170463562 10.6407222747803,6.54454708099365 10.260724067688,5.74090433120728 10.1890363693237,5.36559867858887 10.0632295608521,1.68746864795685 2.33213806152344,1.68746864795685z M2.33213806152344,0L10.1852340698242,0 11.8428640365601,1.58126819133759 11.8470048904419,1.58126819133759 11.8898439407349,1.62185680866241 11.909218788147,1.62185680866241 13.2641143798828,2.92190098762512 11.9707021713257,1.68746864795685 11.957239151001,1.68746864795685 16.7957038879395,6.28432273864746 16.7967185974121,6.30934906005859 17.7200527191162,7.19070243835449 17.7200527191162,17.890625 17.5368213653564,18.7119636535645 17.037145614624,19.3824214935303 15.3885936737061,20 2.33213806152344,20 0.683113932609558,19.3824214935303 0.18328845500946,18.7119636535645 0,17.890625 0,2.109375 0.18328845500946,1.28803932666779 0.683113932609558,0.617580115795136 2.33213806152344,0z" />
+                            </ContentPresenter>
+                        </Grid>
+                        <Rectangle x:Name="FocusVisualWhite" IsHitTestVisible="False" Opacity="0" StrokeDashOffset="1.5" StrokeEndLineCap="Square" Stroke="{ThemeResource FocusVisualWhiteStrokeThemeBrush}" StrokeDashArray="1,1"/>
+                        <Rectangle x:Name="FocusVisualBlack" IsHitTestVisible="False" Opacity="0" StrokeDashOffset="0.5" StrokeEndLineCap="Square" Stroke="{ThemeResource FocusVisualBlackStrokeThemeBrush}" StrokeDashArray="1,1"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="EditButtonNormalStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent" x:Name="RootGrid">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Ellipse">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPointerOverForegroundThemeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="Ellipse">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="Ellipse">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemPressedForegroundThemeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisualWhite"/>
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisualBlack"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused"/>
+                                <VisualState x:Name="PointerFocused"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid Height="41" 
+                                    Width="41">
+                            <Ellipse x:Name="Ellipse"
+                                    Fill="{ThemeResource AppBarItemBackgroundThemeBrush}"
+                                    Stroke="{ThemeResource AppBarItemForegroundThemeBrush}"
+                                    StrokeThickness="2"
+                                    UseLayoutRounding="False" />
+                            <ContentPresenter x:Name="Content" 
+                                    Foreground="{TemplateBinding Foreground}" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center">
+                                <PathIcon Data="M0,15.5539274215698L6.64632844924927,19.099235534668 0.167995795607567,21.9340839385986 0,15.5539274215698z M6.09980964660645,4.32599067687988L12.9344453811646,8.24906921386719 7.68511724472046,17.3901596069336 7.29671478271484,16.2211647033691 5.29147863388062,16.014741897583 4.94852924346924,14.7584266662598 2.98524308204651,14.6883668899536 2.43228650093079,13.313117980957 0.853985011577606,13.4670820236206 6.09980964660645,4.32599067687988z M9.38438129425049,0.000341796869179234L9.92193031311035,0.13238987326622 14.7612600326538,2.9113142490387 15.2891941070557,3.73554229736328 15.0586862564087,4.86426162719727 14.4813261032104,5.86873435974121 7.51101350784302,1.86834299564362 8.08837413787842,0.86037015914917 8.67000961303711,0.235742792487144 9.38438129425049,0.000341796869179234z" />
+                            </ContentPresenter>
+                        </Grid>
+                        <Rectangle x:Name="FocusVisualWhite" IsHitTestVisible="False" Opacity="0" StrokeDashOffset="1.5" StrokeEndLineCap="Square" Stroke="{ThemeResource FocusVisualWhiteStrokeThemeBrush}" StrokeDashArray="1,1"/>
+                        <Rectangle x:Name="FocusVisualBlack" IsHitTestVisible="False" Opacity="0" StrokeDashOffset="0.5" StrokeEndLineCap="Square" Stroke="{ThemeResource FocusVisualBlackStrokeThemeBrush}" StrokeDashArray="1,1"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

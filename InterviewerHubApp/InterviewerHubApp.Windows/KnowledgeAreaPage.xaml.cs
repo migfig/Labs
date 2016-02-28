@@ -72,9 +72,9 @@ namespace InterviewerHubApp
             //this.DefaultViewModel["Group"] = group;
             //this.DefaultViewModel["Items"] = group.Items;
 
-            var knowledgeArea = (this.DefaultViewModel["ViewModel"] as MainViewModel)
+            var knowledgeArea = MainViewModel.ViewModel
                 .SelectedPlatform.KnowledgeArea.First(p => p.Id == (int)e.NavigationParameter);
-            this.DefaultViewModel["KnowledgeArea"] = knowledgeArea;            
+            MainViewModel.ViewModel.SelectedKnowledgeArea = knowledgeArea;            
         }
 
         /// <summary>
@@ -88,8 +88,7 @@ namespace InterviewerHubApp
             // by passing required information as a navigation parameter
             var area = (Area)e.ClickedItem;
             MainViewModel.ViewModel.SelectedArea = area;
-            var itemId = area.Id;
-            this.Frame.Navigate(typeof(AreaPage), itemId);
+            this.Frame.Navigate(typeof(AreaPage), area.Id);
         }
 
         #region NavigationHelper registration

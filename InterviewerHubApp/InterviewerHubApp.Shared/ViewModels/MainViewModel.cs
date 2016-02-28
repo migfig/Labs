@@ -1,6 +1,8 @@
 using Interviewer.Common;
+using InterviewerHubApp.Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -8,6 +10,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml;
 
 namespace WpfInterviewer
 {
@@ -334,7 +337,193 @@ namespace WpfInterviewer
             }
         }
 
-		public int PassedCount
+        private RelayCommand _addKnowdlegeArea;
+        public RelayCommand AddKnowledgeArea
+        {
+            get
+            {
+                return _addKnowdlegeArea ?? (_addKnowdlegeArea = new RelayCommand(
+                    () => {
+                        MainViewModel.ViewModel.SelectedPlatform.KnowledgeArea
+                            .Add(new KnowledgeArea {
+                                PlatformId = MainViewModel.ViewModel.SelectedPlatform.Id,
+                                Id = 0,
+                                Name = "Undefined",
+                                Area = new ObservableCollection<Area>(),
+                                IsDirty = true                       
+                            });
+                    },
+                    () => MainViewModel.ViewModel.SelectedPlatform != null
+                    ));
+            }
+        }
+
+        private RelayCommand _addArea;
+        public RelayCommand AddArea
+        {
+            get
+            {
+                return _addArea ?? (_addArea = new RelayCommand(
+                    () => {
+                        MainViewModel.ViewModel.SelectedKnowledgeArea.Area
+                            .Add(new Area
+                            {
+                                KnowledgeAreaId = MainViewModel.ViewModel.SelectedKnowledgeArea.Id,
+                                Id = 0,
+                                Name = "Undefined",
+                                Question = new ObservableCollection<Question>(),
+                                IsDirty = true
+                            });
+                    },
+                    () => MainViewModel.ViewModel.SelectedKnowledgeArea != null
+                    ));
+            }
+        }
+
+        private RelayCommand _addQuestion;
+        public RelayCommand AddQuestion
+        {
+            get
+            {
+                return _addQuestion ?? (_addQuestion = new RelayCommand(
+                    () => {
+                        MainViewModel.ViewModel.SelectedArea.Question
+                            .Add(new Question
+                            {
+                                AreaId = MainViewModel.ViewModel.SelectedArea.Id,
+                                Id = 0,
+                                Name = "Undefined",
+                                Value = "Undefined",
+                                Level = 1,
+                                Weight = 1,
+                                IsDirty = true
+                            });
+                    },
+                    () => MainViewModel.ViewModel.SelectedArea != null
+                    ));
+            }
+        }
+
+        private bool _isEditingPlatformProps = false;
+        public bool IsEditingPlatformProps {
+            get { return _isEditingPlatformProps; }
+            set
+            {
+                _isEditingPlatformProps = value;
+                OnPropertyChanged();
+                OnPropertyChanged("PlatformEditVisibility");
+            }
+        }
+        public Visibility PlatformEditVisibility
+        {
+            get { return _isEditingPlatformProps ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        private RelayCommand _editingPlatformProps;
+        public RelayCommand EditingPlatformProps
+        {
+            get
+            {
+                return _editingPlatformProps ?? (_editingPlatformProps = new RelayCommand(
+                    () => {
+                        MainViewModel.ViewModel.IsEditingPlatformProps = !MainViewModel.ViewModel.IsEditingPlatformProps;
+                    },
+                    () => MainViewModel.ViewModel.SelectedPlatform != null
+                    ));
+            }
+        }
+
+        private bool _isEditingKnowledgeAreaProps = false;
+        public bool IsEditingKnowledgeAreaProps
+        {
+            get { return _isEditingKnowledgeAreaProps; }
+            set
+            {
+                _isEditingKnowledgeAreaProps = value;
+                OnPropertyChanged();
+                OnPropertyChanged("KnowledgeAreaEditVisibility");
+            }
+        }
+        public Visibility KnowledgeAreaEditVisibility
+        {
+            get { return _isEditingKnowledgeAreaProps ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        private RelayCommand _editingKnowledgeAreaProps;
+        public RelayCommand EditingKnowledgeAreaProps
+        {
+            get
+            {
+                return _editingKnowledgeAreaProps ?? (_editingKnowledgeAreaProps = new RelayCommand(
+                    () => {
+                        MainViewModel.ViewModel.IsEditingKnowledgeAreaProps= !MainViewModel.ViewModel.IsEditingKnowledgeAreaProps;
+                    },
+                    () => MainViewModel.ViewModel.SelectedKnowledgeArea != null
+                    ));
+            }
+        }
+
+        private bool _isEditingAreaProps = false;
+        public bool IsEditingAreaProps
+        {
+            get { return _isEditingAreaProps; }
+            set
+            {
+                _isEditingAreaProps = value;
+                OnPropertyChanged();
+                OnPropertyChanged("AreaEditVisibility");
+            }
+        }
+        public Visibility AreaEditVisibility
+        {
+            get { return _isEditingAreaProps ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        private RelayCommand _editingAreaProps;
+        public RelayCommand EditingAreaProps
+        {
+            get
+            {
+                return _editingAreaProps ?? (_editingAreaProps = new RelayCommand(
+                    () => {
+                        MainViewModel.ViewModel.IsEditingAreaProps = !MainViewModel.ViewModel.IsEditingAreaProps;
+                    },
+                    () => MainViewModel.ViewModel.SelectedArea != null
+                    ));
+            }
+        }
+
+        private bool _isEditingQuestionProps = false;
+        public bool IsEditingQuestionProps
+        {
+            get { return _isEditingQuestionProps; }
+            set
+            {
+                _isEditingQuestionProps = value;
+                OnPropertyChanged();
+                OnPropertyChanged("QuestionEditVisibility");
+            }
+        }
+        public Visibility QuestionEditVisibility
+        {
+            get { return _isEditingQuestionProps ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        private RelayCommand _editingQuestionProps;
+        public RelayCommand EditingQuestionProps
+        {
+            get
+            {
+                return _editingQuestionProps ?? (_editingQuestionProps = new RelayCommand(
+                    () => {
+                        MainViewModel.ViewModel.IsEditingQuestionProps = !MainViewModel.ViewModel.IsEditingQuestionProps;
+                    },
+                    () => MainViewModel.ViewModel.SelectedQuestion != null
+                    ));
+            }
+        }
+
+        public int PassedCount
 		{
 			get
 			{

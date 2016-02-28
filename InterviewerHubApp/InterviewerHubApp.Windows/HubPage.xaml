@@ -27,6 +27,11 @@
                         <TextBlock Text="Knowledge Areas" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60" />
                         <TextBlock Text="{Binding KnowledgeArea.Count}" Margin="8,0,0,0" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60" />
                     </StackPanel>
+                    <Image Source="Assets/dirty.png" Width="24" Height="24"
+                                Margin="0,4,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding DirtyVisibility}"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -56,7 +61,7 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-                    <TextBlock x:Name="pageTitle" x:Uid="Header" Text="application name" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                    <TextBlock x:Name="pageTitle" x:Uid="Header" Text="Interviewer" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         VerticalAlignment="Top" IsHitTestVisible="false" TextWrapping="NoWrap" />
                 </Grid>
             </Hub.Header>
@@ -197,47 +202,8 @@ Style="{DynamicResource RatingUndefButton}"-->
                     </Border>
                 </DataTemplate>
             </HubSection>
-            <HubSection Width="500" x:Uid="Section1Header" Header="Section 1" Visibility="Collapsed">
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Image Source="Assets/MediumGray.png" Stretch="Fill" Width="420" Height="280"/>
-                        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Grid.Row="1" Margin="0,10,0,0" TextWrapping="Wrap"  
-                                   x:Uid="Section1Subtitle" Text="Lorem ipsum dolor sit nonumy sed consectetuer ising elit, sed diam"/>
-                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Grid.Row="2" Margin="0,10,0,0" 
-                                   x:Uid="DescriptionHeader" Text="Description text:"/>
-                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Row="3"
-                                   x:Uid="Section1DescriptionText" Text="Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. "/>
-                    </Grid>
-                </DataTemplate>
-            </HubSection>
-            <HubSection Width="520" x:Uid="Section2Header" Header="Section 2" Visibility="Collapsed">
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,10"
-                                   x:Uid="ItemTitle" Text="Item Title" />
-                        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Grid.Row="1"
-                                   x:Uid="Section2UnderTitle" Text="Quisque in porta lorem dolor amet sed consectetuer ising elit, sed diam non my nibh uis mod wisi quip."/>
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Grid.Row="2" Margin="0,20,0,0"
-                                   x:Uid="ItemSubTitle" Text="Item Sub Title"/>
-                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Row="3" 
-                                   x:Uid="LongText" Text="Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper."/>
-                    </Grid>
-                </DataTemplate>
-            </HubSection>
             <HubSection IsHeaderInteractive="True" DataContext="{Binding ViewModel}" d:DataContext="{Binding Groups[3], Source={d:DesignData Source=../InterviewerHubApp.Shared/DataModel/SampleData.json, Type=data:SampleDataSource}}"
-                        x:Uid="Section3Header" Header="Platforms" Padding="40,40,40,32">
+                        x:Uid="PlatformsHeader" Header="Platforms" Padding="40,40,40,32">
                 <DataTemplate>
                     <GridView
                         x:Name="itemGridView"

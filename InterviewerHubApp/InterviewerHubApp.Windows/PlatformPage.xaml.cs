@@ -71,10 +71,9 @@ namespace InterviewerHubApp
             //var group = await SampleDataSource.GetGroupAsync((string)e.NavigationParameter);
             //this.DefaultViewModel["Group"] = group;
             //this.DefaultViewModel["Items"] = group.Items;
-
-            var platform = (this.DefaultViewModel["ViewModel"] as MainViewModel)
-                .Platforms.First(p => p.Id == (int)e.NavigationParameter);
-            this.DefaultViewModel["Platform"] = platform;            
+            var platform = MainViewModel.ViewModel.Platforms
+                .First(p => p.Id == (int)e.NavigationParameter);
+            MainViewModel.ViewModel.SelectedPlatform = platform;
         }
 
         /// <summary>
@@ -88,8 +87,7 @@ namespace InterviewerHubApp
             // by passing required information as a navigation parameter
             var knowledgeArea = (KnowledgeArea)e.ClickedItem;
             MainViewModel.ViewModel.SelectedKnowledgeArea = knowledgeArea;
-            var itemId = knowledgeArea.Id;
-            this.Frame.Navigate(typeof(KnowledgeAreaPage), itemId);
+            this.Frame.Navigate(typeof(KnowledgeAreaPage), knowledgeArea.Id);
         }
 
         #region NavigationHelper registration

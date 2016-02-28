@@ -72,9 +72,9 @@ namespace InterviewerHubApp
             //this.DefaultViewModel["Group"] = group;
             //this.DefaultViewModel["Items"] = group.Items;
 
-            var question = (this.DefaultViewModel["ViewModel"] as MainViewModel)
-                .SelectedArea.Question.First(p => p.Id == (int)e.NavigationParameter);
-            this.DefaultViewModel["Question"] = question;            
+            var question = MainViewModel.ViewModel.SelectedArea
+                .Question.First(p => p.Id == (int)e.NavigationParameter);
+            MainViewModel.ViewModel.SelectedQuestion = question;            
         }
 
         /// <summary>

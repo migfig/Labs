@@ -19,6 +19,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\BaseModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Models.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\area.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\dirty.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\knowledgearea.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\platform.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\question.png" />
     <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\LightGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\MediumGray.png" />
@@ -33,5 +38,11 @@
     <Content Include="$(MSBuildThisFileDirectory)DataModel\profiles.xml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Assets\generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>
