@@ -49,8 +49,7 @@ namespace InterviewerHubApp
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            MainViewModel.ViewModel.LoadConfiguration();
+            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;            
         }
 
         /// <summary>
@@ -68,7 +67,9 @@ namespace InterviewerHubApp
         {
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
             var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-4");
-            this.DefaultViewModel["Section3Items"] = sampleDataGroup;            
+            this.DefaultViewModel["Section3Items"] = sampleDataGroup;
+            var config = await MainViewModel.ViewModel.LoadConfiguration();
+            this.DefaultViewModel["Configuration"] = config;
             this.DefaultViewModel["ViewModel"] = MainViewModel.ViewModel;
         }
 

@@ -102,12 +102,12 @@ namespace WpfInterviewer
 			}
 		}
 
-        public async void LoadConfiguration()
+        public async Task<configuration> LoadConfiguration()
         {
-            LoadConfiguration(await GetXmlText());
+            return LoadConfiguration(await GetXmlText());
         }
 
-        private void LoadConfiguration(string text)
+        private configuration LoadConfiguration(string text)
         {
             if (!_isLoaded)
             {
@@ -119,6 +119,8 @@ namespace WpfInterviewer
                 
                 _isLoaded = true;
             }
+
+            return SelectedConfiguration;
         }
 
         private static async Task<string> GetXmlText()
