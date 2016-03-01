@@ -1,5 +1,6 @@
 using Interviewer.Common;
 using InterviewerHubApp.Common;
+using InterviewerHubApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -107,43 +108,21 @@ namespace WpfInterviewer
 
         public async Task<configuration> LoadConfiguration()
         {
-            return LoadConfiguration(await GetXmlText());
-        }
-
-        private configuration LoadConfiguration(string text)
-        {
             if (!_isLoaded)
             {
-                var ser = new DataContractJsonSerializer(typeof(configuration));
-                var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(text));
-                SelectedConfiguration = (configuration)ser.ReadObject(stream);
-                
+                using (var client = new ApiHttpClient("http://localhost:52485/api/"))
+                {
+                    SelectedConfiguration = await client.GetConfiguration();
+                }
+
                 RunQuestionsCommand.Execute(1);
-                
+
                 _isLoaded = true;
             }
 
             return SelectedConfiguration;
-        }
-
-        private static async Task<string> GetXmlText()
-        {                       
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("Accept", "application/json");
-
-                var response = await client.GetAsync("http://localhost:52485/api/configuration");
-                if (response.IsSuccessStatusCode)
-                {
-                    var text = await response.Content.ReadAsStringAsync();
-
-                    return text;
-                }
-            }        
-
-            return string.Empty;
-        }
-
+        }        
+        
 		public configuration SelectedConfiguration
 		{
 			get
