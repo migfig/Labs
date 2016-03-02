@@ -3,10 +3,11 @@ using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 using System.Linq;
 using Windows.UI.Xaml;
+using System;
 
 namespace Interviewer.Common
 {
-	public class BaseModel : INotifyPropertyChanged
+    public abstract class BaseModel : INotifyPropertyChanged
 	{
         private string _imagePath;  
         public string ImagePath
@@ -42,6 +43,8 @@ namespace Interviewer.Common
             get { return _isDirty ? Visibility.Visible : Visibility.Collapsed; }
         }
 
+        public abstract bool IsValid();        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -51,6 +54,6 @@ namespace Interviewer.Common
 			{
 				handler(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
+		}        
+    }
 }

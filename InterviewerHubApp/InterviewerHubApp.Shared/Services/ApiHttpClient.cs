@@ -10,7 +10,23 @@ using System.Linq;
 
 namespace InterviewerHubApp.Services
 {
-    public class ApiHttpClient: IDisposable
+    public interface IApiService: IDisposable
+    {
+        Task<configuration> GetConfiguration();
+        Task<int> AddItem<T>(T item);
+        Task<int> UpdateItem<T>(T item);
+        Task<int> DeleteItem<T>(T item, int id);
+    }
+
+    public class ApiServiceFactory
+    {
+        public static IApiService CreateService(string baseUrl)
+        {
+            return new ApiHttpClient(baseUrl);
+        }
+    }
+
+    public class ApiHttpClient: IApiService, IDisposable
     {
         private readonly HttpClient _client;
         private readonly string _baseUrl = "http://localhost:52485/api/";
@@ -40,21 +56,18 @@ namespace InterviewerHubApp.Services
 
         public async Task<int> AddItem<T>(T item)
         {
-            _client.DefaultRequestHeaders.Add("Content-Type", "application/json");
             var className = item.GetType().FullName.Split('.').Last().ToLower();
             var ser = new DataContractJsonSerializer(item.GetType());
             var stream = new MemoryStream();
-            ser.WriteObject(stream, item);
-            var buffer = new byte[stream.Length];
-            await stream.ReadAsync(buffer, 0, (int)stream.Length);
-            var content = new ByteArrayContent(buffer);
+            ser.WriteObject(stream, item);            
+            var content = new StreamContent(stream);
+            content.Headers.Add("Content-Type", "application/json");
             var response = await _client.PostAsync(_baseUrl + "add/" + className, content);
             return response.IsSuccessStatusCode ? 1 : 0;
         }
 
         public async Task<int> UpdateItem<T>(T item)
         {
-            _client.DefaultRequestHeaders.Add("Content-Type", "application/json");
             var className = item.GetType().FullName.Split('.').Last().ToLower();
             var ser = new DataContractJsonSerializer(item.GetType());
             var stream = new MemoryStream();
@@ -62,13 +75,13 @@ namespace InterviewerHubApp.Services
             var buffer = new byte[stream.Length];
             await stream.ReadAsync(buffer, 0, (int)stream.Length);
             var content = new ByteArrayContent(buffer);
+            content.Headers.Add("Content-Type", "application/json");
             var response = await _client.PutAsync(_baseUrl + "update/" + className, content);
             return response.IsSuccessStatusCode ? 1 : 0;
         }
 
         public async Task<int> DeleteItem<T>(T item, int id)
         {
-            _client.DefaultRequestHeaders.Add("Content-Type", "application/json");
             var className = item.GetType().FullName.Split('.').Last().ToLower();
             var response = await _client.DeleteAsync(_baseUrl + "delete/" + className + "/" + id.ToString());
             return response.IsSuccessStatusCode ? 1 : 0;

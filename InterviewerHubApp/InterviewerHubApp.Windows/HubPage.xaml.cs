@@ -112,6 +112,7 @@ namespace InterviewerHubApp
         /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            MainViewModel.ViewModel.SavePendingChanges();
             this.navigationHelper.OnNavigatedTo(e);
         }
 

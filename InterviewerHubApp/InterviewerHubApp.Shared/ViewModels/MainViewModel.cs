@@ -106,11 +106,16 @@ namespace WpfInterviewer
 			}
 		}
 
+        public override bool IsValid()
+        {
+            return SelectedConfiguration != null && SelectedConfiguration.IsValid();
+        }
+
         public async Task<configuration> LoadConfiguration()
         {
             if (!_isLoaded)
             {
-                using (var client = new ApiHttpClient("http://localhost:52485/api/"))
+                using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
                 {
                     SelectedConfiguration = await client.GetConfiguration();
                 }
@@ -121,9 +126,176 @@ namespace WpfInterviewer
             }
 
             return SelectedConfiguration;
-        }        
+        }
+
+        public async void SavePendingChanges()
+        {
+            if (SelectedConfiguration == null) return;
+
+            var result = 0;
+            foreach(var p in this.Platforms)
+            {
+                if(p.IsDirty && p.IsValid())
+                {
+                    if(p.Id == 0)
+                    {
+                        result = await InsertPlatform(p);
+                    }
+                    else
+                    {
+                        result = await UpdatePlatform(p);
+
+                    }
+                    p.IsDirty = result == 0;
+                }
+
+                foreach (var ka in p.KnowledgeArea)
+                {
+                    if(ka.IsDirty && ka.IsValid())
+                    {
+                        if(ka.Id == 0)
+                        {
+                            result = await InsertKnowledgeArea(ka);
+                        }
+                        else
+                        {
+                            result = await UpdateKnowledgeArea(ka);
+                        }
+                        ka.IsDirty = result == 0;
+                    }
+
+                    foreach(var a in ka.Area)
+                    {
+                        if(a.IsDirty && a.IsValid())
+                        {
+                            if(a.Id == 0)
+                            {
+                                result = await InsertArea(a);
+                            }
+                            else
+                            {
+                                result = await UpdateArea(a);
+                            }
+                            a.IsDirty = result == 0;
+                        }
+
+                        foreach (var q in a.Question)
+                        {
+                            if(q.IsDirty && q.IsValid())
+                            {
+                                if(q.Id == 0)
+                                {
+                                    result = await InsertQuestion(q);
+                                }
+                                else
+                                {
+                                    result = await UpdateQuestion(q);
+                                }
+                                q.IsDirty = result == 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
-		public configuration SelectedConfiguration
+        public async Task<int> InsertPlatform(Platform item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.AddItem(item);
+            }
+        }
+
+        public async Task<int> UpdatePlatform(Platform item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.UpdateItem(item);
+            }
+        }
+
+        public async Task<int> DeletePlatform(Platform item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.AddItem(item);
+            }
+        }
+
+        public async Task<int> InsertKnowledgeArea(KnowledgeArea item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.AddItem(item);
+            }
+        }
+
+        public async Task<int> UpdateKnowledgeArea(KnowledgeArea item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.UpdateItem(item);
+            }
+        }
+
+        public async Task<int> DeleteKnowledgeArea(KnowledgeArea item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.AddItem(item);
+            }
+        }
+
+        public async Task<int> InsertArea(Area item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.AddItem(item);
+            }
+        }
+
+        public async Task<int> UpdateArea(Area item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.UpdateItem(item);
+            }
+        }
+
+        public async Task<int> DeleteArea(Area item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.AddItem(item);
+            }
+        }
+
+        public async Task<int> InsertQuestion(Question item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.AddItem(item);
+            }
+        }
+
+        public async Task<int> UpdateQuestion(Question item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.UpdateItem(item);
+            }
+        }
+
+        public async Task<int> DeleteQuestion(Question item)
+        {
+            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            {
+                return await client.AddItem(item);
+            }
+        }
+
+        public configuration SelectedConfiguration
 		{
 			get
 			{

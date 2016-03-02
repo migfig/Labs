@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Linq;
 
 namespace Interviewer.Common
 {    
@@ -11,6 +12,10 @@ namespace Interviewer.Common
         public ObservableCollection<Profile> Profile { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
+        public override bool IsValid()
+        {
+            return Platform.Any();
+        }
     }
 
     public class Platform : BaseModel
@@ -19,6 +24,10 @@ namespace Interviewer.Common
         public ObservableCollection<Profile> Profile { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
+        public override bool IsValid()
+        {
+            return !string.IsNullOrWhiteSpace(Name) && Name.Trim().ToLower() != "undefined";
+        }
     }
 
     public class KnowledgeArea : BaseModel
@@ -27,6 +36,11 @@ namespace Interviewer.Common
         public int PlatformId { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
+        public override bool IsValid()
+        {
+            return !string.IsNullOrWhiteSpace(Name) && Name.Trim().ToLower() != "undefined"
+                && PlatformId > 0;
+        }
     }
 
     public class Area : BaseModel
@@ -35,6 +49,11 @@ namespace Interviewer.Common
         public int KnowledgeAreaId { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
+        public override bool IsValid()
+        {
+            return !string.IsNullOrWhiteSpace(Name) && Name.Trim().ToLower() != "undefined"
+                && KnowledgeAreaId > 0;
+        }
     }
 
     public class Question : BaseModel
@@ -47,6 +66,11 @@ namespace Interviewer.Common
         public int rating { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
+        public override bool IsValid()
+        {
+            return !string.IsNullOrWhiteSpace(Value) && Value.Trim().ToLower() != "undefined"
+                && AreaId > 0;
+        }
     }
 
     public class Profile : BaseModel
@@ -54,6 +78,11 @@ namespace Interviewer.Common
         public ObservableCollection<Requirement> Requirement { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
+        public override bool IsValid()
+        {
+            return !string.IsNullOrWhiteSpace(Name) && Name.Trim().ToLower() != "undefined"
+                && Id > 0;
+        }
     }
 
     public class Requirement : BaseModel
@@ -65,5 +94,14 @@ namespace Interviewer.Common
         public bool IsRequired { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
+        public override bool IsValid()
+        {
+            return !string.IsNullOrWhiteSpace(Name) && Name.Trim().ToLower() != "undefined"
+                && Id > 0
+                && PlatformId > 0
+                && ProfileId > 0
+                && KnowledgeAreaId > 0
+                && AreaId > 0;
+        }
     }
 }
