@@ -65,43 +65,68 @@ namespace Interviewer.Data.Repositories
         public async Task<int> AddItem<T>(T item)
         {
             var objName = item.GetType().FullName.Split('.').Last();
-            using (var connection = new SqlConnection(_connectionSTring))
+            try {
+                using (var connection = new SqlConnection(_connectionSTring))
+                {
+                    await connection.OpenAsync();
+                    var result = await connection.ExecuteScalarAsync("[dbo].[usp_Add" + objName + "]"
+                        , GetParameters(item, QueryType.Add)
+                        , commandType: System.Data.CommandType.StoredProcedure);
+                    return 1;
+                }
+            } catch(Exception e)
             {
-                await connection.OpenAsync();
-                var result = connection.ExecuteScalar("[dbo].[usp_Add" + objName + "]"
-                    ,GetParameters(item, QueryType.Add)
-                    ,commandType: System.Data.CommandType.StoredProcedure);
-                return (int)result;
+                System.Console.WriteLine(e.Message);
             }
+
+            return 0;
         }
 
         public async Task<int> UpdateItem<T>(T item)
         {
             var objName = item.GetType().FullName.Split('.').Last();
-            using (var connection = new SqlConnection(_connectionSTring))
+            try
             {
-                await connection.OpenAsync();
-                var result = await connection.ExecuteScalarAsync("[dbo].[usp_Update" + objName + "]"
-                    ,GetParameters(item, QueryType.Update)
-                    ,commandType: System.Data.CommandType.StoredProcedure);
-                return (int)result;
+                using (var connection = new SqlConnection(_connectionSTring))
+                {
+                    await connection.OpenAsync();
+                    var result = await connection.ExecuteScalarAsync("[dbo].[usp_Update" + objName + "]"
+                        , GetParameters(item, QueryType.Update)
+                        , commandType: System.Data.CommandType.StoredProcedure);
+                    return 1;
+                }
             }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
+
+            return 0;
         }
 
         public async Task<int> DeleteItem<T>(T item)
         {
             var objName = item.GetType().FullName.Split('.').Last();
-            using (var connection = new SqlConnection(_connectionSTring))
+            try
             {
-                await connection.OpenAsync();
-                var result = await connection.ExecuteScalarAsync("[dbo].[usp_Delete" + objName + "]"
-                    ,GetParameters(item, QueryType.Delete)
-                    ,commandType: System.Data.CommandType.StoredProcedure);
-                return (int)result;
+                using (var connection = new SqlConnection(_connectionSTring))
+                {
+                    await connection.OpenAsync();
+                    var result = await connection.ExecuteScalarAsync("[dbo].[usp_Delete" + objName + "]"
+                        , GetParameters(item, QueryType.Delete)
+                        , commandType: System.Data.CommandType.StoredProcedure);
+                    return 1;
+                }
             }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
+
+            return 0;
         }
 
-        private SqlParameter[] GetParameters(object item, QueryType queryType = QueryType.Update)
+        private object GetParameters(object item, QueryType queryType = QueryType.Update)
         {
             if(item is Platform)
             {
@@ -109,17 +134,17 @@ namespace Interviewer.Data.Repositories
                 switch(queryType)
                 {
                     case QueryType.Add:
-                        return new SqlParameter[] {
-                            new SqlParameter("@Name", objItem.Name)
+                        return new {
+                            Name = objItem.Name
                         };
                     case QueryType.Update:
-                        return new SqlParameter[] {
-                            new SqlParameter("@Id", objItem.Id),
-                            new SqlParameter("@Name", objItem.Name)
+                        return new {
+                            Id = objItem.Id,
+                            Name = objItem.Name
                         };
                     case QueryType.Delete:
-                        return new SqlParameter[] {
-                            new SqlParameter("@Id", objItem.Id)
+                        return new {
+                            Id = objItem.Id
                         };
                 }
             }
@@ -129,18 +154,18 @@ namespace Interviewer.Data.Repositories
                 switch (queryType)
                 {
                     case QueryType.Add:
-                        return new SqlParameter[] {
-                            new SqlParameter("@PlatformId", objItem.PlatformId),
-                            new SqlParameter("@Name", objItem.Name)
+                        return new {
+                            PlatformId = objItem.PlatformId,
+                            Name = objItem.Name
                         };                      
                     case QueryType.Update:
-                        return new SqlParameter[] {
-                            new SqlParameter("@Id", objItem.Id),
-                            new SqlParameter("@Name", objItem.Name)
+                        return new {
+                            Id = objItem.Id,
+                            Name = objItem.Name
                         };
                     case QueryType.Delete:
-                        return new SqlParameter[] {
-                            new SqlParameter("@Id", objItem.Id)
+                        return new {
+                            Id = objItem.Id
                         };
                 }
             }
@@ -150,18 +175,18 @@ namespace Interviewer.Data.Repositories
                 switch (queryType)
                 {
                     case QueryType.Add:
-                        return new SqlParameter[] {
-                            new SqlParameter("@KnowledgeAreaId", objItem.KnowledgeAreaId),
-                            new SqlParameter("@Name", objItem.Name)
+                        return new {
+                            KnowledgeAreaId = objItem.KnowledgeAreaId,
+                            Name = objItem.Name
                         };                        
                     case QueryType.Update:
-                        return new SqlParameter[] {
-                            new SqlParameter("@Id", objItem.Id),
-                            new SqlParameter("@Name", objItem.Name)
+                        return new {
+                            Id = objItem.Id,
+                            Name = objItem.Name
                         };
                     case QueryType.Delete:
-                        return new SqlParameter[] {
-                            new SqlParameter("@Id", objItem.Id)
+                        return new {
+                            Id = objItem.Id
                         };
                 }
             }
@@ -171,22 +196,22 @@ namespace Interviewer.Data.Repositories
                 switch (queryType)
                 {
                     case QueryType.Add:
-                        return new SqlParameter[] {
-                            new SqlParameter("@AreaId", objItem.AreaId),
-                            new SqlParameter("@Value", objItem.Value),
-                            new SqlParameter("@Weight", objItem.Weight),
-                            new SqlParameter("@Level", objItem.Level)
+                        return new {
+                            AreaId= objItem.AreaId,
+                            Value= objItem.Value,
+                            Weight=objItem.Weight,
+                            Level= objItem.Level
                         };                        
                     case QueryType.Update:
-                        return new SqlParameter[] {
-                            new SqlParameter("@Id", objItem.Id),
-                            new SqlParameter("@Value", objItem.Value),
-                            new SqlParameter("@Weight", objItem.Weight),
-                            new SqlParameter("@Level", objItem.Level)
+                        return new {
+                            Id= objItem.Id,
+                            Value= objItem.Value,
+                            Weight= objItem.Weight,
+                            Level= objItem.Level
                         };                        
                     case QueryType.Delete:
-                        return new SqlParameter[] {
-                            new SqlParameter("@Id", objItem.Id)
+                        return new {
+                            Id= objItem.Id
                         };
                 }
             }

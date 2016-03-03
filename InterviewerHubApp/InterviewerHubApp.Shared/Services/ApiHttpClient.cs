@@ -58,26 +58,34 @@ namespace InterviewerHubApp.Services
         {
             var className = item.GetType().FullName.Split('.').Last().ToLower();
             var ser = new DataContractJsonSerializer(item.GetType());
-            var stream = new MemoryStream();
-            ser.WriteObject(stream, item);            
-            var content = new StreamContent(stream);
-            content.Headers.Add("Content-Type", "application/json");
-            var response = await _client.PostAsync(_baseUrl + "add/" + className, content);
-            return response.IsSuccessStatusCode ? 1 : 0;
+            using (var stream = new MemoryStream())
+            {
+                ser.WriteObject(stream, item);
+                using (var content = new ByteArrayContent(stream.ToArray()))
+                {
+                    content.Headers.Add("Content-Type", "application/json");
+                    content.Headers.Add("Content-Length", stream.Length.ToString());
+                    var response = await _client.PostAsync(_baseUrl + "add/" + className, content);
+                    return response.IsSuccessStatusCode ? 1 : 0;
+                }
+            }
         }
 
         public async Task<int> UpdateItem<T>(T item)
         {
             var className = item.GetType().FullName.Split('.').Last().ToLower();
             var ser = new DataContractJsonSerializer(item.GetType());
-            var stream = new MemoryStream();
-            ser.WriteObject(stream, item);
-            var buffer = new byte[stream.Length];
-            await stream.ReadAsync(buffer, 0, (int)stream.Length);
-            var content = new ByteArrayContent(buffer);
-            content.Headers.Add("Content-Type", "application/json");
-            var response = await _client.PutAsync(_baseUrl + "update/" + className, content);
-            return response.IsSuccessStatusCode ? 1 : 0;
+            using (var stream = new MemoryStream())
+            {
+                ser.WriteObject(stream, item);                
+                using (var content = new ByteArrayContent(stream.ToArray()))
+                {
+                    content.Headers.Add("Content-Type", "application/json");
+                    content.Headers.Add("Content-Length", stream.Length.ToString());
+                    var response = await _client.PutAsync(_baseUrl + "update/" + className, content);
+                    return response.IsSuccessStatusCode ? 1 : 0;
+                }
+            }
         }
 
         public async Task<int> DeleteItem<T>(T item, int id)
