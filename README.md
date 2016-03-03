@@ -6,6 +6,8 @@ This is a series of lab experiment projects created for helping a developer in c
 The projects created up to this moment are:
 > Fluent Testing
 > 
+> Interviewer Universal App
+>  
 > Related Records
 > 
 > Api Tester
@@ -25,6 +27,7 @@ Some code parts also may need some re-factoring in classes and its methods, plea
 
 They have been created from scratch using **MS Visual Studio**  on a **Microsoft Surface 3** with its corresponding **Type Cover**.
 Also using **ReSharper** add-in.
+Icons from **SyncFusion** Metro studio.
 
 Other tools, nuget packages used are:
 > Newtonsoft.Json
@@ -99,6 +102,13 @@ Sample code in **Spanish**:
 
 **What's missing** in this project:
 This is just a placeholder to start up building a very robust fluent testing light framework helper on top of any Testing Framework like **NUnit** or other of the well know frameworks, but useful enough for being used in real daily code testing. More methods need to be added to support testing property values like: GreaterThan, Equals, etc. This latest missing methods will be used by the WebApi tester project.
+
+## Interviewer Universal Windows App Project ##
+The **Interviewer WUP** project is a simple Windows Store /Windows Phone application, based on **Web API** back-end services, where you can later run simple interviews.
+![relatedrecords](universal-app-interviewer.png)
+This application works around the **XML** configuration **Sql Server** queries for tables.
+
+**What's missing**: This is **work in progress**, Windows Phone pages need to be added, some other items need more work. Interviewer simple area needs to be polished and connected to random retrieval of interview questions. The application also needs to fully comply with Windows Store fonts and resolutions best practices. Icon images/Tile support also needs to be added, adjusted.
 
 ## Related Records Project ##
 The **Related Records** project is about making easy for a business developer/analyst to see given a database schema what table records are related to each other table records and let the developer/analyst navigate back and forth and drilling down as much as possible through the data entities. This is a **WPF** Windows application.
