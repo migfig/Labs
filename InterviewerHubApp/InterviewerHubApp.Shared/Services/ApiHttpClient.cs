@@ -66,7 +66,8 @@ namespace InterviewerHubApp.Services
                     content.Headers.Add("Content-Type", "application/json");
                     content.Headers.Add("Content-Length", stream.Length.ToString());
                     var response = await _client.PostAsync(_baseUrl + "add/" + className, content);
-                    return response.IsSuccessStatusCode ? 1 : 0;
+                    return response.IsSuccessStatusCode 
+                        ? int.Parse(await response.Content.ReadAsStringAsync()) : 0;
                 }
             }
         }

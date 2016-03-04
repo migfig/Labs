@@ -65,7 +65,7 @@
                         VerticalAlignment="Top" IsHitTestVisible="false" TextWrapping="NoWrap" />
                 </Grid>
             </Hub.Header>
-            <HubSection Width="500" Header="Interview" DataContext="{Binding ViewModel}" Margin="0,0,80,0">
+            <HubSection Width="500" Height="700" Header="Interview" DataContext="{Binding ViewModel}" Margin="0,0,40,0">
                 <!--<HubSection.Background>
                     <ImageBrush ImageSource="Assets/MediumGray.png" Stretch="UniformToFill" />
                 </HubSection.Background>-->
@@ -89,12 +89,19 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Profile" TextBlock.FontSize="16" />
-                            <ComboBox Grid.Column="1" 
+                            <Button Grid.ColumnSpan="2" Content="Get Random Questions"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Margin="0"                                    
+                                    Command="{Binding RunQuestionsCommand}" 
+                                    CommandParameter="1" />
+                            <TextBlock Grid.Row="1" Text="Profile" TextBlock.FontSize="16" />
+                            <ComboBox Grid.Row="1" Grid.Column="1" 
                                   ItemsSource="{Binding Profiles}" 
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedProfile}">
                                 <ComboBox.ItemTemplate>
@@ -104,15 +111,15 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <TextBlock Grid.Row="1" Text="Person" TextBlock.FontSize="16" />
-                            <TextBox Grid.Row="1" 
+                            <TextBlock Grid.Row="2" Text="Person" TextBlock.FontSize="16" />
+                            <TextBox Grid.Row="2" 
                                  Grid.Column="1" 
                                  FontSize="16" 
                                  Foreground="#FF228B22" 
                                  Text="{Binding Mode=TwoWay, Path=InterviewedPerson, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <TextBlock Grid.Row="2" Text="Platform" TextBlock.FontSize="16" />
-                            <ComboBox Grid.Row="2" 
+                            <TextBlock Grid.Row="3" Text="Platform" TextBlock.FontSize="16" />
+                            <ComboBox Grid.Row="3" 
                                   Grid.Column="1" 
                                   ItemsSource="{Binding Platforms}" 
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedPlatform}">
@@ -123,8 +130,8 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <TextBlock Grid.Row="3" Text="Knowledge Area" TextBlock.FontSize="16" />
-                            <ComboBox Grid.Row="3" 
+                            <TextBlock Grid.Row="4" Text="Knowledge Area" TextBlock.FontSize="16" />
+                            <ComboBox Grid.Row="4" 
                                   Grid.Column="1" 
                                   ItemsSource="{Binding SelectedPlatform.KnowledgeArea}" 
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedKnowledgeArea}">
@@ -135,8 +142,8 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <TextBlock Grid.Row="4" Text="Area" TextBlock.FontSize="16" />
-                            <ComboBox Grid.Row="4" 
+                            <TextBlock Grid.Row="5" Text="Area" TextBlock.FontSize="16" />
+                            <ComboBox Grid.Row="5" 
                                   Grid.Column="1" 
                                   ItemsSource="{Binding SelectedKnowledgeArea.Area}" 
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedArea}">
@@ -147,8 +154,8 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <TextBlock Grid.Row="5" Text="Question #" TextBlock.FontSize="16" />
-                            <StackPanel Grid.Row="5"
+                            <TextBlock Grid.Row="6" Text="Question #" TextBlock.FontSize="16" />
+                            <StackPanel Grid.Row="6"
                                     Grid.Column="1"
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Stretch">
@@ -166,17 +173,19 @@
                                      Text="{Binding Mode=OneWay, Path=TotalQuestions}" />
                             </StackPanel>
 
-                            <TextBlock Grid.Row="6" Grid.ColumnSpan="2" Text="Question" TextBlock.FontSize="16" />
-                            <TextBlock Grid.Row="7" 
+                            <TextBlock Grid.Row="7" Grid.ColumnSpan="2" Text="Question" TextBlock.FontSize="16" />
+                            <TextBlock Grid.Row="8" 
                                  Grid.ColumnSpan="2"
-                                 Margin="4,2,4,2"
-                                 FontSize="20" 
-                                 Foreground="#FF224B8B"
-                                 TextWrapping="WrapWholeWords"
+                                 Width="430"
+                                 Height="200"
+                                 Padding="4,2,4,2"
+                                 FontSize="20"                                  
+                                 TextWrapping="Wrap"
                                  HorizontalAlignment="Stretch"
+                                 Style="{StaticResource HeaderTextBlockStyle}"
                                  Text="{Binding Mode=OneWay, Path=SelectedQuestion.Value}" />
 
-                            <StackPanel Grid.Row="8" 
+                            <StackPanel Grid.Row="9" 
                                     Grid.ColumnSpan="2"
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Right"

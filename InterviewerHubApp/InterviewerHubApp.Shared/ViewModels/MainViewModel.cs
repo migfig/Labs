@@ -93,8 +93,9 @@ namespace WpfInterviewer
         private int _totalQuestions = 0;
 
 		private string _interviewedPerson;
+        private string _apiBaseUrl = "http://localhost:52485/api/";
 
-		public static MainViewModel ViewModel
+        public static MainViewModel ViewModel
 		{
 			get
 			{
@@ -115,7 +116,7 @@ namespace WpfInterviewer
         {
             if (!_isLoaded)
             {
-                using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+                using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
                 {
                     SelectedConfiguration = await client.GetConfiguration();
                 }
@@ -140,6 +141,7 @@ namespace WpfInterviewer
                     if(p.Id == 0)
                     {
                         result = await InsertPlatform(p);
+                        p.Id = result;
                     }
                     else
                     {
@@ -156,6 +158,7 @@ namespace WpfInterviewer
                         if(ka.Id == 0)
                         {
                             result = await InsertKnowledgeArea(ka);
+                            ka.Id = result;
                         }
                         else
                         {
@@ -171,6 +174,7 @@ namespace WpfInterviewer
                             if(a.Id == 0)
                             {
                                 result = await InsertArea(a);
+                                a.Id = result;
                             }
                             else
                             {
@@ -186,6 +190,7 @@ namespace WpfInterviewer
                                 if(q.Id == 0)
                                 {
                                     result = await InsertQuestion(q);
+                                    q.Id = result;
                                 }
                                 else
                                 {
@@ -201,7 +206,7 @@ namespace WpfInterviewer
         
         public async Task<int> InsertPlatform(Platform item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.AddItem(item);
             }
@@ -209,7 +214,7 @@ namespace WpfInterviewer
 
         public async Task<int> UpdatePlatform(Platform item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.UpdateItem(item);
             }
@@ -217,7 +222,7 @@ namespace WpfInterviewer
 
         public async Task<int> DeletePlatform(Platform item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.AddItem(item);
             }
@@ -225,7 +230,7 @@ namespace WpfInterviewer
 
         public async Task<int> InsertKnowledgeArea(KnowledgeArea item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.AddItem(item);
             }
@@ -233,7 +238,7 @@ namespace WpfInterviewer
 
         public async Task<int> UpdateKnowledgeArea(KnowledgeArea item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.UpdateItem(item);
             }
@@ -241,7 +246,7 @@ namespace WpfInterviewer
 
         public async Task<int> DeleteKnowledgeArea(KnowledgeArea item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.AddItem(item);
             }
@@ -249,7 +254,7 @@ namespace WpfInterviewer
 
         public async Task<int> InsertArea(Area item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.AddItem(item);
             }
@@ -257,7 +262,7 @@ namespace WpfInterviewer
 
         public async Task<int> UpdateArea(Area item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.UpdateItem(item);
             }
@@ -265,7 +270,7 @@ namespace WpfInterviewer
 
         public async Task<int> DeleteArea(Area item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.AddItem(item);
             }
@@ -273,7 +278,7 @@ namespace WpfInterviewer
 
         public async Task<int> InsertQuestion(Question item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.AddItem(item);
             }
@@ -281,7 +286,7 @@ namespace WpfInterviewer
 
         public async Task<int> UpdateQuestion(Question item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.UpdateItem(item);
             }
@@ -289,7 +294,7 @@ namespace WpfInterviewer
 
         public async Task<int> DeleteQuestion(Question item)
         {
-            using (var client = ApiServiceFactory.CreateService("http://localhost:52485/api/"))
+            using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
             {
                 return await client.AddItem(item);
             }

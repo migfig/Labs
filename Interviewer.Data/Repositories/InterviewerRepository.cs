@@ -72,7 +72,7 @@ namespace Interviewer.Data.Repositories
                     var result = await connection.ExecuteScalarAsync("[dbo].[usp_Add" + objName + "]"
                         , GetParameters(item, QueryType.Add)
                         , commandType: System.Data.CommandType.StoredProcedure);
-                    return 1;
+                    return (int)result;
                 }
             } catch(Exception e)
             {

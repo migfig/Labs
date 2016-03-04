@@ -30,7 +30,7 @@ namespace Interviewer.Services.Web.Controllers
             return await _repository.AddItem<Platform>(request);
         }
 
-        [Route("api/udpate/platform"), HttpPut]
+        [Route("api/update/platform"), HttpPut]
         public async Task<int> UpdatePlatform([FromBody] Platform request)
         {
             return await _repository.UpdateItem<Platform>(request);
@@ -52,7 +52,7 @@ namespace Interviewer.Services.Web.Controllers
             return await _repository.AddItem<KnowledgeArea>(request);
         }
 
-        [Route("api/udpate/knowledgearea"), HttpPut]
+        [Route("api/update/knowledgearea"), HttpPut]
         public async Task<int> UpdateKnowledgeArea([FromBody] KnowledgeArea request)
         {
             return await _repository.UpdateItem<KnowledgeArea>(request);
@@ -75,7 +75,7 @@ namespace Interviewer.Services.Web.Controllers
             return await _repository.AddItem<Area>(request);
         }
 
-        [Route("api/udpate/area"), HttpPut]
+        [Route("api/update/area"), HttpPut]
         public async Task<int> UpdateArea([FromBody] Area request)
         {
             return await _repository.UpdateItem<Area>(request);
@@ -99,7 +99,7 @@ namespace Interviewer.Services.Web.Controllers
             return await _repository.AddItem<Question>(request);
         }
 
-        [Route("api/udpate/question"), HttpPut]
+        [Route("api/update/question"), HttpPut]
         public async Task<int> UpdateQuestion([FromBody] Question request)
         {
             return await _repository.UpdateItem<Question>(request);
