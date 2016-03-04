@@ -95,6 +95,16 @@ namespace WpfInterviewer
 		private string _interviewedPerson;
         private string _apiBaseUrl = "http://localhost:52485/api/";
 
+        public string ServicesUrl
+        {
+            get { return _apiBaseUrl; }
+            set
+            {
+                _apiBaseUrl = value;
+                OnPropertyChanged();
+            }
+        }
+
         public static MainViewModel ViewModel
 		{
 			get
