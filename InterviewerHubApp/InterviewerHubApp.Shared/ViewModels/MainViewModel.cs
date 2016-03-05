@@ -11,6 +11,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Storage;
 using Windows.UI.Xaml;
 
 namespace WpfInterviewer
@@ -100,9 +101,40 @@ namespace WpfInterviewer
             get { return _apiBaseUrl; }
             set
             {
-                _apiBaseUrl = value;
-                OnPropertyChanged();
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    Uri uri = null;
+                    if (Uri.TryCreate(value, UriKind.Absolute, out uri))
+                    {
+                        _apiBaseUrl = value;
+                        OnPropertyChanged();
+                        SetServicesSetting(value);
+                    }
+                }
             }
+        }
+
+        private void SetServicesSetting(string url)
+        {
+            var settings = ApplicationData.Current.RoamingSettings;
+            if (null == settings.Values["Services.Url"])
+            {
+                settings.Values.Add("Services.Url", url);
+            }
+            else
+            {
+                settings.Values["Services.Url"] = url;
+            }
+        }
+
+        public MainViewModel()
+        {
+            var settings = ApplicationData.Current.RoamingSettings;
+            if(null == settings.Values["Services.Url"])
+            {
+                settings.Values.Add("Services.Url", _apiBaseUrl);
+            }
+            _apiBaseUrl = (string)settings.Values["Services.Url"];
         }
 
         public static MainViewModel ViewModel
@@ -330,9 +362,16 @@ namespace WpfInterviewer
 		public IEnumerable<Profile> Profiles
 		{
 			get
-			{				
-                SelectedProfile = SelectedConfiguration.Profile.FirstOrDefault();
-				return SelectedConfiguration.Profile.AsEnumerable();
+			{
+                var profiles = SelectedConfiguration.Profile.Any()
+                    ? SelectedConfiguration.Profile
+                    : from p in SelectedConfiguration.Platform
+                      from prof in p.Profile
+                      from req in prof.Requirement
+                      where req.PlatformId == p.Id
+                      select prof;
+                SelectedProfile = profiles.FirstOrDefault();
+				return profiles.Distinct();
 			}
 		}
 

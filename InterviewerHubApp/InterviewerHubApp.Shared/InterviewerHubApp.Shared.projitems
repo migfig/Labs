@@ -19,6 +19,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\BaseModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Models.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ApiHttpClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\area.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\dirty.png" />
@@ -42,6 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)Assets\generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

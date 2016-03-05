@@ -49,7 +49,7 @@ namespace InterviewerHubApp
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;            
+            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
         }
 
         /// <summary>

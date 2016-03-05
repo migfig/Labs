@@ -94,19 +94,39 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <Button Grid.ColumnSpan="2" Content="Get Random Questions"
+                            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
+                                <TextBlock Text="Questions Count" 
+                                           TextBlock.FontSize="16" 
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
-                                    Margin="0"                                    
+                                           Margin="0" />
+                                <ComboBox ItemsSource="{Binding QuestionsCountRange}" 
+                                          SelectedItem="{Binding Mode=TwoWay, Path=QuestionsCount}"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Margin="4,0"
+                                          Width="50">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextBlock.FontSize="16" Text="{Binding}" FontFamily="Global User Interface" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button Content="Get Random Questions"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Margin="4,0"                                    
                                     Command="{Binding RunQuestionsCommand}" 
                                     CommandParameter="1" />
+                            </StackPanel>
+                            
                             <TextBlock Grid.Row="1" Text="Profile" TextBlock.FontSize="16" />
                             <ComboBox Grid.Row="1" Grid.Column="1" 
                                   ItemsSource="{Binding Profiles}" 
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedProfile}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding Name}" />
+                                        <TextBlock TextBlock.FontSize="16" Text="{Binding Name}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -125,7 +145,7 @@
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedPlatform}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding Name}" />
+                                        <TextBlock TextBlock.FontSize="16" Text="{Binding Name}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -137,7 +157,7 @@
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedKnowledgeArea}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding Name}" />
+                                        <TextBlock TextBlock.FontSize="16" Text="{Binding Name}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -149,7 +169,7 @@
                                   SelectedItem="{Binding Mode=TwoWay, Path=SelectedArea}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock TextBlock.FontSize="16" TextBlock.Foreground="#FF228B22" Text="{Binding Name}" />
+                                        <TextBlock TextBlock.FontSize="16" Text="{Binding Name}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -161,15 +181,16 @@
                                     HorizontalAlignment="Stretch">
                                 <TextBlock 
                                      FontSize="16" 
-                                     Foreground="#FF228B22" 
+                                     Style="{StaticResource CaptionTextBlockStyle}"
                                      Text="{Binding Mode=OneWay, Path=AppliedQuestions}" />
                                 <TextBlock 
-                                     FontSize="16" 
-                                     Foreground="#FF228B22" 
-                                     Text=" of " />
+                                     FontSize="16"
+                                     Style="{StaticResource CaptionTextBlockStyle}"
+                                     Text="of"
+                                     Margin="8,0,8,0"/>
                                 <TextBlock 
                                      FontSize="16" 
-                                     Foreground="#FF228B22" 
+                                     Style="{StaticResource CaptionTextBlockStyle}"
                                      Text="{Binding Mode=OneWay, Path=TotalQuestions}" />
                             </StackPanel>
 
@@ -179,7 +200,7 @@
                                  Width="430"
                                  Height="200"
                                  Padding="4,2,4,2"
-                                 FontSize="20"                                  
+                                 FontSize="16"                                  
                                  TextWrapping="Wrap"
                                  HorizontalAlignment="Stretch"
                                  Style="{StaticResource HeaderTextBlockStyle}"
