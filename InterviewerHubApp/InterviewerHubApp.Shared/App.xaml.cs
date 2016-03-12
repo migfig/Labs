@@ -116,19 +116,19 @@ namespace InterviewerHubApp
             
             // Ensure the current window is active
             Window.Current.Activate();
-            var setttings = Windows.UI.ApplicationSettings.SettingsPane.GetForCurrentView();
-            setttings.CommandsRequested += Setttings_CommandsRequested;
+           //var setttings = Windows.UI.ApplicationSettings.SettingsPane.GetForCurrentView();
+            //setttings.CommandsRequested += Setttings_CommandsRequested;
         }
 
-        private void Setttings_CommandsRequested(Windows.UI.ApplicationSettings.SettingsPane sender, Windows.UI.ApplicationSettings.SettingsPaneCommandsRequestedEventArgs args)
-        {
-            var cmd = new Windows.UI.ApplicationSettings.SettingsCommand("Services", "Services", (x) =>
-            {
-                var settings = new Settings();
-                settings.Show();
-            });
-            args.Request.ApplicationCommands.Add(cmd);
-        }
+        //private void Setttings_CommandsRequested(Windows.UI.ApplicationSettings.SettingsPane sender, Windows.UI.ApplicationSettings.SettingsPaneCommandsRequestedEventArgs args)
+        //{
+        //    var cmd = new Windows.UI.ApplicationSettings.SettingsCommand("Services", "Services", (x) =>
+        //    {
+        //        var settings = new Settings();
+        //        settings.Show();
+        //    });
+        //    args.Request.ApplicationCommands.Add(cmd);
+        //}
 
 #if WINDOWS_PHONE_APP
         /// <summary>

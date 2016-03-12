@@ -1,0 +1,1426 @@
+<configuration xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/Interviewer.Common">
+	<Id>0</Id>
+	<Name i:nil="true" />
+	<Platform>
+		<Platform>
+			<Id>1</Id>
+			<Name>Net Framework</Name>
+			<KnowledgeArea>
+				<KnowledgeArea>
+					<Id>1</Id>
+					<Name>Framework Fundamentals</Name>
+					<Area>
+						<Area>
+							<Id>1</Id>
+							<Name>Managed vs non managed</Name>
+							<KnowledgeAreaId>1</KnowledgeAreaId>
+							<Question>
+								<Question>
+									<Id>1</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>Please describe what is the .net framework and its characteristics?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>2</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>What is a managed framework and what is a non-managed framework?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>3</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>What’s the principal characteristic of a managed framework?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>4</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>What are the advantages and disadvantages of a managed framework?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>5</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>How is memory allocated and accessed in a non-managed framework?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>6</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>Is the .net framework a managed framework?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>7</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>Does C++ run in a managed environment?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>8</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>What is the common language runtime (CLR) in .net framework?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>9</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>Please describe up to 3 languages you can use to develop applications in .net framework</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>10</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>Why is possible you can develop a library in F# and you can use it in a C# project?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>11</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>How code is built in the .net framework and how is executed?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>12</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>Does the .net framework binary code generated at compilation is native code? </Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>13</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>In Java, code is generated in byte code and then interpreted by the JVM, what is the name of the intermediate code generated in the .net framework?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>14</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>If speed is critical for one application or service, would you consider its implementation in the .net framework or you better go the native way?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>15</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>If security is critical for one application or service, would you consider its implementation in the .net framework or you better go the native way or choose another platform?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>16</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>Please enumerate up to four types of visual studio projects you can create targeting the .net framework?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>17</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>Do you consider the .net framework as a successful development platform and what could be the reason of its success?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>18</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>Does the .net framework run in embedded systems?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>19</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>1</AreaId>
+									<Level>1</Level>
+									<Value>How do you think applications/services development will be done in 30 years?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+							</Question>
+						</Area>
+						<Area>
+							<Id>2</Id>
+							<Name>Object's life cycle</Name>
+							<KnowledgeAreaId>1</KnowledgeAreaId>
+							<Question>
+								<Question>
+									<Id>20</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>2</AreaId>
+									<Level>1</Level>
+									<Value>What’s the life cycle of an object in the .net framework?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+							</Question>
+						</Area>
+						<Area>
+							<Id>3</Id>
+							<Name>Garbage collection</Name>
+							<KnowledgeAreaId>1</KnowledgeAreaId>
+							<Question>
+								<Question>
+									<Id>21</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>3</AreaId>
+									<Level>1</Level>
+									<Value>What’s the function of the garbage collection in the .net framework?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>22</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>3</AreaId>
+									<Level>1</Level>
+									<Value>Does the garbage collection process run automatically, what are the conditions that trigger this process?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>23</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>3</AreaId>
+									<Level>1</Level>
+									<Value>Can I force the execution of the garbage collection process?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>24</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>3</AreaId>
+									<Level>1</Level>
+									<Value>If my class uses resources that need to be disposed when my instance is no longer needed, what interface does it need to implement?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+							</Question>
+						</Area>
+						<Area>
+							<Id>4</Id>
+							<Name>Base objects/root object</Name>
+							<KnowledgeAreaId>1</KnowledgeAreaId>
+							<Question>
+								<Question>
+									<Id>25</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>4</AreaId>
+									<Level>1</Level>
+									<Value>What class is the root class of all the .net classes?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>26</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>4</AreaId>
+									<Level>1</Level>
+									<Value>What is boxing/unboxing/casting in .net?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+							</Question>
+						</Area>
+						<Area>
+							<Id>5</Id>
+							<Name>Base object methods</Name>
+							<KnowledgeAreaId>1</KnowledgeAreaId>
+							<Question>
+								<Question>
+									<Id>27</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>5</AreaId>
+									<Level>1</Level>
+									<Value>Please enumerate up to 3 public methods of the Object class?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>28</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>5</AreaId>
+									<Level>1</Level>
+									<Value>What methods can I override from the Object class?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>29</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>5</AreaId>
+									<Level>1</Level>
+									<Value>What is the meaning of overriding a method?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>30</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>5</AreaId>
+									<Level>1</Level>
+									<Value>What is the meaning of overloading a method?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>31</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>5</AreaId>
+									<Level>1</Level>
+									<Value>How do you define optional parameters in a method?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>32</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>5</AreaId>
+									<Level>1</Level>
+									<Value>If you have multiple optional parameters in a method, how can you call them in any order you wish?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>33</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>5</AreaId>
+									<Level>1</Level>
+									<Value>Once you have defined an optional parameter in some specific method of your class, can you define another non-optional parameter to the right of the optional one?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>34</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>5</AreaId>
+									<Level>1</Level>
+									<Value>What should be the signature of a class method which supports receiving any number of parameters of the same type (string.Format() for example)?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>35</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>5</AreaId>
+									<Level>1</Level>
+									<Value>How can you compare that two objects are from the same type?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+							</Question>
+						</Area>
+						<Area>
+							<Id>6</Id>
+							<Name>Main namespaces</Name>
+							<KnowledgeAreaId>1</KnowledgeAreaId>
+							<Question>
+								<Question>
+									<Id>36</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>Please enumerate most common used (up to 4) name spaces available in .net framework?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>37</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>Can I load or unload dynamically a namespace/library?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>38</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>What is an App Domain?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>39</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>In your class definition what keyword you use to import a specific namespace/library?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>40</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>In a console if you want to write a text line into output, what instruction should you use?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>41</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>What is a nuget package?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>42</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>In which namespace resides the DateTime class?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>43</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>In which namespace resides the Int32 class?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>44</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>In which namespace resides the StringBuilder class?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>45</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>In which namespace resides the Stream class?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>46</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>Is the Stream class abstract?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>47</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>Please tell me one class which implements the Stream class?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>48</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>6</AreaId>
+									<Level>1</Level>
+									<Value>What is the use of those classes inheriting from Stream class?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+							</Question>
+						</Area>
+						<Area>
+							<Id>7</Id>
+							<Name>Reflection</Name>
+							<KnowledgeAreaId>1</KnowledgeAreaId>
+							<Question>
+								<Question>
+									<Id>49</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>7</AreaId>
+									<Level>1</Level>
+									<Value>Do you think is possible to generate code in any language or an html page from a .net assembly you have built?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>50</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>7</AreaId>
+									<Level>1</Level>
+									<Value>What is reflection in .net framework and why is so powerful?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>51</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>7</AreaId>
+									<Level>1</Level>
+									<Value>Is reflection technology available only in .net framework or is also available in other platforms like Java?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>52</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>7</AreaId>
+									<Level>1</Level>
+									<Value>What is the main method exposed by the .net framework for start reflecting an object?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>53</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>7</AreaId>
+									<Level>1</Level>
+									<Value>What are the main methods you can use when discovering/describing an object?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>54</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>7</AreaId>
+									<Level>1</Level>
+									<Value>What is code obfuscation of an assembly and how can be implemented?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>55</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>7</AreaId>
+									<Level>1</Level>
+									<Value>When should you create classes inheriting from System.Attribute class?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+							</Question>
+						</Area>
+						<Area>
+							<Id>8</Id>
+							<Name>Localization</Name>
+							<KnowledgeAreaId>1</KnowledgeAreaId>
+							<Question>
+								<Question>
+									<Id>56</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>8</AreaId>
+									<Level>1</Level>
+									<Value>What is needed in a visual studio solution to support more than one speaking language (English and Spanish for example) when displaying text to end users?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>57</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>8</AreaId>
+									<Level>1</Level>
+									<Value>How do you handle dates so they display properly in different speaking languages (British and American English for example)?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+							</Question>
+						</Area>
+					</Area>
+					<PlatformId>1</PlatformId>
+				</KnowledgeArea>
+				<KnowledgeArea>
+					<Id>2</Id>
+					<Name>C# knowledge</Name>
+					<Area>
+						<Area>
+							<Id>9</Id>
+							<Name>Variable declarations</Name>
+							<KnowledgeAreaId>2</KnowledgeAreaId>
+							<Question>
+								<Question>
+									<Id>58</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>9</AreaId>
+									<Level>1</Level>
+									<Value>What is the use of the var keyword in C#?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+								<Question>
+									<Id>59</Id>
+									<Name i:nil="true" />
+									<AlreadyAnswered>false</AlreadyAnswered>
+									<AreaId>9</AreaId>
+									<Level>1</Level>
+									<Value>Can you give me one reason you may declare a variable using var instead of specifying the type?</Value>
+									<Weight>1</Weight>
+									<rating>0</rating>
+								</Question>
+							</Question>
+						</Area>
+						<...</Question>
+							<Question>
+								<Id>188</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>33</AreaId>
+								<Level>1</Level>
+								<Value>What is the JSON and Xml serialization?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>189</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>33</AreaId>
+								<Level>1</Level>
+								<Value>Speaking of security, what’s the difference between Authentication and Authorization?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>190</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>33</AreaId>
+								<Level>1</Level>
+								<Value>In a web project, can I implement custom Authentication and Authorization? </Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>191</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>33</AreaId>
+								<Level>1</Level>
+								<Value>If speed is critical for your web project, would you use Web API or WCF?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>192</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>33</AreaId>
+								<Level>1</Level>
+								<Value>If security is critical for your web project, would you use Web API or WCF?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+						</Question>
+					</Area>
+					<Area>
+						<Id>34</Id>
+						<Name>MVC Development</Name>
+						<KnowledgeAreaId>6</KnowledgeAreaId>
+						<Question>
+							<Question>
+								<Id>193</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>34</AreaId>
+								<Level>1</Level>
+								<Value>What is a MVC controller?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>194</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>34</AreaId>
+								<Level>1</Level>
+								<Value>What is a MVC view?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>195</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>34</AreaId>
+								<Level>1</Level>
+								<Value>What is a POCO class?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+						</Question>
+					</Area>
+					<Area>
+						<Id>35</Id>
+						<Name>WCF</Name>
+						<KnowledgeAreaId>6</KnowledgeAreaId>
+						<Question>
+							<Question>
+								<Id>196</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>35</AreaId>
+								<Level>1</Level>
+								<Value>What is a WSDL definition of a WCF project?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>197</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>35</AreaId>
+								<Level>1</Level>
+								<Value>In what format messages are serialized in WCF?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>198</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>35</AreaId>
+								<Level>1</Level>
+								<Value>Commonly in what part of a Soap message do you send security credentials?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+						</Question>
+					</Area>
+					<Area>
+						<Id>36</Id>
+						<Name>HTML 5</Name>
+						<KnowledgeAreaId>6</KnowledgeAreaId>
+						<Question>
+							<Question>
+								<Id>199</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>36</AreaId>
+								<Level>1</Level>
+								<Value>What are the principal tags available in HTML 5?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>200</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>36</AreaId>
+								<Level>1</Level>
+								<Value>What does SVG is in HTML 5?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>201</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>36</AreaId>
+								<Level>1</Level>
+								<Value>What is a SPA application?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>202</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>36</AreaId>
+								<Level>1</Level>
+								<Value>What is a Responsive application?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+						</Question>
+					</Area>
+					<Area>
+						<Id>37</Id>
+						<Name>AngularJS</Name>
+						<KnowledgeAreaId>6</KnowledgeAreaId>
+						<Question>
+							<Question>
+								<Id>203</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>37</AreaId>
+								<Level>1</Level>
+								<Value>What is a $scope object in angular?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>204</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>37</AreaId>
+								<Level>1</Level>
+								<Value>What do you need to apply to your html page to support angular?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>205</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>37</AreaId>
+								<Level>1</Level>
+								<Value>What is an angular module?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>206</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>37</AreaId>
+								<Level>1</Level>
+								<Value>What is an angular controller?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+						</Question>
+					</Area>
+				</Area>
+				<PlatformId>3</PlatformId>
+			</KnowledgeArea>
+		</KnowledgeArea>
+		<Profile />
+	</Platform>
+	<Platform>
+		<Id>4</Id>
+		<Name>Database Development</Name>
+		<KnowledgeArea>
+			<KnowledgeArea>
+				<Id>7</Id>
+				<Name>SQL Development</Name>
+				<Area>
+					<Area>
+						<Id>38</Id>
+						<Name>Concepts</Name>
+						<KnowledgeAreaId>7</KnowledgeAreaId>
+						<Question>
+							<Question>
+								<Id>207</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What is the Normalization Term in SQL?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>208</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>Should you always have normalized schemas or may not apply in all circumstances?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>209</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What are the common CRUD SQL operation statements?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>210</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What is a Primary Key?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>211</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What is an Index?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>212</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What is the difference between a Primary Key and an Index?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>213</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What is a SQL constraint?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>214</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What’s the reason you may set the unique constraint on a table column?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>215</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What are the primary types for columns in a data table?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>216</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What is a View?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>217</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What is a Trigger and when is executed?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>218</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What is the difference between a SQL function and a store procedure?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>219</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What is a SQL transacted operation and its common statements?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>220</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>When you should run SQL operations using transaction statements?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>221</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>When matching tables, what are the most common types of joins you can apply?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>222</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>When you create a database oriented project, what stack or performant framework should you use?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>223</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>38</AreaId>
+								<Level>1</Level>
+								<Value>What is the recommended way to save/retrieve data, using SQL queries or call store procedures?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+						</Question>
+					</Area>
+				</Area>
+				<PlatformId>4</PlatformId>
+			</KnowledgeArea>
+		</KnowledgeArea>
+		<Profile />
+	</Platform>
+	<Platform>
+		<Id>5</Id>
+		<Name>Algorithms Solution</Name>
+		<KnowledgeArea>
+			<KnowledgeArea>
+				<Id>8</Id>
+				<Name>Basic Algorithms</Name>
+				<Area>
+					<Area>
+						<Id>39</Id>
+						<Name>Array declarations</Name>
+						<KnowledgeAreaId>8</KnowledgeAreaId>
+						<Question>
+							<Question>
+								<Id>224</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>39</AreaId>
+								<Level>1</Level>
+								<Value>How you define an array of integers?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>225</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>39</AreaId>
+								<Level>1</Level>
+								<Value>How you make sure you initialize an array of integers before being used?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>226</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>39</AreaId>
+								<Level>1</Level>
+								<Value>If you define a List&lt;string&gt;, what returns the ToArray() method of that list?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>227</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>39</AreaId>
+								<Level>1</Level>
+								<Value>If you define a string[], what returns the ToList() method of that instance?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+						</Question>
+					</Area>
+					<Area>
+						<Id>40</Id>
+						<Name>Word/char counting</Name>
+						<KnowledgeAreaId>8</KnowledgeAreaId>
+						<Question>
+							<Question>
+								<Id>228</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>40</AreaId>
+								<Level>1</Level>
+								<Value>Please describe the steps you must do to count the words on a text file?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>229</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>40</AreaId>
+								<Level>1</Level>
+								<Value>What else should I do to also fill a dictionary of letters and its incidences?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+						</Question>
+					</Area>
+					<Area>
+						<Id>41</Id>
+						<Name>String splitting</Name>
+						<KnowledgeAreaId>8</KnowledgeAreaId>
+						<Question>
+							<Question>
+								<Id>230</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>41</AreaId>
+								<Level>1</Level>
+								<Value>What is the standard method to split a string?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>231</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>41</AreaId>
+								<Level>1</Level>
+								<Value>What do I need to do to avoid retrieving empty strings when splitting a string?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>232</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>41</AreaId>
+								<Level>1</Level>
+								<Value>When splitting a string, can I split the string using some specific string or some specific char?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+						</Question>
+					</Area>
+					<Area>
+						<Id>42</Id>
+						<Name>Word reversing</Name>
+						<KnowledgeAreaId>8</KnowledgeAreaId>
+						<Question>
+							<Question>
+								<Id>233</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>42</AreaId>
+								<Level>1</Level>
+								<Value>Please describe the steps you must do to reverse a string?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>234</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>42</AreaId>
+								<Level>1</Level>
+								<Value>Please describe the steps you must do to sort a split string by its words length?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+						</Question>
+					</Area>
+				</Area>
+				<PlatformId>5</PlatformId>
+			</KnowledgeArea>
+		</KnowledgeArea>
+		<Profile />
+	</Platform>
+	<Platform>
+		<Id>6</Id>
+		<Name>Testing</Name>
+		<KnowledgeArea>
+			<KnowledgeArea>
+				<Id>9</Id>
+				<Name>Unit Testing</Name>
+				<Area>
+					<Area>
+						<Id>43</Id>
+						<Name>Concepts and Frameworks</Name>
+						<KnowledgeAreaId>9</KnowledgeAreaId>
+						<Question>
+							<Question>
+								<Id>235</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>43</AreaId>
+								<Level>1</Level>
+								<Value>What is the difference between Unit Test and Integration Test?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>236</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>43</AreaId>
+								<Level>1</Level>
+								<Value>What is TDD?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>237</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>43</AreaId>
+								<Level>1</Level>
+								<Value>How do you ensure you code is friendlier to unit testing?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>238</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>43</AreaId>
+								<Level>1</Level>
+								<Value>What attribute you need to set to mark a class as a test class?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>239</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>43</AreaId>
+								<Level>1</Level>
+								<Value>What is the purpose of using the Setup attribute on a test class method?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>240</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>43</AreaId>
+								<Level>1</Level>
+								<Value>How do you tell the testing framework you want to ignore this test class method to be ignored when running all tests?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>241</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>43</AreaId>
+								<Level>1</Level>
+								<Value>What is an assertion?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>242</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>43</AreaId>
+								<Level>1</Level>
+								<Value>What are the common methods of the Assert class (or equivalent)?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>243</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>43</AreaId>
+								<Level>1</Level>
+								<Value>What is a Fake class?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>244</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>43</AreaId>
+								<Level>1</Level>
+								<Value>Does help using interfaces in your code the unit testing process?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+							<Question>
+								<Id>245</Id>
+								<Name i:nil="true" />
+								<AlreadyAnswered>false</AlreadyAnswered>
+								<AreaId>43</AreaId>
+								<Level>1</Level>
+								<Value>What testing frameworks have you used?</Value>
+								<Weight>1</Weight>
+								<rating>0</rating>
+							</Question>
+						</Question>
+					</Area>
+				</Area>
+				<PlatformId>6</PlatformId>
+			</KnowledgeArea>
+		</KnowledgeArea>
+		<Profile />
+	</Platform>
+	<Platform>
+		<Id>7</Id>
+		<Name>Agile</Name>
+		<KnowledgeArea>
+			<KnowledgeArea>
+				<Id>10</Id>
+				<Name>Agile Development</Name>
+				<Area>
+					<Area>
+						<Id>44</Id>
+						<Name>What agile development frameworks have you used in your career?</Name>
+						<KnowledgeAreaId>10</KnowledgeAreaId>
+						<Question />
+					</Area>
+					<Area>
+						<Id>45</Id>
+						<Name>What is the Scrum agile framework?</Name>
+						<KnowledgeAreaId>10</KnowledgeAreaId>
+						<Question />
+					</Area>
+					<Area>
+						<Id>46</Id>
+						<Name>What is the Scrum master?</Name>
+						<KnowledgeAreaId>10</KnowledgeAreaId>
+						<Question />
+					</Area>
+					<Area>
+						<Id>47</Id>
+						<Name>What is the Backlog?</Name>
+						<KnowledgeAreaId>10</KnowledgeAreaId>
+						<Question />
+					</Area>
+					<Area>
+						<Id>48</Id>
+						<Name>What is a Sprint and its common length in days?</Name>
+						<KnowledgeAreaId>10</KnowledgeAreaId>
+						<Question />
+					</Area>
+					<Area>
+						<Id>49</Id>
+						<Name>What is a feature in Scrum?</Name>
+						<KnowledgeAreaId>10</KnowledgeAreaId>
+						<Question />
+					</Area>
+				</Area>
+				<PlatformId>7</PlatformId>
+			</KnowledgeArea>
+		</KnowledgeArea>
+		<Profile />
+	</Platform>
+</Platform>
+<Profile />
+</configuration>
