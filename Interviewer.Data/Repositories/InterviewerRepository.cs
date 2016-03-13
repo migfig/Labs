@@ -135,12 +135,14 @@ namespace Interviewer.Data.Repositories
                 {
                     case QueryType.Add:
                         return new {
-                            Name = objItem.Name
+                            Name = objItem.Name,
+                            Description = objItem.Description
                         };
                     case QueryType.Update:
                         return new {
                             Id = objItem.Id,
-                            Name = objItem.Name
+                            Name = objItem.Name,
+                            Description = objItem.Description
                         };
                     case QueryType.Delete:
                         return new {
@@ -156,12 +158,14 @@ namespace Interviewer.Data.Repositories
                     case QueryType.Add:
                         return new {
                             PlatformId = objItem.PlatformId,
-                            Name = objItem.Name
+                            Name = objItem.Name,
+                            Description = objItem.Description
                         };                      
                     case QueryType.Update:
                         return new {
                             Id = objItem.Id,
-                            Name = objItem.Name
+                            Name = objItem.Name,
+                            Description = objItem.Description
                         };
                     case QueryType.Delete:
                         return new {
@@ -177,12 +181,14 @@ namespace Interviewer.Data.Repositories
                     case QueryType.Add:
                         return new {
                             KnowledgeAreaId = objItem.KnowledgeAreaId,
-                            Name = objItem.Name
+                            Name = objItem.Name,
+                            Description = objItem.Description
                         };                        
                     case QueryType.Update:
                         return new {
                             Id = objItem.Id,
-                            Name = objItem.Name
+                            Name = objItem.Name,
+                            Description = objItem.Description
                         };
                     case QueryType.Delete:
                         return new {

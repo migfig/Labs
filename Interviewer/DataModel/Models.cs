@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using System.Runtime.Serialization.Json;
 using System.IO;
+using Windows.ApplicationModel;
+using Interviewer.Services;
 
 namespace Interviewer.Data
 {    
@@ -77,16 +79,27 @@ namespace Interviewer.Data
                     return;
             }
 
-            Uri dataUri = new Uri("ms-appx:///DataModel/interviewer.json");
-
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
-            string jsonText = await FileIO.ReadTextAsync(file);
-
-            var ser = new DataContractJsonSerializer(typeof(configuration));
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(jsonText));
-            lock(_lock)
+            if (DesignMode.DesignModeEnabled)
             {
-                _configuration = (configuration)ser.ReadObject(stream);
+
+                Uri dataUri = new Uri("ms-appx:///DataModel/interviewer.json");
+
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
+                string jsonText = await FileIO.ReadTextAsync(file);
+
+                var ser = new DataContractJsonSerializer(typeof(configuration));
+                var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(jsonText));
+                lock (_lock)
+                {
+                    _configuration = (configuration)ser.ReadObject(stream);
+                }
+            }
+            else
+            {
+                using(var client = ApiServiceFactory.CreateService())
+                {
+                    _configuration = await client.GetConfiguration();
+                }
             }
         }
     }

@@ -187,5 +187,10 @@ namespace Interviewer
                 eventHandler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        private void interviewButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(InterviewPage));
+        }
     }
 }

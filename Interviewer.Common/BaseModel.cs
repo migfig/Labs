@@ -8,6 +8,7 @@ namespace Interviewer.Common
 	{
         private int idField;
         private string nameField;
+        private string descriptionField;
 
         [XmlAttribute]
         public int Id
@@ -32,6 +33,19 @@ namespace Interviewer.Common
             set
             {
                 this.nameField = value;
+            }
+        }
+
+        [XmlAttribute]
+        public string Description
+        {
+            get
+            {
+                return this.descriptionField;
+            }
+            set
+            {
+                this.descriptionField = value;
             }
         }
 

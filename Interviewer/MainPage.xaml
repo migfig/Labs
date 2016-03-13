@@ -13,19 +13,17 @@
 
   <Page.BottomAppBar>
     <CommandBar x:Name="bottomAppBar" Visibility="Collapsed" IsOpen="False" ClosedDisplayMode="Compact" IsSticky="False">
-      <AppBarButton x:Name="searchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
+       <AppBarButton x:Name="searchButton" Label="Search" Icon="Find" Click="SearchButton_Click" />
     </CommandBar>
   </Page.BottomAppBar>
 
   <Page.Resources>
-
     <SolidColorBrush x:Key="SectionBackground1" Color="Gray"/>
 
     <DataTemplate x:Key="ControlCategoryTemplate" x:DataType="data:Platform">
-      <Grid Height="175" Width="310" Margin="10,5,10,0">
+      <Grid Height="115" Width="310" Margin="10,5,10,0">
         <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>          
         </Grid.RowDefinitions>
         <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="110">
           <StackPanel Orientation="Horizontal">
@@ -36,7 +34,6 @@
             </StackPanel>
           </StackPanel>
         </Border>
-        <TextBlock Text="{x:Bind Description}" Style="{StaticResource BodyTextBlockStyle}" Margin="0,4,0,0" MaxHeight="60" Grid.Row="1" />
       </Grid>
     </DataTemplate>    
   </Page.Resources>
@@ -48,6 +45,12 @@
         <EntranceThemeTransition/>
       </TransitionCollection>
     </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+      
     <Hub SectionHeaderClick="Hub_SectionHeaderClick" HorizontalContentAlignment="Stretch">
       <Hub.Header>
         <!-- Back button and page title -->
@@ -106,6 +109,10 @@
         </DataTemplate>
       </HubSection>
     </Hub>
+
+    <CommandBar Grid.Row="1" x:Name="bottomCommandBar" x:FieldModifier="Protected" IsOpen="False" ClosedDisplayMode="Minimal" IsSticky="True">
+       <AppBarButton x:Name="interviewButton" Label="Interview" Icon="AddFriend" Click="interviewButton_Click" />
+    </CommandBar>
 
     <VisualStateManager.VisualStateGroups>
       <!-- Visual states reflect the application's window size -->

@@ -8,6 +8,7 @@
 //
 //*********************************************************
 using AppUIBasics.Common;
+using Interviewer;
 using Interviewer.Data;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-
 // The Section Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234229
 
 namespace AppUIBasics
@@ -35,11 +35,11 @@ namespace AppUIBasics
     /// A page that displays an overview of a single group, including a preview of the items
     /// within the group.
     /// </summary>
-    public sealed partial class SectionPage : Page
+    public sealed partial class InterviewPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        Interviewer.Data.Platform platform;
+        Interviewer.Data.configuration configuration;
 
         /// <summary>
         /// NavigationHelper is used on each page to aid in navigation and 
@@ -58,20 +58,19 @@ namespace AppUIBasics
             get { return this.defaultViewModel; }
         }
 
-        public Interviewer.Data.Platform Platform
+        public Interviewer.Data.configuration Configuration
         {
-            get { return platform; }
-            set { platform = value; }
+            get { return configuration; }
+            set { configuration = value; }
         }
 
 
-        public SectionPage()
+        public InterviewPage()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
             //controlsSearchBox.SuggestionsRequested += SearchResultsPage.SearchBox_SuggestionsRequested;
-
         }
 
         //private async void controlsSearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -112,28 +111,15 @@ namespace AppUIBasics
         /// session.  The state will be null the first time a page is visited.</param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var platform = await InterviewerDataSource.GetPlatform((int)e.NavigationParameter);
-            Platform = platform;
-        }
-
-        /// <summary>
-        /// Invoked when an item is clicked.
-        /// </summary>
-        /// <param name="sender">The GridView displaying the item clicked.</param>
-        /// <param name="e">Event data that describes the item clicked.</param>
-        void ItemView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            // Navigate to the appropriate destination page, configuring the new page
-            // by passing required information as a navigation parameter
-            var itemId = ((KnowledgeArea)e.ClickedItem).Id;
-            this.Frame.Navigate(typeof(ItemPage), itemId);
-        }
+            var config = await InterviewerDataSource.GetConfiguration();
+            Configuration = config;
+            MainViewModel.ViewModel.SelectedConfiguration = config;
+            this.DataContext = MainViewModel.ViewModel;
+        }        
 
         private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
         {
-
             //this.Frame.Navigate(typeof(SearchResultsPage), args.QueryText);
-
         }
 
         #region NavigationHelper registration
