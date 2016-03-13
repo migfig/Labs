@@ -458,7 +458,50 @@ namespace Interviewer
 			}
 		}
 
-		public int QuestionsCount
+        #region get items
+
+        public async Task<Platform> GetPlatform(int id)
+        {
+            return (await _viewModel.LoadConfiguration())
+                .Platform.FirstOrDefault(x => x.Id == id);
+        }
+
+        public async Task<Profile> GetProfile(int id)
+        {
+            return (await _viewModel.LoadConfiguration())
+                .Profile.FirstOrDefault(x => x.Id == id);
+        }
+
+        public async Task<KnowledgeArea> GetKnowledgeArea(int id)
+        {
+            return (from p in (await _viewModel.LoadConfiguration()).Platform
+                    from ka in p.KnowledgeArea
+                    where ka.Id == id
+                    select ka).FirstOrDefault();
+        }
+
+        public async Task<Area> GetArea(int id)
+        {
+            return (from p in (await _viewModel.LoadConfiguration()).Platform
+                    from ka in p.KnowledgeArea
+                    from a in ka.Area
+                    where a.Id == id
+                    select a).FirstOrDefault();
+        }
+
+        public async Task<Question> GetQuestion(int id)
+        {
+            return (from p in (await _viewModel.LoadConfiguration()).Platform
+                    from ka in p.KnowledgeArea
+                    from a in ka.Area
+                    from q in a.Question
+                    where q.Id == id
+                    select q).FirstOrDefault();
+        }
+
+        #endregion
+
+        public int QuestionsCount
 		{
 			get
 			{
@@ -542,14 +585,37 @@ namespace Interviewer
             }
         }
 
+        private RelayCommand _addPlatform;
+        public RelayCommand AddPlatform
+        {
+            get
+            {
+                return _addPlatform ?? (_addPlatform = new RelayCommand(
+                    (object p) => {
+                        MainViewModel.ViewModel.SelectedConfiguration.Platform
+                            .Add(new Platform
+                            {
+                                Id = 0,
+                                Name = "Undefined",
+                                KnowledgeArea = new ObservableCollection<KnowledgeArea>(),
+                                Profile = new ObservableCollection<Profile>(),
+                                IsDirty = true
+                            });
+                    },
+                    (object p) => MainViewModel.ViewModel.SelectedConfiguration != null
+                    ));
+            }
+        }
+
         private RelayCommand _addKnowdlegeArea;
         public RelayCommand AddKnowledgeArea
         {
             get
             {
                 return _addKnowdlegeArea ?? (_addKnowdlegeArea = new RelayCommand(
-                    () => {
-                        MainViewModel.ViewModel.SelectedPlatform.KnowledgeArea
+                    (object p) => {
+                        MainViewModel.ViewModel.Platforms.First(x => x.Id == (int)p)
+                            .KnowledgeArea
                             .Add(new KnowledgeArea {
                                 PlatformId = MainViewModel.ViewModel.SelectedPlatform.Id,
                                 Id = 0,
@@ -558,7 +624,7 @@ namespace Interviewer
                                 IsDirty = true                       
                             });
                     },
-                    () => MainViewModel.ViewModel.SelectedPlatform != null
+                    (object p) => MainViewModel.ViewModel.Platforms.Any(x => x.Id == (int)p)
                     ));
             }
         }
@@ -569,8 +635,12 @@ namespace Interviewer
             get
             {
                 return _addArea ?? (_addArea = new RelayCommand(
-                    () => {
-                        MainViewModel.ViewModel.SelectedKnowledgeArea.Area
+                    (object p) =>  {
+                        (from pf in MainViewModel.ViewModel.Platforms
+                         from ka in pf.KnowledgeArea
+                         where ka.Id == (int)p
+                         select ka)
+                            .First().Area
                             .Add(new Area
                             {
                                 KnowledgeAreaId = MainViewModel.ViewModel.SelectedKnowledgeArea.Id,
@@ -580,7 +650,7 @@ namespace Interviewer
                                 IsDirty = true
                             });
                     },
-                    () => MainViewModel.ViewModel.SelectedKnowledgeArea != null
+                    (object p) => (int)p > 0
                     ));
             }
         }
@@ -591,8 +661,13 @@ namespace Interviewer
             get
             {
                 return _addQuestion ?? (_addQuestion = new RelayCommand(
-                    () => {
-                        MainViewModel.ViewModel.SelectedArea.Question
+                    (object p) => {
+                        (from pf in MainViewModel.ViewModel.Platforms
+                         from ka in pf.KnowledgeArea
+                         from a in ka.Area
+                         where a.Id == (int)p
+                         select a)
+                            .First().Question
                             .Add(new Question
                             {
                                 AreaId = MainViewModel.ViewModel.SelectedArea.Id,
@@ -604,7 +679,7 @@ namespace Interviewer
                                 IsDirty = true
                             });
                     },
-                    () => MainViewModel.ViewModel.SelectedArea != null
+                    (object p) => (int)p > 0
                     ));
             }
         }
@@ -630,10 +705,10 @@ namespace Interviewer
             get
             {
                 return _editingPlatformProps ?? (_editingPlatformProps = new RelayCommand(
-                    () => {
+                    (object p) => {
                         MainViewModel.ViewModel.IsEditingPlatformProps = !MainViewModel.ViewModel.IsEditingPlatformProps;
                     },
-                    () => MainViewModel.ViewModel.SelectedPlatform != null
+                    (object p) => MainViewModel.ViewModel.SelectedPlatform != null
                     ));
             }
         }
@@ -660,10 +735,10 @@ namespace Interviewer
             get
             {
                 return _editingKnowledgeAreaProps ?? (_editingKnowledgeAreaProps = new RelayCommand(
-                    () => {
+                    (object p) => {
                         MainViewModel.ViewModel.IsEditingKnowledgeAreaProps= !MainViewModel.ViewModel.IsEditingKnowledgeAreaProps;
                     },
-                    () => MainViewModel.ViewModel.SelectedKnowledgeArea != null
+                    (object p) => MainViewModel.ViewModel.SelectedKnowledgeArea != null
                     ));
             }
         }
@@ -690,10 +765,10 @@ namespace Interviewer
             get
             {
                 return _editingAreaProps ?? (_editingAreaProps = new RelayCommand(
-                    () => {
+                    (object p) => {
                         MainViewModel.ViewModel.IsEditingAreaProps = !MainViewModel.ViewModel.IsEditingAreaProps;
                     },
-                    () => MainViewModel.ViewModel.SelectedArea != null
+                    (object p) => MainViewModel.ViewModel.SelectedArea != null
                     ));
             }
         }
@@ -720,10 +795,10 @@ namespace Interviewer
             get
             {
                 return _editingQuestionProps ?? (_editingQuestionProps = new RelayCommand(
-                    () => {
+                    (object p) => {
                         MainViewModel.ViewModel.IsEditingQuestionProps = !MainViewModel.ViewModel.IsEditingQuestionProps;
                     },
-                    () => MainViewModel.ViewModel.SelectedQuestion != null
+                    (object p) => MainViewModel.ViewModel.SelectedQuestion != null
                     ));
             }
         }

@@ -64,7 +64,8 @@ namespace AppUIBasics
 
         private async void LoadPlatforms()
         {
-            var config = await InterviewerDataSource.GetConfiguration();
+            //var config = await InterviewerDataSource.GetConfiguration();
+            var config = await MainViewModel.ViewModel.LoadConfiguration();
             _platforms = config.Platform;
             if (PlatformsLoaded != null)
                 PlatformsLoaded(this, new EventArgs());

@@ -36,11 +36,11 @@ namespace AppUIBasics
     /// A page that displays an overview of a single group, including a preview of the items
     /// within the group.
     /// </summary>
-    public sealed partial class SectionPage : Page
+    public sealed partial class SectionItemsPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        Interviewer.Data.Platform platform;
+        Interviewer.Data.KnowledgeArea knowledgeArea;
 
         /// <summary>
         /// NavigationHelper is used on each page to aid in navigation and 
@@ -59,14 +59,14 @@ namespace AppUIBasics
             get { return this.defaultViewModel; }
         }
 
-        public Interviewer.Data.Platform Platform
+        public Interviewer.Data.KnowledgeArea KnowledgeArea
         {
-            get { return platform; }
-            set { platform = value; }
+            get { return knowledgeArea; }
+            set { knowledgeArea = value; }
         }
 
 
-        public SectionPage()
+        public SectionItemsPage()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -113,8 +113,8 @@ namespace AppUIBasics
         /// session.  The state will be null the first time a page is visited.</param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var platform = await MainViewModel.ViewModel.GetPlatform((int)e.NavigationParameter);
-            Platform = platform;
+            var knowledgeArea = await MainViewModel.ViewModel.GetKnowledgeArea((int)e.NavigationParameter);
+            KnowledgeArea = knowledgeArea;
         }
 
         /// <summary>
@@ -126,8 +126,8 @@ namespace AppUIBasics
         {
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
-            var itemId = ((KnowledgeArea)e.ClickedItem).Id;
-            this.Frame.Navigate(typeof(SectionItemsPage), itemId);
+            var itemId = ((Area)e.ClickedItem).Id;
+            this.Frame.Navigate(typeof(ItemPage), itemId);
         }
 
         private void SearchBox_QuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
@@ -162,10 +162,15 @@ namespace AppUIBasics
 
         private void addItemButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MainViewModel.ViewModel.AddKnowledgeArea.CanExecute(Platform.Id))
+            if (MainViewModel.ViewModel.AddArea.CanExecute(KnowledgeArea.Id))
             {
-                MainViewModel.ViewModel.AddKnowledgeArea.Execute(Platform.Id);
+                MainViewModel.ViewModel.AddArea.Execute(KnowledgeArea.Id);
             }
+        }
+
+        private void editItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(EditPropertiesPage), KnowledgeArea);
         }
     }
 }

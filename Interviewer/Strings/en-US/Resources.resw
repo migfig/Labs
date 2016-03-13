@@ -160,4 +160,16 @@
     <value>From any control page, open the help panel from the bottom app bar to see custom help content for that control.</value>
     <comment>Default content for the about settings flyout. Shown when data context is null.</comment>
   </data>
+  <data name="RowTags" xml:space="preserve">
+    <value>&lt;tr&gt;&lt;td&gt;{0}&lt;/td&gt;&lt;td&gt;{1}&lt;/td&gt;&lt;/tr&gt;</value>
+  </data>
+  <data name="TableCloseTags" xml:space="preserve">
+    <value>&lt;/tbody&gt;&lt;/table&gt;</value>
+  </data>
+  <data name="TableOpenTags" xml:space="preserve">
+    <value>&lt;table&gt;&lt;thead&gt;&lt;th&gt;&lt;td&gt;Question&lt;/td&gt;&lt;td&gt;Answer&lt;/td&gt;&lt;/th&gt;&lt;/thead&gt;&lt;tbody&gt;</value>
+  </data>
+  <data name="PropHeader.Text" xml:space="preserve">
+    <value>Properties</value>
+  </data>
 </root>

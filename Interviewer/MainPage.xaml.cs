@@ -192,5 +192,22 @@ namespace Interviewer
         {
             this.Frame.Navigate(typeof(InterviewPage));
         }
+
+        private void addItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(MainViewModel.ViewModel.AddPlatform.CanExecute(null))
+            {
+                MainViewModel.ViewModel.AddPlatform.Execute(null);
+            }
+        }
+
+        //private void Element_Tapped(object sender, TappedRoutedEventArgs e)
+        //{
+        //    FrameworkElement element = sender as FrameworkElement;
+        //    if (element != null)
+        //    {
+        //        FlyoutBase.ShowAttachedFlyout(element);
+        //    }
+        //}
     }
 }

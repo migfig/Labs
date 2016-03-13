@@ -11,7 +11,7 @@
 -->
 <Page
     x:Name="pageRoot"
-    x:Class="AppUIBasics.ItemPage"
+    x:Class="AppUIBasics.EditPropertiesPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AppUIBasics"
@@ -27,7 +27,7 @@
         * Row 1 contains the rest of the page layout
     -->
     <Grid Background="{ThemeResource ControlPageBackgroundBrush}"
-        d:DataContext="{Binding Platform[0].KnowledgeArea[0], Source={d:DesignData Source=/DataModel/interviewer.json, Type=data:InterviewerDataSource}}">
+        d:DataContext="{Binding Platform[0], Source={d:DesignData Source=/DataModel/interviewer.json, Type=data:InterviewerDataSource}}">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -50,29 +50,23 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{x:Bind Item.Name}" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,20,20"/>
 
                 <StackPanel x:Name="seeAlsoPanel" Grid.Row="1">
-                    <TextBlock x:Uid="DocHeader" />
-                    <ItemsControl ItemsSource="{x:Bind Item.Question}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <local:WrapPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
+                    <TextBlock x:Uid="PropHeader" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,8" />
+                    <ItemsControl ItemsSource="{x:Bind Item.Properties}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="data:Question">
-                                <StackPanel Orientation="Horizontal">
-                                    <HyperlinkButton Content="{x:Bind Value}" Margin="0" />
-                                    <Image Source="Assets/dirty.png" Width="24" Height="24"
+                            <DataTemplate x:DataType="data:KeyValue">
+                                    <TextBox Header="{x:Bind Key, Mode=TwoWay}" 
+                                             Text="{x:Bind Value, Mode=TwoWay}"
+                                             PlaceholderText="Enter a propery value"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Image Source="Assets/dirty.png" Width="24" Height="24"
                                         Margin="4,0,12,0"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Visibility="{Binding DirtyVisibility}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>                   
                 </StackPanel>
 
                 <Frame x:Name="contentFrame" Background="{ThemeResource ControlPageBackgroundBrush}"  Grid.Row="2" Margin="0,0,0,12"/>
@@ -87,7 +81,6 @@
                 </AppBarToggleButton.Icon>
             </AppBarToggleButton>
             <AppBarSeparator/>
-            <AppBarButton x:Name="addItemButton" Label="Question" Icon="Add" Click="addItemButton_Click" />
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Help" Icon="Help" Click="HelpButton_Click"/>
             </CommandBar.SecondaryCommands>

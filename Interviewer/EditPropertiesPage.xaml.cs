@@ -27,10 +27,10 @@ namespace AppUIBasics
     /// <summary>
     /// A page that displays details for a single item within a group.
     /// </summary>
-    public partial class ItemPage : Page
+    public partial class EditPropertiesPage : Page
     {
         private NavigationHelper navigationHelper;
-        private Area item;
+        private BaseModel item;
 
         /// <summary>
         /// NavigationHelper is used on each page to aid in navigation and 
@@ -41,7 +41,7 @@ namespace AppUIBasics
             get { return this.navigationHelper; }
         }
 
-        public Area Item
+        public BaseModel Item
         {
             get { return item; }
             set { item = value; }
@@ -52,7 +52,7 @@ namespace AppUIBasics
             get { return bottomCommandBar; }
         }
 
-        public ItemPage()
+        public EditPropertiesPage()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -70,9 +70,18 @@ namespace AppUIBasics
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var item = await MainViewModel.ViewModel.GetArea((int)e.NavigationParameter);
+            var item = e.NavigationParameter as BaseModel;
+
+            //if (item is Interviewer.Data.Platform)
+            //    item = await MainViewModel.ViewModel.GetPlatform(item.Id);
+            //else if(item is KnowledgeArea)
+            //    item = await MainViewModel.ViewModel.GetKnowledgeArea(item.Id);
+            //else if (item is Area)
+            //    item = await MainViewModel.ViewModel.GetArea(item.Id);
+            //if (item is Question)
+            //    item = await MainViewModel.ViewModel.GetQuestion(item.Id);
 
             if (item != null)
             {
@@ -125,32 +134,16 @@ namespace AppUIBasics
             ShowHelp();
             bottomCommandBar.IsOpen = false;
         }
-
-        protected void RelatedControl_Click(object sender, RoutedEventArgs e)
-        {
-            ButtonBase b = (ButtonBase)sender;
-
-            NavigationRootPage.RootFrame.Navigate(typeof(ItemPage), b.Content.ToString());
-        }
-
+        
         private void ShowHelp()
         {
             var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
 
             string HTMLOpenTags = loader.GetString("HTMLOpenTags");
             string HTMLCloseTags = loader.GetString("HTMLCloseTags");
-            string TableOpenTags = loader.GetString("TableOpenTags");
-            string TableCloseTags = loader.GetString("TableCloseTags");
-
-            string RowTags = loader.GetString("RowTags");
-            var rows = new StringBuilder();
-            Item.Question.ToList()
-                .ForEach(q => rows.AppendFormat(RowTags, q.Value, q.Answer));
-
+            
             contentWebView.NavigateToString(HTMLOpenTags 
-                + TableOpenTags
-                + rows.ToString()
-                + TableCloseTags
+                + Item.ImagePath
                 + HTMLCloseTags);
 
             if (!helpPopup.IsOpen)
@@ -190,14 +183,6 @@ namespace AppUIBasics
             navigationHelper.OnNavigatedFrom(e);
         }
 
-        #endregion
-
-        private void addItemButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainViewModel.ViewModel.AddQuestion.CanExecute(Item.Id))
-            {
-                MainViewModel.ViewModel.AddQuestion.Execute(Item.Id);
-            }
-        }
+        #endregion        
     }
 }

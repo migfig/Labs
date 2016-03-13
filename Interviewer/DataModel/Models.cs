@@ -124,35 +124,7 @@ namespace Interviewer.Data
     {
         public ObservableCollection<KnowledgeArea> KnowledgeArea { get; set; }
         public ObservableCollection<Profile> Profile { get; set; }
-        public int Id { get; set; }
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                IsDirty = !string.IsNullOrEmpty(_name) && _name != value;
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        private string _description;
-        public string Description
-        {
-            get { return _description; }
-            set
-            {
-                IsDirty = !string.IsNullOrEmpty(_description) && _description != value;
-                if (_description != value)
-                {
-                    _description = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+
         public Platform()
         {
             KnowledgeArea = new ObservableCollection<Data.KnowledgeArea>();
@@ -168,35 +140,6 @@ namespace Interviewer.Data
     {
         public ObservableCollection<Area> Area { get; set; }
         public int PlatformId { get; set; }
-        public int Id { get; set; }
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                IsDirty = !string.IsNullOrEmpty(_name) && _name != value;
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        private string _description;
-        public string Description
-        {
-            get { return _description; }
-            set
-            {
-                IsDirty = !string.IsNullOrEmpty(_description) && _description != value;
-                if (_description != value)
-                {
-                    _description = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
         public KnowledgeArea()
         {
             Area = new ObservableCollection<Data.Area>();
@@ -216,35 +159,6 @@ namespace Interviewer.Data
     {
         public ObservableCollection<Question> Question { get; set; }
         public int KnowledgeAreaId { get; set; }
-        public int Id { get; set; }
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                IsDirty = !string.IsNullOrEmpty(_name) && _name != value;
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        private string _description;
-        public string Description
-        {
-            get { return _description; }
-            set
-            {
-                IsDirty = !string.IsNullOrEmpty(_description) && _description != value;
-                if (_description != value)
-                {
-                    _description = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
         public Area()
         {
             Question = new ObservableCollection<Data.Question>();
@@ -275,10 +189,9 @@ namespace Interviewer.Data
                 }
             }
         }
+        public string Answer { get; set; }
         public bool AlreadyAnswered { get; set; }
         public int rating { get; set; }
-        public int Id { get; set; }
-        public string Name { get; set; }
         public override bool IsValid()
         {
             return !string.IsNullOrWhiteSpace(Value) && Value.Trim().ToLower() != "undefined"
@@ -289,35 +202,7 @@ namespace Interviewer.Data
     public class Profile : BaseModel
     {
         public ObservableCollection<Requirement> Requirement { get; set; }
-        public int Id { get; set; }
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                IsDirty = !string.IsNullOrEmpty(_name) && _name != value;
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        private string _description;
-        public string Description
-        {
-            get { return _description; }
-            set
-            {
-                IsDirty = !string.IsNullOrEmpty(_description) && _description != value;
-                if (_description != value)
-                {
-                    _description = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+
         public Profile()
         {
             Requirement = new ObservableCollection<Data.Requirement>();
@@ -336,35 +221,6 @@ namespace Interviewer.Data
         public int KnowledgeAreaId { get; set; }
         public int AreaId { get; set; }
         public bool IsRequired { get; set; }
-        public int Id { get; set; }
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                IsDirty = !string.IsNullOrEmpty(_name) && _name != value;
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        private string _description;
-        public string Description
-        {
-            get { return _description; }
-            set
-            {
-                IsDirty = !string.IsNullOrEmpty(_description) && _description != value;
-                if (_description != value)
-                {
-                    _description = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
         public override bool IsValid()
         {
             return !string.IsNullOrWhiteSpace(Name) && Name.Trim().ToLower() != "undefined"
