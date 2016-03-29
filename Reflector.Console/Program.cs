@@ -57,6 +57,9 @@ namespace Reflector.Console
                          options.ContainsKey("includeflag")
                      );
                     break;
+                case "text2xml":
+                    renderer = new Text2XmlRenderer(options["file"]);
+                    break;
 
                 default:
                     renderer = new XmlRenderer(
@@ -118,7 +121,7 @@ namespace Reflector.Console
             System.Console.WriteLine("{0}-o ext", "\t\t");
             System.Console.WriteLine("{0}specifies the file extension for the xslt transformation.", "\t\t\t");
             System.Console.WriteLine("{0}-r <option>", "\t\t");
-            System.Console.WriteLine("{0}where option can be xml. xslt or text. Default xml", "\t\t\t");
+            System.Console.WriteLine("{0}where option can be xml, xslt, text, ctorxml, or text2xml. Default xml", "\t\t\t");
             System.Console.WriteLine("{0}-i", "\t\t");
             System.Console.WriteLine("{0}include .NET System.Object methods", "\t\t\t");
             System.Console.WriteLine("{0}-t <type list>", "\t\t");

@@ -84,5 +84,24 @@ namespace Reflector
                        select t.Value.Trim();
             }
         }
+
+        public static Dictionary<string, string> DrawIOSettings
+        {
+            get
+            {
+                var results = new Dictionary<string, string>();
+                var options = Config.Datasources
+                    .Where(d => d.Type == enSourceType.Settings)
+                    .First(f => f.Name == "DrawIOSettings")
+                    .Items.Cast<SettingSource>();
+
+                foreach (var o in options)
+                {
+                    results.Add(o.Name, o.Value.Trim());
+                }
+
+                return results;
+            }
+        }
     }
 }

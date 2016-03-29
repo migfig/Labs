@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Reflector
 {
@@ -83,6 +85,10 @@ namespace Reflector
                 {
                     return _renderer.Render(this.GetType(), null, null);
                 }
+                else if(IsTextFile(fileName))
+                {
+                    return _renderer.Render(this.GetType(), null, null);
+                }
                 else
                 {
                     return "Unsupported filename " + fileName;
@@ -118,7 +124,7 @@ namespace Reflector
         public static bool IsFile(string fileName)
         {
             return File.Exists(fileName)
-                && ".dll,.xml,.xslt,.xsl,.yaml".Split(',')
+                && ".dll,.xml,.xslt,.xsl,.yaml,.txt,.docx".Split(',')
                     .Contains(Path.GetExtension(fileName).ToLower());
         }
          
@@ -147,6 +153,18 @@ namespace Reflector
                 && Path.GetExtension(fileName).ToLower() == ".yaml";
         }
 
+        public static bool IsTextFile(string fileName)
+        {
+            return File.Exists(fileName)
+                && Path.GetExtension(fileName).ToLower() == ".txt";
+        }
+
+        public static bool IsWordFile(string fileName)
+        {
+            return File.Exists(fileName)
+                && Path.GetExtension(fileName).ToLower() == ".docx";
+        }
+
         public static bool IsPath(string path)
         {
             return Directory.Exists(BuildPath(path));
@@ -164,6 +182,35 @@ namespace Reflector
             }
 
             return path;
+        }
+
+        public static Dictionary<string, string> ParseText(string fileName)
+        {
+            var dict = new Dictionary<string, string>();
+            if (File.Exists(fileName))
+            {
+                var reg = new Regex(@"((?<key>\d{1,3}.\d{1,3}(.\d{1,3})?)\s+(?<text>[\sa-zA-Z0-9\.\-_\\/,;\?#\'\+\<\>\[\]\(\)\$’“”]*)");
+                using (var stream = File.OpenText(fileName))
+                {
+                    string line = string.Empty;
+                    while(!string.IsNullOrWhiteSpace((line = stream.ReadLine())))
+                    {
+                        var match = reg.Match(line);
+                        if(match.Success)
+                        {
+                            var key = match.Groups["key"].Value;
+                            var text = match.Groups["text"].Value;
+                            if(!string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(text)
+                                && !dict.ContainsKey(key))
+                            {
+                                dict.Add(key, text);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return dict;
         }
     }
 }

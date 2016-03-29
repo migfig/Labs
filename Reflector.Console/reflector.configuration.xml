@@ -6,6 +6,23 @@
       <Setting Name="fileExplorer" Value="C:\Windows\explorer.exe"/>
     </Source>
 
+    <Source Name="DrawIOSettings" Type="Settings" IsReserved="true">
+      <Setting Name="dx" Value="710"/>
+      <Setting Name="dy" Value="479"/>
+      <Setting Name="grid" Value="1"/>
+      <Setting Name="gridSize" Value="10"/>
+      <Setting Name="guides" Value="1"/>
+      <Setting Name="tooltips" Value="1"/>
+      <Setting Name="connect" Value="1"/>
+      <Setting Name="arrows" Value="1"/>
+      <Setting Name="fold" Value="1"/>
+      <Setting Name="pageScale" Value="1.5"/>
+      <Setting Name="pageWidth" Value="800"/>
+      <Setting Name="pageHeight" Value="1200"/>
+      <Setting Name="background" Value="#ffffff"/>
+      <Setting Name="math" Value="0"/>
+    </Source>
+
     <Source Name="IgnoreObjectMethods" Type="TextList" IsReserved="true">
       <Text>
         <Item>ToString</Item>
@@ -33,7 +50,7 @@
       <GroupedText Name="RegularExpressions">
         <Text Name="file">
           <![CDATA[
-          (?<file>[a-zA-Z0-9:\\\-\.]*[\.](dll|xml))
+          (?<file>[a-zA-Z0-9:\\\-\.]*[\.](dll|xml|txt|docx))
           ]]>
         </Text>
 
@@ -63,7 +80,7 @@
 
         <Text Name="render">
           <![CDATA[
-          ((?<renderOption>[\-]r)[\s]*(?<render>xml|text|xslt|ctorxml))
+          ((?<renderOption>[\-]r)[\s]*(?<render>xml|text|xslt|ctorxml|text2xml))
           ]]>
         </Text>
 
