@@ -74,6 +74,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interviewer.App.Common", "I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interviewer", "Interviewer\Interviewer.csproj", "{3459DCB6-A000-400D-9AEA-F4B5698E5FF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundPlayer", "SoundPlayer\SoundPlayer.csproj", "{60884B6A-D6E0-4005-9E22-38051C8D1826}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		InterviewerHubApp\InterviewerHubApp.Shared\InterviewerHubApp.Shared.projitems*{e52dc726-b95a-4957-9729-d03f32231a1b}*SharedItemsImports = 13
@@ -1091,6 +1093,38 @@ Global
 		{3459DCB6-A000-400D-9AEA-F4B5698E5FF1}.StronglyNamedAssembly|x86.ActiveCfg = Release|x86
 		{3459DCB6-A000-400D-9AEA-F4B5698E5FF1}.StronglyNamedAssembly|x86.Build.0 = Release|x86
 		{3459DCB6-A000-400D-9AEA-F4B5698E5FF1}.StronglyNamedAssembly|x86.Deploy.0 = Release|x86
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Debug|ARM.Build.0 = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Debug|x64.Build.0 = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Debug|x86.Build.0 = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Documentation|Any CPU.ActiveCfg = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Documentation|Any CPU.Build.0 = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Documentation|ARM.ActiveCfg = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Documentation|ARM.Build.0 = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Documentation|x64.ActiveCfg = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Documentation|x64.Build.0 = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Documentation|x86.ActiveCfg = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Documentation|x86.Build.0 = Debug|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Release|ARM.ActiveCfg = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Release|ARM.Build.0 = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Release|x64.ActiveCfg = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Release|x64.Build.0 = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Release|x86.ActiveCfg = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.Release|x86.Build.0 = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.StronglyNamedAssembly|Any CPU.ActiveCfg = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.StronglyNamedAssembly|Any CPU.Build.0 = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.StronglyNamedAssembly|ARM.ActiveCfg = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.StronglyNamedAssembly|ARM.Build.0 = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.StronglyNamedAssembly|x64.ActiveCfg = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.StronglyNamedAssembly|x64.Build.0 = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.StronglyNamedAssembly|x86.ActiveCfg = Release|Any CPU
+		{60884B6A-D6E0-4005-9E22-38051C8D1826}.StronglyNamedAssembly|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

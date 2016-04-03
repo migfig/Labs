@@ -6,7 +6,7 @@ namespace Interviewer.Data
     public class InterViewerContext: DbContext
     {
         public InterViewerContext()
-            :base(@"Data Source=(localdb)\ProjectsV12;Initial Catalog=Interviewer;Integrated Security=True")
+            :base(@"Data Source=localhost\SQLEXPRESS;Initial Catalog=Interviewer;Integrated Security=True")
         {
         }
         public DbSet<Platform> Platforms { get; set; }
