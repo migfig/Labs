@@ -12,9 +12,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ComboBox ItemsSource="{Binding Instruments}"
-                  SelectedItem="{Binding Mode=TwoWay, Path=SelectedInstrument, UpdateSourceTrigger=PropertyChanged}"
-                  SelectionChanged="ComboBox_SelectionChanged"
+        <ComboBox ItemsSource="{Binding Library.Instruments}"
+                  SelectedItem="{Binding Mode=TwoWay, Path=Library.SelectedInstrument}"
                   HorizontalAlignment="Stretch">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
@@ -22,10 +21,9 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        
-        <ListBox Grid.Row="1" ItemsSource="{Binding Songs}"
-                  SelectedItem="{Binding Mode=TwoWay, Path=SelectedSong}"
-                  SelectionChanged="ListBox_SelectionChanged"
+
+        <ListBox Grid.Row="1" ItemsSource="{Binding Library.SelectedInstrument.Songs}"
+                  SelectedItem="{Binding Mode=TwoWay, Path=Library.SelectedInstrument.SelectedSong}"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
             <ListBox.ItemTemplate>
