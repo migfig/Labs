@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
@@ -10,18 +11,32 @@ namespace SoundPlayer.Models
         {
             var songs = from i in Instruments
                         from s in i.Songs
-                        where Notes.Contains(s.Note)
-                            && Octaves.Contains(s.Octave)
-                            && Tempos.Contains(s.Tempo)
-                            || Intensities.Contains(s.Intensity)
-                            || Modes.Contains(s.Mode)
-                        select s;
+                        where Notes.Any() ? Notes.Contains(s.Note) : true
+                            && Octaves.Any() ? Octaves.Contains(s.Octave) : true
+                            && Tempos.Any() ? Tempos.Contains(s.Tempo) : true
+                            && Intensities.Any() ? Intensities.Contains(s.Intensity) : true
+                            && Modes.Any() ? Modes.Contains(s.Mode) : true
+                        group s by s.Instrument into grouping
+                        select grouping;
 
-            songs.ToList().ForEach(x =>
+            var songsDict = new Dictionary<string, List<Song>>();
+            foreach (IGrouping<string, Song> grouping in songs)
             {
-                x.Play();
-                Thread.Sleep(TimeSpan.FromMilliseconds(1000));
-            });
+                var lstSongs = new List<Song>();
+                foreach (var s in grouping.Take(MaxSongs))
+                {
+                    lstSongs.Add(s);
+                }
+                songsDict.Add(grouping.Key, lstSongs);
+            }
+
+            foreach(var instrument in songsDict.Keys)
+            {
+                var song = songsDict[instrument].ElementAt(0);
+                song.Play();
+                Thread.Sleep(TimeSpan.FromMilliseconds(Pause));
+                songsDict[instrument].RemoveAt(0);
+            }
         }
     }
 }

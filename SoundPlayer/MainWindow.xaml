@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <ComboBox ItemsSource="{Binding Library.Instruments}"
@@ -44,5 +45,43 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <TextBlock Text="Pause" FontSize="18" Margin="0,0,8,0" />
+            <Slider Width="200" 
+                    Minimum="50" 
+                    Maximum="3000" 
+                    Interval="50"
+                    Value="{Binding Mode=TwoWay, Path=Library.Pause}"/>
+            
+            <TextBlock Text="Max Songs" FontSize="18" Margin="8,0,8,0" />
+            <Slider Width="200" 
+                    Minimum="15" 
+                    Maximum="1000" 
+                    Interval="10" 
+                    Value="{Binding Mode=TwoWay, Path=Library.MaxSongs}"/>
+            
+            <TextBlock Text="Notes" FontSize="18" Margin="8,0,8,0" />
+            <ComboBox ItemsSource="{Binding Library.Notes}"
+                  SelectedItem="{Binding Mode=TwoWay, Path=Library.SelectedNote}"
+                  HorizontalAlignment="Stretch">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="18"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Text="Octaves" FontSize="18" Margin="8,0,8,0" />
+            <ComboBox ItemsSource="{Binding Library.Octaves}"
+                  SelectedItem="{Binding Mode=TwoWay, Path=Library.SelectedOctave}"
+                  HorizontalAlignment="Stretch">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="18"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
     </Grid>
 </Window>

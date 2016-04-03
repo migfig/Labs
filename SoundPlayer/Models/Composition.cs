@@ -6,6 +6,8 @@ namespace SoundPlayer.Models
     {
         public Composition()
         {
+            Pause = 1000;
+            MaxSongs = 15;
             _instruments = new ObservableCollection<Instrument>();
             _notes = new ObservableCollection<string>();
             _octaves = new ObservableCollection<int>();
@@ -15,6 +17,8 @@ namespace SoundPlayer.Models
         }
 
         public string Name { get; set; }
+        public int Pause { get; set; }
+        public int MaxSongs { get; set; }
 
         private ObservableCollection<Instrument> _instruments;
         public ObservableCollection<Instrument> Instruments

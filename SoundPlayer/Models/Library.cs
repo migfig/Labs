@@ -45,6 +45,36 @@ namespace SoundPlayer.Models
             }
         }
 
+        private int _pause = 100;
+        public int Pause
+        {
+            get { return _pause; }
+            set
+            {
+                _pause = value;
+                OnPropertyChanged();
+                if (null != SelectedComposition)
+                {
+                    SelectedComposition.Pause = value;
+                }
+            }
+        }
+
+        private int _maxSongs = 20;
+        public int MaxSongs
+        {
+            get { return _maxSongs; }
+            set
+            {
+                _maxSongs = value;
+                OnPropertyChanged();
+                if (null != SelectedComposition)
+                {
+                    SelectedComposition.MaxSongs = value;
+                }
+            }
+        }
+
         public Library()
         {
             LoadInstruments();
@@ -66,6 +96,8 @@ namespace SoundPlayer.Models
             _compositions.Add(new Composition
             {
                 Name = "Sample1",
+                MaxSongs = MaxSongs,
+                Pause = Pause,
                 Instruments = new ObservableCollection<Instrument>(Instruments),
                 Notes = new ObservableCollection<string>(Notes.Where(x => x.StartsWith("C"))),
                 Octaves = new ObservableCollection<int>(Octaves.Where(x => x.Equals(3))),
@@ -76,6 +108,8 @@ namespace SoundPlayer.Models
             _compositions.Add(new Composition
             {
                 Name = "Sample2",
+                MaxSongs = MaxSongs,
+                Pause = Pause,
                 Instruments = new ObservableCollection<Instrument>(Instruments),
                 Notes = new ObservableCollection<string>(Notes.Where(x => x.StartsWith("G"))),
                 Octaves = new ObservableCollection<int>(Octaves.Where(x => x.Equals(5))),

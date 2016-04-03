@@ -12,11 +12,17 @@ namespace SoundPlayer.Models
         public float Tempo { get; set; }
         public string Intensity { get; set; }
         public string Mode { get; set; }
+        public double SpeedRatio { get; set; }
+        public double Balance { get; set; }
+        public double Volume { get; set; }
 
         public Song(string fileName)
             :this(fileName.Split('_'))
         {
             FileName = fileName;
+            SpeedRatio = 1.0;
+            Balance = 50.0;
+            Volume = 100.0;
         }
 
         private Song(string[] parts)

@@ -13,8 +13,11 @@ namespace SoundPlayer.Models
                 ThreadPool.QueueUserWorkItem((object state) => {
                     var player = new MediaPlayer();
                     player.Open(new Uri(FileName));
+                    player.SpeedRatio = SpeedRatio;
+                    player.Balance = Balance;
+                    player.Volume = Volume;
+                    player.MediaEnded += (o, e) => player.Close();
                     player.Play();
-                    //player.NaturalDuration
                 });
             }
         }
