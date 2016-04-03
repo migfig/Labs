@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace SoundPlayer.Models
 {
-    public partial class Song
+    public partial class Song: IPlayer
     {
         public void Play()
         {
@@ -14,6 +14,7 @@ namespace SoundPlayer.Models
                     var player = new MediaPlayer();
                     player.Open(new Uri(FileName));
                     player.Play();
+                    //player.NaturalDuration
                 });
             }
         }

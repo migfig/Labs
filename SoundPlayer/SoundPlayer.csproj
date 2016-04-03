@@ -56,8 +56,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Composition.Actions.cs" />
+    <Compile Include="Models\Composition.cs" />
     <Compile Include="Models\Instrument.Actions.cs" />
     <Compile Include="Models\Instrument.cs" />
+    <Compile Include="Models\IPlayer.cs" />
+    <Compile Include="Models\Library.Actions.cs" />
     <Compile Include="Models\Library.cs" />
     <Compile Include="Models\Song.Actions.cs" />
     <Compile Include="Models\Song.cs" />

@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <ComboBox ItemsSource="{Binding Library.Instruments}"
@@ -24,6 +25,17 @@
 
         <ListBox Grid.Row="1" ItemsSource="{Binding Library.SelectedInstrument.Songs}"
                   SelectedItem="{Binding Mode=TwoWay, Path=Library.SelectedInstrument.SelectedSong}"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" FontSize="18" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <ListBox Grid.Row="2" ItemsSource="{Binding Library.Compositions}"
+                  SelectedItem="{Binding Mode=TwoWay, Path=Library.SelectedComposition}"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
             <ListBox.ItemTemplate>

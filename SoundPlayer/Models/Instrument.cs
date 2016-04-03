@@ -32,6 +32,7 @@ namespace SoundPlayer.Models
         public Instrument(string path)
         {
             Path = path;
+            LoadSongs();
         }
         public override string ToString()
         {

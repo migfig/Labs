@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SoundPlayer.Models
 {
-    public class Library: BaseModel
+    public partial class Library: BaseModel
     {
         private ObservableCollection<Instrument> _instruments;
         public IEnumerable<Instrument> Instruments
@@ -27,9 +27,28 @@ namespace SoundPlayer.Models
             }
         }
 
+        private ObservableCollection<Composition> _compositions;
+        public ObservableCollection<Composition> Compositions
+        {
+            get { return _compositions; }
+        }
+
+        private Composition _selectedComposition;
+        public Composition SelectedComposition
+        {
+            get { return _selectedComposition; }
+            set
+            {
+                _selectedComposition = value;
+                _selectedComposition.Play();
+                OnPropertyChanged();
+            }
+        }
+
         public Library()
         {
             LoadInstruments();
+            LoadCompositions();
         }
 
         private void LoadInstruments()
@@ -39,6 +58,31 @@ namespace SoundPlayer.Models
                     .Where(x => !x.EndsWith("zip"))
                 select new Instrument(d));
             SelectedInstrument = _instruments.FirstOrDefault();
+        }
+
+        private void LoadCompositions()
+        {
+            _compositions = new ObservableCollection<Composition>();
+            _compositions.Add(new Composition
+            {
+                Name = "Sample1",
+                Instruments = new ObservableCollection<Instrument>(Instruments),
+                Notes = new ObservableCollection<string>(Notes.Where(x => x.StartsWith("C"))),
+                Octaves = new ObservableCollection<int>(Octaves.Where(x => x.Equals(3))),
+                Tempos = new ObservableCollection<float>(Tempos.Where(x => x.Equals(1.0F)))//,
+                //Intensities = new ObservableCollection<string>(Intensities.Where(x => x.Contains("-"))),
+                //Modes = new ObservableCollection<string>(Modes.Where(x => x.Contains("-")))
+            });
+            _compositions.Add(new Composition
+            {
+                Name = "Sample2",
+                Instruments = new ObservableCollection<Instrument>(Instruments),
+                Notes = new ObservableCollection<string>(Notes.Where(x => x.StartsWith("G"))),
+                Octaves = new ObservableCollection<int>(Octaves.Where(x => x.Equals(5))),
+                Tempos = new ObservableCollection<float>(Tempos.Where(x => x.Equals(1.0F)))//,
+                //Intensities = new ObservableCollection<string>(Intensities.Where(x => x.Contains("-"))),
+                //Modes = new ObservableCollection<string>(Modes.Where(x => x.Contains("-")))
+            });
         }
     }
 }
