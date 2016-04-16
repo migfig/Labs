@@ -20,44 +20,42 @@ namespace SoundPlayer.Models
         public string Path { get; set; }
         public string Name { get; set; }
 
-        private IEnumerable<Point> _points;
-        public IEnumerable<Point> Points
+        private Dictionary<string, IEnumerable<Point>> _points = new Dictionary<string, IEnumerable<Point>>();
+        public IEnumerable<Point> GetPoints(string item)
         {
-            get { return _points; }
-            set
-            {
-                _points = value;
-            }
+            return _points[item];
+        }
+        public void SetPoints(string item, IEnumerable<Point> points)
+        {
+            _points[item] = points;
         }
 
-        public eMovement Movement
+        public eMovement GetMovement(string item)
         {
-            get
+            var points = GetPoints(item);
+            if (points != null && points.Any())
             {
-                if(Points != null && Points.Any())
+                var deltaX = points.Max(x => x.X) - points.Min(x => x.X);
+                var deltaY = points.Max(x => x.Y) - points.Min(x => x.Y);
+                var negativeDirection = (points.Last().X < points.First().X)
+                    || (points.Last().Y < points.First().Y);
+                if (deltaX > deltaY)
                 {
-                    var deltaX = Points.Max(x => x.X) - Points.Min(x => x.X);
-                    var deltaY = Points.Max(x => x.Y) - Points.Min(x => x.Y);
-                    var negativeDirection = (Points.Last().X < Points.First().X)
-                        || (Points.Last().Y < Points.First().Y);
-                    if (deltaX > deltaY)
-                    {
-                        if (negativeDirection)
-                            return eMovement.Left;
-                        else
-                            return eMovement.Right;
-                    }
-                    else if (deltaY > deltaX)
-                    {
-                        if (negativeDirection)
-                            return eMovement.Down;
-                        else
-                            return eMovement.Up;
-                    }
+                    if (negativeDirection)
+                        return eMovement.Left;
+                    else
+                        return eMovement.Right;
                 }
-
-                return eMovement.None;
+                else if (deltaY > deltaX)
+                {
+                    if (negativeDirection)
+                        return eMovement.Down;
+                    else
+                        return eMovement.Up;
+                }
             }
+
+            return eMovement.None;
         }
 
         private ObservableCollection<Song> _songs;

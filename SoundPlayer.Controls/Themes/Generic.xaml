@@ -11,25 +11,17 @@
                          HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch">
                         <Grid x:Name="gdRoot">
-                            <Ellipse x:Name="elpOuter" Fill="#BCBBCA" 
-                                 Width="200" 
-                                 Height="200"
-                                 Stroke="#FAFB"
-                                 StrokeThickness="4"/>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.33*"/>
+                                <ColumnDefinition Width="0.33*"/>
+                                <ColumnDefinition Width="0.33*"/>
+                            </Grid.ColumnDefinitions>
 
-                            <Ellipse x:Name="elpInner" Fill="#BCBBCA" 
-                                 Width="100" 
-                                 Height="100"
-                                 Stroke="#FAFB"
-                                 StrokeThickness="4"/>
-
-                            <TextBlock x:Name="tbInstrument" Text="{Binding Mode=TwoWay, Path=InstrumentName}"
-                               FontSize="16"
-                               FontWeight="SemiBold"
-                               Margin="100"
-                               Foreground="White"/>
-
-                            <ItemsControl x:Name="itemDiagnostics" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <ItemsControl Grid.RowSpan="2" Grid.ColumnSpan="3" x:Name="itemDiagnostics" HorizontalAlignment="Left" VerticalAlignment="Top">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -44,6 +36,85 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+
+                            <Grid>
+                                <Ellipse x:Name="notes" Fill="#BCBBCA" 
+                                     Width="100" 
+                                     Height="100"
+                                     Stroke="#FF8EE875"
+                                     StrokeThickness="4"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"/>
+
+                                <TextBlock x:Name="txtnotes"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Margin="50,50,0,0" />
+                            </Grid>
+
+                            <Grid Grid.Column="2">
+                                <Ellipse x:Name="octaves" Fill="#BCBBCA" 
+                                 Width="100" 
+                                 Height="100"
+                                 Stroke="#FFEBE668"
+                                 StrokeThickness="4"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Top"/>
+
+                                <TextBlock x:Name="txtoctaves"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Margin="50,50,0,0" />
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <Ellipse x:Name="tempos" Fill="#BCBBCA" 
+                                 Width="100" 
+                                 Height="100"
+                                 Stroke="#FF64BCD8"
+                                 StrokeThickness="4"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Bottom"/>
+
+                                <TextBlock x:Name="txttempos"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Margin="50,50,0,0" />
+                            </Grid>
+
+                            <Grid Grid.Row="1" Grid.Column="2">
+                                <Ellipse x:Name="intensities" Fill="#BCBBCA" 
+                                 Width="100" 
+                                 Height="100"
+                                 Stroke="#FFE8AC6E"
+                                 StrokeThickness="4"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Bottom"/>
+
+                                <TextBlock x:Name="txtintensities"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Margin="50,50,0,0" />
+                            </Grid>
+
+                            <Grid Grid.RowSpan="2" Grid.Column="1">
+                                <Ellipse x:Name="instrument" Fill="#BCBBCA"
+                                 Width="120" 
+                                 Height="120"
+                                 Stroke="#FF2F75E7"
+                                 StrokeThickness="4"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"/>
+
+                                <TextBlock Grid.RowSpan="2" Grid.ColumnSpan="2" 
+                                    x:Name="txtinstrument"
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Foreground="OrangeRed"/>
+                            </Grid>
+
                         </Grid>
                     </Viewbox>
                 </ControlTemplate>

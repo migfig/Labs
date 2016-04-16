@@ -4,16 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace SoundPlayer.Controls
@@ -87,65 +80,77 @@ namespace SoundPlayer.Controls
             }
         }
 
-        protected Ellipse _outerEllipse;
-        protected Ellipse _innerEllipse;
-        protected TextBlock _text;
-        protected ItemsControl _itemsControl;
-
+        protected Dictionary<string, Func<object>> _items = new Dictionary<string, Func<object>>();
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            
-            _outerEllipse = GetTemplateChild("elpOuter") as Ellipse;
-            _innerEllipse = GetTemplateChild("elpInner") as Ellipse;
-            _text = GetTemplateChild("tbInstrument") as TextBlock;
-            if (null != _text)
+
+            _items.Add("instrument", () => InstrumentName);
+            _items.Add("notes", () => _instrument.SelectedNote);
+            _items.Add("octaves", () => _instrument.SelectedOctave);
+            _items.Add("tempos", () => _instrument.SelectedTempo);
+            _items.Add("intensities", () => _instrument.SelectedIntensity);
+            _instrument.SetPoints("instrument", new List<Point>());
+
+            foreach (var key in _items.Keys)
             {
-                _text.Text = string.Format("{0}:{1},{2}", InstrumentName, _instrument.SelectedNote, _instrument.SelectedOctave);
+                var ellipse = GetTemplateChild(key) as Ellipse;
+                if (null != ellipse)
+                {
+                    ellipse.TouchMove += Ellipse_TouchMove;
+                    ellipse.TouchUp += Ellipse_TouchUp;
+                }
+                var text = GetTemplateChild("txt" + key) as TextBlock;
+                if (null != text)
+                {
+                    text.Text = _items[key].Invoke().ToString();
+                }
             }
-            _itemsControl = GetTemplateChild("itemDiagnostics") as ItemsControl;
         }
 
-        protected override void OnTouchUp(TouchEventArgs e)
+        private void Ellipse_TouchUp(object sender, TouchEventArgs e)
         {
-            base.OnTouchUp(e);
-
-            if(_instrument != null && _instrument.Songs.Any())
+            if (_instrument != null && _instrument.Songs.Any())
             {
-                switch(_instrument.Movement)
+                var itemName = (sender as Ellipse).Name;
+                if (!itemName.Equals("instrument"))
                 {
-                    case eMovement.Right:
-                        _instrument.SetNext(Instrument.kNotes);
-                        break;
-                    case eMovement.Up:
-                        _instrument.SetNext(Instrument.kOctaves);
-                        break;
-                    case eMovement.Left:
-                        _instrument.SetPrev(Instrument.kNotes);
-                        break;
-                    case eMovement.Down:
-                        _instrument.SetPrev(Instrument.kOctaves);
-                        break;
+                    switch (_instrument.GetMovement(itemName))
+                    {
+                        case eMovement.Right:
+                        case eMovement.Up:
+                            _instrument.SetNext(itemName);
+                            break;
+                        case eMovement.Left:
+                        case eMovement.Down:
+                            _instrument.SetPrev(itemName);
+                            break;
+                    }
+
+                    (GetTemplateChild("txt" + itemName) as TextBlock).Text = _items[itemName].Invoke().ToString();
+
+                    (GetTemplateChild("itemDiagnostics") as ItemsControl).ItemsSource = _instrument.GetPoints(itemName);
                 }
 
-                _text.Text = string.Format("{0}:{1},{2}", InstrumentName, _instrument.SelectedNote, _instrument.SelectedOctave);
-                _itemsControl.ItemsSource = _instrument.Points;
                 var song = _instrument.Songs.FirstOrDefault(x => x.Note == _instrument.SelectedNote
-                    && x.Octave == _instrument.SelectedOctave);
-                if(song != null)
+                    && x.Octave == _instrument.SelectedOctave
+                    && x.Tempo == _instrument.SelectedTempo
+                    && x.Intensity == _instrument.SelectedIntensity);
+                if (song != null)
                 {
-                    song.Play();
+                    for(var i=0;i<Math.Max(1,_instrument.GetPoints(itemName).Count());i++)
+                        song.Play();
                 }
             }
         }
 
-        protected override void OnTouchMove(TouchEventArgs e)
+        private void Ellipse_TouchMove(object sender, TouchEventArgs e)
         {
-            base.OnTouchMove(e);
-
-            var points = e.GetIntermediateTouchPoints(_itemsControl);
-            var positions = points.Select(x => x.Position);
-            _instrument.Points = positions;
+            if((sender as Ellipse).Name != "instrument")
+               _instrument.SetPoints((sender as Ellipse).Name
+                    , e.GetIntermediateTouchPoints(GetTemplateChild("itemDiagnostics") as ItemsControl)
+                        .Select(x => x.Position));
         }
+
     }
 }
