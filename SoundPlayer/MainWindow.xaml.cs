@@ -18,7 +18,14 @@ namespace SoundPlayer
             Loaded += (o, e) =>
             {
                 SetValue(libraryProp, new Library());
+                cmdOrchestra_Click(this, null);
             };
+        }
+
+        private void cmdOrchestra_Click(object sender, RoutedEventArgs e)
+        {
+            var orchestra = new Orchestra();
+            orchestra.Show();
         }
     }
 }

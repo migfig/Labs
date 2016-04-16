@@ -1,0 +1,65 @@
+﻿using System.Text.RegularExpressions;
+using System.Linq;
+
+namespace SoundPlayer.Models
+{
+    public partial class Song
+    {
+        public string FileName { get; set; }
+
+        public string Instrument { get; set; }
+        public string Note { get; set; }
+        public int Octave { get; set; }
+        public float Tempo { get; set; }
+        public string Intensity { get; set; }
+        public string Mode { get; set; }
+        public double SpeedRatio { get; set; }
+        public double Balance { get; set; }
+        public double Volume { get; set; }
+
+        public Song()
+        {
+        }
+        public Song(string fileName)
+            :this(fileName.Split('_'))
+        {
+            FileName = fileName;
+            SpeedRatio = 1.0;
+            Balance = 50.0;
+            Volume = 100.0;
+        }
+
+        private Song(string[] parts)
+        {
+            Instrument = parts[0].Split('\\').Last();
+            var re = new Regex(@"(?<note>[a-zA-Z]*)(?<octave>\d{1,3})");
+            var match = re.Match(parts[1]);
+            if (match.Success)
+            {
+                Note = match.Groups["note"].Value;
+                Octave = int.Parse(match.Groups["octave"].Value);
+            }
+
+            re = new Regex(@"(?<tempo>\d{1,3})");
+            match = re.Match(parts[2]);
+            if (match.Success)
+            {
+                Tempo = float.Parse(match.Groups["tempo"].Value);
+                if (Tempo > 1 && Tempo < 16)
+                    Tempo = Tempo * 0.1F;
+                else if (Tempo == 25.0F)
+                    Tempo = 0.25F;
+            }
+            else {
+                Tempo = 1.0F;
+            }
+            Intensity = parts[3];
+            Mode = parts[4].Split('.').First();
+        }
+
+        public override string ToString()
+        {
+            return FileName;
+        }
+    }
+}

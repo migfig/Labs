@@ -1,0 +1,98 @@
+﻿<Window x:Class="SoundPlayer.Models.Orchestra"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SoundPlayer.Models"
+        xmlns:controls="clr-namespace:SoundPlayer.Controls;assembly=SoundPlayer.Controls"
+        mc:Ignorable="d"
+        Title="Orchestra"
+        WindowState="Maximized"
+        d:Height="300" d:Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.33*"/>
+            <ColumnDefinition Width="0.33*"/>
+            <ColumnDefinition Width="0.34*"/>
+        </Grid.ColumnDefinitions>
+  
+        <ToolBarPanel Visibility="Collapsed">
+            <ToolBar Header="Instruments"                     
+                     ItemsSource="{Binding Library.Instruments}">
+                <ToolBar.ItemTemplate>
+                    <DataTemplate>
+                        <ToggleButton Content="{Binding Name}" 
+                                      Width="80" 
+                                      Height="25" 
+                                      Tag="{Binding}" 
+                                      Checked="ToggleButton_Checked"/>
+                    </DataTemplate>
+                </ToolBar.ItemTemplate>
+            </ToolBar>
+
+            <ToolBar Header="Octaves" ItemsSource="{Binding Library.Octaves}">
+                <ToolBar.ItemTemplate>
+                    <DataTemplate>
+                        <ToggleButton x:Name="btnOctave" Content="{Binding}" 
+                                      Width="80" 
+                                      Height="25" 
+                                      Tag="{Binding}" 
+                                      Checked="btnOctave_Checked"/>
+                    </DataTemplate>
+                </ToolBar.ItemTemplate>
+            </ToolBar>
+
+            <ToolBar Header="Notes" ItemsSource="{Binding Library.Notes}">
+                <ToolBar.ItemTemplate>
+                    <DataTemplate>
+                        <ToggleButton x:Name="btnNote" Content="{Binding}" 
+                                      Width="80" 
+                                      Height="25" 
+                                      Tag="{Binding}" 
+                                      Checked="btnNote_Checked"/>
+                    </DataTemplate>
+                </ToolBar.ItemTemplate>
+            </ToolBar>
+        </ToolBarPanel>
+
+        <Viewbox Grid.Row="1" Visibility="Collapsed"
+                 Margin="20"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch">
+            <Grid TouchUp="Grid_TouchUp">
+
+                <Ellipse Fill="#BCBBCA" 
+                     Width="200" 
+                     Height="200"
+                     Stroke="#FAFB"
+                     StrokeThickness="4"
+                     TouchMove="Ellipse_TouchMove"
+                     TouchUp="Ellipse_TouchUp"/>
+
+                <Ellipse x:Name="elpInner" Fill="#BCBBCA" 
+                     Width="100" 
+                     Height="100"
+                     Stroke="#FAFB"
+                     StrokeThickness="4"
+                     TouchMove="elpInner_TouchMove"
+                     TouchUp="elpInner_TouchUp"/>
+
+                <TextBlock Text="{Binding Mode=TwoWay, Path=Library.SelectedInstrument.Name}"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="100"
+                           Foreground="White"/>
+            </Grid>
+        </Viewbox>
+
+        <controls:InstrumentControl InstrumentName="cello" Margin="20"/>
+        <controls:InstrumentControl Grid.Column="1" InstrumentName="flute" Margin="20"/>
+        <controls:InstrumentControl Grid.Column="2" InstrumentName="guitar" Margin="20"/>
+        <controls:InstrumentControl Grid.Row="1" InstrumentName="oboe" Margin="20"/>
+        <controls:InstrumentControl Grid.Row="1" Grid.Column="1" InstrumentName="violin" Margin="20"/>
+    </Grid>
+</Window>
