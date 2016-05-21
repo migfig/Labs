@@ -4,6 +4,7 @@ using Common.Commands;
 using FluentTesting;
 using Newtonsoft.Json;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
@@ -31,6 +32,24 @@ namespace ApiTester.Wpf.ViewModels
                         && SelectedConfiguration.method.Any(m => m.isSelected)
                         && !IsBusy);
                 return _runTests;
+            }
+        }
+
+        RelayCommand _runWorkflowTests;
+        public ICommand RunWorkflowTests
+        {
+            get
+            {
+                _runWorkflowTests = _runWorkflowTests ?? new RelayCommand(
+                    (parameter) => {
+                        ToggleSelection.Execute(true);
+                        runWorkflowForSelectedMethods(SelectedWorkflowDef);
+                    },
+                    x => SelectedConfiguration != null
+                        && SelectedWorkflowDef != null
+                        && SelectedWorkflowDef.task.Any()
+                        && !IsBusy);
+                return _runWorkflowTests;
             }
         }
 
@@ -83,17 +102,139 @@ namespace ApiTester.Wpf.ViewModels
             }
         }
 
+        RelayCommand _addTask;
+        public ICommand AddTask
+        {
+            get
+            {
+                _addTask = _addTask ?? new RelayCommand(
+                    (parameter) => {
+                        SelectedWorkflowDef.task.Add(new Task
+                        {
+                            name = SelectedMethod.name,
+                            parameter = new ObservableCollection<Parameter>( SelectedMethod.parameter.ToArray())
+                        });
+                    },
+                    x => SelectedConfiguration != null
+                        && SelectedWorkflowDef != null
+                        && SelectedMethod != null
+                        && !IsBusy);
+                return _addTask;
+            }
+        }
+
+        RelayCommand _removeTask;
+        public ICommand RemoveTask
+        {
+            get
+            {
+                _removeTask = _removeTask ?? new RelayCommand(
+                    (parameter) => {
+                        SelectedWorkflowDef.task.Remove(parameter as Task);
+                        SaveWorkflow.AsRelay().RaiseCanExecuteChanged();
+                    },
+                    x => SelectedConfiguration != null
+                        && SelectedWorkflowDef != null
+                        && SelectedMethod != null
+                        && !IsBusy);
+                return _removeTask;
+            }
+        }
+
+        RelayCommand _saveTask;
+        public ICommand SaveTask
+        {
+            get
+            {
+                _saveTask = _saveTask ?? new RelayCommand(
+                    (parameter) => {
+                        var updatedTask = parameter as Task;
+                        var task = SelectedWorkflowDef.task.First(x => x.name == updatedTask.name);
+                        var pos = SelectedWorkflowDef.task.IndexOf(task);
+                        SelectedWorkflowDef.task.RemoveAt(pos);
+                        SelectedWorkflowDef.task.Insert(pos, updatedTask);
+
+                        SaveWorkflow.AsRelay().RaiseCanExecuteChanged();
+                    },
+                    x => SelectedConfiguration != null
+                        && SelectedWorkflowDef != null
+                        && SelectedMethod != null
+                        && !IsBusy);
+                return _saveTask;
+            }
+        }
+
+        RelayCommand _addWorkflow;
+        public ICommand AddWorkflow
+        {
+            get
+            {
+                _addWorkflow = _addWorkflow ?? new RelayCommand(
+                    (parameter) =>
+                    {
+                        var workflow = new workflow
+                        {
+                            name = SelectedConfiguration.setup.workflow.Last().name.Replace(".",  SelectedConfiguration.setup.workflow.Count.ToString() + "."),
+                            task = new ObservableCollection<Task>()
+                        };
+                        SaveWorkflowItem(workflow);
+                        SelectedConfiguration.setup.workflow.Add(workflow);
+                        SelectedWorkflow = workflow;
+                    },
+                    x => SelectedConfiguration != null
+                        && !IsBusy);
+                return _addWorkflow;
+            }
+        }
+
+        RelayCommand _saveWorkflowItems;
+        public ICommand SaveWorkflowItems
+        {
+            get
+            {
+                _saveWorkflowItems = _saveWorkflowItems ?? new RelayCommand(
+                    (parameter) =>
+                    {
+                        var currWorkflowName = SelectedWorkflowDef.name;
+                        SaveWorkflowItem(SelectedWorkflowDef);
+                        var otherWorkflows = SelectedConfiguration.setup.workflow.Where(x => !x.name.Equals(currWorkflowName));
+                        foreach (var workflow in otherWorkflows)
+                        {
+                            SelectedWorkflowDef = workflow;
+                            SaveWorkflowItem(SelectedWorkflowDef);
+                        }
+                        SaveConfiguration();
+                        _saveWorkflowItems.RaiseCanExecuteChanged();
+                    },
+                    x => SelectedConfiguration != null
+                        && SelectedWorkflow != null
+                        && SelectedWorkflowDef != null
+                        && !IsBusy);
+                return _saveWorkflowItems;
+            }
+        }
+
+
         RelayCommand _loadConfiguration;
         public ICommand LoadConfiguration
         {
             get
             {
+#if API_REFLECTOR
                 _loadConfiguration = _loadConfiguration ?? new RelayCommand(
                     (parameter) => {
                         new LoadAssembly().ShowDialog();
                         OnPropertyChanged("Configurations");
                     },
                     x => true);
+#else
+                _loadConfiguration = _loadConfiguration ?? new RelayCommand(
+                    (parameter) => {
+                        //new LoadAssembly().ShowDialog();
+                        //OnPropertyChanged("Configurations");
+                    },
+                    x => true);
+#endif
                 return _loadConfiguration;
             }
         }
@@ -172,11 +313,11 @@ namespace ApiTester.Wpf.ViewModels
                 return _exitApplication;
             }
         }
-        #endregion commands
+#endregion commands
 
-        #region command methods
+#region command methods
 
-        #region reflect and load assembly
+#region reflect and load assembly
 
         private void reflectAndLoadAssembly()
         {
@@ -261,16 +402,22 @@ namespace ApiTester.Wpf.ViewModels
                 string.Format(task.ToArgs(type)));
         }
 
-        #endregion reflect and load assembly
+#endregion reflect and load assembly
 
-        #region run workflow
+#region run workflow
 
         private void runWorkflowForSelectedMethods()
         {
-            Common.Extensions.TraceLog.Information("Running workflow {name}", SelectedWorkflow.name);
-
             var workflow = XmlHelper<workflow>.Load(
                 Path.Combine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output"), SelectedWorkflow.name));
+
+            runWorkflowForSelectedMethods(workflow);
+        }
+
+        private void runWorkflowForSelectedMethods(workflow workflow)
+        {
+            Common.Extensions.TraceLog.Information("Running workflow {name}", SelectedWorkflow.name);
+
             var worker = new BackgroundWorker();
             worker.DoWork += (o, s) =>
             {
@@ -383,8 +530,8 @@ namespace ApiTester.Wpf.ViewModels
             return type;
         }
 
-        #endregion run workflow       
+#endregion run workflow       
 
-        #endregion command methods
+#endregion command methods
     }
 }

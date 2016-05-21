@@ -1,13 +1,18 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Linq;
+using System.Collections.ObjectModel;
+using Windows.Storage;
+using Windows.UI.Composition;
 
-namespace SoundPlayer.Models
+namespace SoundComposition.Domain
 {
-    public partial class Instrument
+    public partial class Instrument: CompositionBase
     {
         public string Path { get; set; }
 
         public string Name { get; set; }
         public string Class { get; set; }
+
+        protected StorageFolder _folder;
 
         private ObservableCollection<Song> _songs;
         public ObservableCollection<Song> Songs
@@ -29,10 +34,16 @@ namespace SoundPlayer.Models
             }
         }
 
-        public Instrument(string path)
+        public Visual Element
         {
-            Path = path;
-            LoadSongs();
+            get { return _element; }
+        }
+
+        public Instrument(StorageFolder folder)
+        {
+            _folder = folder;
+            Path = folder.Path;
+            Name = Path.Split('\\').Last();
         }
         public override string ToString()
         {

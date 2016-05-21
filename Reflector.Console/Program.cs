@@ -9,7 +9,7 @@ namespace Reflector.Console
     {
         static void Main(string[] args)
         {
-#if DEBUG
+#if _DEBUG
             //args = "WebApi.Example.dll -t Controller".Split(' ');
             //args = "WebApi.Example.Controllers.ProductsController.xml -r xslt -x iodocuments.xslt -o json".Split(' ');
             //args = "WebApi.Example.Controllers.ProductsController.xml -r xslt -x apitester.xslt -o xml".Split(' ');

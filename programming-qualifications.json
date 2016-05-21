@@ -1,0 +1,105 @@
+{
+  "programmingQualifications": [
+    {
+      "area": {
+        "name": "Web services and applications: Web API/WCF/ASP.NET (MVC & Web Forms)/ASP",
+        "description": "Design, development and testing of web services and applications",
+        "projectsWhereUsed": 10,
+        "innovation": [          
+          {
+            "development": {
+              "applicationType": "ASP.NET Web forms",
+              "description": "Designed and contributed with a team on the creation from scatch of a very configurable Web application to retrieve digitized documents"
+            }
+          },
+          {
+            "development": {
+              "applicationType": "WPF",
+              "description": "Created WPF REST API tester fully configurable application via Reflection",
+              "url": "https://github.com/migfig/Labs/tree/master/ApiTester.Wpf"
+            }
+          },
+          {
+            "development": {
+              "applicationType": "WCF",
+              "description": "Created WCF service to query SQL oriented data sources (SQL Server/Oracle/IBM Db2/MySQL)",
+              "url": "https://github.com/migfig/MegaDropOS/tree/master/MegaDrop.WcfQueryServices"
+            }
+          }
+        ],
+        "proficiency": "proficient",
+        "platforms": [ "web", "windows", ".Net Remoting", "SQL Server", "Oracle", "Filenet Image Services", "Crystal Reports", "SSO", "SMTP" ],
+        "usedTools": [ "Visual Studio 2015", "curl", "Oracle JDeveloper", "Right Fax" ]
+      }
+    },
+    {
+      "area": {
+        "name": "Database and Document content oriented Applications and Services",
+        "description": "Design, Development and testing of Applications",
+        "projectsWhereUsed": 10,
+        "innovation": [
+          {
+            "development": {
+              "applicationType": "SilverLight",
+              "description": "Created a Real Time monitor for fiber optics manufacturing, located at production lines"
+            }
+          }
+        ],
+        "proficiency": "proficient",
+        "platforms": [ "windows forms", "silverlight", "windows services", "SQL Server", "Oracle", "Filenet P8", "Cold Reports", "Barcodes Generation" ],
+        "usedTools": [ "Visual Studio", "Infragistics Charts", "Accusoft ImageGear", "LDAP", "iTextSharp" ]
+      }
+    },
+    {
+      "area": {
+        "name": "Mobile applications",
+        "description": "Design & Development of mobile Applications (not used for some time/need refresh)",
+        "projectsWhereUsed": 3,
+        "innovation": [
+          {
+            "development": {
+              "applicationType": "WindowsPhone7",
+              "description": "Created and published an app to create/edit and run applications on itself",
+              "url": "https://www.youtube.com/watch?v=Ua6S96vMOyY"
+            }
+          },
+          {
+            "development": {
+              "applicationType": "Android",
+              "description": "Created an app for grocery purchases, supported voice commands, mobile services and zoom on images"
+            }
+          }
+        ],
+        "proficiency": "basic/intermediate",
+        "platforms": [ "windows phone", "windows store", "android", "Microsoft Azure", "Google cloud messaging" ],
+        "usedTools": ["Visual Studio", "Eclipse"]
+      }
+    },
+    {
+      "area": {
+        "name": "Cloud Services",
+        "description": "Development of secured cloud services",
+        "projectsWhereUsed": 1,
+        "innovation": [
+          {
+            "development": {
+              "applicationType": "WPF",
+              "description": "Created records viewer application",
+              "url": "https://github.com/migfig/Labs/tree/master/RelatedRecords.Wpf"
+            }
+          },
+          {
+            "development": {
+              "applicationType": "Console",
+              "description": "Created a console app to generate transformations (c# code, postman collections, etc.) from xml files",
+              "url": "https://github.com/migfig/Labs/tree/master/Reflector.Console"
+            }
+          }
+        ],
+        "proficiency": "basic/intermediate",
+        "platforms": [ "web", "virtual cloud", "Unit Testing" ],
+        "usedTools": [ "Visual Studio", "VMWare Services", "Postman" ]
+      }
+    }
+  ]
+}

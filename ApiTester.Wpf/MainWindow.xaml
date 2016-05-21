@@ -176,7 +176,8 @@
 
         <!--View Current configuration Details-->
         <TabControl>
-            <TabItem Header="Configuration" IsSelected="{Binding Mode=OneWay, Path=isNotEditingWorkflow}">
+            <!-- {Binding Mode=OneWay, Path=isNotEditingWorkflow} -->
+            <TabItem Header="Configuration" IsSelected="True">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20*"/>

@@ -14,7 +14,7 @@
     using System.Text;
     using System.Reflection;
     using FluentTesting;
-
+    using System.Windows;
     [XmlTypeAttribute(AnonymousType = true)]
     [XmlRootAttribute(Namespace = "", IsNullable = false)]
     public partial class apiConfiguration: BaseModel
@@ -374,6 +374,15 @@
                 this.nameField = value;
             }
         }
+
+        public override string ToString()
+        {
+            return this.name
+                + Environment.NewLine
+                + Environment.NewLine
+                + taskField.Count.ToString()
+                + " Tasks";
+        }
     }
 
     public enum eValidTest
@@ -396,6 +405,7 @@
         private Task parentTaskField;
         private bool isDisabledField;
         private bool hasPassedField;
+        private string xmlField;
 
         public Task()
         {
@@ -409,6 +419,11 @@
         public bool Passed
         {
             get { return hasPassedField; }
+            set
+            {
+                hasPassedField = value;
+                OnPropertyChanged("IsVisible");
+            }
         }
 
         [ColumnIgnore]
@@ -419,7 +434,7 @@
             get
             {
                 hasPassedField = false;
-                if (ResultsObject is Exception) return false;
+                if (ResultsObject == null || ResultsObject is Exception) return false;
 
                 if (resultValue.Any())
                 {
@@ -450,11 +465,11 @@
                         }
                     }
 
-                    hasPassedField = instance.GetResults().ResultsPassed;
+                    Passed = instance.GetResults().ResultsPassed;
                     return hasPassedField;
                 }
 
-                hasPassedField = true;
+                Passed = true;
                 return hasPassedField;
             }
         }
@@ -585,6 +600,32 @@
             set
             {
                 this.isDisabledField = value;
+            }
+        }
+
+        [XmlIgnore]
+        public Visibility IsVisible
+        {
+            get { return hasPassedField ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        [ColumnIgnore]
+        [XmlIgnore]
+        public string xml
+        {
+            get
+            {
+                if(string.IsNullOrEmpty(xmlField))
+                {
+                    xmlField = XmlHelper<Task>.Save(this, omitXml: true)
+                        .Replace("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"", string.Empty)
+                        .Replace("xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"", string.Empty);
+                }
+                return xmlField;
+            }
+            set
+            {
+                xmlField = value;
             }
         }
     }
@@ -802,6 +843,15 @@
             {
                 this.descriptionField = value;
             }
+        }
+
+        public override string ToString()
+        {
+            return this.name
+                + Environment.NewLine
+                + Environment.NewLine
+                + parameterField.Count.ToString()
+                + " Parameters";
         }
     }
 

@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1DF60133-50BD-43E4-A5ED-27EEADDA7057}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ApiTester.Client</RootNamespace>
+    <AssemblyName>ApiTester.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Fluent">
+      <HintPath>..\packages\Fluent\Fluent.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog">
+      <HintPath>..\packages\Serilog.1.5.7\lib\net45\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.FullNetFx">
+      <HintPath>..\packages\Serilog.1.5.7\lib\net45\Serilog.FullNetFx.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WPFSpark">
+      <HintPath>..\packages\WpfSpark\WPFSpark.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Controls\TaskControl.xaml.cs">
+      <DependentUpon>TaskControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Page Include="..\ApiTester.Wpf\ConfigTemplate.xaml">
+      <Link>ConfigTemplate.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\ApiTester.Wpf\Themes\Generic.xaml">
+      <Link>Themes\Generic.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TaskControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="..\ApiTester.Wpf\ViewModels\MainViewModel.Commands.cs">
+      <Link>ViewModels\MainViewModel.Commands.cs</Link>
+    </Compile>
+    <Compile Include="..\ApiTester.Wpf\ViewModels\MainViewModel.cs">
+      <Link>ViewModels\MainViewModel.cs</Link>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="..\ApiTester.Wpf\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ApiTester\ApiTester.csproj">
+      <Project>{80bc2f72-3596-4f15-970c-f1012ee074d2}</Project>
+      <Name>ApiTester</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{4d5eca11-0727-485d-985a-7fcadcfb25c7}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FluentTesting\FluentTesting.csproj">
+      <Project>{3813cdff-94ef-4a71-bd83-c69f43b029b0}</Project>
+      <Name>FluentTesting</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\ApiTester.Wpf\Resources\black_linen_v2.png">
+      <Link>Resources\black_linen_v2.png</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\ApiTester.Wpf\apitester-workflow.xml">
+      <Link>apitester-workflow.xml</Link>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\apitester.xml">
+      <Link>apitester.xml</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\buildWorkflow.xml">
+      <Link>buildWorkflow.xml</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\ApiTester.Wpf\Images\Alert.png">
+      <Link>Images\Alert.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Application.png">
+      <Link>Images\Application.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\arrow_left16.png">
+      <Link>Images\arrow_left16.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\arrow_left24.png">
+      <Link>Images\arrow_left24.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\arrow_left32.png">
+      <Link>Images\arrow_left32.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Back.png">
+      <Link>Images\Back.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Blue.png">
+      <Link>Images\Blue.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\BlueLarge.png">
+      <Link>Images\BlueLarge.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Brown.png">
+      <Link>Images\Brown.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\BrownLarge.png">
+      <Link>Images\BrownLarge.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\clear.png">
+      <Link>Images\clear.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\connect.png">
+      <Link>Images\connect.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\counter.png">
+      <Link>Images\counter.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Database.png">
+      <Link>Images\Database.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\disconnect.png">
+      <Link>Images\disconnect.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\excel.png">
+      <Link>Images\excel.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Exit.png">
+      <Link>Images\Exit.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\export.png">
+      <Link>Images\export.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\failed.png">
+      <Link>Images\failed.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Filter.png">
+      <Link>Images\Filter.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Find.png">
+      <Link>Images\Find.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Fluent.ico">
+      <Link>Images\Fluent.ico</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Gear.png">
+      <Link>Images\Gear.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\GraphLeftToRight.png">
+      <Link>Images\GraphLeftToRight.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Gray.png">
+      <Link>Images\Gray.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\GrayLarge.png">
+      <Link>Images\GrayLarge.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Green.png">
+      <Link>Images\Green.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\GreenLarge.png">
+      <Link>Images\GreenLarge.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\html.png">
+      <Link>Images\html.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\key-solid.png">
+      <Link>Images\key-solid.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\List.png">
+      <Link>Images\List.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\NavBack.png">
+      <Link>Images\NavBack.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\NavDown.png">
+      <Link>Images\NavDown.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Orange.png">
+      <Link>Images\Orange.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\OrangeLarge.png">
+      <Link>Images\OrangeLarge.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\passed.png">
+      <Link>Images\passed.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\pdf.png">
+      <Link>Images\pdf.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Pink.png">
+      <Link>Images\Pink.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\PinkLarge.png">
+      <Link>Images\PinkLarge.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Red.png">
+      <Link>Images\Red.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\RedLarge.png">
+      <Link>Images\RedLarge.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\save.png">
+      <Link>Images\save.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\sum.png">
+      <Link>Images\sum.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\tables-relation.png">
+      <Link>Images\tables-relation.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\undefined.png">
+      <Link>Images\undefined.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\word.png">
+      <Link>Images\word.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\Yellow.png">
+      <Link>Images\Yellow.png</Link>
+    </Resource>
+    <Resource Include="..\ApiTester.Wpf\Images\YellowLarge.png">
+      <Link>Images\YellowLarge.png</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\addtask.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\task.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\workflow.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -10,10 +10,9 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Common.Commands;
 
 namespace ApiTester.Wpf.ViewModels
 {
@@ -42,6 +41,28 @@ namespace ApiTester.Wpf.ViewModels
                     File.Delete(file);
                 XmlHelper<workflow>.Save(file, EditingWorkflow);
             }
+        }
+
+        private void SaveConfiguration()
+        {
+            if (null != SelectedConfiguration)
+            {
+                var file = Path.Combine(ConfigurationManager.AppSettings["ConfigurationPath"],
+                     SelectedConfiguration.setup.name.Split('.').Last()
+                     .Replace("Controller", string.Empty) + "-apitester.xml");
+                if (File.Exists(file))
+                    File.Delete(file);
+                XmlHelper<apiConfiguration>.Save(file, SelectedConfiguration);
+            }
+        }
+
+        private void SaveWorkflowItem(workflow workflow)
+        {
+            var file = Path.Combine(ConfigurationManager.AppSettings["ConfigurationPath"],
+                 workflow.name);
+            if (File.Exists(file))
+                File.Delete(file);
+            XmlHelper<workflow>.Save(file, workflow);
         }
 
         public IEnumerable<apiConfiguration> Configurations
@@ -76,6 +97,7 @@ namespace ApiTester.Wpf.ViewModels
                 {
                     SelectedHost = _selectedConfiguration.setup.host.FirstOrDefault();
                     SelectedWorkflow = _selectedConfiguration.setup.workflow.FirstOrDefault();
+                    SelectedMethod = _selectedConfiguration.method.FirstOrDefault();
                     if(!_assemblies.ContainsKey(_selectedConfiguration.setup.source))
                     {
                         loadAssembly(_selectedConfiguration.setup.source);
@@ -127,7 +149,8 @@ namespace ApiTester.Wpf.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged("HeadersTable");
                 OnPropertyChanged("MethodsTable");
-                _runTests.RaiseCanExecuteChanged();
+                RunTests.AsRelay().RaiseCanExecuteChanged();
+                RunWorkflowTests.AsRelay().RaiseCanExecuteChanged();
             }
         }
 
@@ -228,6 +251,7 @@ namespace ApiTester.Wpf.ViewModels
                 _selectedMethod = value;
                 OnPropertyChanged();
                 OnPropertyChanged("ParametersTable");
+                AddTask.AsRelay().RaiseCanExecuteChanged();
             }
         }
 
@@ -368,6 +392,31 @@ namespace ApiTester.Wpf.ViewModels
             set
             {
                 _selectedWorkflow = value;
+                OnPropertyChanged();
+                SelectedWorkflowDef = value;
+            }
+        }
+
+        private List<workflow> _workflowDefs = new List<workflow>();
+        private workflow _selectedWorkflowDef;
+        public workflow SelectedWorkflowDef
+        {
+            get { return _selectedWorkflowDef; } 
+            set
+            {
+                if (null != value)
+                {
+                    var workflow = _workflowDefs.FirstOrDefault(x => x.name.Equals(value.name));
+                    if(workflow == null)
+                    {
+                        _workflowDefs.Add(
+                            XmlHelper<workflow>.Load(
+                                Path.Combine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output"), value.name)));
+                        workflow = _workflowDefs.Last();
+                    }
+
+                    _selectedWorkflowDef = workflow;
+                }
                 OnPropertyChanged();
             }
         }

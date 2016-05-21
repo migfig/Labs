@@ -1,15 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <DataTemplate x:Key="ItemCardTemplate">
-    <StackPanel Orientation="Horizontal" Margin="3">
-        <StackPanel>
-        <TextBlock Text="{Binding}" FontStyle="Oblique" FontWeight="Bold" />
-        <StackPanel Orientation="Horizontal">
-            <Label Content="Children " VerticalAlignment="Center"/>
-            <TextBlock Text="{Binding setup.method.Count}" VerticalAlignment="Center" />
+        <StackPanel Orientation="Horizontal" Margin="3">
+            <StackPanel>
+                <TextBlock Text="{Binding}" FontStyle="Oblique" FontWeight="Bold" />
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Children " VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding setup.method.Count}" VerticalAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
-        </StackPanel>
-    </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="ColumnsTemplate">
         <Border>

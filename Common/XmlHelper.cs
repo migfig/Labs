@@ -48,6 +48,31 @@ namespace Common
             return Activator.CreateInstance<T>();
         }
 
+        public static string Save(T item, bool omitXml = false)
+        {
+            try
+            {
+                var builder = new StringBuilder();
+                using (var stream = XmlWriter.Create(builder, 
+                    new XmlWriterSettings {
+                        Indent = true,
+                        OmitXmlDeclaration = omitXml                        
+                    }))
+                {
+                    var ser = new XmlSerializer(typeof(T));
+                    ser.Serialize(stream, item);
+                }
+
+                return builder.ToString();
+            }
+            catch (Exception e)
+            {
+                Extensions.ErrorLog.Error(e, "@ XmlHelper<T>.Save xml");
+            }
+
+            return string.Empty;
+        }
+
         public static bool Save(string fileName, T item)
         {
             if(File.Exists(fileName))
