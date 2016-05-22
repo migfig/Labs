@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Castle.Windsor;
+using Castle.Windsor.Installer;
+using Topshelf;
 
 namespace Log.Service
 {
@@ -14,12 +11,28 @@ namespace Log.Service
         /// </summary>
         static void Main()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
+            var container = new WindsorContainer();
+            container.Install(FromAssembly.This());
+
+            var logServices = container.Resolve<ILogServices>();
+
+            var hostObj = HostFactory.New(x =>
             {
-                new LogService()
-            };
-            ServiceBase.Run(ServicesToRun);
+                x.Service<LogService>(s =>
+                {
+                    s.ConstructUsing(name => new LogService(logServices));
+                    s.WhenStarted((ls, host) => ls.Start(host));
+                    s.WhenStopped((ls, host) => ls.Stop(host));                    
+                });
+
+                x.RunAsLocalSystem();
+                x.SetDescription("Log services console");
+                x.SetDisplayName("Log Service");
+                x.SetServiceName("LogService");
+                x.StartAutomatically();
+            });
+
+            hostObj.Run();
         }
     }
 }

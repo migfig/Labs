@@ -1,37 +1,32 @@
-﻿using Log.Common;
-using Log.Provider.Default;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Topshelf;
 
 namespace Log.Service
 {
-    public partial class LogService : ServiceBase
+    public class LogService: ServiceControl
     {
         private ILogServices _logServices;
-        public LogService()
+        public LogService(ILogServices logServices)
         {
-            InitializeComponent();
-
-            _logServices = new LogServices(new CustomFileProvider(ConfigurationManager.AppSettings["LogPath"], ConfigurationManager.AppSettings["LogName"]));
+            _logServices = logServices;
         }
 
-        protected override void OnStart(string[] args)
+        public bool Start(HostControl host)
         {
-            var items = _logServices.GetEntries().GetAwaiter().GetResult();
+            var entries = _logServices.GetEntries().GetAwaiter().GetResult();
+            foreach (var entry in entries)
+            {
+                Console.WriteLine("{0}\t{1}\t{2}", entry.TimeStamp.ToString("MM-DD hh:mm:ss"), entry.Message, entry.EventLevel.ToString());
+            }
+
+            Console.WriteLine("Press Enter key to continue...");
+            Console.ReadLine();
+            return true;
         }
 
-        protected override void OnStop()
-        {            
+        public bool Stop(HostControl host)
+        {
+            return true;         
         }
     }
 }
