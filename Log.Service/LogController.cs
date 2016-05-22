@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -10,18 +9,18 @@ namespace Log.Service
 {
     public class LogController: ApiController
     {
-        private readonly ILogServices _logServices;
+        private readonly ILogServices _logServices;        
 
         public LogController(ILogServices logServices)
         {
             _logServices = logServices;
         }
 
-        [Route("api/log/summary/{span}"), HttpGet]
-        public async Task<IEnumerable<IGrouping<eEventLevel, LogEntry>>> GetSummary(TimeSpan span)
+        [Route("api/log/summary/{timeSpan}"), HttpGet]
+        public async Task<IEnumerable<IGrouping<eEventLevel, LogEntry>>> GetSummary(TimeSpan timeSpan)
         {
             return (await _logServices.GetEntries())
-                .Where(x => DateTime.UtcNow.Subtract(x.TimeStamp).Seconds <= span.Seconds)
+                .Where(x => DateTime.UtcNow.Subtract(x.TimeStamp).Seconds <= timeSpan.Seconds)
                 .GroupBy(x => x.EventLevel);
         }
 
@@ -31,10 +30,10 @@ namespace Log.Service
             return await _logServices.GetEntries();
         }
 
-        [Route("api/log/items/{span}"), HttpGet]
-        public async Task<IEnumerable<LogEntry>> GetItems(TimeSpan span)
+        [Route("api/log/items/{timeSpan}"), HttpGet]
+        public async Task<IEnumerable<LogEntry>> GetItems(TimeSpan timeSpan)
         {
-            return await _logServices.GetEntries(span);
+            return await _logServices.GetEntries(timeSpan);
         }
 
         [Route("api/log/top/errors/{int:count}"), HttpGet]
