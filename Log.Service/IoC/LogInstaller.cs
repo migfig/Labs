@@ -21,6 +21,14 @@ namespace Log.Service
                     .ImplementedBy<LogServices>()
                     .LifestyleSingleton(),
 
+                Component.For<IStartable>()
+                    .ImplementedBy<WebApiApp>()
+                    .DependsOn(Dependency.OnAppSettingsValue("port"))
+                    .LifestyleTransient(),
+
+                Component.For<LogController>()
+                    .LifestyleTransient(),
+
                 Component.For<LogService>()
                     .LifestyleSingleton()
                 );

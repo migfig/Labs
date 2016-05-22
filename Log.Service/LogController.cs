@@ -9,7 +9,12 @@ namespace Log.Service
 {
     public class LogController: ApiController
     {
-        private readonly ILogServices _logServices;        
+        private readonly ILogServices _logServices;  
+        
+        public LogController()
+        {
+            _logServices = (LogService.Container.Resolve<ILogServices>());
+        }      
 
         public LogController(ILogServices logServices)
         {
@@ -36,7 +41,7 @@ namespace Log.Service
             return await _logServices.GetEntries(timeSpan);
         }
 
-        [Route("api/log/top/errors/{int:count}"), HttpGet]
+        [Route("api/log/top/errors/{count}"), HttpGet]
         public async Task<IEnumerable<LogEntry>> GetTopErrors(int count)
         {
             return (await _logServices.GetEntries())

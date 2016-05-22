@@ -13,14 +13,16 @@ namespace Log.Service
         {
             var container = new WindsorContainer();
             container.Install(FromAssembly.This());
+            LogService.Container = container;
 
             var logServices = container.Resolve<ILogServices>();
+            var webApp = container.Resolve<IStartable>();
 
             var hostObj = HostFactory.New(x =>
             {
                 x.Service<LogService>(s =>
                 {
-                    s.ConstructUsing(name => new LogService(logServices));
+                    s.ConstructUsing(name => new LogService(logServices, webApp));
                     s.WhenStarted((ls, host) => ls.Start(host));
                     s.WhenStopped((ls, host) => ls.Stop(host));                    
                 });

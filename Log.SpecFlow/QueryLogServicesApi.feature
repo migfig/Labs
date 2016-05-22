@@ -37,7 +37,7 @@ Scenario: Retrieve top n error log entries
 Scenario: Retrieve top n critical error log entries
 	Given I have the proper access to the log Api
 	When I call the api endpoint url 'api/log/top/critical/{int:count}' providing the count value
-	Then only top count or critical log entries are returned ordered by the latest time stamps first 
+	Then only top count of critical log entries are returned ordered by the latest time stamps first 
 
 @topInformationEntries
 Scenario: Retrieve top n information log entries

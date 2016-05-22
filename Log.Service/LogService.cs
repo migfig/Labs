@@ -1,18 +1,24 @@
-﻿using System;
+﻿using Castle.Windsor;
+using System;
 using Topshelf;
 
 namespace Log.Service
 {
     public class LogService: ServiceControl
     {
+        public static IWindsorContainer Container { get; set; }
         private ILogServices _logServices;
-        public LogService(ILogServices logServices)
+        private IStartable _webApp;
+        public LogService(ILogServices logServices, IStartable webApp)
         {
             _logServices = logServices;
+            _webApp = webApp;
         }
 
         public bool Start(HostControl host)
         {
+            _webApp.Start();
+
             var entries = _logServices.GetEntries().GetAwaiter().GetResult();
             foreach (var entry in entries)
             {
