@@ -11,12 +11,11 @@ namespace Log.Service
         /// </summary>
         static void Main()
         {
-            var container = new WindsorContainer();
-            container.Install(FromAssembly.This());
-            LogService.Container = container;
+            LogService.Container = new WindsorContainer();
+            LogService.Container.Install(FromAssembly.This());
 
-            var logServices = container.Resolve<ILogServices>();
-            var webApp = container.Resolve<IStartable>();
+            var logServices = LogService.Container.Resolve<ILogServices>();
+            var webApp = LogService.Container.Resolve<IServiceable>();
 
             var hostObj = HostFactory.New(x =>
             {

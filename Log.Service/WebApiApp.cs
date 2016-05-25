@@ -1,24 +1,34 @@
 ﻿using Microsoft.Owin.Hosting;
+using System;
 
 namespace Log.Service
 {
-    public interface IStartable
+    public interface IServiceable
     {
-        void Start();
+        bool Start();
+        bool Stop();
     }
 
-    public class WebApiApp: IStartable
+    public class WebApiApp: IServiceable
     {
         private readonly int _portNumber;
+        private IDisposable _instance;
 
         public WebApiApp(int port)
         {
-            _portNumber = port; // int.Parse(port);
+            _portNumber = port;
         }
 
-        public void Start()
+        public bool Start()
         {
-            WebApp.Start<Startup>(string.Format("http://localhost:{0}", _portNumber));
+            _instance = WebApp.Start<Startup>(string.Format("http://localhost:{0}", _portNumber));
+            return true;
+        }
+
+        public bool Stop()
+        {
+            _instance.Dispose();
+            return true;
         }
     }
 }
