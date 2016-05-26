@@ -21,6 +21,12 @@ namespace Log.Service
             _logServices = logServices;
         }
 
+        [Route("api/items"), HttpGet]
+        public async Task<IEnumerable<LogEntry>> GetItems()
+        {
+            return await _logServices.GetEntries();
+        }
+
         [Route("api/items/{timeSpan}"), HttpGet]
         public async Task<IEnumerable<LogEntry>> GetItems(int timeSpan)
         {

@@ -12,9 +12,15 @@ namespace Log.Service
             //todo: need to assign IoC resolver
            
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
+                name: "TimeSpanApi",
                 routeTemplate: "api/{controller}/{timeSpan}",
                 defaults: new { timeSpan = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "CountApi",
+                routeTemplate: "api/{controller}/{count}/{level}",
+                defaults: new { count = RouteParameter.Optional, level = RouteParameter.Optional }
             );
 
             builder.UseWebApi(config);

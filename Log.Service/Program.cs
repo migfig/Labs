@@ -1,5 +1,8 @@
 ﻿using Castle.Windsor;
 using Castle.Windsor.Installer;
+using Log.Common;
+using System;
+using System.Collections.Generic;
 using Topshelf;
 
 namespace Log.Service

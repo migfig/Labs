@@ -22,6 +22,14 @@ namespace Log.Service
             _logServices = logServices;
         }
 
+
+        [Route("api/summary"), HttpGet]
+        public async Task<IEnumerable<IGrouping<eEventLevel, LogEntry>>> GetSummary()
+        {
+            return (await _logServices.GetEntries())
+                .GroupBy(x => x.EventLevel);
+        }
+
         [Route("api/summary/{timeSpan}"), HttpGet]
         public async Task<IEnumerable<IGrouping<eEventLevel, LogEntry>>> GetSummary(int timeSpan)
         {
