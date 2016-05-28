@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Log.Common;
 using Newtonsoft.Json;
 
-namespace Log.Visor.VStudio
+namespace Log.Wpf.Controls
 {
     public interface IApiService: IDisposable
     {
-        Task<IEnumerable<LogEntry>> GetEntries();
+        Task<IEnumerable<LogEntry>> GetEntries(eEventLevel level = eEventLevel.All);
     }
 
     public class ApiServiceFactory
@@ -28,7 +28,7 @@ namespace Log.Visor.VStudio
     public class ApiHttpClient: IApiService, IDisposable
     {
         private readonly HttpClient _client;
-        private readonly string _baseUrl = "http://localhost:52485/api/";
+        private readonly string _baseUrl = "http://localhost:3030/api/";
 
         public ApiHttpClient(string baseUrl)
         {
@@ -37,9 +37,18 @@ namespace Log.Visor.VStudio
             _baseUrl = baseUrl;
         }
 
-        public async Task<IEnumerable<LogEntry>> GetEntries()
+        public async Task<IEnumerable<LogEntry>> GetEntries(eEventLevel level = eEventLevel.All)
         {
-            var response = await _client.GetAsync(_baseUrl + "top");
+            var urls = new Dictionary<eEventLevel, string>
+            {
+                { eEventLevel.All, "items" },
+                { eEventLevel.Error, "top/100/Error" },
+                { eEventLevel.Warning, "top/100/Warning" },
+                { eEventLevel.Information, "top/100/Information" },
+                { eEventLevel.Critical, "top/100/Critical" }
+            };
+
+            var response = await _client.GetAsync(_baseUrl + urls[level]);
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();

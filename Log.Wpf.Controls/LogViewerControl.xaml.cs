@@ -4,11 +4,12 @@
 // </copyright>
 //------------------------------------------------------------------------------
 
-namespace Log.Visor.VStudio
+namespace Log.Wpf.Controls
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
     using ViewModels;
     /// <summary>
     /// Interaction logic for LogViewerControl.

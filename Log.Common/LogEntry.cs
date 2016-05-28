@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Log.Common
 {
@@ -10,7 +11,8 @@ namespace Log.Common
         Information,
         Warning,
         Error,
-        Critical
+        Critical,
+        All
     }
 
     public class LogEntry
@@ -22,7 +24,31 @@ namespace Log.Common
         public int EventId { get; set; }
         public string User { get; set; }
         public string Computer { get; set; }
-        public string ClassName { get; set; }
+
+        private string _className;
+        public string ClassName {
+            get
+            {
+                if(string.IsNullOrWhiteSpace(_className) && Message.ToLower().Contains("exception"))
+                {
+                    var re = new Regex(@"(?<class>[a-zA-Z0-9\\\.]*.cs) line number: (?<line>\d{1,9})");
+                    var match = re.Match(Message);
+                    if (match.Success)
+                    {
+                        _className = match.Groups["class"].Value;
+                        var line = 0;
+                        if (int.TryParse(match.Groups["line"].Value, out line))
+                        {
+                            LineNumber = line;
+                        }
+                    }
+                }
+
+                return _className;
+            }
+            set { _className = value; }
+        }
+
         public int LineNumber { get; set; }
     }
 
