@@ -3,12 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:Log.Wpf.Controls.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              Name="MyToolWindow">
 
+    <UserControl.Resources>
+        <converters:StringToBrushColorConverter x:Key="stringToBrushConverter"/>
+    </UserControl.Resources>
+
     <DockPanel LastChildFill="True">
-        <StackPanel DockPanel.Dock="Left" Margin="0,22,0,0">
+        <StackPanel DockPanel.Dock="Left" Margin="0,22,0,0" Background="White">
             <Button Command="{Binding RefreshCommand}" ToolTip="Refresh">
                 <Button.Style>
                     <Style TargetType="Button">
@@ -66,398 +71,6 @@
             </Button>
             <Rectangle Width="30" Height="1" Fill="LightGray"/>
 
-            <ToggleButton Command="{Binding ServerCommand}" CommandParameter="server1" IsChecked="True" ToolTip="Server 1">
-                <ToggleButton.Style>
-                    <Style TargetType="ToggleButton">
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                        <Setter Property="Height" Value="32"/>
-                        <Setter Property="Width" Value="32"/>
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        <Setter Property="BorderBrush">
-                            <Setter.Value>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
-                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
-                                    <GradientStop Color="#FF718597" Offset="0.375"/>
-                                    <GradientStop Color="#FF617584" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ToggleButton">
-                                    <Grid>
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal"/>
-                                                <VisualState x:Name="MouseOver">
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0" To="#FF0078D7" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
-                                                    </Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="Pressed"/>
-                                                <VisualState x:Name="Disabled"/>
-                                            </VisualStateGroup>
-                                            <VisualStateGroup x:Name="FocusStates">
-                                                <VisualState x:Name="Focused"/>
-                                                <VisualState x:Name="Unfocused"/>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <Path x:Name="path" Data="M39.022999,49.737999L39.022999,56.397999 40.181,56.397999 40.181,49.737999z M36.706001,49.737999L36.706001,56.397999 37.864002,56.397999 37.864002,49.737999z M34.389,49.737999L34.389,56.397999 35.548,56.397999 35.548,49.737999z M32.073002,49.737999L32.073002,56.397999 33.231998,56.397999 33.231998,49.737999z M29.756001,49.737999L29.756001,56.397999 30.914001,56.397999 30.914001,49.737999z M27.439001,49.737999L27.439001,56.397999 28.598,56.397999 28.598,49.737999z M25.122,49.737999L25.122,56.397999 26.281,56.397999 26.281,49.737999z M22.806,49.737999L22.806,56.397999 23.963001,56.397999 23.963001,49.737999z M20.49,49.737999L20.49,56.397999 21.647001,56.397999 21.647001,49.737999z M18.172001,49.737999L18.172001,56.397999 19.331001,56.397999 19.331001,49.737999z M15.856,49.737999L15.856,56.397999 17.014,56.397999 17.014,49.737999z M13.539001,49.737999L13.539001,56.397999 14.697001,56.397999 14.697001,49.737999z M11.221002,49.737999L11.221002,56.397999 12.38,56.397999 12.38,49.737999z M8.9050016,49.737999L8.9050016,56.397999 10.064,56.397999 10.064,49.737999z M6.5890007,49.737999L6.5890007,56.397999 7.7469997,56.397999 7.7469997,49.737999z M4.2719994,49.737999L4.2719994,56.397999 5.4300003,56.397999 5.4300003,49.737999z M4.2959995,39.964001L4.2959995,46.528 40.591,46.528 40.591,39.964001z M4.2959995,27.993L4.2959995,34.557999 40.591,34.557999 40.591,27.993z M4.2959995,16.024L4.2959995,22.589001 40.591,22.589001 40.591,16.024z M4.2959995,4.2469997L4.2959995,10.812 40.591,10.812 40.591,4.2469997z M0,0L45.176998,0 45.176998,60.669899 43.246101,60.669899 43.246101,64 38.806,64 38.806,60.669899 6.1783905,60.669899 6.1783905,64 1.7382402,64 1.7382402,60.669899 0,60.669899z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
-                                            <Path.RenderTransform>
-                                                <TransformGroup>
-                                                    <TransformGroup.Children>
-                                                        <RotateTransform Angle="0" />
-                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
-                                                    </TransformGroup.Children>
-                                                </TransformGroup>
-                                            </Path.RenderTransform>
-                                        </Path>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ToggleButton.Style>
-            </ToggleButton>
-            <ToggleButton Command="{Binding ServerCommand}" CommandParameter="server2" ToolTip="Server 2">
-                <ToggleButton.Style>
-                    <Style TargetType="ToggleButton">
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                        <Setter Property="Height" Value="32"/>
-                        <Setter Property="Width" Value="32"/>
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        <Setter Property="BorderBrush">
-                            <Setter.Value>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
-                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
-                                    <GradientStop Color="#FF718597" Offset="0.375"/>
-                                    <GradientStop Color="#FF617584" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ToggleButton">
-                                    <Grid>
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal"/>
-                                                <VisualState x:Name="MouseOver">
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
-                                                    </Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="Pressed"/>
-                                                <VisualState x:Name="Disabled"/>
-                                            </VisualStateGroup>
-                                            <VisualStateGroup x:Name="FocusStates">
-                                                <VisualState x:Name="Focused"/>
-                                                <VisualState x:Name="Unfocused"/>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <Path x:Name="path" Data="M39.022999,49.737999L39.022999,56.397999 40.181,56.397999 40.181,49.737999z M36.706001,49.737999L36.706001,56.397999 37.864002,56.397999 37.864002,49.737999z M34.389,49.737999L34.389,56.397999 35.548,56.397999 35.548,49.737999z M32.073002,49.737999L32.073002,56.397999 33.231998,56.397999 33.231998,49.737999z M29.756001,49.737999L29.756001,56.397999 30.914001,56.397999 30.914001,49.737999z M27.439001,49.737999L27.439001,56.397999 28.598,56.397999 28.598,49.737999z M25.122,49.737999L25.122,56.397999 26.281,56.397999 26.281,49.737999z M22.806,49.737999L22.806,56.397999 23.963001,56.397999 23.963001,49.737999z M20.49,49.737999L20.49,56.397999 21.647001,56.397999 21.647001,49.737999z M18.172001,49.737999L18.172001,56.397999 19.331001,56.397999 19.331001,49.737999z M15.856,49.737999L15.856,56.397999 17.014,56.397999 17.014,49.737999z M13.539001,49.737999L13.539001,56.397999 14.697001,56.397999 14.697001,49.737999z M11.221002,49.737999L11.221002,56.397999 12.38,56.397999 12.38,49.737999z M8.9050016,49.737999L8.9050016,56.397999 10.064,56.397999 10.064,49.737999z M6.5890007,49.737999L6.5890007,56.397999 7.7469997,56.397999 7.7469997,49.737999z M4.2719994,49.737999L4.2719994,56.397999 5.4300003,56.397999 5.4300003,49.737999z M4.2959995,39.964001L4.2959995,46.528 40.591,46.528 40.591,39.964001z M4.2959995,27.993L4.2959995,34.557999 40.591,34.557999 40.591,27.993z M4.2959995,16.024L4.2959995,22.589001 40.591,22.589001 40.591,16.024z M4.2959995,4.2469997L4.2959995,10.812 40.591,10.812 40.591,4.2469997z M0,0L45.176998,0 45.176998,60.669899 43.246101,60.669899 43.246101,64 38.806,64 38.806,60.669899 6.1783905,60.669899 6.1783905,64 1.7382402,64 1.7382402,60.669899 0,60.669899z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
-                                            <Path.RenderTransform>
-                                                <TransformGroup>
-                                                    <TransformGroup.Children>
-                                                        <RotateTransform Angle="0" />
-                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
-                                                    </TransformGroup.Children>
-                                                </TransformGroup>
-                                            </Path.RenderTransform>
-                                        </Path>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ToggleButton.Style>
-            </ToggleButton>
-            <Rectangle Width="30" Height="1" Fill="LightGray"/>
-
-            <ToggleButton Command="{Binding ServicesCommand}" CommandParameter="services" IsChecked="True" ToolTip="Services">
-                <ToggleButton.Style>
-                    <Style TargetType="ToggleButton">
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                        <Setter Property="Height" Value="32"/>
-                        <Setter Property="Width" Value="32"/>
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        <Setter Property="BorderBrush">
-                            <Setter.Value>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
-                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
-                                    <GradientStop Color="#FF718597" Offset="0.375"/>
-                                    <GradientStop Color="#FF617584" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ToggleButton">
-                                    <Grid>
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal"/>
-                                                <VisualState x:Name="MouseOver">
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0" To="#FF599737" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
-                                                    </Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="Pressed"/>
-                                                <VisualState x:Name="Disabled"/>
-                                            </VisualStateGroup>
-                                            <VisualStateGroup x:Name="FocusStates">
-                                                <VisualState x:Name="Focused"/>
-                                                <VisualState x:Name="Unfocused"/>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <Path x:Name="path" Data="M23.253799,51.030369C21.992199,51.043957 20.758548,51.662549 20.012491,52.791646 18.818798,54.598202 19.316827,57.040463 21.124303,58.234765 22.932258,59.429383 25.374185,58.929718 26.567878,57.123162 27.761571,55.316609 27.263542,52.874348 25.455587,51.67973 24.777784,51.231865 24.010761,51.022217 23.253799,51.030369z M22.95236,44.11538L23.798931,47.304394 23.820499,47.409985C24.419302,47.450589,25.015712,47.566529,25.599384,47.75372L25.665401,47.653805 27.71519,45.074414 30.712991,47.05523 29.056375,49.909523 28.999517,49.995572C29.403156,50.459382,29.745935,50.96333,30.019874,51.498707L30.128641,51.47649 33.382753,51.007336 34.101965,54.52837 30.931781,55.469166 30.838098,55.488305C30.796382,56.089818,30.680124,56.688778,30.491348,57.274849L30.582653,57.335179 33.215211,59.303353 31.233726,62.302166 28.327211,60.725739 28.246421,60.672356C27.781021,61.076333,27.275636,61.418175,26.738351,61.692925L26.75992,61.79852 27.228536,65.052334 23.707992,65.771924 22.767259,62.601735 22.747476,62.504876C22.147392,62.462052,21.549863,62.344685,20.96491,62.155278L20.901104,62.251843 18.932104,64.884617 15.934304,62.903801 17.510131,59.996125 17.5692,59.906731C17.168106,59.443226,16.828031,58.940381,16.555049,58.405632L16.438343,58.429474 13.164777,58.805424 12.446047,55.284703 15.634409,54.436963 15.743176,54.414742C15.785224,53.81688,15.901978,53.222367,16.089817,52.639798L15.984646,52.570305 13.405155,50.521821 15.38664,47.523007 18.240089,49.179749 18.334741,49.242291C18.796659,48.841507,19.298553,48.50079,19.83155,48.22733L19.807064,48.107445 19.431335,44.834656z M49.723844,33.902482C47.754144,33.899346 45.876459,35.054593 45.058038,36.977158 43.966814,39.540581 45.164156,42.51574 47.72891,43.607533 50.294344,44.699612 53.268716,43.500313 54.359941,40.93689 55.451162,38.373471 54.25382,35.398312 51.688386,34.306229 51.047197,34.03328 50.380407,33.903527 49.723844,33.902482z M46.764089,25.314396L48.57591,29.153679 48.627725,29.282303C49.394968,29.194663,50.176679,29.202919,50.958807,29.304303L51.019159,29.162531 53.014371,25.422284 57.268163,27.233082 55.834356,31.229943 55.782377,31.352042C56.400896,31.845299,56.951707,32.403485,57.4227,33.017426L57.555193,32.964055 61.564512,31.614798 63.292242,35.903843 59.498651,37.830498 59.384534,37.876465C59.471403,38.647397,59.463342,39.4324,59.360513,40.217926L59.490072,40.273079 63.278696,42.15268 61.467306,46.407864 57.422933,45.087639 57.308294,45.038842C56.813104,45.658143,56.252882,46.208096,55.636716,46.680554L55.688528,46.809174 57.037077,50.818223 52.748724,52.546277 50.822103,48.752675 50.77458,48.63469C50.005197,48.719819,49.221742,48.710019,48.437479,48.606122L48.379148,48.743145 46.498571,52.532193 42.244779,50.721394 43.563951,46.675736 43.617948,46.548886C43.002721,46.055428,42.455587,45.498009,41.985956,44.88464L41.843793,44.94191 37.788213,46.177731 36.061163,41.88897 39.899366,40.07586 40.031858,40.022484C39.946256,39.256104,39.955976,38.476613,40.058431,37.695736L39.9092,37.632206 36.169088,35.638649 37.980478,31.383465 41.976339,32.817646 42.110651,32.874821C42.602174,32.260369,43.158235,31.712649,43.769277,31.242821L43.710455,31.096791 42.475057,27.042162z M18.660989,11.792016C14.879982,11.792016 11.804999,14.86901 11.804999,18.647999 11.804999,22.426989 14.879982,25.504014 18.660989,25.504014 22.443004,25.504014 25.517988,22.426989 25.517988,18.647999 25.517988,14.86901 22.443004,11.792016 18.660989,11.792016z M15.595985,0L21.867015,0 22.201,5.7499971 22.201,5.9300189C23.234996,6.2170067,24.219005,6.6209984,25.133009,7.1370196L25.270002,6.9999967 29.556991,3.1860025 33.992021,7.6209974 30.28099,12.041008 30.163009,12.15902C30.681015,13.075005,31.087997,14.059013,31.376998,15.094017L31.568008,15.094017 37.295,15.426993 37.295,21.699999 31.546005,22.201006 31.376998,22.201006C31.087997,23.236987,30.681015,24.220995,30.163009,25.137986L30.296005,25.271012 34.108995,29.557997 29.675003,33.992993 25.254987,30.281996 25.133009,30.159987C24.217998,30.675002,23.234996,31.078993,22.201,31.366011L22.201,31.568007 21.867015,37.296002 15.595985,37.296002 15.092994,31.546004 15.092994,31.358992C14.062995,31.069991,13.083991,30.664992,12.172003,30.149001L12.025,30.296004 7.619999,33.992993 3.1860064,29.557997 7.0130043,25.255997 7.1499978,25.119004C6.6359897,24.207995,6.2339817,23.229998,5.9469939,22.201006L5.7269927,22.201006 0,21.699999 0,15.426993 5.7489958,15.094017 5.9469939,15.094017C6.2339817,14.066001,6.6369968,13.086998,7.1499978,12.176018L6.9989968,12.025017 3.3029807,7.6209974 7.7379799,3.1860025 12.039008,7.0150104 12.172003,7.148006C13.082984,6.6310081,14.062995,6.2260094,15.092994,5.9370079L15.092994,5.728024z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
-                                            <Path.RenderTransform>
-                                                <TransformGroup>
-                                                    <TransformGroup.Children>
-                                                        <RotateTransform Angle="0" />
-                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
-                                                    </TransformGroup.Children>
-                                                </TransformGroup>
-                                            </Path.RenderTransform>
-                                        </Path>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ToggleButton.Style>
-            </ToggleButton>
-            <ToggleButton Command="{Binding ServicesCommand}" CommandParameter="http" ToolTip="Http">
-                <ToggleButton.Style>
-                    <Style TargetType="ToggleButton">
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                        <Setter Property="Height" Value="32"/>
-                        <Setter Property="Width" Value="32"/>
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        <Setter Property="BorderBrush">
-                            <Setter.Value>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
-                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
-                                    <GradientStop Color="#FF718597" Offset="0.375"/>
-                                    <GradientStop Color="#FF617584" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ToggleButton">
-                                    <Grid>
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal"/>
-                                                <VisualState x:Name="MouseOver">
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
-                                                    </Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="Pressed"/>
-                                                <VisualState x:Name="Disabled"/>
-                                            </VisualStateGroup>
-                                            <VisualStateGroup x:Name="FocusStates">
-                                                <VisualState x:Name="Focused"/>
-                                                <VisualState x:Name="Unfocused"/>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <Path x:Name="path" Data="M50.88357,42.746001L59.590027,42.746001C56.096504,48.155969 50.809469,52.413583 44.573027,54.350999 45.970737,52.90976 47.224745,51.13244 48.298852,49.111627 49.305459,47.231608 50.167464,45.037704 50.88357,42.746001z M38.065026,42.746001L48.048027,42.746001C47.439939,44.587245 46.728354,46.341187 45.930169,47.842523 43.669814,52.053521 40.84687,54.640885 37.959027,55.361001z M24.647027,42.746001L35.367027,42.746001 35.262227,55.488C32.137811,55.014012 29.063614,52.292775 26.688022,47.680886 25.906777,46.167821 25.232963,44.597558 24.647027,42.746001z M53.054509,29.353L63.962029,29.353C63.721714,33.179835,62.721659,36.806071,61.108366,40.055001L51.624027,40.055001C52.430874,36.754069,52.924301,33.140836,53.054509,29.353z M38.170128,29.353L50.361026,29.353C50.221024,33.179835,49.691115,36.79847,48.850001,40.055001L38.088027,40.055001z M32.477137,29.353L35.479026,29.353 35.390431,40.055001 23.899201,40.055001C23.759927,39.485995,23.64811,38.893491,23.532027,38.304984L30.852927,30.983315z M51.817026,15.522L61.286795,15.522C62.917055,18.915422,63.87343,22.666856,63.999027,26.663L53.091095,26.663C53.041697,22.712358,52.597707,18.959623,51.817026,15.522z M38.288123,15.522L49.039695,15.522C49.859855,18.906222,50.34363,22.670656,50.397027,26.663L38.201027,26.663z M24.1148,15.522L35.598027,15.522 35.507425,26.663 22.573027,26.663C22.690217,22.670656,23.237161,18.893221,24.1148,15.522z M45.009026,1.2940006C51.193827,3.329155,56.408026,7.3724136,59.811028,12.823001L51.112427,12.823001C50.436027,10.537905 49.616326,8.4791198 48.653526,6.5936909 47.606526,4.5545464 46.381826,2.7536612 45.009026,1.2940006z M28.387008,1.1539993C26.986008,2.5949659 25.728007,4.3719254 24.651007,6.393878 21.713005,11.898751 19.917006,19.712571 19.846004,27.959381L19.840006,27.958382C19.837006,28.406371,19.857006,28.84236,19.865005,29.28435L29.154008,29.28435 14.578003,43.862014 0,29.28435 8.972002,29.28435C8.9510021,28.811361 8.8980026,28.347372 8.9010029,27.872383 9.0060024,15.41567 17.196005,4.6269188 28.387008,1.1539993z M38.41373,0.17300034C41.294617,0.93873405 44.0772,3.5754538 46.256366,7.8294334 47.026489,9.3294687 47.70371,10.988458 48.285027,12.823001L38.316027,12.823001z M35.725027,0L35.618126,12.823001 24.911027,12.823001C25.523703,11.000172 26.220979,9.1550832 27.022376,7.6654897 29.470279,3.0950184 32.587498,0.42575836 35.725027,0z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
-                                            <Path.RenderTransform>
-                                                <TransformGroup>
-                                                    <TransformGroup.Children>
-                                                        <RotateTransform Angle="0" />
-                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
-                                                    </TransformGroup.Children>
-                                                </TransformGroup>
-                                            </Path.RenderTransform>
-                                        </Path>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ToggleButton.Style>
-            </ToggleButton>
-            <Rectangle Width="30" Height="1" Fill="LightGray"/>
-
-            <ToggleButton Command="{Binding SourceCommand}" CommandParameter="generic" IsChecked="True" ToolTip="Generic source">
-                <ToggleButton.Style>
-                    <Style TargetType="ToggleButton">
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                        <Setter Property="Height" Value="32"/>
-                        <Setter Property="Width" Value="32"/>
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        <Setter Property="BorderBrush">
-                            <Setter.Value>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
-                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
-                                    <GradientStop Color="#FF718597" Offset="0.375"/>
-                                    <GradientStop Color="#FF617584" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ToggleButton">
-                                    <Grid>
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal"/>
-                                                <VisualState x:Name="MouseOver">
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0" To="#FF599737" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
-                                                    </Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="Pressed"/>
-                                                <VisualState x:Name="Disabled"/>
-                                            </VisualStateGroup>
-                                            <VisualStateGroup x:Name="FocusStates">
-                                                <VisualState x:Name="Focused"/>
-                                                <VisualState x:Name="Unfocused"/>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <Path x:Name="path" Data="M3.8176858,21.768999L49.151282,21.768999C50.623992,21.768999,51.818,22.963116,51.818,24.435837L51.818,62.436365C51.818,63.908987,50.623992,65.103003,49.151282,65.103003L3.8176858,65.103003C2.3450273,65.103003,1.1509998,63.908987,1.151,62.436365L1.151,24.435837C1.1509998,22.963116,2.3450273,21.768999,3.8176858,21.768999z M2.4479095,2.4466457L2.4479095,15.505113 44.472518,15.505113 44.472518,2.4466457z M50.154002,0L60.385134,0C61.736758,0,62.832999,1.0964336,62.832999,2.4466457L62.832999,15.505113C62.832999,16.855405,61.736758,17.952999,60.385134,17.952999L50.154002,17.952999z M2.4479095,0L48.160002,0 48.160002,17.952999 2.4479095,17.952999C1.0962753,17.952999,-2.3841858E-07,16.855405,0,15.505113L0,2.4466457C-2.3841858E-07,1.0964336,1.0962753,0,2.4479095,0z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
-                                            <Path.RenderTransform>
-                                                <TransformGroup>
-                                                    <TransformGroup.Children>
-                                                        <RotateTransform Angle="0" />
-                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
-                                                    </TransformGroup.Children>
-                                                </TransformGroup>
-                                            </Path.RenderTransform>
-                                        </Path>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ToggleButton.Style>
-            </ToggleButton>
-            <ToggleButton Command="{Binding SourceCommand}" CommandParameter="security" ToolTip="Security source">
-                <ToggleButton.Style>
-                    <Style TargetType="ToggleButton">
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                        <Setter Property="Height" Value="32"/>
-                        <Setter Property="Width" Value="32"/>
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        <Setter Property="BorderBrush">
-                            <Setter.Value>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
-                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
-                                    <GradientStop Color="#FF718597" Offset="0.375"/>
-                                    <GradientStop Color="#FF617584" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ToggleButton">
-                                    <Grid>
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal"/>
-                                                <VisualState x:Name="MouseOver">
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0" To="#FFDE5145" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
-                                                    </Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="Pressed"/>
-                                                <VisualState x:Name="Disabled"/>
-                                            </VisualStateGroup>
-                                            <VisualStateGroup x:Name="FocusStates">
-                                                <VisualState x:Name="Focused"/>
-                                                <VisualState x:Name="Unfocused"/>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <Path x:Name="path" Data="M15.000253,26.350065C17.515902,27.464167,24.148827,30.405571,26.144964,31.288872L26.551271,31.469273C26.551271,32.889874 26.551271,42.850891 26.551271,45.956295 23.825821,44.751793 16.258078,41.396286 15.000253,40.839188 15.000253,39.417786 15.000253,29.45557 15.000253,26.350065z M41.000748,26.293465C41.000748,29.401669 41.000748,39.361885 41.000748,40.781788 39.741623,41.340389 32.070778,44.745392 29.336525,45.956295L29.336525,31.469273C30.111139,31.126272,33.306602,29.707569,36.288357,28.385267z M28.0578,19.321554C28.884617,19.686754 35.465443,22.603958 38.959106,24.150862 36.384758,25.292263 32.117779,27.187265 29.693132,28.264168L27.943098,29.04077 27.266087,28.738768C25.314249,27.873568 20.043249,25.538363 17.043192,24.208261 20.552458,22.651659 27.230986,19.687954 28.0578,19.321554z M28.057613,16.405001C27.865072,16.405001,27.672344,16.445049,27.49259,16.52515L12.651208,23.206261C12.595207,23.25906 12.545806,23.317659 12.418204,23.494659 12.375203,23.56566 12.343903,23.641861 12.271001,23.834461 12.2346,23.956261 12.215,24.079861 12.215,24.208261L12.215,41.745388C12.215,42.29549,12.539207,42.796188,13.043116,43.020088L27.44059,49.388C27.495291,49.413399 27.552591,49.427502 27.609793,49.440701 27.665794,49.453701 27.717894,49.468601 27.772596,49.4744 27.829897,49.483002 27.887098,49.483002 27.944498,49.483002 28.001801,49.483002 28.0578,49.483002 28.116303,49.4744 28.172302,49.468601 28.224504,49.453701 28.276505,49.440701 28.337706,49.427502 28.393707,49.413399 28.50831,49.371601L42.960384,42.959492C43.464394,42.738091,43.785999,42.238091,43.785999,41.687286L43.785999,24.150862C43.785999,24.023161,43.7677,23.896961,43.733799,23.777061L43.686996,23.662561C43.656998,23.583761 43.625797,23.508261 43.502094,23.32156 43.455193,23.25906 43.405693,23.20166 42.957783,22.877459L28.621511,16.52515C28.442509,16.445049,28.250155,16.405001,28.057613,16.405001z M28.0839,0C28.0839,0 37.664616,10.7749 54.53677,10.7749 54.53677,10.7749 56.255554,32.329601 50.629303,44.518299 46.700935,53.017101 38.763504,59.893299 27.391209,64 16.021509,59.893299 8.0840788,52.6824 4.1595841,44.1824 -1.4718359,31.9937 0.24694874,10.7749 0.24694831,10.7749 17.119198,10.7749 28.0839,0 28.0839,0z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
-                                            <Path.RenderTransform>
-                                                <TransformGroup>
-                                                    <TransformGroup.Children>
-                                                        <RotateTransform Angle="0" />
-                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
-                                                    </TransformGroup.Children>
-                                                </TransformGroup>
-                                            </Path.RenderTransform>
-                                        </Path>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ToggleButton.Style>
-            </ToggleButton>
-
-            <Rectangle Width="30" Height="1" Fill="LightGray"/>
-
-            <Button Command="{Binding LevelCommand}" CommandParameter="All" ToolTip="All entries">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                        <Setter Property="Height" Value="32"/>
-                        <Setter Property="Width" Value="32"/>
-                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        <Setter Property="BorderBrush">
-                            <Setter.Value>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
-                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
-                                    <GradientStop Color="#FF718597" Offset="0.375"/>
-                                    <GradientStop Color="#FF617584" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Grid>
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal"/>
-                                                <VisualState x:Name="MouseOver">
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0" To="#FF599737" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
-                                                    </Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="Pressed"/>
-                                                <VisualState x:Name="Disabled"/>
-                                            </VisualStateGroup>
-                                            <VisualStateGroup x:Name="FocusStates">
-                                                <VisualState x:Name="Focused"/>
-                                                <VisualState x:Name="Unfocused"/>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <Path x:Name="path" Data="M25.433514,31.314999L27.893,39.961003 19.228,37.155003z M27.055945,24.217246L27.055945,26.55592 50.248528,26.55592 50.248528,24.217246z M24.006459,14.442549L24.006459,16.782424 50.248528,16.782424 50.248528,14.442549z M9.3906289,13.986001L23.171001,28.622828 16.965093,34.464997 3.1860003,19.825871z M4.4326482,10.770764C5.2855093,10.78666,6.1326855,11.050906,6.8550007,11.560143L0.64940071,17.384999C-0.4182868,15.667789 -0.16308117,13.386741 1.3681355,11.9482 2.2301769,11.140427 3.3361115,10.750327 4.4326482,10.770764z M13.89451,4.5690429L13.89451,6.9088671 50.248528,6.9088671 50.248528,4.5690429z M11.569022,0L52.172921,0C54.321412,7.2022522E-07,56.061001,1.7408223,56.061001,3.8866794L56.061001,26.481522C56.061001,28.628699,54.321412,30.368081,52.172921,30.368081L49.420334,30.368081C49.420334,30.368081 48.037541,36.047818 55.382603,37.559502 55.382603,37.559502 42.949067,39.510087 40.936074,30.368081L27.923041,30.368081 7.6810001,8.890537 7.6810001,3.8866794C7.6810002,1.7408223,9.4205718,7.2022522E-07,11.569022,0z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
-                                            <Path.RenderTransform>
-                                                <TransformGroup>
-                                                    <TransformGroup.Children>
-                                                        <RotateTransform Angle="0" />
-                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
-                                                    </TransformGroup.Children>
-                                                </TransformGroup>
-                                            </Path.RenderTransform>
-                                        </Path>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
             <Button Command="{Binding LevelCommand}" CommandParameter="Error" ToolTip="Only Errors">
                 <Button.Style>
                     <Style TargetType="Button">
@@ -623,6 +236,397 @@
                     </Style>
                 </Button.Style>
             </Button>
+            <Button Command="{Binding LevelCommand}" CommandParameter="All" ToolTip="All entries">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Width" Value="32"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0" To="#FF599737" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="Disabled"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused"/>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M25.433514,31.314999L27.893,39.961003 19.228,37.155003z M27.055945,24.217246L27.055945,26.55592 50.248528,26.55592 50.248528,24.217246z M24.006459,14.442549L24.006459,16.782424 50.248528,16.782424 50.248528,14.442549z M9.3906289,13.986001L23.171001,28.622828 16.965093,34.464997 3.1860003,19.825871z M4.4326482,10.770764C5.2855093,10.78666,6.1326855,11.050906,6.8550007,11.560143L0.64940071,17.384999C-0.4182868,15.667789 -0.16308117,13.386741 1.3681355,11.9482 2.2301769,11.140427 3.3361115,10.750327 4.4326482,10.770764z M13.89451,4.5690429L13.89451,6.9088671 50.248528,6.9088671 50.248528,4.5690429z M11.569022,0L52.172921,0C54.321412,7.2022522E-07,56.061001,1.7408223,56.061001,3.8866794L56.061001,26.481522C56.061001,28.628699,54.321412,30.368081,52.172921,30.368081L49.420334,30.368081C49.420334,30.368081 48.037541,36.047818 55.382603,37.559502 55.382603,37.559502 42.949067,39.510087 40.936074,30.368081L27.923041,30.368081 7.6810001,8.890537 7.6810001,3.8866794C7.6810002,1.7408223,9.4205718,7.2022522E-07,11.569022,0z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <TransformGroup.Children>
+                                                        <RotateTransform Angle="0" />
+                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                    </TransformGroup.Children>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Rectangle Width="30" Height="1" Fill="LightGray"/>
+
+            <ToggleButton Command="{Binding ServicesCommand}" CommandParameter="services" IsChecked="True" ToolTip="Services">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Width" Value="32"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0" To="#FF599737" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="Disabled"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused"/>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M23.253799,51.030369C21.992199,51.043957 20.758548,51.662549 20.012491,52.791646 18.818798,54.598202 19.316827,57.040463 21.124303,58.234765 22.932258,59.429383 25.374185,58.929718 26.567878,57.123162 27.761571,55.316609 27.263542,52.874348 25.455587,51.67973 24.777784,51.231865 24.010761,51.022217 23.253799,51.030369z M22.95236,44.11538L23.798931,47.304394 23.820499,47.409985C24.419302,47.450589,25.015712,47.566529,25.599384,47.75372L25.665401,47.653805 27.71519,45.074414 30.712991,47.05523 29.056375,49.909523 28.999517,49.995572C29.403156,50.459382,29.745935,50.96333,30.019874,51.498707L30.128641,51.47649 33.382753,51.007336 34.101965,54.52837 30.931781,55.469166 30.838098,55.488305C30.796382,56.089818,30.680124,56.688778,30.491348,57.274849L30.582653,57.335179 33.215211,59.303353 31.233726,62.302166 28.327211,60.725739 28.246421,60.672356C27.781021,61.076333,27.275636,61.418175,26.738351,61.692925L26.75992,61.79852 27.228536,65.052334 23.707992,65.771924 22.767259,62.601735 22.747476,62.504876C22.147392,62.462052,21.549863,62.344685,20.96491,62.155278L20.901104,62.251843 18.932104,64.884617 15.934304,62.903801 17.510131,59.996125 17.5692,59.906731C17.168106,59.443226,16.828031,58.940381,16.555049,58.405632L16.438343,58.429474 13.164777,58.805424 12.446047,55.284703 15.634409,54.436963 15.743176,54.414742C15.785224,53.81688,15.901978,53.222367,16.089817,52.639798L15.984646,52.570305 13.405155,50.521821 15.38664,47.523007 18.240089,49.179749 18.334741,49.242291C18.796659,48.841507,19.298553,48.50079,19.83155,48.22733L19.807064,48.107445 19.431335,44.834656z M49.723844,33.902482C47.754144,33.899346 45.876459,35.054593 45.058038,36.977158 43.966814,39.540581 45.164156,42.51574 47.72891,43.607533 50.294344,44.699612 53.268716,43.500313 54.359941,40.93689 55.451162,38.373471 54.25382,35.398312 51.688386,34.306229 51.047197,34.03328 50.380407,33.903527 49.723844,33.902482z M46.764089,25.314396L48.57591,29.153679 48.627725,29.282303C49.394968,29.194663,50.176679,29.202919,50.958807,29.304303L51.019159,29.162531 53.014371,25.422284 57.268163,27.233082 55.834356,31.229943 55.782377,31.352042C56.400896,31.845299,56.951707,32.403485,57.4227,33.017426L57.555193,32.964055 61.564512,31.614798 63.292242,35.903843 59.498651,37.830498 59.384534,37.876465C59.471403,38.647397,59.463342,39.4324,59.360513,40.217926L59.490072,40.273079 63.278696,42.15268 61.467306,46.407864 57.422933,45.087639 57.308294,45.038842C56.813104,45.658143,56.252882,46.208096,55.636716,46.680554L55.688528,46.809174 57.037077,50.818223 52.748724,52.546277 50.822103,48.752675 50.77458,48.63469C50.005197,48.719819,49.221742,48.710019,48.437479,48.606122L48.379148,48.743145 46.498571,52.532193 42.244779,50.721394 43.563951,46.675736 43.617948,46.548886C43.002721,46.055428,42.455587,45.498009,41.985956,44.88464L41.843793,44.94191 37.788213,46.177731 36.061163,41.88897 39.899366,40.07586 40.031858,40.022484C39.946256,39.256104,39.955976,38.476613,40.058431,37.695736L39.9092,37.632206 36.169088,35.638649 37.980478,31.383465 41.976339,32.817646 42.110651,32.874821C42.602174,32.260369,43.158235,31.712649,43.769277,31.242821L43.710455,31.096791 42.475057,27.042162z M18.660989,11.792016C14.879982,11.792016 11.804999,14.86901 11.804999,18.647999 11.804999,22.426989 14.879982,25.504014 18.660989,25.504014 22.443004,25.504014 25.517988,22.426989 25.517988,18.647999 25.517988,14.86901 22.443004,11.792016 18.660989,11.792016z M15.595985,0L21.867015,0 22.201,5.7499971 22.201,5.9300189C23.234996,6.2170067,24.219005,6.6209984,25.133009,7.1370196L25.270002,6.9999967 29.556991,3.1860025 33.992021,7.6209974 30.28099,12.041008 30.163009,12.15902C30.681015,13.075005,31.087997,14.059013,31.376998,15.094017L31.568008,15.094017 37.295,15.426993 37.295,21.699999 31.546005,22.201006 31.376998,22.201006C31.087997,23.236987,30.681015,24.220995,30.163009,25.137986L30.296005,25.271012 34.108995,29.557997 29.675003,33.992993 25.254987,30.281996 25.133009,30.159987C24.217998,30.675002,23.234996,31.078993,22.201,31.366011L22.201,31.568007 21.867015,37.296002 15.595985,37.296002 15.092994,31.546004 15.092994,31.358992C14.062995,31.069991,13.083991,30.664992,12.172003,30.149001L12.025,30.296004 7.619999,33.992993 3.1860064,29.557997 7.0130043,25.255997 7.1499978,25.119004C6.6359897,24.207995,6.2339817,23.229998,5.9469939,22.201006L5.7269927,22.201006 0,21.699999 0,15.426993 5.7489958,15.094017 5.9469939,15.094017C6.2339817,14.066001,6.6369968,13.086998,7.1499978,12.176018L6.9989968,12.025017 3.3029807,7.6209974 7.7379799,3.1860025 12.039008,7.0150104 12.172003,7.148006C13.082984,6.6310081,14.062995,6.2260094,15.092994,5.9370079L15.092994,5.728024z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <TransformGroup.Children>
+                                                        <RotateTransform Angle="0" />
+                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                    </TransformGroup.Children>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+            <ToggleButton Command="{Binding ServicesCommand}" CommandParameter="http" ToolTip="Http">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Width" Value="32"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="Disabled"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused"/>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M50.88357,42.746001L59.590027,42.746001C56.096504,48.155969 50.809469,52.413583 44.573027,54.350999 45.970737,52.90976 47.224745,51.13244 48.298852,49.111627 49.305459,47.231608 50.167464,45.037704 50.88357,42.746001z M38.065026,42.746001L48.048027,42.746001C47.439939,44.587245 46.728354,46.341187 45.930169,47.842523 43.669814,52.053521 40.84687,54.640885 37.959027,55.361001z M24.647027,42.746001L35.367027,42.746001 35.262227,55.488C32.137811,55.014012 29.063614,52.292775 26.688022,47.680886 25.906777,46.167821 25.232963,44.597558 24.647027,42.746001z M53.054509,29.353L63.962029,29.353C63.721714,33.179835,62.721659,36.806071,61.108366,40.055001L51.624027,40.055001C52.430874,36.754069,52.924301,33.140836,53.054509,29.353z M38.170128,29.353L50.361026,29.353C50.221024,33.179835,49.691115,36.79847,48.850001,40.055001L38.088027,40.055001z M32.477137,29.353L35.479026,29.353 35.390431,40.055001 23.899201,40.055001C23.759927,39.485995,23.64811,38.893491,23.532027,38.304984L30.852927,30.983315z M51.817026,15.522L61.286795,15.522C62.917055,18.915422,63.87343,22.666856,63.999027,26.663L53.091095,26.663C53.041697,22.712358,52.597707,18.959623,51.817026,15.522z M38.288123,15.522L49.039695,15.522C49.859855,18.906222,50.34363,22.670656,50.397027,26.663L38.201027,26.663z M24.1148,15.522L35.598027,15.522 35.507425,26.663 22.573027,26.663C22.690217,22.670656,23.237161,18.893221,24.1148,15.522z M45.009026,1.2940006C51.193827,3.329155,56.408026,7.3724136,59.811028,12.823001L51.112427,12.823001C50.436027,10.537905 49.616326,8.4791198 48.653526,6.5936909 47.606526,4.5545464 46.381826,2.7536612 45.009026,1.2940006z M28.387008,1.1539993C26.986008,2.5949659 25.728007,4.3719254 24.651007,6.393878 21.713005,11.898751 19.917006,19.712571 19.846004,27.959381L19.840006,27.958382C19.837006,28.406371,19.857006,28.84236,19.865005,29.28435L29.154008,29.28435 14.578003,43.862014 0,29.28435 8.972002,29.28435C8.9510021,28.811361 8.8980026,28.347372 8.9010029,27.872383 9.0060024,15.41567 17.196005,4.6269188 28.387008,1.1539993z M38.41373,0.17300034C41.294617,0.93873405 44.0772,3.5754538 46.256366,7.8294334 47.026489,9.3294687 47.70371,10.988458 48.285027,12.823001L38.316027,12.823001z M35.725027,0L35.618126,12.823001 24.911027,12.823001C25.523703,11.000172 26.220979,9.1550832 27.022376,7.6654897 29.470279,3.0950184 32.587498,0.42575836 35.725027,0z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <TransformGroup.Children>
+                                                        <RotateTransform Angle="0" />
+                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                    </TransformGroup.Children>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+            <Rectangle Width="30" Height="1" Fill="LightGray"/>
+
+            <ToggleButton Command="{Binding ServerCommand}" CommandParameter="server1" IsChecked="True" ToolTip="Server 1">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Width" Value="32"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0" To="#FF0078D7" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="Disabled"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused"/>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M39.022999,49.737999L39.022999,56.397999 40.181,56.397999 40.181,49.737999z M36.706001,49.737999L36.706001,56.397999 37.864002,56.397999 37.864002,49.737999z M34.389,49.737999L34.389,56.397999 35.548,56.397999 35.548,49.737999z M32.073002,49.737999L32.073002,56.397999 33.231998,56.397999 33.231998,49.737999z M29.756001,49.737999L29.756001,56.397999 30.914001,56.397999 30.914001,49.737999z M27.439001,49.737999L27.439001,56.397999 28.598,56.397999 28.598,49.737999z M25.122,49.737999L25.122,56.397999 26.281,56.397999 26.281,49.737999z M22.806,49.737999L22.806,56.397999 23.963001,56.397999 23.963001,49.737999z M20.49,49.737999L20.49,56.397999 21.647001,56.397999 21.647001,49.737999z M18.172001,49.737999L18.172001,56.397999 19.331001,56.397999 19.331001,49.737999z M15.856,49.737999L15.856,56.397999 17.014,56.397999 17.014,49.737999z M13.539001,49.737999L13.539001,56.397999 14.697001,56.397999 14.697001,49.737999z M11.221002,49.737999L11.221002,56.397999 12.38,56.397999 12.38,49.737999z M8.9050016,49.737999L8.9050016,56.397999 10.064,56.397999 10.064,49.737999z M6.5890007,49.737999L6.5890007,56.397999 7.7469997,56.397999 7.7469997,49.737999z M4.2719994,49.737999L4.2719994,56.397999 5.4300003,56.397999 5.4300003,49.737999z M4.2959995,39.964001L4.2959995,46.528 40.591,46.528 40.591,39.964001z M4.2959995,27.993L4.2959995,34.557999 40.591,34.557999 40.591,27.993z M4.2959995,16.024L4.2959995,22.589001 40.591,22.589001 40.591,16.024z M4.2959995,4.2469997L4.2959995,10.812 40.591,10.812 40.591,4.2469997z M0,0L45.176998,0 45.176998,60.669899 43.246101,60.669899 43.246101,64 38.806,64 38.806,60.669899 6.1783905,60.669899 6.1783905,64 1.7382402,64 1.7382402,60.669899 0,60.669899z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <TransformGroup.Children>
+                                                        <RotateTransform Angle="0" />
+                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                    </TransformGroup.Children>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+            <ToggleButton Command="{Binding ServerCommand}" CommandParameter="server2" ToolTip="Server 2">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Width" Value="32"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="Disabled"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused"/>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M39.022999,49.737999L39.022999,56.397999 40.181,56.397999 40.181,49.737999z M36.706001,49.737999L36.706001,56.397999 37.864002,56.397999 37.864002,49.737999z M34.389,49.737999L34.389,56.397999 35.548,56.397999 35.548,49.737999z M32.073002,49.737999L32.073002,56.397999 33.231998,56.397999 33.231998,49.737999z M29.756001,49.737999L29.756001,56.397999 30.914001,56.397999 30.914001,49.737999z M27.439001,49.737999L27.439001,56.397999 28.598,56.397999 28.598,49.737999z M25.122,49.737999L25.122,56.397999 26.281,56.397999 26.281,49.737999z M22.806,49.737999L22.806,56.397999 23.963001,56.397999 23.963001,49.737999z M20.49,49.737999L20.49,56.397999 21.647001,56.397999 21.647001,49.737999z M18.172001,49.737999L18.172001,56.397999 19.331001,56.397999 19.331001,49.737999z M15.856,49.737999L15.856,56.397999 17.014,56.397999 17.014,49.737999z M13.539001,49.737999L13.539001,56.397999 14.697001,56.397999 14.697001,49.737999z M11.221002,49.737999L11.221002,56.397999 12.38,56.397999 12.38,49.737999z M8.9050016,49.737999L8.9050016,56.397999 10.064,56.397999 10.064,49.737999z M6.5890007,49.737999L6.5890007,56.397999 7.7469997,56.397999 7.7469997,49.737999z M4.2719994,49.737999L4.2719994,56.397999 5.4300003,56.397999 5.4300003,49.737999z M4.2959995,39.964001L4.2959995,46.528 40.591,46.528 40.591,39.964001z M4.2959995,27.993L4.2959995,34.557999 40.591,34.557999 40.591,27.993z M4.2959995,16.024L4.2959995,22.589001 40.591,22.589001 40.591,16.024z M4.2959995,4.2469997L4.2959995,10.812 40.591,10.812 40.591,4.2469997z M0,0L45.176998,0 45.176998,60.669899 43.246101,60.669899 43.246101,64 38.806,64 38.806,60.669899 6.1783905,60.669899 6.1783905,64 1.7382402,64 1.7382402,60.669899 0,60.669899z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <TransformGroup.Children>
+                                                        <RotateTransform Angle="0" />
+                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                    </TransformGroup.Children>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+            <Rectangle Width="30" Height="1" Fill="LightGray"/>
+
+            <ToggleButton Command="{Binding SourceCommand}" CommandParameter="generic" IsChecked="True" ToolTip="Generic source">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Width" Value="32"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0" To="#FF599737" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="Disabled"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused"/>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M3.8176858,21.768999L49.151282,21.768999C50.623992,21.768999,51.818,22.963116,51.818,24.435837L51.818,62.436365C51.818,63.908987,50.623992,65.103003,49.151282,65.103003L3.8176858,65.103003C2.3450273,65.103003,1.1509998,63.908987,1.151,62.436365L1.151,24.435837C1.1509998,22.963116,2.3450273,21.768999,3.8176858,21.768999z M2.4479095,2.4466457L2.4479095,15.505113 44.472518,15.505113 44.472518,2.4466457z M50.154002,0L60.385134,0C61.736758,0,62.832999,1.0964336,62.832999,2.4466457L62.832999,15.505113C62.832999,16.855405,61.736758,17.952999,60.385134,17.952999L50.154002,17.952999z M2.4479095,0L48.160002,0 48.160002,17.952999 2.4479095,17.952999C1.0962753,17.952999,-2.3841858E-07,16.855405,0,15.505113L0,2.4466457C-2.3841858E-07,1.0964336,1.0962753,0,2.4479095,0z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <TransformGroup.Children>
+                                                        <RotateTransform Angle="0" />
+                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                    </TransformGroup.Children>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+            <ToggleButton Command="{Binding SourceCommand}" CommandParameter="security" ToolTip="Security source">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Width" Value="32"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0" To="#FFDE5145" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="Disabled"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused"/>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M15.000253,26.350065C17.515902,27.464167,24.148827,30.405571,26.144964,31.288872L26.551271,31.469273C26.551271,32.889874 26.551271,42.850891 26.551271,45.956295 23.825821,44.751793 16.258078,41.396286 15.000253,40.839188 15.000253,39.417786 15.000253,29.45557 15.000253,26.350065z M41.000748,26.293465C41.000748,29.401669 41.000748,39.361885 41.000748,40.781788 39.741623,41.340389 32.070778,44.745392 29.336525,45.956295L29.336525,31.469273C30.111139,31.126272,33.306602,29.707569,36.288357,28.385267z M28.0578,19.321554C28.884617,19.686754 35.465443,22.603958 38.959106,24.150862 36.384758,25.292263 32.117779,27.187265 29.693132,28.264168L27.943098,29.04077 27.266087,28.738768C25.314249,27.873568 20.043249,25.538363 17.043192,24.208261 20.552458,22.651659 27.230986,19.687954 28.0578,19.321554z M28.057613,16.405001C27.865072,16.405001,27.672344,16.445049,27.49259,16.52515L12.651208,23.206261C12.595207,23.25906 12.545806,23.317659 12.418204,23.494659 12.375203,23.56566 12.343903,23.641861 12.271001,23.834461 12.2346,23.956261 12.215,24.079861 12.215,24.208261L12.215,41.745388C12.215,42.29549,12.539207,42.796188,13.043116,43.020088L27.44059,49.388C27.495291,49.413399 27.552591,49.427502 27.609793,49.440701 27.665794,49.453701 27.717894,49.468601 27.772596,49.4744 27.829897,49.483002 27.887098,49.483002 27.944498,49.483002 28.001801,49.483002 28.0578,49.483002 28.116303,49.4744 28.172302,49.468601 28.224504,49.453701 28.276505,49.440701 28.337706,49.427502 28.393707,49.413399 28.50831,49.371601L42.960384,42.959492C43.464394,42.738091,43.785999,42.238091,43.785999,41.687286L43.785999,24.150862C43.785999,24.023161,43.7677,23.896961,43.733799,23.777061L43.686996,23.662561C43.656998,23.583761 43.625797,23.508261 43.502094,23.32156 43.455193,23.25906 43.405693,23.20166 42.957783,22.877459L28.621511,16.52515C28.442509,16.445049,28.250155,16.405001,28.057613,16.405001z M28.0839,0C28.0839,0 37.664616,10.7749 54.53677,10.7749 54.53677,10.7749 56.255554,32.329601 50.629303,44.518299 46.700935,53.017101 38.763504,59.893299 27.391209,64 16.021509,59.893299 8.0840788,52.6824 4.1595841,44.1824 -1.4718359,31.9937 0.24694874,10.7749 0.24694831,10.7749 17.119198,10.7749 28.0839,0 28.0839,0z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <TransformGroup.Children>
+                                                        <RotateTransform Angle="0" />
+                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                    </TransformGroup.Children>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
         </StackPanel>
 
         <Grid DockPanel.Dock="Top">
@@ -635,7 +639,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Background="White">
                 <TextBlock Text="Items" FontWeight="DemiBold" FontFamily="14" Foreground="Black" 
                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                 <TextBlock Text="{Binding Entries.Count}" FontWeight="DemiBold" FontFamily="14" Foreground="DarkGreen" 
@@ -772,17 +776,45 @@
             <ProgressBar Grid.Column="5" Width="50" IsIndeterminate="{Binding IsBusy}" Visibility="{Binding BusyVisibility}"/>
         </Grid>
 
+        <!--Content="{Binding ClassName}" -->
+
         <ListView DockPanel.Dock="Top" ItemsSource="{Binding Entries}" FontSize="14">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="TimeStamp" Width="155" DisplayMemberBinding="{Binding TimeStamp}" />
-                    <GridViewColumn Width="90" DisplayMemberBinding="{Binding EventLevel}">
-                        <GridViewColumn.Header>
-                            <TextBlock Text="Level" Foreground="{Binding Color}" FontSize="14" />
-                        </GridViewColumn.Header>
+                    <GridViewColumn Header="Level" Width="90">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding EventLevel}" Foreground="{Binding Color, Converter={StaticResource stringToBrushConverter}}" FontSize="14" FontWeight="DemiBold" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Message" Width="500" DisplayMemberBinding="{Binding Message}"/>
-                    <GridViewColumn Header="Class" Width="200" DisplayMemberBinding="{Binding ClassName}"/>
+                    <GridViewColumn Header="Message" Width="380">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Expander x:Name="expanderMessage" Header="{Binding ShortMessage}">
+                                    <Border Padding="4" Margin="0,4,0,0" BorderThickness="1" BorderBrush="LightGray">
+                                        <TextBlock Text="{Binding Message}" 
+                                           FontSize="14" 
+                                           TextWrapping="WrapWithOverflow"/>
+                                    </Border>
+                                </Expander>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Class" Width="320">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Tag="{Binding}" Click="OnViewCodeCommand"
+                                        Background="White" Cursor="Hand"
+                                        BorderThickness="0">                                    
+                                    <Button.Content>
+                                        <TextBlock Text="{Binding ClassName}" FontSize="12" FontStyle="Italic" Foreground="Blue"/>
+                                    </Button.Content>
+                                </Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Line" Width="50" DisplayMemberBinding="{Binding LineNumber}"/>
                 </GridView>
             </ListView.View>

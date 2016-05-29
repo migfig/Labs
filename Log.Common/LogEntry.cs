@@ -17,6 +17,10 @@ namespace Log.Common
     {
         public DateTime TimeStamp { get; set; }
         public string Message { get; set; }
+        public string ShortMessage
+        {
+            get { return Message.Substring(0, Math.Min(Message.Length, 50)); }
+        }
         public string Source { get; set; }
         public eEventLevel EventLevel { get; set; }
         public int EventId { get; set; }
