@@ -48,12 +48,15 @@ namespace Log.Wpf.Controls
                 { eEventLevel.Critical, "top/100/Critical" }
             };
 
-            var response = await _client.GetAsync(_baseUrl + urls[level]);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var json = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<IEnumerable<LogEntry>>(json);
-            }
+                var response = await _client.GetAsync(_baseUrl + urls[level]);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<IEnumerable<LogEntry>>(json);
+                }
+            } catch(Exception) {;}
 
             return new List<LogEntry>();
         }

@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="Log.Visor.VStudio.Company.ea5d74b8-3ea9-48b3-9400-18c78569d7e5" Version="1.0" Language="en-US" Publisher="Company" />
+    <Identity Id="Log.Visor.VStudio.Company.ea5d74b8-3ea9-48b3-9400-18c78569d7e5" Version="1.0" Language="en-US" Publisher="M Figueroa" />
     <DisplayName>Log.Visor.VStudio</DisplayName>
     <Description>Empty VSIX Project.</Description>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
+    <InstallationTarget Version="[12.0,15.0)" Id="Microsoft.VisualStudio.Pro" />
   </Installation>
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
