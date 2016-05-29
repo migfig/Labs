@@ -38,5 +38,13 @@ namespace Log.Wpf.Controls
                 string.Format(System.Globalization.CultureInfo.CurrentUICulture, "Invoked '{0}'", this.ToString()),
                 "LogViewer");
         }
+
+        private void OnComboBoxKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if(e.Key == System.Windows.Input.Key.Enter)
+            {
+                LogViewModel.ViewModel.SelectedFilter = (sender as ComboBox).Text;
+            }
+        }
     }
 }

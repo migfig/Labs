@@ -9,7 +9,7 @@
 
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Left" Margin="0,22,0,0">
-            <Button Content="Test" Command="{Binding RefreshCommand}" ToolTip="Refresh">
+            <Button Command="{Binding RefreshCommand}" ToolTip="Refresh">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="White"/>
@@ -627,27 +627,149 @@
 
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="50*"/>
                 <ColumnDefinition Width="50*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Filter" Background="White" Foreground="Black" FontSize="14" />
-            <ComboBox Grid.Column="1" ItemsSource="{Binding Filters}" IsEditable="True">
+            <Button Command="{Binding ClearFilterCommand}" ToolTip="Clear Filters">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Width" Value="32"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0" To="#FFFFCE42" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="Disabled"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused"/>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M399.217,88.5865C557.063,88.5865 685.002,120.02 685.002,158.733 685.002,197.452 557.063,228.88 399.217,228.88 241.371,228.88 113.432,197.452 113.432,158.733 113.432,120.02 241.371,88.5865 399.217,88.5865z M391.943,26.4302C214.342,26.4302 23.2502,64.6632 23.2502,148.685 23.2502,163.261 29.375,176.42 39.8554,188.274L286.778,480.473 286.778,741.566 496.434,741.566 496.434,480.473 497.103,480.473 744.794,187.733C754.509,176.42 760.631,163.261 760.631,148.685 760.631,64.6632 569.541,26.4302 391.943,26.4302z M391.943,0C457.389,1E-06 783.883,7.17856 783.883,148.685 783.883,169.349 776.325,188.6 761.395,205.894L761.539,206.057 519.686,491.951 519.686,768 263.525,768 263.525,491.136 22.3396,206.057 22.4877,205.894C7.56019,188.6 0,169.349 0,148.685 0,7.17856 326.487,1E-06 391.943,0z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <TransformGroup.Children>
+                                                        <RotateTransform Angle="0" />
+                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                    </TransformGroup.Children>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <ComboBox Grid.Column="1" ItemsSource="{Binding FilterModes}" 
+                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedFilterMode}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" FontSize="14"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ProgressBar Grid.Column="2" Width="50" IsIndeterminate="{Binding IsBusy}" Visibility="{Binding BusyVisibility}"/>
+            <ComboBox Grid.Column="2" ItemsSource="{Binding Filters}" FontSize="14"
+                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedFilter}"
+                      Text="{Binding Mode=TwoWay, Path=SelectedFilter, UpdateSourceTrigger=PropertyChanged}"
+                      IsEditable="True">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="14"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Grid.Column="3" Command="{Binding AddFilterCommand}" ToolTip="Add Filter">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Width" Value="32"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0" To="#FFFFCE42" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="Disabled"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused"/>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M0.33299977,11.255001L37.041492,11.255001C37.024494,11.5465 36.998592,11.833101 36.998592,12.127501 36.998592,16.835509 39.218594,21.028417 42.66,23.739322L32.947788,35.026046 32.947788,63.215999 21.340874,56.585582 21.340874,34.473741z M1.2878363,4.0470002L39.629997,4.0470002C38.815098,5.2892774,38.190102,6.6619451,37.777203,8.1230001L1.2878363,8.1230001C0.57543737,8.1229997,-1.1920924E-07,7.5472746,1.8521793E-14,6.8362782L1.8521793E-14,5.3361609C-1.1920924E-07,4.622725,0.57543737,4.0469999,1.2878363,4.0470002z M51.657997,2.851L51.658268,8.9899988 45.519997,8.9899988 45.520729,13.211999 51.658455,13.211999 51.658726,19.349998 55.881996,19.350998 55.881699,13.211999 62.019997,13.211999 62.019997,8.9899988 55.881493,8.9899988 55.881195,2.8514885z M53.78915,0C59.934986,0 64.920998,5.0391269 64.920998,11.25555 64.920998,17.470431 59.934986,22.511001 53.78915,22.511001 47.643211,22.511001 42.66,17.470431 42.66,11.25555 42.66,5.0391269 47.643211,0 53.78915,0z" Stretch="Uniform" Fill="#FFA3A3A3" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <TransformGroup.Children>
+                                                        <RotateTransform Angle="0" />
+                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                    </TransformGroup.Children>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <ProgressBar Grid.Column="4" Width="50" IsIndeterminate="{Binding IsBusy}" Visibility="{Binding BusyVisibility}"/>
         </Grid>
 
         <ListView DockPanel.Dock="Top" ItemsSource="{Binding Entries}" FontSize="14">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="TimeStamp" Width="140" DisplayMemberBinding="{Binding TimeStamp}" />
-                    <GridViewColumn Header="Level" Width="50" DisplayMemberBinding="{Binding EventLevel}"/>
+                    <GridViewColumn Header="TimeStamp" Width="155" DisplayMemberBinding="{Binding TimeStamp}" />
+                    <GridViewColumn Header="Level" Width="90" DisplayMemberBinding="{Binding EventLevel}"/>
                     <GridViewColumn Header="Message" Width="500" DisplayMemberBinding="{Binding Message}"/>
                     <GridViewColumn Header="Class" Width="200" DisplayMemberBinding="{Binding ClassName}"/>
                     <GridViewColumn Header="Line" Width="50" DisplayMemberBinding="{Binding LineNumber}"/>

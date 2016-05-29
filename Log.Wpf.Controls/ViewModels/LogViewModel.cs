@@ -1,8 +1,9 @@
 ﻿using Common.Commands;
 using Log.Common;
+using Log.Wpf.Controls.Properties;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,10 +21,19 @@ namespace Log.Wpf.Controls.ViewModels
         public static LogViewModel ViewModel { get { return _viewModel; } }
         private const string _apiBaseUrl = "http://localhost:3030/api/";
 
-        private ObservableCollection<string> _filters = new ObservableCollection<string>();
-        public ObservableCollection<string> Filters
+        public StringCollection Filters
         {
-            get { return _filters; }
+            get { return Settings.Default.Filters; }
+        }
+
+        public StringCollection FilterModes
+        {
+            get { return Settings.Default.FilterModes; }
+        }
+
+        public StringCollection IgnoreValues
+        {
+            get { return Settings.Default.IgnoreValues; }
         }
 
         private IEnumerable<LogEntry> _entries;
@@ -54,7 +64,9 @@ namespace Log.Wpf.Controls.ViewModels
                 using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
                 {
                     IsBusy = true;
-                    _entries = await client.GetEntries(SelectedLevel);
+                    _entries = (await client.GetEntries(SelectedLevel))
+                        .Where(x => !IgnoreValues.Contains(x.Message));
+                    
                     OnPropertyChanged("Entries");
                     IsBusy = false;
                 }
@@ -99,6 +111,31 @@ namespace Log.Wpf.Controls.ViewModels
             }
         }
 
+        private void FilterEntries()
+        {
+            if (!string.IsNullOrWhiteSpace(SelectedFilter))
+            {
+                IsBusy = true;
+                switch (SelectedFilterMode)
+                {
+                    case "StartsWith":
+                        _entries = _entries.Where(x => x.Message.ToLower().StartsWith(SelectedFilter));
+                        break;
+                    case "Contains":
+                        _entries = _entries.Where(x => x.Message.ToLower().Contains(SelectedFilter));
+                        break;
+                    case "NotContains":
+                        _entries = _entries.Where(x => !x.Message.ToLower().Contains(SelectedFilter));
+                        break;
+                    case "EndsWith":
+                        _entries = _entries.Where(x => x.Message.ToLower().EndsWith(SelectedFilter));
+                        break;
+                }
+                IsBusy = false;
+                OnPropertyChanged("Entries");
+            }
+        }
+
         private string _selectedServer;
         public string SelectedServer
         {
@@ -132,6 +169,31 @@ namespace Log.Wpf.Controls.ViewModels
             }
         }
 
+        private string _selectedFilter;
+        public string SelectedFilter
+        {
+            get { return _selectedFilter; }
+            set
+            {
+                _selectedFilter = value;
+                FilterEntries();
+                _addFilterCommand.RaiseCanExecuteChanged();
+                _clearFilterCommand.RaiseCanExecuteChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedFilterMode = "Contains";
+        public string SelectedFilterMode
+        {
+            get { return _selectedFilterMode; }
+            set
+            {
+                _selectedFilterMode = value;
+                OnPropertyChanged();
+            }
+        }
+
         private eEventLevel _selectedLevel = eEventLevel.All;
         public eEventLevel SelectedLevel
         {
@@ -140,6 +202,8 @@ namespace Log.Wpf.Controls.ViewModels
             {
                 _selectedLevel = value;
                 RefreshCommand.Execute(null);
+                _levelCommand.RaiseCanExecuteChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -148,13 +212,11 @@ namespace Log.Wpf.Controls.ViewModels
         {
             get
             {
-                _refreshCommand = _refreshCommand ?? (_refreshCommand = new RelayCommand((tag) =>
+                return _refreshCommand ?? (_refreshCommand = new RelayCommand((tag) =>
                 {
                     _entries = null;
                     OnPropertyChanged("Entries");
                 }));
-
-                return _refreshCommand;
             }
         }
 
@@ -166,7 +228,7 @@ namespace Log.Wpf.Controls.ViewModels
                 return _serverCommand ?? (_serverCommand = new RelayCommand((tag) => SelectedServer = tag.ToString(),
                         (tag) =>
                         {
-                            return tag.ToString().Equals(SelectedServer);
+                            return !tag.ToString().Equals(SelectedServer);
                         }));
             }
         }
@@ -179,7 +241,7 @@ namespace Log.Wpf.Controls.ViewModels
                 return _servicesCommand ?? (_servicesCommand = new RelayCommand((tag) => SelectedService = tag.ToString(),
                         (tag) =>
                         {
-                            return tag.ToString().Equals(SelectedService);
+                            return !tag.ToString().Equals(SelectedService);
                         }));
             }
         }
@@ -192,7 +254,7 @@ namespace Log.Wpf.Controls.ViewModels
                 return _sourceCommand ?? (_sourceCommand = new RelayCommand((tag) => SelectedSource = tag.ToString(),
                         (tag) =>
                         {
-                            return tag.ToString().Equals(SelectedSource);
+                            return !tag.ToString().Equals(SelectedSource);
                         }));
             }
         }
@@ -207,7 +269,46 @@ namespace Log.Wpf.Controls.ViewModels
                     (tag) =>
                     {
                         var level = (eEventLevel)Enum.Parse(typeof(eEventLevel), tag.ToString());
-                        return level.Equals(SelectedLevel); 
+                        return !level.Equals(SelectedLevel); 
+                    }));
+            }
+        }
+
+        private RelayCommand _addFilterCommand;
+        public ICommand AddFilterCommand
+        {
+            get
+            {
+                return _addFilterCommand ?? (_addFilterCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        Settings.Default.Filters.Insert(0, SelectedFilter);
+                        Settings.Default.Save();
+                        _addFilterCommand.RaiseCanExecuteChanged();
+                        OnPropertyChanged("Filters");
+                    },
+                    (tag) =>
+                    {
+                        return !string.IsNullOrWhiteSpace(SelectedFilter)
+                            && !Filters.Contains(SelectedFilter);
+                    }));
+            }
+        }
+
+        private RelayCommand _clearFilterCommand;
+        public ICommand ClearFilterCommand
+        {
+            get
+            {
+                return _clearFilterCommand ?? (_clearFilterCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        SelectedFilter = string.Empty;
+                        RefreshCommand.Execute(null);
+                    },
+                    (tag) =>
+                    {
+                        return !string.IsNullOrWhiteSpace(SelectedFilter);
                     }));
             }
         }
