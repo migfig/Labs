@@ -628,13 +628,20 @@
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="50*"/>
-                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="70*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Command="{Binding ClearFilterCommand}" ToolTip="Clear Filters">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Items" FontWeight="DemiBold" FontFamily="14" Foreground="Black" 
+                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                <TextBlock Text="{Binding Entries.Count}" FontWeight="DemiBold" FontFamily="14" Foreground="DarkGreen" 
+                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+            </StackPanel>
+            <Button Grid.Column="1" Command="{Binding ClearFilterCommand}" ToolTip="Clear Filters">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="White"/>
@@ -689,25 +696,25 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <ComboBox Grid.Column="1" ItemsSource="{Binding FilterModes}" 
+            <ComboBox Grid.Column="2" ItemsSource="{Binding FilterModes}" 
                       SelectedItem="{Binding Mode=TwoWay, Path=SelectedFilterMode}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" FontSize="14"/>
+                        <TextBlock Text="{Binding}" FontSize="14" VerticalAlignment="Center"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ComboBox Grid.Column="2" ItemsSource="{Binding Filters}" FontSize="14"
+            <ComboBox Grid.Column="3" ItemsSource="{Binding Filters}" FontSize="14"
                       SelectedItem="{Binding Mode=TwoWay, Path=SelectedFilter}"
                       Text="{Binding Mode=TwoWay, Path=SelectedFilter, UpdateSourceTrigger=PropertyChanged}"
                       IsEditable="True">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" FontSize="14"/>
+                        <TextBlock Text="{Binding}" FontSize="14" VerticalAlignment="Center"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button Grid.Column="3" Command="{Binding AddFilterCommand}" ToolTip="Add Filter">
+            <Button Grid.Column="4" Command="{Binding AddFilterCommand}" ToolTip="Add Filter">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="White"/>
@@ -762,14 +769,18 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <ProgressBar Grid.Column="4" Width="50" IsIndeterminate="{Binding IsBusy}" Visibility="{Binding BusyVisibility}"/>
+            <ProgressBar Grid.Column="5" Width="50" IsIndeterminate="{Binding IsBusy}" Visibility="{Binding BusyVisibility}"/>
         </Grid>
 
         <ListView DockPanel.Dock="Top" ItemsSource="{Binding Entries}" FontSize="14">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="TimeStamp" Width="155" DisplayMemberBinding="{Binding TimeStamp}" />
-                    <GridViewColumn Header="Level" Width="90" DisplayMemberBinding="{Binding EventLevel}"/>
+                    <GridViewColumn Width="90" DisplayMemberBinding="{Binding EventLevel}">
+                        <GridViewColumn.Header>
+                            <TextBlock Text="Level" Foreground="{Binding Color}" FontSize="14" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
                     <GridViewColumn Header="Message" Width="500" DisplayMemberBinding="{Binding Message}"/>
                     <GridViewColumn Header="Class" Width="200" DisplayMemberBinding="{Binding ClassName}"/>
                     <GridViewColumn Header="Line" Width="50" DisplayMemberBinding="{Binding LineNumber}"/>

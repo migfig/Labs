@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Log.Common
@@ -50,6 +48,19 @@ namespace Log.Common
         }
 
         public int LineNumber { get; set; }
+        public string Color
+        {
+            get
+            {
+                return EventLevel.Equals(eEventLevel.Error)
+                  ? "#FFB41A1E"
+                  : EventLevel.Equals(eEventLevel.Warning)
+                      ? "#FFFFCE42"
+                      : EventLevel.Equals(eEventLevel.Information)
+                          ? "#FF599737"
+                          : "#FF000000";
+            }
+        }
     }
 
     public class LogItem
