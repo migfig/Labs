@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Log.Service
@@ -25,10 +24,7 @@ namespace Log.Service
 
         public async Task<IEnumerable<LogEntry>> GetEntries()
         {
-            if(_logItem == null)
-            {
-                _logItem = new LogItem { Entries = (await _logProvider.GetEntries()).ToList() };
-            }
+            _logItem = new LogItem { Entries = (await _logProvider.GetEntries()).ToList() };
 
             return _logItem.Entries;
         }
