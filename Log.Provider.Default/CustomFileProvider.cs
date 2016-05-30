@@ -1,10 +1,8 @@
 ﻿using Log.Common;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Log.Provider.Default
@@ -15,20 +13,22 @@ namespace Log.Provider.Default
         public string Path { get; private set; }
 
         private readonly string _fullPath;
+        private readonly IEntryProvider _entryProvider;
 
-        public CustomFileProvider(string path, string name)
+        public CustomFileProvider(string path, string name, IEntryProvider entryProvider)
         {
             Name = name;
             Path = path;
+            _entryProvider = entryProvider;
 
             if (Directory.Exists(Path))
             {
-                var files = Directory.GetFiles(Path, Name + "*");
+                var files = Directory.GetFiles(Path, Name.ToLower() + "*");
                 var info = from f in files
                            where f.ToLower().EndsWith(".log") || f.ToLower().EndsWith(".txt")
                            select new FileInfo(f);
 
-                _fullPath = info.OrderBy(x => x.LastWriteTimeUtc).FirstOrDefault().FullName;
+                _fullPath = info.OrderBy(x => x.LastWriteTimeUtc).LastOrDefault().FullName;
             }
         }
 
@@ -44,7 +44,7 @@ namespace Log.Provider.Default
                     var json = await stream.ReadLineAsync();
                     while(!string.IsNullOrEmpty(json))
                     {
-                        logItem.Entries.Add(JsonConvert.DeserializeObject<LogEntry>(json));
+                        logItem.Entries.Add(_entryProvider.GetEntry(json));
                         json = await stream.ReadLineAsync();
                     }
                 }
@@ -65,7 +65,7 @@ namespace Log.Provider.Default
                     var json = await stream.ReadLineAsync();
                     while (!string.IsNullOrEmpty(json))
                     {
-                        var entry = JsonConvert.DeserializeObject<LogEntry>(json);
+                        var entry = _entryProvider.GetEntry(json);
                         if (DateTime.UtcNow.Subtract(entry.TimeStamp).Seconds <= span.Seconds)
                         {
                             logItem.Entries.Add(entry);

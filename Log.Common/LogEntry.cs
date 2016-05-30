@@ -19,7 +19,8 @@ namespace Log.Common
         public string Message { get; set; }
         public string ShortMessage
         {
-            get { return Message.Substring(0, Math.Min(Message.Length, 50)); }
+            get { return Message.Substring(0, Math.Min(Message.Length, 50))
+                    .Replace(Environment.NewLine, string.Empty); }
         }
         public string Source { get; set; }
         public eEventLevel EventLevel { get; set; }
@@ -33,7 +34,7 @@ namespace Log.Common
             {
                 if(string.IsNullOrWhiteSpace(_className) && Message.ToLower().Contains("exception"))
                 {
-                    var re = new Regex(@"(?<class>[a-zA-Z0-9\\\.]*.cs) line number: (?<line>\d{1,9})");
+                    var re = new Regex(@"source\\(?<class>[a-zA-Z0-9\\\.]*.cs):line (?<line>\d{1,9})");
                     var match = re.Match(Message);
                     if (match.Success)
                     {

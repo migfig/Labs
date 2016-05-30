@@ -189,3 +189,5 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 /Binaries
+/Log.Provider.Default/ArmorFileProvider.cs
+/Log.Provider.Default/ArmorEntryProvider.cs

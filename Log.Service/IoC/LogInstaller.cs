@@ -14,7 +14,8 @@ namespace Log.Service
                 Component.For<ILogProvider>()
                     .ImplementedBy<CustomFileProvider>()
                     .DependsOn(Dependency.OnAppSettingsValue("path"),
-                        Dependency.OnAppSettingsValue("name"))
+                        Dependency.OnAppSettingsValue("name"),
+                        Dependency.OnValue<IEntryProvider>(new ArmorEntryProvider()))
                     .LifestyleSingleton(),
 
                 Component.For<ILogServices>()
