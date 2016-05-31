@@ -10,25 +10,42 @@ namespace Log.Provider.Default
     public class CustomFileProvider : ILogProvider
     {
         public string Name { get; private set; }
-        public string Path { get; private set; }
+        public string NetworkPath { get; private set; }
+        public string LocalPath { get; private set; }
 
-        private readonly string _fullPath;
+        private readonly string _logFilePath;
         private readonly IEntryProvider _entryProvider;
 
-        public CustomFileProvider(string path, string name, IEntryProvider entryProvider)
+        public CustomFileProvider(string networkPath, string path, string name, IEntryProvider entryProvider)
         {
             Name = name;
-            Path = path;
+            NetworkPath = networkPath;
+            LocalPath = path;
             _entryProvider = entryProvider;
 
-            if (Directory.Exists(Path))
+            if (Directory.Exists(NetworkPath))
             {
-                var files = Directory.GetFiles(Path, Name.ToLower() + "*");
+                var files = Directory.GetFiles(NetworkPath, Name.ToLower() + "*");
                 var info = from f in files
                            where f.ToLower().EndsWith(".log") || f.ToLower().EndsWith(".txt")
                            select new FileInfo(f);
 
-                _fullPath = info.OrderBy(x => x.LastWriteTimeUtc).LastOrDefault().FullName;
+                var fullNetworkPath = info.OrderBy(x => x.LastWriteTimeUtc).LastOrDefault().FullName;
+
+                if (NetworkPath != LocalPath)
+                {
+                    _logFilePath = Path.Combine(LocalPath, Path.GetFileName(fullNetworkPath));
+                    if (File.Exists(_logFilePath))
+                    {
+                        File.Delete(_logFilePath);
+                    }
+
+                    File.Copy(fullNetworkPath, _logFilePath);
+                }
+                else
+                {
+                    _logFilePath = fullNetworkPath;
+                }
             }
         }
 
@@ -37,9 +54,9 @@ namespace Log.Provider.Default
             var logItem = new LogItem();
             logItem.Name = Name;
 
-            if(!string.IsNullOrEmpty(_fullPath))
+            if(!string.IsNullOrEmpty(_logFilePath))
             {
-                using(var stream = File.OpenText(_fullPath))
+                using(var stream = File.OpenText(_logFilePath))
                 {
                     var json = await stream.ReadLineAsync();
                     while(!string.IsNullOrEmpty(json))
@@ -58,9 +75,9 @@ namespace Log.Provider.Default
             var logItem = new LogItem();
             logItem.Name = Name;
 
-            if (!string.IsNullOrEmpty(_fullPath))
+            if (!string.IsNullOrEmpty(_logFilePath))
             {
-                using (var stream = File.OpenText(_fullPath))
+                using (var stream = File.OpenText(_logFilePath))
                 {
                     var json = await stream.ReadLineAsync();
                     while (!string.IsNullOrEmpty(json))

@@ -7,11 +7,12 @@
 namespace Log.Visor.VStudio
 {
     using System;
+    using System.Linq;
     using System.Runtime.InteropServices;
     using Microsoft.VisualStudio.Shell;
     using Wpf.Controls;
-    using System.Windows;    
-    
+    using System.Windows;
+    using System.Diagnostics;
     /// <summary>
     /// This class implements the tool window exposed by this package and hosts a user control.
     /// </summary>
@@ -52,21 +53,51 @@ namespace Log.Visor.VStudio
                     var solution = dte.Solution;
                     if (null != solution)
                     {
-                        foreach (EnvDTE.Project project in solution.Projects)
+                        var items = from project in solution.Projects.Cast<EnvDTE.Project>()
+                                       from item in project.ProjectItems.Cast<EnvDTE.ProjectItem>()
+                                       where item.Name.Equals(e.ClassName)
+                                       select item;
+
+                        if (items.Count() == 1)
                         {
-                            foreach (EnvDTE.ProjectItem item in project.ProjectItems)
+                            var item = items.First();
+                            Log("Code item found: " + item.Name);
+
+                            var window = item.Open();
+                            if (null != window)
                             {
-                                if (project.Name.Contains(e.NameSpace) && item.Name.Equals(e.ClassName))
+                                window.Activate();
+                                var selection = (EnvDTE.TextSelection)window.Document.Selection;
+                                selection.GotoLine(e.LineNumber, Select: true);
+                            }
+                        }
+                        else
+                        {
+                            var found = false;
+                            Log(string.Format("Looking for Code item in {0} projects. Namespace {1}", items.Count(), e.NameSpace));
+                            foreach (var item in items)
+                            {
+                                var parts = e.NameSpace.Split('\\');
+                                for (var i=parts.Length-1;i>0;i--)
                                 {
-                                    var window = item.Open();
-                                    if (null != window)
+                                    var name = string.Join("\\", parts, 0, i);
+                                    Log(string.Format("Looking for Code item {0} as named {1}", i, name));
+                                    if (item.ContainingProject.Name.Equals(name))
                                     {
-                                        window.Activate();
-                                        var selection = (EnvDTE.TextSelection)window.Document.Selection;
-                                        selection.GotoLine(e.LineNumber, Select: true);
+                                        Log("Code item found in project " + item.ContainingProject.Name);
+                                        var window = item.Open();
+                                        if (null != window)
+                                        {
+                                            window.Activate();
+                                            var selection = (EnvDTE.TextSelection)window.Document.Selection;
+                                            selection.GotoLine(e.LineNumber, Select: true);
+                                        }
+                                        found = true;
+                                        break;
                                     }
-                                    break;
                                 }
+                                if (found)
+                                    break;
                             }
                         }
                     }
@@ -87,11 +118,18 @@ namespace Log.Visor.VStudio
 
             if (errMsg.Length > 0)
             {
-                MessageBox.Show(errMsg,
-                    "Error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                Log(errMsg);
+                MessageBox.Show(errMsg, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void Log(string message)
+        {
+            try
+            {
+                Console.WriteLine(message);
+                Debugger.Log(0, "Information", message);
+            } catch(Exception) {;}
         }
     }
 }

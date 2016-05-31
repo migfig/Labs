@@ -13,13 +13,15 @@ namespace Log.Service
             container.Register(
                 Component.For<ILogProvider>()
                     .ImplementedBy<CustomFileProvider>()
-                    .DependsOn(Dependency.OnAppSettingsValue("path"),
+                    .DependsOn(Dependency.OnAppSettingsValue("networkPath"),
+                        Dependency.OnAppSettingsValue("path"),
                         Dependency.OnAppSettingsValue("name"),
                         Dependency.OnValue<IEntryProvider>(new ArmorEntryProvider()))
                     .LifestyleSingleton(),
 
                 Component.For<ILogServices>()
                     .ImplementedBy<LogServices>()
+                    .DependsOn(Dependency.OnAppSettingsValue("maxItems"))
                     .LifestyleSingleton(),
 
                 Component.For<IServiceable>()

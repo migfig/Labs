@@ -7,6 +7,7 @@
 namespace Log.Wpf.Controls
 {
     using Common;
+    using System.Configuration;
     using System.Windows.Controls;
     using ViewModels;
     /// <summary>
@@ -40,7 +41,10 @@ namespace Log.Wpf.Controls
                 var entry = ((sender as Button).Tag as LogEntry);
                 if (!string.IsNullOrWhiteSpace(entry.ClassName))
                 {
-                    OnViewCodeRequest(this, new ViewCodeArgs("VisualStudio.DTE.14.0", entry.ClassName, entry.LineNumber));
+                    OnViewCodeRequest(this, 
+                        new ViewCodeArgs(ConfigurationManager.AppSettings["VisualStudio.ProgId"], 
+                            entry.ClassName, 
+                            entry.LineNumber));
                 }
             }
         }

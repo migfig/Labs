@@ -9,7 +9,7 @@ namespace Log.Common
     public interface ILogProvider
     {
         string Name { get; }
-        string Path { get; }
+        string LocalPath { get; }
         Task<IEnumerable<LogEntry>> GetEntries();
         Task<IEnumerable<LogEntry>> GetEntries(TimeSpan span);
     }

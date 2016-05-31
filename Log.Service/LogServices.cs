@@ -16,17 +16,21 @@ namespace Log.Service
     {
         private readonly ILogProvider _logProvider;
         private LogItem _logItem;
+        private int _maxItems;
 
-        public LogServices(ILogProvider logProvider)
+        public LogServices(ILogProvider logProvider, int maxItems)
         {
             _logProvider = logProvider;
+            _maxItems = maxItems;
         }
 
         public async Task<IEnumerable<LogEntry>> GetEntries()
         {
             _logItem = new LogItem { Entries = (await _logProvider.GetEntries()).ToList() };
 
-            return _logItem.Entries;
+            return _logItem.Entries
+                .OrderByDescending(x => x.TimeStamp)
+                .Take(_maxItems);
         }
 
         public async Task<IEnumerable<LogEntry>> GetEntries(TimeSpan span)
@@ -41,7 +45,9 @@ namespace Log.Service
                 _logItem.Entries.Concat(entries);
             }
 
-            return _logItem.Entries;
+            return _logItem.Entries
+                .OrderByDescending(x => x.TimeStamp)
+                .Take(_maxItems);
         }
     }
 }
