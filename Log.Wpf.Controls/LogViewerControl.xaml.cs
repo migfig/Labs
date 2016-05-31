@@ -41,10 +41,9 @@ namespace Log.Wpf.Controls
                 var entry = ((sender as Button).Tag as LogEntry);
                 if (!string.IsNullOrWhiteSpace(entry.ClassName))
                 {
+                    var progId = ConfigurationManager.AppSettings["VisualStudio.ProgId"] ?? "VisualStudio.DTE.14.0";
                     OnViewCodeRequest(this, 
-                        new ViewCodeArgs(ConfigurationManager.AppSettings["VisualStudio.ProgId"], 
-                            entry.ClassName, 
-                            entry.LineNumber));
+                        new ViewCodeArgs(progId, entry.ClassName, entry.LineNumber));
                 }
             }
         }

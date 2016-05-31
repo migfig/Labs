@@ -113,7 +113,7 @@ namespace Log.Visor.VStudio
             }
             catch (Exception ex)
             {
-                errMsg = ex.Message;
+                errMsg = ex.Message + ex.StackTrace;
             }
 
             if (errMsg.Length > 0)
