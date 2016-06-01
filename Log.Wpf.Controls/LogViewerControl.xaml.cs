@@ -41,10 +41,19 @@ namespace Log.Wpf.Controls
                 var entry = ((sender as Button).Tag as LogEntry);
                 if (!string.IsNullOrWhiteSpace(entry.ClassName))
                 {
-                    var progId = ConfigurationManager.AppSettings["VisualStudio.ProgId"] ?? "VisualStudio.DTE.14.0";
+                    var progId = ConfigurationManager.AppSettings["VisualStudio.ProgId"] ?? "VisualStudio.DTE.13.0";
                     OnViewCodeRequest(this, 
                         new ViewCodeArgs(progId, entry.ClassName, entry.LineNumber));
                 }
+            }
+        }
+
+        private void OnAddToIgnoreValuesCommandClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var message = (sender as Button).CommandParameter.ToString();
+            if(LogViewModel.ViewModel.AddToIgnoreValuesCommand.CanExecute(message))
+            {
+                LogViewModel.ViewModel.AddToIgnoreValuesCommand.Execute(message);
             }
         }
     }

@@ -7,8 +7,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Windows.ApplicationModel;
@@ -335,7 +333,30 @@ namespace Log.Wpf.Controls.ViewModels
                         return !string.IsNullOrWhiteSpace(SelectedFilter);
                     }));
             }
-        }        
+        }
+        
+        private RelayCommand _addToIgnoreValuesCommand;
+        public ICommand AddToIgnoreValuesCommand
+        {
+            get
+            {
+                return _addToIgnoreValuesCommand ?? (_addToIgnoreValuesCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        if (!IgnoreValues.Contains(tag.ToString()))
+                        {
+                            Settings.Default.IgnoreValues.Add(tag.ToString());
+                            Settings.Default.Save();
+                            RefreshCommand.Execute(null);
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return !string.IsNullOrWhiteSpace(tag.ToString())
+                            && !IgnoreValues.Contains(tag.ToString());
+                    }));
+            }
+        }
 
         private bool _isBusy;
         public bool IsBusy

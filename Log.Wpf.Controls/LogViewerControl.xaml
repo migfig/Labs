@@ -773,7 +773,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <ProgressBar Grid.Column="5" Width="50" IsIndeterminate="{Binding IsBusy}" Visibility="{Binding BusyVisibility}"/>
+            <ProgressBar Grid.Column="5" Width="50" Height="20" IsIndeterminate="{Binding IsBusy}" Visibility="{Binding BusyVisibility}"/>
         </Grid>
 
         <!--Content="{Binding ClassName}" -->
@@ -792,11 +792,72 @@
                     <GridViewColumn Header="Message" Width="380">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Expander x:Name="expanderMessage" Header="{Binding ShortMessage}">
+                                <Expander x:Name="expanderMessage">
+                                    <Expander.Header>
+                                        <TextBlock Text="{Binding ShortMessage}" FontSize="14" />
+                                    </Expander.Header>
                                     <Border Padding="4" Margin="0,4,0,0" BorderThickness="1" BorderBrush="LightGray">
-                                        <TextBlock Text="{Binding Message}" 
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Command="{Binding AddToIgnoreValuesCommand}" CommandParameter="{Binding ShortMessage}" ToolTip="Add to Ignore Values List" Click="OnAddToIgnoreValuesCommandClick">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Background" Value="White"/>
+                                                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                                        <Setter Property="Height" Value="20"/>
+                                                        <Setter Property="Width" Value="20"/>
+                                                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                                        <Setter Property="BorderBrush">
+                                                            <Setter.Value>
+                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Grid>
+                                                                        <VisualStateManager.VisualStateGroups>
+                                                                            <VisualStateGroup x:Name="CommonStates">
+                                                                                <VisualState x:Name="Normal"/>
+                                                                                <VisualState x:Name="MouseOver">
+                                                                                    <Storyboard>
+                                                                                        <ColorAnimation Duration="0" To="#FFB6A55F" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                                                    </Storyboard>
+                                                                                </VisualState>
+                                                                                <VisualState x:Name="Pressed"/>
+                                                                                <VisualState x:Name="Disabled"/>
+                                                                            </VisualStateGroup>
+                                                                            <VisualStateGroup x:Name="FocusStates">
+                                                                                <VisualState x:Name="Focused"/>
+                                                                                <VisualState x:Name="Unfocused"/>
+                                                                            </VisualStateGroup>
+                                                                        </VisualStateManager.VisualStateGroups>
+                                                                        <Path x:Name="path" Data="M6.8879995,25.111L6.8879995,42.444 60.665001,42.444 60.665001,25.111z M33.777451,0C52.432533,0 67.555,15.122666 67.555,33.777451 67.555,52.432831 52.432533,67.555 33.777451,67.555 15.122467,67.555 0,52.432831 0,33.777451 0,15.122666 15.122467,0 33.777451,0z" Stretch="Uniform" Fill="#FFA3A3A3" Width="16" Height="16" RenderTransformOrigin="0.5,0.5">
+                                                                            <Path.RenderTransform>
+                                                                                <TransformGroup>
+                                                                                    <TransformGroup.Children>
+                                                                                        <RotateTransform Angle="0" />
+                                                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                                                    </TransformGroup.Children>
+                                                                                </TransformGroup>
+                                                                            </Path.RenderTransform>
+                                                                        </Path>
+                                                                    </Grid>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+
+                                            <TextBlock Text="{Binding Message}" 
                                            FontSize="14" 
                                            TextWrapping="WrapWithOverflow"/>
+                                        </StackPanel>
                                     </Border>
                                 </Expander>
                             </DataTemplate>
