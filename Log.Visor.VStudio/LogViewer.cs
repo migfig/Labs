@@ -13,17 +13,18 @@ namespace Log.Visor.VStudio
     using Wpf.Controls;
     using System.Windows;
     using System.Diagnostics;
-    /// <summary>
-    /// This class implements the tool window exposed by this package and hosts a user control.
-    /// </summary>
-    /// <remarks>
-    /// In Visual Studio tool windows are composed of a frame (implemented by the shell) and a pane,
-    /// usually implemented by the package implementer.
-    /// <para>
-    /// This class derives from the ToolWindowPane class provided from the MPF in order to use its
-    /// implementation of the IVsUIElementPane interface.
-    /// </para>
-    /// </remarks>
+    using Wpf.Controls.ViewModels;
+    using System.Collections.Generic;/// <summary>
+                                     /// This class implements the tool window exposed by this package and hosts a user control.
+                                     /// </summary>
+                                     /// <remarks>
+                                     /// In Visual Studio tool windows are composed of a frame (implemented by the shell) and a pane,
+                                     /// usually implemented by the package implementer.
+                                     /// <para>
+                                     /// This class derives from the ToolWindowPane class provided from the MPF in order to use its
+                                     /// implementation of the IVsUIElementPane interface.
+                                     /// </para>
+                                     /// </remarks>
     [Guid("02bee7af-68af-40ec-8e32-ea7a53105041")]
     public class LogViewer : ToolWindowPane
     {
@@ -41,7 +42,7 @@ namespace Log.Visor.VStudio
             (this.Content as LogViewerControl).OnViewCodeRequest += LogViewerOnViewCodeRequest;
         }
 
-        private void LogViewerOnViewCodeRequest(object sender, Wpf.Controls.ViewModels.ViewCodeArgs e)
+        private void LogViewerOnViewCodeRequest(object sender, ViewCodeArgs e)
         {
             var errMsg = string.Empty;
             try
@@ -50,18 +51,20 @@ namespace Log.Visor.VStudio
                 if (null != vsInstance)
                 {
                     var dte = (EnvDTE80.DTE2)vsInstance;
+                    var output = dte.ToolWindows.OutputWindow.ActivePane;
                     var solution = dte.Solution;
                     if (null != solution)
                     {
+
                         var items = from project in solution.Projects.Cast<EnvDTE.Project>()
-                                       from item in project.ProjectItems.Cast<EnvDTE.ProjectItem>()
-                                       where item.Name.Equals(e.ClassName)
-                                       select item;
+                                    let item = FindItem(project.ProjectItems.Cast<EnvDTE.ProjectItem>(), e)
+                                    where item != null
+                                    select item;
 
                         if (items.Count() == 1)
                         {
                             var item = items.First();
-                            Log("Code item found: " + item.Name);
+                            Log(output, "Code item found: " + item.Name);
 
                             var window = item.Open();
                             if (null != window)
@@ -74,17 +77,17 @@ namespace Log.Visor.VStudio
                         else
                         {
                             var found = false;
-                            Log(string.Format("Looking for Code item in {0} projects. Namespace {1}", items.Count(), e.NameSpace));
+                            Log(output, string.Format("Looking for Code item in {0} projects. Namespace {1}", items.Count(), e.NameSpace));
                             foreach (var item in items)
                             {
                                 var parts = e.NameSpace.Split('\\');
                                 for (var i=parts.Length-1;i>0;i--)
                                 {
                                     var name = string.Join("\\", parts, 0, i);
-                                    Log(string.Format("Looking for Code item {0} as named {1}", i, name));
+                                    Log(output, string.Format("Looking for Code item {0} as named {1}", i, name));
                                     if (item.ContainingProject.Name.Equals(name))
                                     {
-                                        Log("Code item found in project " + item.ContainingProject.Name);
+                                        Log(output, "Code item found in project " + item.ContainingProject.Name);
                                         var window = item.Open();
                                         if (null != window)
                                         {
@@ -118,18 +121,27 @@ namespace Log.Visor.VStudio
 
             if (errMsg.Length > 0)
             {
-                Log(errMsg);
                 MessageBox.Show(errMsg, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void Log(string message)
+        private EnvDTE.ProjectItem FindItem(IEnumerable<EnvDTE.ProjectItem> items, ViewCodeArgs args)
+        {
+            var item = items.FirstOrDefault(x => x.Name.Equals(args.ClassName));
+            if (item != null) return item;
+
+            return FindItem(items
+                    .Where(x => x.Kind.Equals(EnvDTE.Constants.vsProjectItemKindPhysicalFolder)
+                        || x.Kind.Equals(EnvDTE.Constants.vsProjectItemKindVirtualFolder))
+                , args);
+        }
+
+        private void Log(EnvDTE.OutputWindowPane pane, string message)
         {
             try
             {
-                Console.WriteLine(message);
-                Debugger.Log(0, "Information", message);
-            } catch(Exception) {;}
+                pane.OutputString(message + Environment.NewLine);
+            } catch(Exception) {;} 
         }
     }
 }

@@ -776,8 +776,6 @@
             <ProgressBar Grid.Column="5" Width="50" Height="20" IsIndeterminate="{Binding IsBusy}" Visibility="{Binding BusyVisibility}"/>
         </Grid>
 
-        <!--Content="{Binding ClassName}" -->
-
         <ListView DockPanel.Dock="Top" ItemsSource="{Binding Entries}" FontSize="14">
             <ListView.View>
                 <GridView>
