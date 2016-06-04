@@ -7,57 +7,58 @@ using System.Web.Http;
 
 namespace Log.Service
 {
-    public class SummaryController: ApiController
+    public class SummaryByLevelController : ApiController
     {
         private readonly ILogServices _logServices;  
         
         //todo: need to propery configure IoC resolver
-        public SummaryController()
+        public SummaryByLevelController()
         {
             _logServices = (LogService.Container.Resolve<ILogServices>());
         }      
 
-        public SummaryController(ILogServices logServices)
+        public SummaryByLevelController(ILogServices logServices)
         {
             _logServices = logServices;
         }
 
-        [Route("api/summary"), HttpGet]
-        public async Task<IEnumerable<LogSummary>> GetSummary()
+
+        [Route("api/summarybylevel"), HttpGet]
+        public async Task<IEnumerable<LogSummaryByLevel>> GetSummaryByLevel()
         {
             var groupedEntries = (await _logServices.GetEntries())
-                .GroupBy(x => x.ShortMessage);
+                .GroupBy(x => x.EventLevel);
 
             return groupedEntries.Select(group =>
-                new LogSummary
+                new LogSummaryByLevel
                 {
-                    ShortMessage = group.Key,
+                    EventLevel = group.Key.ToString(),
                     Count = group.Count()
                 });
         }
 
-        [Route("api/summary/{timeSpan}"), HttpGet]
-        public async Task<IEnumerable<LogSummary>> GetSummary(int timeSpan)
+        [Route("api/summarybylevel/{timeSpan}"), HttpGet]
+        public async Task<IEnumerable<LogSummaryByLevel>> GetSummaryByLevel(int timeSpan)
         {
-            IEnumerable<IGrouping<string, LogEntry>> groupedEntries = null;
+            IEnumerable<IGrouping<eEventLevel, LogEntry>> groupedEntries = null;
             if (timeSpan == 0)
             {
                 groupedEntries = (await _logServices.GetEntries())
-                    .GroupBy(x => x.ShortMessage);
+                    .GroupBy(x => x.EventLevel);
             }
             else
             {
                 groupedEntries = (await _logServices.GetEntries())
                     .Where(x => DateTime.UtcNow.Subtract(x.TimeStamp).Minutes <= timeSpan)
-                    .GroupBy(x => x.ShortMessage);
+                    .GroupBy(x => x.EventLevel);
             }
 
             return groupedEntries.Select(group =>
-                new LogSummary
+                new LogSummaryByLevel
                 {
-                    ShortMessage = group.Key,
+                    EventLevel = group.Key.ToString(),
                     Count = group.Count()
                 });
-        }
+        }      
     }
 }

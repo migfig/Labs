@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IoC\LogInstaller.cs" />
+    <Compile Include="SummaryByLevelController.cs" />
     <Compile Include="TopController.cs" />
     <Compile Include="SummaryController.cs" />
     <Compile Include="ItemsController.cs" />

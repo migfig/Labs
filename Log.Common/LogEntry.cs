@@ -77,4 +77,16 @@ namespace Log.Common
             Entries = new List<LogEntry>();
         }
     }
+
+    public class LogSummary
+    {
+        public string ShortMessage { get; set; }
+        public int Count { get; set; }
+    }
+
+    public class LogSummaryByLevel
+    {
+        public string EventLevel { get; set; }
+        public int Count { get; set; }
+    }
 }
