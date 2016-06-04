@@ -27,8 +27,8 @@ namespace Log.Wpf.Controls.ViewModels
             ProgId = progId;
             if (!string.IsNullOrWhiteSpace(fullName))
             {
-                var parts = fullName.Replace(".cs", string.Empty).Split('.');
-                NameSpace = string.Join(".", parts.Take(parts.Length - 1));
+                var parts = fullName.Replace(".cs", string.Empty).Split('\\');
+                NameSpace = string.Join("\\", parts.Take(parts.Length - 1));
                 ClassName = parts.Last() + ".cs";
             }
             LineNumber = lineNumber;

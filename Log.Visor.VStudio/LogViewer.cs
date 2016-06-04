@@ -44,6 +44,7 @@ namespace Log.Visor.VStudio
 
         private void LogViewerOnViewCodeRequest(object sender, ViewCodeArgs e)
         {
+            var found = false;
             var errMsg = string.Empty;
             try
             {
@@ -55,52 +56,63 @@ namespace Log.Visor.VStudio
                     var solution = dte.Solution;
                     if (null != solution)
                     {
-
-                        var items = from project in solution.Projects.Cast<EnvDTE.Project>()
-                                    let item = FindItem(project.ProjectItems.Cast<EnvDTE.ProjectItem>(), e)
-                                    where item != null
-                                    select item;
-
-                        if (items.Count() == 1)
+                        var projects = from project in solution.Projects.Cast<EnvDTE.Project>()
+                                       where project.Name.Split('\\').First()
+                                            .Equals(e.NameSpace.Split('\\').First())
+                                       select project;
+                        if (projects.Any())
                         {
-                            var item = items.First();
-                            Log(output, "Code item found: " + item.Name);
+                            var items = from project in projects
+                                        from pi in project.ProjectItems.Cast<EnvDTE.ProjectItem>()
+                                        let item = pi.Name.Equals(e.ClassName)
+                                            ? pi
+                                            : FindItem(output, pi.ProjectItems == null
+                                                ? null
+                                                : pi.ProjectItems.Cast<EnvDTE.ProjectItem>(), e)
+                                        where item != null
+                                        select item;
 
-                            var window = item.Open();
-                            if (null != window)
+                            if (items.Count() == 1)
                             {
-                                window.Activate();
-                                var selection = (EnvDTE.TextSelection)window.Document.Selection;
-                                selection.GotoLine(e.LineNumber, Select: true);
-                            }
-                        }
-                        else
-                        {
-                            var found = false;
-                            Log(output, string.Format("Looking for Code item in {0} projects. Namespace {1}", items.Count(), e.NameSpace));
-                            foreach (var item in items)
-                            {
-                                var parts = e.NameSpace.Split('\\');
-                                for (var i=parts.Length-1;i>0;i--)
+                                var item = items.First();
+                                Log(output, "Code item found: " + item.Name);
+
+                                var window = item.Open();
+                                if (null != window)
                                 {
-                                    var name = string.Join("\\", parts, 0, i);
-                                    Log(output, string.Format("Looking for Code item {0} as named {1}", i, name));
-                                    if (item.ContainingProject.Name.Equals(name))
-                                    {
-                                        Log(output, "Code item found in project " + item.ContainingProject.Name);
-                                        var window = item.Open();
-                                        if (null != window)
-                                        {
-                                            window.Activate();
-                                            var selection = (EnvDTE.TextSelection)window.Document.Selection;
-                                            selection.GotoLine(e.LineNumber, Select: true);
-                                        }
-                                        found = true;
-                                        break;
-                                    }
+                                    window.Activate();
+                                    var selection = (EnvDTE.TextSelection)window.Document.Selection;
+                                    selection.GotoLine(e.LineNumber, Select: true);
                                 }
-                                if (found)
-                                    break;
+                                found = true;
+                            }
+                            else
+                            {
+                                Log(output, string.Format("Looking for Code item in {0} projects. Namespace {1}", items.Count(), e.NameSpace));
+                                foreach (var item in items)
+                                {
+                                    var parts = e.NameSpace.Split('\\');
+                                    for (var i = parts.Length - 1; i > 0; i--)
+                                    {
+                                        var name = string.Join("\\", parts, 0, i);
+                                        Log(output, string.Format("Looking for Code item {0} as named {1}", i, name));
+                                        if (item.ContainingProject.Name.Equals(name))
+                                        {
+                                            Log(output, "Code item found in project " + item.ContainingProject.Name);
+                                            var window = item.Open();
+                                            if (null != window)
+                                            {
+                                                window.Activate();
+                                                var selection = (EnvDTE.TextSelection)window.Document.Selection;
+                                                selection.GotoLine(e.LineNumber, Select: true);
+                                            }
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if (found)
+                                        break;
+                                }
                             }
                         }
                     }
@@ -123,17 +135,32 @@ namespace Log.Visor.VStudio
             {
                 MessageBox.Show(errMsg, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            else
+            {
+                if(!found)
+                {
+                    MessageBox.Show(string.Format("Class {0} not found in current loaded solution.", e.ClassName), "Code Item not found!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
         }
 
-        private EnvDTE.ProjectItem FindItem(IEnumerable<EnvDTE.ProjectItem> items, ViewCodeArgs args)
+        private EnvDTE.ProjectItem FindItem(EnvDTE.OutputWindowPane pane, IEnumerable<EnvDTE.ProjectItem> items, ViewCodeArgs e)
         {
-            var item = items.FirstOrDefault(x => x.Name.Equals(args.ClassName));
+            if (items == null || !items.Any()) return null;
+
+            var item = items.FirstOrDefault(x => x.Name.Equals(e.ClassName));
             if (item != null) return item;
 
-            return FindItem(items
-                    .Where(x => x.Kind.Equals(EnvDTE.Constants.vsProjectItemKindPhysicalFolder)
-                        || x.Kind.Equals(EnvDTE.Constants.vsProjectItemKindVirtualFolder))
-                , args);
+            foreach (var i in items.Where(x => x.Kind.Equals(EnvDTE.Constants.vsProjectItemKindPhysicalFolder)
+                            || x.Kind.Equals(EnvDTE.Constants.vsProjectItemKindVirtualFolder)))
+            {
+                Log(pane, string.Format("looking for class {0} in project {1} at folder {2}", e.ClassName, i.ContainingProject.Name, i.Name));
+                var itemx = FindItem(pane, i.ProjectItems.Cast<EnvDTE.ProjectItem>(), e);
+                if (itemx != null)
+                    return itemx;
+            }
+
+            return null;
         }
 
         private void Log(EnvDTE.OutputWindowPane pane, string message)
