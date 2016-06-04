@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Log.Common;
 using Newtonsoft.Json;
 
-namespace Log.Wpf.Controls
+namespace Log.Common.Services
 {
     public interface IApiService: IDisposable
     {
         Task<IEnumerable<LogEntry>> GetEntries(eEventLevel level = eEventLevel.All);
+        Task<IEnumerable<LogSummary>> GetSummaryEntries();
+        Task<IEnumerable<LogSummaryByLevel>> GetSummaryEntriesByLevel();
     }
 
     public class ApiServiceFactory
@@ -59,6 +61,41 @@ namespace Log.Wpf.Controls
             } catch(Exception) {;}
 
             return new List<LogEntry>();
+        }
+
+        public async Task<IEnumerable<LogSummary>> GetSummaryEntries()
+        {          
+            try
+            {
+                var response = await _client.GetAsync(_baseUrl + "summary");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<IEnumerable<LogSummary>>(json);
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
+
+            return new List<LogSummary>();
+        }
+
+        public async Task<IEnumerable<LogSummaryByLevel>> GetSummaryEntriesByLevel()
+        {
+            try
+            {
+                var response = await _client.GetAsync(_baseUrl + "summarybylevel");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<IEnumerable<LogSummaryByLevel>>(json);
+                }
+            }
+            catch (Exception) {; }
+
+            return new List<LogSummaryByLevel>();
         }
 
         public void Dispose()

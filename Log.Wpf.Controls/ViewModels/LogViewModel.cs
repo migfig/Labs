@@ -1,5 +1,6 @@
 ﻿using Common.Commands;
 using Log.Common;
+using Log.Common.Services;
 using Log.Wpf.Controls.Properties;
 using System;
 using System.Collections.Generic;
