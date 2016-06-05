@@ -29,12 +29,12 @@ namespace Log.Service
             var groupedEntries = (await _logServices.GetEntries())
                 .GroupBy(x => x.EventLevel);
 
-            return groupedEntries.Select(group =>
+            return (groupedEntries.Select(group =>
                 new LogSummaryByLevel
                 {
                     EventLevel = group.Key.ToString(),
                     Count = group.Count()
-                });
+                })).OrderByDescending(x => x.Count);
         }
 
         [Route("api/summarybylevel/{timeSpan}"), HttpGet]
@@ -53,12 +53,12 @@ namespace Log.Service
                     .GroupBy(x => x.EventLevel);
             }
 
-            return groupedEntries.Select(group =>
+            return (groupedEntries.Select(group =>
                 new LogSummaryByLevel
                 {
                     EventLevel = group.Key.ToString(),
                     Count = group.Count()
-                });
+                })).OrderByDescending(x => x.Count);
         }      
     }
 }

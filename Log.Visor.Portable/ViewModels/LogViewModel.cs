@@ -63,7 +63,7 @@ namespace Log.Visor.Portable.ViewModels
                 {
                     if (_summaryByLevel == null)
                     {
-                        GetEntries();
+                        GetSummaryByLevel();
                     }
 
                     return _summaryByLevel;

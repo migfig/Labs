@@ -28,12 +28,12 @@ namespace Log.Service
             var groupedEntries = (await _logServices.GetEntries())
                 .GroupBy(x => x.ShortMessage);
 
-            return groupedEntries.Select(group =>
+            return (groupedEntries.Select(group =>
                 new LogSummary
                 {
                     ShortMessage = group.Key,
                     Count = group.Count()
-                });
+                })).OrderByDescending(x => x.Count);
         }
 
         [Route("api/summary/{timeSpan}"), HttpGet]
@@ -52,12 +52,12 @@ namespace Log.Service
                     .GroupBy(x => x.ShortMessage);
             }
 
-            return groupedEntries.Select(group =>
+            return (groupedEntries.Select(group =>
                 new LogSummary
                 {
                     ShortMessage = group.Key,
                     Count = group.Count()
-                });
+                })).OrderByDescending(x => x.Count);
         }
     }
 }

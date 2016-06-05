@@ -4,17 +4,41 @@
 				x:Class="Log.Visor.Portable.HomePage"
 				Title="Log Visor">
   <Grid RowSpacing="0">
-    <ListView ItemsSource="{Binding Summary}">
-      <ListView.ItemTemplate>
-        <DataTemplate>
+    <TableView Intent="Menu" HasUnevenRows="true">
+      <TableRoot>
+        <TableSection Title="Summary">
           <ViewCell>
-            <StackPanel Orientation="Horizontal">
-              <Label Text="{Binding ShortMessage}"/>
-              <Label Text="{Binding Count}"/>
-            </StackPanel>
+            <ListView ItemsSource="{Binding Summary}">
+              <ListView.ItemTemplate>
+                <DataTemplate>
+                  <ViewCell>
+                    <StackLayout Orientation="Horizontal" Spacing="8">
+                      <Label Text="{Binding ShortMessage}"/>
+                      <Label Text="{Binding Count}"/>
+                    </StackLayout>
+                  </ViewCell>
+                </DataTemplate>
+              </ListView.ItemTemplate>
+            </ListView>
           </ViewCell>
-        </DataTemplate>
-      </ListView.ItemTemplate>
-    </ListView>
+        </TableSection>
+        <TableSection Title="Summary by Event Level">
+          <ViewCell>
+            <ListView ItemsSource="{Binding SummaryByLevel}">
+              <ListView.ItemTemplate>
+                <DataTemplate>
+                  <ViewCell>
+                      <StackLayout Spacing="4">
+                        <Label Text="{Binding EventLevel}" />
+                        <Label Text="{Binding Count}"/>
+                      </StackLayout>
+                  </ViewCell>
+                </DataTemplate>
+              </ListView.ItemTemplate>
+          </ListView>
+          </ViewCell>
+        </TableSection>
+      </TableRoot>      
+    </TableView>
   </Grid>
 </ContentPage>
