@@ -795,8 +795,11 @@
                                         <TextBlock Text="{Binding ShortMessage}" FontSize="14" />
                                     </Expander.Header>
                                     <Border Padding="4" Margin="0,4,0,0" BorderThickness="1" BorderBrush="LightGray">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Command="{Binding AddToIgnoreValuesCommand}" CommandParameter="{Binding ShortMessage}" ToolTip="Add to Ignore Values List" Click="OnAddToIgnoreValuesCommandClick">
+                                        <StackPanel>
+                                            <Button Command="{Binding AddToIgnoreValuesCommand}" 
+                                                    CommandParameter="{Binding ShortMessage}" ToolTip="Add to Ignore Values List" 
+                                                    HorizontalAlignment="Left"
+                                                    Click="OnAddToIgnoreValuesCommandClick">
                                                 <Button.Style>
                                                     <Style TargetType="Button">
                                                         <Setter Property="Background" Value="White"/>

@@ -88,7 +88,7 @@ namespace Log.Wpf.Controls.ViewModels
                 {
                     IsBusy = true;
                     _entries = (await client.GetEntries(SelectedLevel))
-                        .Where(x => !IgnoreValues.Contains(x.Message));
+                        .Where(x => !IgnoreValues.Contains(x.ShortMessage));
                     
                     OnPropertyChanged("Entries");
                     IsBusy = false;
