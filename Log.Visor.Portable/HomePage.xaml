@@ -1,10 +1,21 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage 	xmlns="http://xamarin.com/schemas/2014/forms" 
-				xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+				xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:sfgrid="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
 				x:Class="Log.Visor.Portable.HomePage"
 				Title="Log Visor">
   <Grid RowSpacing="0">
-    <TableView Intent="Menu" HasUnevenRows="true">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <sfgrid:SfDataGrid ItemsSource="{Binding Summary}" 
+                       AutoGenerateColumns="true"
+                       ColumnSizer="Star">      
+    </sfgrid:SfDataGrid>
+    
+    <TableView Grid.Row="0" Intent="Menu" HasUnevenRows="true">
       <TableRoot>
         <TableSection Title="Summary">
           <ViewCell>

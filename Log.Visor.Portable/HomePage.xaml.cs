@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Syncfusion.SfDataGrid.XForms;
 
 namespace Log.Visor.Portable
 {
