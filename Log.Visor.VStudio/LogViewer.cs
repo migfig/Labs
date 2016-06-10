@@ -12,19 +12,20 @@ namespace Log.Visor.VStudio
     using Microsoft.VisualStudio.Shell;
     using Wpf.Controls;
     using System.Windows;
-    using System.Diagnostics;
     using Wpf.Controls.ViewModels;
-    using System.Collections.Generic;/// <summary>
-                                     /// This class implements the tool window exposed by this package and hosts a user control.
-                                     /// </summary>
-                                     /// <remarks>
-                                     /// In Visual Studio tool windows are composed of a frame (implemented by the shell) and a pane,
-                                     /// usually implemented by the package implementer.
-                                     /// <para>
-                                     /// This class derives from the ToolWindowPane class provided from the MPF in order to use its
-                                     /// implementation of the IVsUIElementPane interface.
-                                     /// </para>
-                                     /// </remarks>
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// This class implements the tool window exposed by this package and hosts a user control.
+    /// </summary>
+    /// <remarks>
+    /// In Visual Studio tool windows are composed of a frame (implemented by the shell) and a pane,
+    /// usually implemented by the package implementer.
+    /// <para>
+    /// This class derives from the ToolWindowPane class provided from the MPF in order to use its
+    /// implementation of the IVsUIElementPane interface.
+    /// </para>
+    /// </remarks>
     [Guid("02bee7af-68af-40ec-8e32-ea7a53105041")]
     public class LogViewer : ToolWindowPane
     {
@@ -74,17 +75,7 @@ namespace Log.Visor.VStudio
 
                             if (items.Count() == 1)
                             {
-                                var item = items.First();
-                                Log(output, "Code item found: " + item.Name);
-
-                                var window = item.Open();
-                                if (null != window)
-                                {
-                                    window.Activate();
-                                    var selection = (EnvDTE.TextSelection)window.Document.Selection;
-                                    selection.GotoLine(e.LineNumber, Select: true);
-                                }
-                                found = true;
+                                found = OpenItem(output, items.First(), e);
                             }
                             else
                             {
@@ -92,26 +83,17 @@ namespace Log.Visor.VStudio
                                 foreach (var item in items)
                                 {
                                     var parts = e.NameSpace.Split('\\');
-                                    for (var i = parts.Length - 1; i > 0; i--)
+                                    for (var i = parts.Length - 1; i >= 0; i--)
                                     {
                                         var name = string.Join("\\", parts, 0, i);
                                         Log(output, string.Format("Looking for Code item {0} as named {1}", i, name));
                                         if (item.ContainingProject.Name.Equals(name))
                                         {
-                                            Log(output, "Code item found in project " + item.ContainingProject.Name);
-                                            var window = item.Open();
-                                            if (null != window)
-                                            {
-                                                window.Activate();
-                                                var selection = (EnvDTE.TextSelection)window.Document.Selection;
-                                                selection.GotoLine(e.LineNumber, Select: true);
-                                            }
-                                            found = true;
+                                            found = OpenItem(output, item, e);
                                             break;
                                         }
                                     }
-                                    if (found)
-                                        break;
+                                    if (found) break;
                                 }
                             }
                         }
@@ -139,11 +121,24 @@ namespace Log.Visor.VStudio
             {
                 if(!found)
                 {
-                    MessageBox.Show(string.Format("Class {0} not found in current loaded solution.", e.ClassName), "Code Item not found!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    MessageBox.Show(string.Format("Class {0} not found in namespace {1}.", e.ClassName, e.NameSpace), "Code Item not found!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }
         }
 
+        private bool OpenItem(EnvDTE.OutputWindowPane pane, EnvDTE.ProjectItem item, ViewCodeArgs e)
+        {
+            Log(pane, "Code item found [" + item.Name + "] in project [" + item.ContainingProject.Name + "]");
+            var window = item.Open();
+            if (null != window)
+            {
+                window.Activate();
+                var selection = (EnvDTE.TextSelection)window.Document.Selection;
+                selection.GotoLine(e.LineNumber, Select: true);
+            }
+
+            return true;
+        }
         private EnvDTE.ProjectItem FindItem(EnvDTE.OutputWindowPane pane, IEnumerable<EnvDTE.ProjectItem> items, ViewCodeArgs e)
         {
             if (items == null || !items.Any()) return null;
