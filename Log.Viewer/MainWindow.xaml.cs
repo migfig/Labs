@@ -10,12 +10,6 @@ namespace Log.Viewer
         public MainWindow()
         {
             InitializeComponent();
-            logViewerControl.OnViewCodeRequest += LogViewerControlOnViewCodeRequest;
-        }
-
-        private void LogViewerControlOnViewCodeRequest(object sender, Wpf.Controls.ViewModels.ViewCodeArgs e)
-        {
-            MessageBox.Show(string.Format("View code request:\n{0}.{1}\n@ Line number {2}", e.NameSpace, e.ClassName, e.LineNumber), sender.ToString());
         }
     }
 }

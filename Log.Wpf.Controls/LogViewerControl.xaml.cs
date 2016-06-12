@@ -11,8 +11,12 @@ namespace Log.Wpf.Controls
     using System.Windows.Controls;
     using ViewModels;
     using Visor.VStudio;
-    using System;
     using System.ComponentModel.Composition;
+    using EnvDTE80;
+    using EnvDTE;
+    using System;
+    using System.Windows;
+    
     /// <summary>
     /// Interaction logic for LogViewerControl.
     /// </summary>
@@ -20,11 +24,10 @@ namespace Log.Wpf.Controls
     [ExportMetadata("Title", "Log Viewer")]
     public partial class LogViewerControl : UserControl, IChildWindow, ITitledWindow
     {
+        private IPlugableWindow _parentWindow;
         public string Title { get { return "Log Viewer"; } }
         UserControl IChildWindow.Content { get { return this; } }
 
-        public delegate void ViewCodeRequestHandler(object sender, ViewCodeArgs e);
-        public event ViewCodeRequestHandler OnViewCodeRequest;
         /// <summary>
         /// Initializes a new instance of the <see cref="LogViewerControl"/> class.
         /// </summary>
@@ -42,27 +45,81 @@ namespace Log.Wpf.Controls
             }
         }
 
-        private void OnViewCodeCommand(object sender, System.Windows.RoutedEventArgs e)
+        private void OnViewCodeCommand(object sender, RoutedEventArgs e)
         {
-            if (OnViewCodeRequest != null)
+            var entry = ((sender as Button).Tag as LogEntry);
+            if (!string.IsNullOrWhiteSpace(entry.ClassName))
             {
-                var entry = ((sender as Button).Tag as LogEntry);
-                if (!string.IsNullOrWhiteSpace(entry.ClassName))
-                {
-                    var progId = Settings.Default.VisualStudioProgId ?? "VisualStudio.DTE.14.0";
-                    OnViewCodeRequest(this, 
-                        new ViewCodeArgs(progId, entry.ClassName, entry.LineNumber));
-                }
+                LogViewerOnViewCodeRequest(sender, 
+                    new ViewCodeArgs(Settings.Default.VisualStudioProgId, entry.ClassName, entry.LineNumber));
             }
         }
 
-        private void OnAddToIgnoreValuesCommandClick(object sender, System.Windows.RoutedEventArgs e)
+        private void OnAddToIgnoreValuesCommandClick(object sender, RoutedEventArgs e)
         {
             var message = (sender as Button).CommandParameter;
             if(LogViewModel.ViewModel.AddToIgnoreValuesCommand.CanExecute(message))
             {
                 LogViewModel.ViewModel.AddToIgnoreValuesCommand.Execute(message);
             }
+        }
+
+        public void SetParentWindow(IPlugableWindow window)
+        {
+            _parentWindow = window;
+        }
+
+        private void LogViewerOnViewCodeRequest(object sender, ViewCodeArgs e)
+        {
+            var found = false;
+            var errMsg = string.Empty;
+            try
+            {
+                if (null != _parentWindow && null != _parentWindow.Dte)
+                {
+                    var dte90 = (Solution2)_parentWindow.Dte.Solution;
+
+                    var prjItem = dte90.FindProjectItem(e.ClassName);
+                    if (prjItem != null)
+                    {
+                        found = OpenItem(prjItem, e);
+                    }
+                }
+                else
+                {
+                    errMsg = "Visual Studio Instance " + e.ProgId + " is not available!";
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message + " ProgId [" + e.ProgId + "] " + ex.StackTrace;
+            }
+
+            if (errMsg.Length > 0)
+            {
+                MessageBox.Show(errMsg, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                if (!found)
+                {
+                    MessageBox.Show(string.Format("Class {0} not found in namespace {1}.", e.ClassName, e.NameSpace), "Code Item not found!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
+        }
+
+        private bool OpenItem(ProjectItem item, ViewCodeArgs e)
+        {
+            _parentWindow.Log("Code item found [{0}] in project [{1}]", item.Name, item.ContainingProject.Name);
+            var window = item.Open();
+            if (null != window)
+            {
+                window.Activate();
+                var selection = (TextSelection)window.Document.Selection;
+                selection.GotoLine(e.LineNumber, Select: true);
+            }
+
+            return true;
         }
     }
 }

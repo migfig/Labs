@@ -3,28 +3,28 @@ using System.Windows.Controls;
 using Visor.VStudio;
 using Visor.Wpf.TodoCoder.ViewModels;
 
-namespace Visor.Wpf.TodoCoder
+namespace Trainer.Wpf.VStudio.Tools
 {
     /// <summary>
-    /// Interaction logic for CoderControl.xaml
+    /// Interaction logic for AppAccelerator.xaml
     /// </summary>
     [Export(typeof(IChildWindow))]
-    [ExportMetadata("Title", "Todo Coder")]
-    public partial class CoderControl : UserControl, IChildWindow, ITitledWindow
+    [ExportMetadata("Title", "App Accelerator")]
+    public partial class AppAccelerator : UserControl, IChildWindow, ITitledWindow
     {
-        public CoderControl()
+        public AppAccelerator()
         {
-            DataContext = TodoViewModel.ViewModel;
+            DataContext = ComponentsViewModel.ViewModel;
             InitializeComponent();
         }
 
         private IPlugableWindow _parentWindow;
-        public string Title { get { return "Todo Coder"; } }
+        public string Title { get { return "App Accelerator"; } }
         UserControl IChildWindow.Content { get { return this; } }
 
         public void SetParentWindow(IPlugableWindow window)
         {
             _parentWindow = window;
-        }
+        }        
     }
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Components xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Component Id="1692b4b4a9b747508fa062d879f78825" Name="BooleanToVisibilityConverter" Image="" TargetFile="Common\BooleanToVisibilityConverter.cs">
+    <Code SourceFile="BooleanToVisibilityConverter.cs" />
+  </Component>
+  <Component Id="8bdf92fc2e1f4e6c848b31accd4e968a" Name="NavigationHelper" Image="" TargetFile="Common\NavigationHelper.cs">
+    <Code SourceFile="NavigationHelper.cs" />
+  </Component>
+  <Component Id="c6fe46c6311e43798f32033ea7136bc5" Name="ObservableDictionary" Image="" TargetFile="Common\ObservableDictionary.cs">
+    <Code SourceFile="ObservableDictionary.cs" />
+  </Component>
+  <Component Id="9fb1569377f840958894face7dc129fe" Name="OrientedSize" Image="" TargetFile="Common\OrientedSize.cs">
+    <Code SourceFile="OrientedSize.cs" />
+  </Component>
+  <Component Id="142941e175c34a11a1d8c010a269266a" Name="RelayCommand" Image="" TargetFile="Common\RelayCommand.cs">
+    <Code SourceFile="RelayCommand.cs" />
+  </Component>
+  <Component Id="02a980dcc7bf41c0af0cb9c84c9b9587" Name="SuspensionManager" Image="" TargetFile="Common\SuspensionManager.cs">
+    <Code SourceFile="SuspensionManager.cs" />
+  </Component>
+  <Component Id="af110fb94ec6434291bee9a1467a9b4d" Name="WrapPanel" Image="" TargetFile="Common\WrapPanel.cs">
+    <Code SourceFile="WrapPanel.cs" />
+  </Component>
+  <Component Id="84d4a3b0aa3d4033ab1ba61be131021f" Name="Common Files" Image="" SourcePath="C:\Code\RelatedRecords.Tests\Interviewer\Common\">
+    <Dependency Id="1692b4b4a9b747508fa062d879f78825" />
+    <Dependency Id="8bdf92fc2e1f4e6c848b31accd4e968a" />
+    <Dependency Id="c6fe46c6311e43798f32033ea7136bc5" />
+    <Dependency Id="9fb1569377f840958894face7dc129fe" />
+    <Dependency Id="142941e175c34a11a1d8c010a269266a" />
+    <Dependency Id="02a980dcc7bf41c0af0cb9c84c9b9587" />
+    <Dependency Id="af110fb94ec6434291bee9a1467a9b4d" />
+  </Component>
+</Components>

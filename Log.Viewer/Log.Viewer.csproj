@@ -108,6 +108,10 @@
       <Project>{03c6a50b-c45d-4e7e-886e-70ce8cdaf048}</Project>
       <Name>Log.Wpf.Controls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Visor.VStudio\Visor.VStudio.csproj">
+      <Project>{af1104dc-4938-46b3-8d7c-516df8bc7b95}</Project>
+      <Name>Visor.VStudio</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
