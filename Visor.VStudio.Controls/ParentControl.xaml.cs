@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.Composition.Hosting;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.IO;
+using System.ComponentModel.Composition;
 
 namespace Visor.VStudio.Controls
 {
@@ -23,7 +13,25 @@ namespace Visor.VStudio.Controls
         public ParentControl()
         {
             InitializeComponent();
-            
+            Init();
+        }
+
+        private void Init()
+        {
+            var assembly = typeof(ParentControl).Assembly;
+            var catalog = new AggregateCatalog();
+            catalog.Catalogs.Add(new AssemblyCatalog(assembly));
+            catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(Path.GetDirectoryName(assembly.Location), "extensions")));
+            var container = new CompositionContainer(catalog);
+            try
+            {
+                container.ComposeParts(this);
+            } catch(CompositionException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            Attach();
         }
     }
 }

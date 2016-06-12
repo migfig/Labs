@@ -10,11 +10,19 @@ namespace Log.Wpf.Controls
     using Properties;
     using System.Windows.Controls;
     using ViewModels;
+    using Visor.VStudio;
+    using System;
+    using System.ComponentModel.Composition;
     /// <summary>
     /// Interaction logic for LogViewerControl.
     /// </summary>
-    public partial class LogViewerControl : UserControl
+    [Export(typeof(IChildWindow))]
+    [ExportMetadata("Title", "Log Viewer")]
+    public partial class LogViewerControl : UserControl, IChildWindow, ITitledWindow
     {
+        public string Title { get { return "Log Viewer"; } }
+        UserControl IChildWindow.Content { get { return this; } }
+
         public delegate void ViewCodeRequestHandler(object sender, ViewCodeArgs e);
         public event ViewCodeRequestHandler OnViewCodeRequest;
         /// <summary>
