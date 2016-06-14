@@ -4,6 +4,8 @@ using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using EnvDTE80;
 using EnvDTE;
+using Trainer.Domain;
+using System.Linq;
 
 namespace Visor.VStudio
 {
@@ -24,6 +26,7 @@ namespace Visor.VStudio
         void Attach();
         DTE2 Dte { get; set; }
         void Log(string format, params string[] message);
+        bool AddCode(Component component);
     }
 
     [Export(typeof(IPlugableWindow))]
@@ -74,6 +77,25 @@ namespace Visor.VStudio
                 _outputPane.OutputString(string.Format(format, message) + Environment.NewLine);
             }
             catch (Exception) {; }
+        }
+
+        public bool AddCode(Component component)
+        {
+            if (null == Dte) return false;
+            var solution = (Solution2)Dte.Solution;
+            if (solution == null) return false;
+
+            var projects = solution.Projects.Cast<Project>();
+            var project = projects
+                .FirstOrDefault(x => x.Name.Equals(component.TargetProject));
+            if (project == null)
+                project = projects.FirstOrDefault();
+            if (project == null) return false;
+
+            //project.CodeModel.
+            project.ProjectItems.AddFromFile(component.TargetFile);
+
+            return true;
         }
     }
 }

@@ -21,7 +21,7 @@
   <Component Id="af110fb94ec6434291bee9a1467a9b4d" Name="WrapPanel" Image="" TargetFile="Common\WrapPanel.cs">
     <Code SourceFile="WrapPanel.cs" />
   </Component>
-  <Component Id="84d4a3b0aa3d4033ab1ba61be131021f" Name="Common Files" Image="" SourcePath="C:\Code\RelatedRecords.Tests\Interviewer\Common\">
+  <Component Id="84d4a3b0aa3d4033ab1ba61be131021f" Name="Common Files" Image="" SourcePath="C:\Code\RelatedRecords.Tests\Interviewer\Common\" IsBrowsable="true">
     <Dependency Id="1692b4b4a9b747508fa062d879f78825" />
     <Dependency Id="8bdf92fc2e1f4e6c848b31accd4e968a" />
     <Dependency Id="c6fe46c6311e43798f32033ea7136bc5" />

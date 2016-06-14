@@ -18,11 +18,11 @@ namespace Trainer.Wpf.VStudio.Tools.Controls
 
         private void Image_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            //var component = (sender as Image).Tag as Components;
-            //if (ComponentsViewModel.ViewModel.AddComponent.CanExecute(null))
-            //{
-            //    ComponentsViewModel.ViewModel.AddComponent.Execute(component);
-            //}
+            var component = (sender as Image).Tag as Component;
+            if (ComponentsViewModel.ViewModel.AddCodeCommand.CanExecute(component))
+            {
+                ComponentsViewModel.ViewModel.AddCodeCommand.Execute(component);
+            }
         }
 
         private void OnExpanderDetailsCollapsed(object sender, RoutedEventArgs e)

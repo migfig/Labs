@@ -28,6 +28,7 @@
             <xs:attribute name="TargetFile" type="xs:string" use="optional" />
             <xs:attribute name="SourcePath" type="xs:string" use="optional" />
             <xs:attribute name="Line" type="xs:unsignedByte" use="optional" />
+            <xs:attribute name="IsBrowsable" type="xs:boolean" use="optional"/>
           </xs:complexType>
         </xs:element>
       </xs:sequence>

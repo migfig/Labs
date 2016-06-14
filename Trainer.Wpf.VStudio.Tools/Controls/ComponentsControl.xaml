@@ -58,7 +58,7 @@
                           Tag="{Binding}"
                           Grid.Row="1"
                           Grid.ColumnSpan="2">
-                    <TextBox Text="{Binding Mode=TwoWay, Path=Code.Value}" IsReadOnly="True" 
+                    <TextBox Text="{Binding Mode=TwoWay, Path=Code.ComposedValue}" IsReadOnly="True" 
                                FontSize="14" 
                                Foreground="#FF1B1A1A"
                                TextWrapping="WrapWithOverflow"
@@ -73,7 +73,7 @@
                        Grid.Row="1" Grid.Column="1"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Top"
-                       Cursor="Hand"
+                       Cursor="Hand"                       
                        MouseUp="Image_MouseUp"/>
             </Grid>
         </Border>

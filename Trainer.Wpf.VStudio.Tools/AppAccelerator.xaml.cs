@@ -25,6 +25,7 @@ namespace Trainer.Wpf.VStudio.Tools
         public void SetParentWindow(IPlugableWindow window)
         {
             _parentWindow = window;
+            ComponentsViewModel.ViewModel.ParentWindow = _parentWindow;
         }        
     }
 }

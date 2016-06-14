@@ -5,7 +5,7 @@
       <![CDATA[xmlns:common="using:AppUIBasics.Common"]]>
     </Code>
   </Component>
-  <Component Id="b05c78fdb0754992abc3be49c89a2fe6" Name="Application Styles" Image="" TargetFile="App.xaml" Line="8">
+  <Component Id="b05c78fdb0754992abc3be49c89a2fe6" Name="Application Styles" Image="" TargetFile="App.xaml" Line="8" IsBrowsable="true">
     <Dependency Id="6d2c6b5b5a2f4cada68fd348d287ff26" />
     <Dependency Id="84d4a3b0aa3d4033ab1ba61be131021f" Location="common.xml"/>
     <Code>

@@ -4,6 +4,10 @@ using System.IO;
 using Trainer.Domain;
 using Trainer.Wpf.VStudio.Tools.Properties;
 using System.Linq;
+using System;
+using Common.Commands;
+using System.Windows.Input;
+using Visor.VStudio;
 
 namespace Visor.Wpf.TodoCoder.ViewModels
 {
@@ -12,6 +16,9 @@ namespace Visor.Wpf.TodoCoder.ViewModels
         private static ComponentsViewModel _viewModel = new ComponentsViewModel();
         public static ComponentsViewModel ViewModel { get { return _viewModel; } }
 
+        public IPlugableWindow ParentWindow { get; set; }
+        private ObservableCollection<Component> items;
+
         private ObservableCollection<Component> _items;
         public ObservableCollection<Component> Items
         {
@@ -19,20 +26,52 @@ namespace Visor.Wpf.TodoCoder.ViewModels
             {
                 if (_items == null)
                 {
-                    _items = new ObservableCollection<Component>();
+                    items = new ObservableCollection<Component>();
                     var files = Directory.GetFiles(Settings.Default.SourcePath, Settings.Default.FileMask);
                     foreach(var file in files)
                     {
                         var item = XmlHelper<Components>.Load(file);
                         if(null != item)
                         {
-                            foreach(var i in item.Component)
-                                _items.Add(i);
+                            foreach (var i in item.Component) items.Add(i);
                         }
                     }
+
+                    foreach(var item in items)
+                    {
+                        if (string.IsNullOrWhiteSpace(item.Code.Value))
+                        {
+                            foreach (var dep in item.Dependency)
+                                item.Code.ComposedValue += items.First(x => x.Id.Equals(dep.Id)).TargetFile
+                                    + Environment.NewLine; 
+                        }
+                    }
+
+                    _items = new ObservableCollection<Component>(items.Where(x => x.IsBrowsable));
                 }
 
                 return _items;
+            }
+        }
+
+        private RelayCommand _addCodeCommand;
+        public ICommand AddCodeCommand
+        {
+            get
+            {
+                return _addCodeCommand ?? (_addCodeCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        var component = tag as Component;
+                        if (!string.IsNullOrWhiteSpace(component.Code.ComposedValue))
+                        {
+                            if (ParentWindow != null) ParentWindow.AddCode(component);
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return !string.IsNullOrWhiteSpace((tag as Component).Code.ComposedValue);
+                    }));
             }
         }
     }

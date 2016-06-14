@@ -79,6 +79,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Trainer.Domain\Trainer.Domain.csproj">
+      <Project>{8cb4a0bd-82a1-4b4c-b3a1-dd880b82dab7}</Project>
+      <Name>Trainer.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

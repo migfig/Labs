@@ -3,18 +3,18 @@
 namespace Trainer.Domain
 {
     /// <remarks/>
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+    [System.Xml.Serialization.XmlType(AnonymousType = true)]
+    [System.Xml.Serialization.XmlRoot(Namespace = "", IsNullable = false)]
     public partial class Components
     {
         private ObservableCollection<Component> componentField;
         public Components()
         {
-            componentField = new ObservableCollection<Domain.Component>();
+            componentField = new ObservableCollection<Component>();
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("Component")]
+        [System.Xml.Serialization.XmlElement("Component")]
         public ObservableCollection<Component> Component
         {
             get
@@ -29,7 +29,7 @@ namespace Trainer.Domain
     }
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    [System.Xml.Serialization.XmlType(AnonymousType = true)]
     public partial class Component
     {
 
@@ -50,14 +50,17 @@ namespace Trainer.Domain
         private byte lineField;
 
         private bool lineFieldSpecified;
+        private bool isBrowsableField;
+        private string targetProjectField;
 
         public Component()
         {
-            dependencyField = new ObservableCollection<Domain.Dependency>();
+            codeField = new Code();
+            dependencyField = new ObservableCollection<Dependency>();
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("Dependency")]
+        [System.Xml.Serialization.XmlElement("Dependency")]
         public ObservableCollection<Dependency> Dependency
         {
             get
@@ -84,7 +87,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttribute()]
         public string Id
         {
             get
@@ -98,7 +101,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttribute()]
         public string Name
         {
             get
@@ -112,7 +115,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttribute()]
         public string Image
         {
             get
@@ -126,7 +129,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttribute()]
         public string TargetFile
         {
             get
@@ -140,7 +143,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttribute()]
         public string SourcePath
         {
             get
@@ -154,7 +157,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttribute()]
         public byte Line
         {
             get
@@ -168,7 +171,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [System.Xml.Serialization.XmlIgnore()]
         public bool LineSpecified
         {
             get
@@ -180,10 +183,38 @@ namespace Trainer.Domain
                 this.lineFieldSpecified = value;
             }
         }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttribute()]
+        public bool IsBrowsable
+        {
+            get
+            {
+                return this.isBrowsableField;
+            }
+            set
+            {
+                this.isBrowsableField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttribute()]
+        public string TargetProject
+        {
+            get
+            {
+                return this.targetProjectField;
+            }
+            set
+            {
+                this.targetProjectField = value;
+            }
+        }
     }
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    [System.Xml.Serialization.XmlType(AnonymousType = true)]
     public partial class Dependency
     {
 
@@ -192,7 +223,7 @@ namespace Trainer.Domain
         private string locationField;
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttribute()]
         public string Id
         {
             get
@@ -206,7 +237,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttribute()]
         public string Location
         {
             get
@@ -221,16 +252,17 @@ namespace Trainer.Domain
     }
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    [System.Xml.Serialization.XmlType(AnonymousType = true)]
     public partial class Code
     {
 
         private string sourceFileField;
 
         private string valueField;
+        private string composedValueField;
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.Xml.Serialization.XmlAttribute()]
         public string SourceFile
         {
             get
@@ -244,7 +276,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlText()]
         public string Value
         {
             get
@@ -254,6 +286,22 @@ namespace Trainer.Domain
             set
             {
                 this.valueField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnore()]
+        public string ComposedValue
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(this.composedValueField) 
+                    ? this.composedValueField
+                    : this.valueField;
+            }
+            set
+            {
+                this.composedValueField = value;
             }
         }
     }
