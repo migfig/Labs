@@ -221,6 +221,12 @@ namespace Trainer.Domain
         private string idField;
 
         private string locationField;
+        private Component componentField;
+
+        public Dependency()
+        {
+            this.componentField = new Component();
+        }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttribute()]
@@ -247,6 +253,16 @@ namespace Trainer.Domain
             set
             {
                 this.locationField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public Component Component
+        {
+            get { return this.componentField; }
+            set
+            {
+                this.componentField = value;
             }
         }
     }

@@ -65,7 +65,7 @@ namespace Visor.Wpf.TodoCoder.ViewModels
                         var component = tag as Component;
                         if (!string.IsNullOrWhiteSpace(component.Code.ComposedValue))
                         {
-                            if (ParentWindow != null) ParentWindow.AddCode(component);
+                            if (ParentWindow != null) ParentWindow.AddCode(ResolveDependencies(component));
                         }
                     },
                     (tag) =>
@@ -73,6 +73,20 @@ namespace Visor.Wpf.TodoCoder.ViewModels
                         return !string.IsNullOrWhiteSpace((tag as Component).Code.ComposedValue);
                     }));
             }
+        }
+
+        private Component ResolveDependencies(Component component)
+        {
+            if(component.Dependency.Any())
+            {
+                foreach(var dep in component.Dependency)
+                {
+                    dep.Component = items.First(x => x.Id.Equals(dep.Id));
+                    dep.Component.SourcePath = component.SourcePath;
+                    dep.Component = ResolveDependencies(dep.Component);
+                }
+            }
+            return component;
         }
     }
 }

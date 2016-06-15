@@ -6,6 +6,7 @@ using EnvDTE80;
 using EnvDTE;
 using Trainer.Domain;
 using System.Linq;
+using System.IO;
 
 namespace Visor.VStudio
 {
@@ -81,20 +82,83 @@ namespace Visor.VStudio
 
         public bool AddCode(Component component)
         {
-            if (null == Dte) return false;
-            var solution = (Solution2)Dte.Solution;
-            if (solution == null) return false;
+            return AddCode(component, null);
+        }
 
-            var projects = solution.Projects.Cast<Project>();
-            var project = projects
-                .FirstOrDefault(x => x.Name.Equals(component.TargetProject));
+        private bool AddCode(Component component, Project project = null)
+        {
             if (project == null)
-                project = projects.FirstOrDefault();
-            if (project == null) return false;
+            {
+                if (null == Dte) return false;
+                var solution = (Solution2)Dte.Solution;
+                if (solution == null) return false;
 
-            //project.CodeModel.
+                project = solution.Projects.Cast<Project>()
+                    .FirstOrDefault(x => x.Name.Equals(component.TargetProject));
+                if (project == null) return false;
+            }
+
+            foreach (var dep in component.Dependency)
+            {
+                AddCode(dep.Component, project);
+            }
+
+            if (!string.IsNullOrWhiteSpace(component.Code.Value))
+            {
+                var solution = (Solution2)Dte.Solution;
+                var item = solution.FindProjectItem(component.TargetFile.Split('\\').Last());
+                InsertCode(item, component);
+            }
+            else
+            {
+                InsertCodeFromFile(project, component);
+            }
             project.ProjectItems.AddFromFile(component.TargetFile);
 
+            return true;
+        }
+
+        private bool InsertCode(ProjectItem item, Component component)
+        {
+            if (item == null) return false;
+
+            var window = item.Open();
+            if (window == null) return false;
+
+            window.Activate();
+            window.Document.Activate();
+            var selection = (TextSelection)window.Document.Selection;
+            selection.GotoLine(component.Line, Select: false);
+            selection.EndOfLine();
+            selection.NewLine();
+            selection.Insert(component.Code.Value);
+            
+            return window.Document.Save() == vsSaveStatus.vsSaveSucceeded;
+        }
+
+        private bool InsertCodeFromFile(Project project, Component component)
+        {
+            var folders = component.TargetFile.Split('\\');
+            var file = folders.Last();
+            ProjectItem folderItem = null;
+            foreach (var folder in folders.Where(x => !x.Equals(file)))
+            {
+                if (folderItem == null)
+                    folderItem = project.ProjectItems.AddFolder(folder);
+                else
+                    folderItem = folderItem.ProjectItems.AddFolder(folder);
+            }
+
+            if (folderItem != null)
+            {
+                folderItem.ProjectItems.AddFromFile(Path.Combine(component.SourcePath, component.Code.SourceFile));
+                folderItem.Save();
+            }
+            else
+            {
+                project.ProjectItems.AddFromFile(Path.Combine(component.SourcePath, component.Code.SourceFile));
+                project.Save();
+            }
             return true;
         }
     }
