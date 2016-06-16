@@ -18,20 +18,22 @@ namespace Visor.VStudio.Controls
 
         private void Init()
         {
-            var assembly = typeof(ParentControl).Assembly;
-            var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(assembly));
-            catalog.Catalogs.Add(new DirectoryCatalog(Path.Combine(Path.GetDirectoryName(assembly.Location), "extensions")));
-            var container = new CompositionContainer(catalog);
+            var folder = string.Empty;
             try
             {
+                var assembly = GetType().Assembly;
+                var catalog = new AggregateCatalog();
+                catalog.Catalogs.Add(new AssemblyCatalog(assembly));
+                folder = Path.Combine(Path.GetDirectoryName(assembly.Location), "extensions");
+                catalog.Catalogs.Add(new DirectoryCatalog(folder));
+                var container = new CompositionContainer(catalog);
                 container.ComposeParts(this);
-            } catch(CompositionException e)
-            {
-                MessageBox.Show(e.Message);
+                Attach();
             }
-
-            Attach();
+            catch (CompositionException e)
+            {
+                MessageBox.Show(e.Message + " extensions folder: " + folder);
+            }
         }
     }
 }
