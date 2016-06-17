@@ -16,7 +16,7 @@
         <Controls:HamburgerMenu.PrimaryButtons>
             <!--  mainpage button  -->
             <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:MainPage" 
-                                          AutomationProperties.Name="Jerry"
+                                          AutomationProperties.Name="ButtonInfo"
                                           >
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Width="48" Height="48"
@@ -28,8 +28,21 @@
         </Controls:HamburgerMenu.PrimaryButtons>
 
         <Controls:HamburgerMenu.SecondaryButtons>
+            <!--  slidepage button  -->
+            <Controls:HamburgerButtonInfo x:Name="SlidesButton" PageParameter="0"
+                                          PageType="views:SlidePage">
+                <Controls:HamburgerButtonInfo.NavigationTransitionInfo>
+                    <SuppressNavigationTransitionInfo />
+                </Controls:HamburgerButtonInfo.NavigationTransitionInfo>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="SlideShow" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Slides" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
             <!--  settingspage button  -->
-            <Controls:HamburgerButtonInfo x:Name="SettingsButton" PageParameter="0"
+            <Controls:HamburgerButtonInfo x:Name="SettingsButton" PageParameter="1"
                                           PageType="views:SettingsPage">
                 <Controls:HamburgerButtonInfo.NavigationTransitionInfo>
                     <SuppressNavigationTransitionInfo />

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RichTextBlock SelectionHighlightColor="Green" FontSize="14" FontStretch="Normal" FontStyle="Normal"
+               FontWeight="Bold" Foreground="Aqua" HorizontalAlignment="Left" IsTextSelectionEnabled="True"
+               LineHeight="10" LineStackingStrategy="BlockLineHeight" Margin="4,0"
+               MaxLines="10" Opacity="1.0" Padding="20" TextAlignment="Justify"
+               TextIndent="10" TextWrapping="Wrap" Typography.Capitals="SmallCaps" VerticalAlignment="Center"
+               Visibility="Visible">
+  <Paragraph CharacterSpacing="10" FontSize="12" FontStretch="Condensed" FontStyle="Italic" FontWeight="Black"
+             Foreground="AliceBlue" LineHeight="10" LineStackingStrategy="BaselineToBaseline"
+             TextAlignment="Center" TextIndent="10" Typography.CapitalSpacing="True"
+                               >
+    <Bold FontSize="12" FontStretch="Condensed" CharacterSpacing="23"
+          FontStyle="Italic" Foreground="AliceBlue" Typography.CapitalSpacing="False"
+                              >RichTextBlock</Bold> provides a rich text display container that supports
+    <Run FontStyle="Italic" FontWeight="Bold" CharacterSpacing="10"
+         FontSize="12" FontStretch="Condensed"
+         Foreground="AliceBlue" Typography.CapitalSpacing="False"
+                             >formatted text</Run> ,
+    <Hyperlink NavigateUri="http://msdn.microsoft.com/en-us/library/windows/apps/windows.ui.xaml.documents.hyperlink.aspx">hyperlinks</Hyperlink> , inline images, and other rich content.
+  </Paragraph>
+  <Paragraph>RichTextBlock also supports a built-in overflow model.</Paragraph>
+  <Paragraph>
+    <InlineUIContainer>
+      <Image Source="Assets\StoreLogo.png" Width="32" Height="32" Stretch="Fill"/>
+    </InlineUIContainer>
+  </Paragraph>
+</RichTextBlock>

@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="RichTextBlock">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="Paragraph">
+          <xs:complexType mixed="true">
+            <xs:sequence minOccurs="0">
+              <xs:element minOccurs="0" name="InlineUIContainer">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Image">
+                      <xs:complexType>
+                        <xs:attribute name="Source" type="xs:string" use="required" />
+                        <xs:attribute name="Width" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="Height" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="Stretch" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="Bold">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="FontSize" type="xs:unsignedByte" use="required" />
+                      <xs:attribute name="FontStretch" type="xs:string" use="required" />
+                      <xs:attribute name="CharacterSpacing" type="xs:unsignedByte" use="required" />
+                      <xs:attribute name="FontStyle" type="xs:string" use="required" />
+                      <xs:attribute name="Foreground" type="xs:string" use="required" />
+                      <xs:attribute name="Typography.CapitalSpacing" type="xs:string" use="required" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="Run">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="FontStyle" type="xs:string" use="required" />
+                      <xs:attribute name="FontWeight" type="xs:string" use="required" />
+                      <xs:attribute name="CharacterSpacing" type="xs:unsignedByte" use="required" />
+                      <xs:attribute name="FontSize" type="xs:unsignedByte" use="required" />
+                      <xs:attribute name="FontStretch" type="xs:string" use="required" />
+                      <xs:attribute name="Foreground" type="xs:string" use="required" />
+                      <xs:attribute name="Typography.CapitalSpacing" type="xs:string" use="required" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="Hyperlink">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="NavigateUri" type="xs:string" use="required" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="CharacterSpacing" type="xs:unsignedByte" use="optional" />
+            <xs:attribute name="FontSize" type="xs:unsignedByte" use="optional" />
+            <xs:attribute name="FontStretch" type="xs:string" use="optional" />
+            <xs:attribute name="FontStyle" type="xs:string" use="optional" />
+            <xs:attribute name="FontWeight" type="xs:string" use="optional" />
+            <xs:attribute name="Foreground" type="xs:string" use="optional" />
+            <xs:attribute name="LineHeight" type="xs:unsignedByte" use="optional" />
+            <xs:attribute name="LineStackingStrategy" type="xs:string" use="optional" />
+            <xs:attribute name="TextAlignment" type="xs:string" use="optional" />
+            <xs:attribute name="TextIndent" type="xs:unsignedByte" use="optional" />
+            <xs:attribute name="Typography.CapitalSpacing" type="xs:string" use="optional" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="SelectionHighlightColor" type="xs:string" use="required" />
+      <xs:attribute name="FontSize" type="xs:unsignedByte" use="required" />
+      <xs:attribute name="FontStretch" type="xs:string" use="required" />
+      <xs:attribute name="FontStyle" type="xs:string" use="required" />
+      <xs:attribute name="FontWeight" type="xs:string" use="required" />
+      <xs:attribute name="Foreground" type="xs:string" use="required" />
+      <xs:attribute name="HorizontalAlignment" type="xs:string" use="required" />
+      <xs:attribute name="IsTextSelectionEnabled" type="xs:string" use="required" />
+      <xs:attribute name="LineHeight" type="xs:unsignedByte" use="required" />
+      <xs:attribute name="LineStackingStrategy" type="xs:string" use="required" />
+      <xs:attribute name="Margin" type="xs:string" use="required" />
+      <xs:attribute name="MaxLines" type="xs:unsignedByte" use="required" />
+      <xs:attribute name="Opacity" type="xs:decimal" use="required" />
+      <xs:attribute name="Padding" type="xs:unsignedByte" use="required" />
+      <xs:attribute name="TextAlignment" type="xs:string" use="required" />
+      <xs:attribute name="TextIndent" type="xs:unsignedByte" use="required" />
+      <xs:attribute name="TextWrapping" type="xs:string" use="required" />
+      <xs:attribute name="Typography.Capitals" type="xs:string" use="required" />
+      <xs:attribute name="VerticalAlignment" type="xs:string" use="required" />
+      <xs:attribute name="Visibility" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
