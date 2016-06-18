@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
-        <ItemsControl x:Name="icContainer" />
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid x:Name="gdContainer" />
+    </ScrollViewer>
 </UserControl>

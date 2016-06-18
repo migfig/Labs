@@ -24,6 +24,11 @@ namespace Trainer.ViewModels
             }
         }
 
+        public string Header
+        {
+            get { return Presentation.Title + " - " + CurrentSlide.Title; }
+        }
+
         private Presentation _presentation;
         public Presentation Presentation
         {
@@ -87,7 +92,7 @@ namespace Trainer.ViewModels
 </Presentation>".Replace("'","\""));
             #endregion 
 
-            CurrentSlide = _presentation.Slide.First();
+            CurrentSlide = _presentation.Slide.Last();
         }
 
         private Slide _currentSlide;

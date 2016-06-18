@@ -51,7 +51,7 @@
         <controls:PageHeader x:Name="pageHeader" Frame="{x:Bind Frame}"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" Text="{x:Bind ViewModel.Presentation.Title, Mode=OneWay}" />
+                             RelativePanel.AlignTopWithPanel="True" Text="{x:Bind ViewModel.Header, Mode=OneWay}" />
 
         <!--  content  -->
         <ScrollViewer Padding="12,8,0,0" RelativePanel.AlignBottomWithPanel="True"
@@ -60,7 +60,13 @@
                       RelativePanel.Below="pageHeader"
                       VerticalScrollBarVisibility="Auto">
 
-            <ctrls:SlideControl Width="300" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <ctrls:SlideControl Padding="12,8,0,0" MinHeight="400" MinWidth="300"
+                                RelativePanel.AlignBottomWithPanel="True"
+                                RelativePanel.AlignLeftWithPanel="True"
+                                RelativePanel.AlignRightWithPanel="True"
+                                RelativePanel.Below="pageHeader"
+                                HorizontalAlignment="Stretch" 
+                                VerticalAlignment="Stretch" />
         </ScrollViewer>
 
     </RelativePanel>

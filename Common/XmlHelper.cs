@@ -48,6 +48,25 @@ namespace Common
             return Activator.CreateInstance<T>();
         }
 
+        public static T LoadFromString(string source)
+        {
+            try
+            {
+                using (var stream = XmlReader.Create(new StringReader(source)))
+                {
+                    var ser = new XmlSerializer(typeof(T));
+                    return (T)ser.Deserialize(stream);
+                }
+            }
+            catch (Exception e)
+            {
+                Extensions.ErrorLog.Error(e, "@ XmlHelper<T>.Load xml");
+                Extensions.TraceLog.Information("Tried to load {source}", source);
+            }
+
+            return Activator.CreateInstance<T>();
+        }
+
         public static string Save(T item, bool omitXml = false)
         {
             try

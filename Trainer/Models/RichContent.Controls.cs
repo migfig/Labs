@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Xml.Serialization;
 using Windows.UI;
 using Windows.UI.Text;
@@ -18,9 +19,9 @@ namespace Trainer.Models
                  FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch),
                  FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle),
                  FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight),
-                 Foreground = new SolidColorBrush(Colors.AliceBlue),
+                 Foreground = new SolidColorBrush(this.Foreground.GetColor()),
                  Text = this.Value
-             };        
+             };
     }
 
     public partial class HyperLink
@@ -29,23 +30,30 @@ namespace Trainer.Models
         public Xaml.Hyperlink Control =>
             new Xaml.Hyperlink
             {
-               NavigateUri = new Uri(this.NavigateUri)
+                NavigateUri = new Uri(this.NavigateUri)
             };
     }
 
     public partial class Bold
     {
         [XmlIgnore]
-        public new Xaml.Bold Control =>
-            new Xaml.Bold
+        public new Xaml.Bold Control
+        {
+            get
             {
-                CharacterSpacing = this.CharacterSpacing,
-                FontSize = this.FontSize,
-                FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch),
-                FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle),
-                FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight),
-                Foreground = new SolidColorBrush(Colors.AliceBlue),
-            };
+                var bold = new Xaml.Bold
+                {
+                    CharacterSpacing = this.CharacterSpacing,
+                    FontSize = this.FontSize,
+                    FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch),
+                    FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle),
+                    FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight),
+                    Foreground = new SolidColorBrush(this.Foreground.GetColor())
+                };
+                bold.Inlines.Add(new Xaml.Run { Text = this.Value });
+                return bold;
+            }
+        }
     }
 
     public partial class Image
@@ -74,12 +82,12 @@ namespace Trainer.Models
                     FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch),
                     FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle),
                     FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight),
-                    Foreground = new SolidColorBrush(Colors.AliceBlue),
+                    Foreground = new SolidColorBrush(this.Foreground.GetColor()),
                     LineHeight = this.LineHeight,
                     LineStackingStrategy = Helpers.ParseEnum<Windows.UI.Xaml.LineStackingStrategy>(this.LineStackingStrategy),
                     Margin = Helpers.GetThickness(this.Margin),
                     TextAlignment = Helpers.ParseEnum<Windows.UI.Xaml.TextAlignment>(this.TextAlignment),
-                    TextIndent = this.TextIndent
+                    TextIndent = this.TextIndent 
                 };
 
                 if (this.Bold != null)
@@ -131,7 +139,7 @@ namespace Trainer.Models
                     FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch),
                     FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle),
                     FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight),
-                    Foreground = new SolidColorBrush(Colors.AliceBlue),
+                    Foreground = new SolidColorBrush(this.Foreground.GetColor()),
                     LineHeight = this.LineHeight,
                     LineStackingStrategy = Helpers.ParseEnum<Windows.UI.Xaml.LineStackingStrategy>(this.LineStackingStrategy),
                     Margin = Helpers.GetThickness(this.Margin),
@@ -142,7 +150,9 @@ namespace Trainer.Models
                     IsTextSelectionEnabled = this.IsTextSelectionEnabled,
                     MaxLines = this.MaxLines,
                     Opacity = (double)this.Opacity,
-                    TextWrapping = Helpers.ParseEnum<Windows.UI.Xaml.TextWrapping>(this.TextWrapping)
+                    TextWrapping = Helpers.ParseEnum<Windows.UI.Xaml.TextWrapping>(this.TextWrapping),
+                    MinHeight = 40,
+                    MinWidth = 400
                 };
 
                 foreach (var p in this.Paragraph)
@@ -191,6 +201,15 @@ namespace Trainer.Models
             }
 
             return default(Windows.UI.Xaml.Thickness);
+        }
+
+        public static Color GetColor(this string color)
+        {
+            return Color.FromArgb(
+                     Byte.Parse(color.Substring(1, 2), NumberStyles.HexNumber),
+                     Byte.Parse(color.Substring(3, 2), NumberStyles.HexNumber),
+                     Byte.Parse(color.Substring(5, 2), NumberStyles.HexNumber),
+                     Byte.Parse(color.Substring(7, 2), NumberStyles.HexNumber));
         }
     }
 }

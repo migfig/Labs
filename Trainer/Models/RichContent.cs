@@ -64,6 +64,11 @@ namespace Trainer.Models
 
         public RichTextBlock()
         {
+            SelectionHighlightColor = "#FAFBFCFF";
+            IsTextSelectionEnabled = true;
+            MaxLines = ((byte)(10));
+            TextWrapping = "Wrap";
+            TypographyCapitals = "True";
             Paragraph = new ObservableCollection<Models.Paragraph>();
         }
     }
@@ -110,11 +115,19 @@ namespace Trainer.Models
         [XmlAttribute()]
         [DefaultValue("Fill")]
         public string Stretch { get; set; }
+
+        public Image()
+        {
+            Stretch = "Fill";
+        }
     }
     
     [XmlType(AnonymousType = true)]
     public partial class Bold: Run
     {
+        public Bold(): base()
+        {
+        }
     }
     
     [XmlType(AnonymousType = true)]
@@ -133,7 +146,7 @@ namespace Trainer.Models
         public byte CharacterSpacing { get; set; }
         
         [XmlAttribute()]
-        [DefaultValue(typeof(byte), "20")]
+        [DefaultValue(typeof(byte), "34")]
         public byte FontSize { get; set; }
         
         [XmlAttribute()]
@@ -141,7 +154,7 @@ namespace Trainer.Models
         public string FontStretch { get; set; }
         
         [XmlAttribute()]
-        [DefaultValue("#FFFFFFFF")]
+        [DefaultValue("#FF000000")]
         public string Foreground { get; set; }
         
         [XmlAttribute("Typography.CapitalSpacing")]
@@ -150,6 +163,15 @@ namespace Trainer.Models
         
         [XmlText()]
         public string Value { get; set; }
+
+        public Run(): base()
+        {
+            FontSize = (byte)34;
+            FontStretch = "Normal";
+            FontStyle = "Normal";
+            FontWeight = "Normal";
+            Foreground = "#FF000000";
+        }
     }
     
     [XmlType(AnonymousType = true)]
@@ -181,22 +203,33 @@ namespace Trainer.Models
         public string TextAlignment { get; set; }
 
         [XmlAttribute()]
-        [DefaultValue("Left")]
+        [DefaultValue("Stretch")]
         public string HorizontalAlignment { get; set; }
 
         [XmlAttribute()]
-        [DefaultValue("Center")]
+        [DefaultValue("Stretch")]
         public string VerticalAlignment { get; set; }
 
         [XmlAttribute()]
         [DefaultValue("Visible")]
         public string Visibility { get; set; }
+
+        public UIElement(): base()
+        {
+            HorizontalAlignment = "Stretch";
+            VerticalAlignment = "Stretch";
+            Margin = "0";
+            Opacity = (decimal)1.0m;
+            Padding = "0";
+            TextAlignment = "Justify";
+            Visibility = "Visible";
+        }
     }
 
     public class Block: BindableBase
     {
         [XmlAttribute()]
-        [DefaultValue(typeof(byte), "10")]
+        [DefaultValue(typeof(byte), "20")]
         public byte LineHeight { get; set; }
 
         [XmlAttribute()]
@@ -210,5 +243,12 @@ namespace Trainer.Models
         [XmlIgnore()]
         [DefaultValue(false)]
         public bool TextIndentSpecified { get; set; }
+
+        public Block()
+        {
+            LineHeight = (byte)40;
+            LineStackingStrategy = "BlockLineHeight";
+            TextIndent = (byte)0;
+        }
     }
 }
