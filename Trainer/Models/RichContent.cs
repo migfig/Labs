@@ -1,20 +1,34 @@
 ﻿using System.Collections.ObjectModel;
 using System.Xml.Serialization;
-using Windows.UI.Text;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media;
 
 namespace Trainer.Models
 {
     [XmlType(AnonymousType = true)]
     [XmlRoot(Namespace = "", IsNullable = false)]
+    public partial class Slides
+    {
+        [XmlElement("Slide")]
+        public ObservableCollection<Slide> Slide { get; set; }
+    }
+
+    [XmlType(AnonymousType = true)]
+    public partial class Slide
+    {
+        [XmlElement("RichTextBlock")]
+        public ObservableCollection<RichTextBlock> Block { get; set; }
+
+        [XmlAttribute]
+        public string Title { get; set; }
+    }
+
+    [XmlType(AnonymousType = true)]
     public partial class RichTextBlock: Run
     {
         [XmlElement("Paragraph")]
         public ObservableCollection<Paragraph> Paragraph { get; set; }
         
         [XmlAttribute()]
-        public SolidColorBrush SelectionHighlightColor { get; set; }
+        public string SelectionHighlightColor { get; set; }
 
         [XmlAttribute()]
         public bool IsTextSelectionEnabled { get; set; }
@@ -23,7 +37,7 @@ namespace Trainer.Models
         public byte MaxLines { get; set; }
 
         [XmlAttribute()]
-        public TextWrapping TextWrapping { get; set; }
+        public string TextWrapping { get; set; }
 
         [XmlAttribute("Typography.Capitals")]
         public string TypographyCapitals { get; set; }
@@ -69,7 +83,7 @@ namespace Trainer.Models
         public byte Height { get; set; }
         
         [XmlAttribute()]
-        public Stretch Stretch { get; set; }
+        public string Stretch { get; set; }
     }
     
     [XmlType(AnonymousType = true)]
@@ -81,10 +95,10 @@ namespace Trainer.Models
     public partial class Run: UIElement
     {
         [XmlAttribute()]
-        public FontStyle FontStyle { get; set; }
+        public string FontStyle { get; set; }
         
         [XmlAttribute()]
-        public FontWeight FontWeight { get; set; }
+        public string FontWeight { get; set; }
         
         [XmlAttribute()]
         public byte CharacterSpacing { get; set; }
@@ -93,10 +107,10 @@ namespace Trainer.Models
         public byte FontSize { get; set; }
         
         [XmlAttribute()]
-        public FontStretch FontStretch { get; set; }
+        public string FontStretch { get; set; }
         
         [XmlAttribute()]
-        public Brush Foreground { get; set; }
+        public string Foreground { get; set; }
         
         [XmlAttribute("Typography.CapitalSpacing")]
         public string TypographyCapitalSpacing { get; set; }
@@ -127,16 +141,16 @@ namespace Trainer.Models
         public string Padding { get; set; }
 
         [XmlAttribute()]
-        public TextAlignment TextAlignment { get; set; }
+        public string TextAlignment { get; set; }
 
         [XmlAttribute()]
-        public HorizontalAlignment HorizontalAlignment { get; set; }
+        public string HorizontalAlignment { get; set; }
 
         [XmlAttribute()]
-        public VerticalAlignment VerticalAlignment { get; set; }
+        public string VerticalAlignment { get; set; }
 
         [XmlAttribute()]
-        public Visibility Visibility { get; set; }
+        public string Visibility { get; set; }
     }
 
     public class Block
@@ -145,7 +159,7 @@ namespace Trainer.Models
         public byte LineHeight { get; set; }
 
         [XmlAttribute()]
-        public LineStackingStrategy LineStackingStrategy { get; set; }
+        public string LineStackingStrategy { get; set; }
 
         [XmlAttribute()]
         public byte TextIndent { get; set; }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Template10.Common;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
+using Trainer.Models;
 using Windows.UI.Xaml.Navigation;
 
 namespace Trainer.ViewModels
@@ -22,6 +23,12 @@ namespace Trainer.ViewModels
 
         private string _Value = "Default";
         public string Value { get { return _Value; } set { Set(ref _Value, value); } }
+
+        private IEnumerable<Slide> _slides;
+        public IEnumerable<Slide> Slides
+        {
+            get { return _slides; }
+        }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
