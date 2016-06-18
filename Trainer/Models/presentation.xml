@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Presentation Title="Trainer Assistant">
+  <Slide Title="Maintenable Applications">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Static vs Dynamic Components</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Extensibility with MEF">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>What is MEF</Bold> 
+      </Paragraph>
+      <Paragraph>
+        <Bold>How does MEF works</Bold>
+      </Paragraph>
+    </RichTextBlock>  
+  </Slide>
+  <Slide Title="Integration with Visual Studio">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Visual Studio Add-ins</Bold> 
+      </Paragraph>
+      <Paragraph>
+        <Bold>A Generic place holder</Bold>
+      </Paragraph>
+    </RichTextBlock>  
+  </Slide>
+  <Slide Title="Integration with Universal Windows Platform Applications">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>UWP Applications</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Template 10 Extension</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+</Presentation>

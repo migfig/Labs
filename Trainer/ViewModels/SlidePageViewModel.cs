@@ -1,8 +1,12 @@
+using Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Template10.Common;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
@@ -17,22 +21,86 @@ namespace Trainer.ViewModels
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                Value = "Designtime value";
             }
         }
 
-        private string _Value = "Default";
-        public string Value { get { return _Value; } set { Set(ref _Value, value); } }
-
-        private IEnumerable<Slide> _slides;
-        public IEnumerable<Slide> Slides
+        private Presentation _presentation;
+        public Presentation Presentation
         {
-            get { return _slides; }
+            get
+            {
+                if(_presentation == null)
+                {
+                    GetPresentation();
+                }
+                return _presentation;
+            }
+            set
+            {
+                Set(ref _presentation, value);
+            }
+        }
+
+        private void GetPresentation()
+        {
+            #region dummy data
+            _presentation = XmlHelper<Presentation>.LoadFromString(                
+@"<?xml version='1.0' encoding='utf - 8' ?>
+<Presentation Title='Trainer Assistant'>
+ <Slide Title='Maintenable Applications'>
+   <RichTextBlock FontSize='20' FontWeight='DemiBold'>
+     <Paragraph>
+       <Bold>Static vs Dynamic Components</Bold>
+     </Paragraph>
+   </RichTextBlock>
+ </Slide>
+ <Slide Title='Extensibility with MEF'>
+   <RichTextBlock FontSize='20' FontWeight='DemiBold'>
+     <Paragraph>
+       <Bold>What is MEF</Bold>
+     </Paragraph>
+     <Paragraph>
+       <Bold>How does MEF works</Bold>
+     </Paragraph>
+   </RichTextBlock>
+ </Slide>
+ <Slide Title='Integration with Visual Studio'>
+   <RichTextBlock FontSize='20' FontWeight='DemiBold'>
+     <Paragraph>
+       <Bold>Visual Studio Add - ins</Bold>
+     </Paragraph>
+     <Paragraph>
+       <Bold>A Generic place holder</Bold>
+     </Paragraph>
+   </RichTextBlock>
+ </Slide>
+ <Slide Title='Integration with Universal Windows Platform Applications'>
+   <RichTextBlock FontSize='20' FontWeight='DemiBold'>
+     <Paragraph>
+       <Bold>UWP Applications</Bold>
+     </Paragraph>
+     <Paragraph>
+       <Bold>Template 10 Extension</Bold>
+     </Paragraph>
+   </RichTextBlock>
+ </Slide>
+</Presentation>".Replace("'","\""));
+            #endregion 
+
+            CurrentSlide = _presentation.Slide.First();
+        }
+
+        private Slide _currentSlide;
+        public Slide CurrentSlide
+        {
+            get { return _currentSlide; }
+            set { Set(ref _currentSlide, value); }
         }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            Value = (suspensionState.ContainsKey(nameof(Value))) ? suspensionState[nameof(Value)]?.ToString() : parameter?.ToString();
+            CurrentSlide.Title = (suspensionState.ContainsKey(nameof(CurrentSlide.Title))) ? suspensionState[nameof(CurrentSlide.Title)]?.ToString() : parameter?.ToString();
+
             await Task.CompletedTask;
         }
 
@@ -40,7 +108,7 @@ namespace Trainer.ViewModels
         {
             if (suspending)
             {
-                suspensionState[nameof(Value)] = Value;
+                suspensionState[nameof(CurrentSlide.Title)] = CurrentSlide.Title;
             }
             await Task.CompletedTask;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Media;
@@ -8,6 +9,7 @@ namespace Trainer.Models
 {
     public partial class Run
     {
+        [XmlIgnore]
         public Xaml.Run Control =>
              new Xaml.Run
              {
@@ -23,6 +25,7 @@ namespace Trainer.Models
 
     public partial class HyperLink
     {
+        [XmlIgnore]
         public Xaml.Hyperlink Control =>
             new Xaml.Hyperlink
             {
@@ -32,6 +35,7 @@ namespace Trainer.Models
 
     public partial class Bold
     {
+        [XmlIgnore]
         public new Xaml.Bold Control =>
             new Xaml.Bold
             {
@@ -46,6 +50,7 @@ namespace Trainer.Models
 
     public partial class Image
     {
+        [XmlIgnore]
         public Windows.UI.Xaml.Controls.Image Control =>
             new Windows.UI.Xaml.Controls.Image
             {
@@ -57,6 +62,7 @@ namespace Trainer.Models
 
     public partial class Paragraph
     {
+        [XmlIgnore]
         public new Xaml.Paragraph Control
         {
             get
@@ -103,6 +109,7 @@ namespace Trainer.Models
 
     public partial class InlineUIContainer
     {
+        [XmlIgnore]
         public Xaml.InlineUIContainer Control =>
             new Xaml.InlineUIContainer
             {
@@ -112,6 +119,7 @@ namespace Trainer.Models
 
     public partial class RichTextBlock
     {
+        [XmlIgnore]
         public new Windows.UI.Xaml.Controls.RichTextBlock Control
         {
             get

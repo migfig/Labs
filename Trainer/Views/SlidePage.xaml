@@ -7,6 +7,7 @@
       xmlns:controls="using:Template10.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:Trainer.Views"
+      xmlns:ctrls="using:Trainer.Controls"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:Trainer.ViewModels" x:Name="ThisPage"
       mc:Ignorable="d">
@@ -50,7 +51,7 @@
         <controls:PageHeader x:Name="pageHeader" Frame="{x:Bind Frame}"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" Text="Slides Page" />
+                             RelativePanel.AlignTopWithPanel="True" Text="{x:Bind ViewModel.Presentation.Title, Mode=OneWay}" />
 
         <!--  content  -->
         <ScrollViewer Padding="12,8,0,0" RelativePanel.AlignBottomWithPanel="True"
@@ -58,55 +59,8 @@
                       RelativePanel.AlignRightWithPanel="True"
                       RelativePanel.Below="pageHeader"
                       VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="You passed:" />
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Value, Mode=OneWay, FallbackValue=DesigntimeValue}" />
 
-                <RichTextBlock x:Name="rtb" SelectionHighlightColor="Green" FontSize="14" FontStretch="Normal" FontStyle="Normal"
-                               FontWeight="Bold" Foreground="Aqua" HorizontalAlignment="Left" IsTextSelectionEnabled="True"
-                               LineHeight="10" LineStackingStrategy="BlockLineHeight" Margin="4,0"
-                               MaxLines="10" Opacity="1.0" Padding="20" TextAlignment="Justify"
-                               TextIndent="10" TextWrapping="Wrap" Typography.Capitals="SmallCaps" VerticalAlignment="Center"
-                               Visibility="Visible">
-                    <Paragraph CharacterSpacing="10" FontSize="12" FontStretch="Condensed" FontStyle="Italic" FontWeight="Black"
-                               Foreground="AliceBlue" LineHeight="10" LineStackingStrategy="BaselineToBaseline"
-                               TextAlignment="Center" TextIndent="10" Typography.CapitalSpacing="True"
-                               >
-                        <Bold FontSize="12" FontStretch="Condensed" CharacterSpacing="23"
-                              FontStyle="Italic" Foreground="AliceBlue" Typography.CapitalSpacing="False"
-                              >RichTextBlock</Bold> provides a rich text display container that supports
-                        <Run FontStyle="Italic" FontWeight="Bold" CharacterSpacing="10"
-                             FontSize="12" FontStretch="Condensed"
-                             Foreground="AliceBlue" Typography.CapitalSpacing="False"
-                             >formatted text</Run> ,
-                        <Hyperlink NavigateUri="http://msdn.microsoft.com/en-us/library/windows/apps/windows.ui.xaml.documents.hyperlink.aspx">hyperlinks</Hyperlink> , inline images, and other rich content.
-                    </Paragraph>
-                    <Paragraph>RichTextBlock also supports a built-in overflow model.</Paragraph>                    
-                    <Paragraph>
-                        <InlineUIContainer>
-                            <Image Source="Assets\StoreLogo.png" Width="32" Height="32" Stretch="Fill"/>
-                        </InlineUIContainer>
-                    </Paragraph>
-                </RichTextBlock>
-                <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Height="300">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <RichTextBlock Grid.Column="0" OverflowContentTarget="{x:Bind firstOverflowContainer}" TextAlignment="Justify" Margin="12,0">
-                        <Paragraph>
-                            Linked text containers allow text which does not fit in one element to overflow into a different element on the page. Creative use of linked text containers enables basic multicolumn support and other advanced page layouts.
-                        </Paragraph>
-                        <Paragraph>
-                            Duis sed nulla metus, id hendrerit velit. Curabitur dolor purus, bibendum eu cursus lacinia, interdum vel augue. Aenean euismod eros et sapien vehicula dictum. Duis ullamcorper, turpis nec feugiat tincidunt, dui erat luctus risus, aliquam accumsan lacus est vel quam. Nunc lacus massa, varius eget accumsan id, congue sed orci. Duis dignissim hendrerit egestas. Proin ut turpis magna, sit amet porta erat. Nunc semper metus nec magna imperdiet nec vestibulum dui fringilla. Sed sed ante libero, nec porttitor mi. Ut luctus, neque vitae placerat egestas, urna leo auctor magna, sit amet ultricies ipsum felis quis sapien. Proin eleifend varius dui, at vestibulum nunc consectetur nec. Mauris nulla elit, ultrices a sodales non, aliquam ac est. Quisque sit amet risus nulla. Quisque vestibulum posuere velit, vitae vestibulum eros scelerisque sit amet. In in risus est, at laoreet dolor. Nullam aliquet pellentesque convallis. Ut vel tincidunt nulla. Mauris auctor tincidunt auctor.
-              Aenean orci ante, vulputate ac sagittis sit amet, consequat at mi. Morbi elementum purus consectetur nisi adipiscing vitae blandit sapien placerat. Aliquam adipiscing tortor non sem lobortis consectetur mattis felis rhoncus. Nunc eu nunc rhoncus arcu sollicitudin ultrices. In vulputate eros in mauris aliquam id dignissim nisl laoreet.
-                        </Paragraph>
-                    </RichTextBlock>
-                    <RichTextBlockOverflow x:Name="firstOverflowContainer" Grid.Column="1" OverflowContentTarget="{x:Bind secondOverflowContainer}" Margin="12,0"/>
-                    <RichTextBlockOverflow x:Name="secondOverflowContainer" Grid.Column="2" Margin="12,0"/>
-                </Grid>
-            </StackPanel>
+            <ctrls:SlideControl Width="300" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </ScrollViewer>
 
     </RelativePanel>
