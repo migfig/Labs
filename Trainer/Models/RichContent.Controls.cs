@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Globalization;
 using System.Xml.Serialization;
 using Windows.UI;
@@ -11,27 +12,43 @@ namespace Trainer.Models
     public partial class Run
     {
         [XmlIgnore]
-        public Xaml.Run Control =>
-             new Xaml.Run
-             {
-                 CharacterSpacing = this.CharacterSpacing,
-                 FontSize = this.FontSize,
-                 FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch),
-                 FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle),
-                 FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight),
-                 Foreground = new SolidColorBrush(this.Foreground.GetColor()),
-                 Text = this.Value
-             };
+        public Xaml.Run Control
+        {
+            get
+            {
+                var control = new Xaml.Run
+                {
+                  Text = this.Value
+                };
+
+                if (this.CharacterSpacing > 0) control.CharacterSpacing = this.CharacterSpacing;
+                if (this.FontSize > 0) control.FontSize = this.FontSize;
+                if (!string.IsNullOrEmpty(this.FontStretch)) control.FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch);
+                if (!string.IsNullOrEmpty(this.FontStyle)) control.FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle);
+                if (!string.IsNullOrEmpty(this.FontWeight)) control.FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight);
+                if (!string.IsNullOrEmpty(this.Foreground)) control.Foreground = new SolidColorBrush(this.Foreground.GetColor());
+
+                return control;
+            }
+        }
     }
 
     public partial class HyperLink
     {
         [XmlIgnore]
-        public Xaml.Hyperlink Control =>
-            new Xaml.Hyperlink
+        public Xaml.Hyperlink Control
+        {
+            get
             {
-                NavigateUri = new Uri(this.NavigateUri)
-            };
+                var control = new Xaml.Hyperlink
+                {
+                    NavigateUri = new Uri(this.NavigateUri)
+                };
+                control.Inlines.Add(new Xaml.Run { Text = this.Value });
+
+                return control;
+            }
+        }
     }
 
     public partial class Bold
@@ -41,17 +58,17 @@ namespace Trainer.Models
         {
             get
             {
-                var bold = new Xaml.Bold
-                {
-                    CharacterSpacing = this.CharacterSpacing,
-                    FontSize = this.FontSize,
-                    FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch),
-                    FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle),
-                    FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight),
-                    Foreground = new SolidColorBrush(this.Foreground.GetColor())
-                };
-                bold.Inlines.Add(new Xaml.Run { Text = this.Value });
-                return bold;
+                var control = new Xaml.Bold();
+
+                if (this.CharacterSpacing > 0) control.CharacterSpacing = this.CharacterSpacing;
+                if (this.FontSize > 0) control.FontSize = this.FontSize;
+                if (!string.IsNullOrEmpty(this.FontStretch)) control.FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch);
+                if (!string.IsNullOrEmpty(this.FontStyle)) control.FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle);
+                if (!string.IsNullOrEmpty(this.FontWeight)) control.FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight);
+                if (!string.IsNullOrEmpty(this.Foreground)) control.Foreground = new SolidColorBrush(this.Foreground.GetColor());
+                control.Inlines.Add(new Xaml.Run { Text = this.Value });
+
+                return control;
             }
         }
     }
@@ -59,13 +76,21 @@ namespace Trainer.Models
     public partial class Image
     {
         [XmlIgnore]
-        public Windows.UI.Xaml.Controls.Image Control =>
-            new Windows.UI.Xaml.Controls.Image
+        public Windows.UI.Xaml.Controls.Image Control
+        {
+            get
             {
-                Width = this.Width,
-                Height = this.Height,
-                Stretch = Helpers.ParseEnum<Stretch>(this.Stretch)
-            };
+                var control = new Windows.UI.Xaml.Controls.Image
+                {
+                    Width = this.Width,
+                    Height = this.Height
+                };
+
+                if (!string.IsNullOrEmpty(this.Stretch)) control.Stretch = Helpers.ParseEnum<Stretch>(this.Stretch);
+
+                return control;
+            }
+        }
     }
 
     public partial class Paragraph
@@ -75,42 +100,46 @@ namespace Trainer.Models
         {
             get
             {
-                var paragraph = new Xaml.Paragraph
+                var control = new Xaml.Paragraph();
+
+                if (this.CharacterSpacing > 0) control.CharacterSpacing = this.CharacterSpacing;
+                if (this.FontSize > 0) control.FontSize = this.FontSize;
+                if (!string.IsNullOrEmpty(this.FontStretch)) control.FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch);
+                if (!string.IsNullOrEmpty(this.FontStyle)) control.FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle);
+                if (!string.IsNullOrEmpty(this.FontWeight)) control.FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight);
+                if (!string.IsNullOrEmpty(this.Foreground)) control.Foreground = new SolidColorBrush(this.Foreground.GetColor());
+
+                if (this.LineHeight > 0) control.LineHeight = this.LineHeight;
+                if (!string.IsNullOrEmpty(this.LineStackingStrategy)) control.LineStackingStrategy = Helpers.ParseEnum<Windows.UI.Xaml.LineStackingStrategy>(this.LineStackingStrategy);
+                if (!string.IsNullOrEmpty(this.Margin)) control.Margin = Helpers.GetThickness(this.Margin);
+                if (!string.IsNullOrEmpty(this.TextAlignment)) control.TextAlignment = Helpers.ParseEnum<Windows.UI.Xaml.TextAlignment>(this.TextAlignment);
+                if (this.TextIndent > 0) control.TextIndent = this.TextIndent;
+                if(this.Text != null && this.Text.Any())
                 {
-                    CharacterSpacing = this.CharacterSpacing,
-                    FontSize = this.FontSize,
-                    FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch),
-                    FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle),
-                    FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight),
-                    Foreground = new SolidColorBrush(this.Foreground.GetColor()),
-                    LineHeight = this.LineHeight,
-                    LineStackingStrategy = Helpers.ParseEnum<Windows.UI.Xaml.LineStackingStrategy>(this.LineStackingStrategy),
-                    Margin = Helpers.GetThickness(this.Margin),
-                    TextAlignment = Helpers.ParseEnum<Windows.UI.Xaml.TextAlignment>(this.TextAlignment),
-                    TextIndent = this.TextIndent 
-                };
+                    control.Inlines.Add(new Xaml.Run { Text = string.Join(Environment.NewLine, this.Text) });
+                }
 
                 if (this.Bold != null)
                 {
-                    paragraph.Inlines.Add(this.Bold.Control);
+                    control.Inlines.Add(this.Bold.Control);
                 }
 
                 if (this.Hyperlink != null)
                 {
-                    paragraph.Inlines.Add(this.Hyperlink.Control);
+                    control.Inlines.Add(this.Hyperlink.Control);
                 }
 
                 if (this.Run != null)
                 {
-                    paragraph.Inlines.Add(this.Run.Control);
+                    control.Inlines.Add(this.Run.Control);
                 }
 
                 if (this.InlineUIContainer != null)
                 {
-                    paragraph.Inlines.Add(this.InlineUIContainer.Control);
+                    control.Inlines.Add(this.InlineUIContainer.Control);
                 }
 
-                return paragraph;
+                return control;
             }
         }
     }
@@ -128,32 +157,35 @@ namespace Trainer.Models
     public partial class RichTextBlock
     {
         [XmlIgnore]
-        public new Windows.UI.Xaml.Controls.RichTextBlock Control
+        public Windows.UI.Xaml.Controls.RichTextBlock RichControl
         {
             get
             {
                 var control = new Windows.UI.Xaml.Controls.RichTextBlock
                 {
-                    CharacterSpacing = this.CharacterSpacing,
-                    FontSize = this.FontSize,
-                    FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch),
-                    FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle),
-                    FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight),
-                    Foreground = new SolidColorBrush(this.Foreground.GetColor()),
-                    LineHeight = this.LineHeight,
-                    LineStackingStrategy = Helpers.ParseEnum<Windows.UI.Xaml.LineStackingStrategy>(this.LineStackingStrategy),
-                    Margin = Helpers.GetThickness(this.Margin),
-                    TextAlignment = Helpers.ParseEnum<Windows.UI.Xaml.TextAlignment>(this.TextAlignment),
-                    TextIndent = this.TextIndent,
-                    HorizontalAlignment = Helpers.ParseEnum<Windows.UI.Xaml.HorizontalAlignment>(this.HorizontalAlignment),
-                    VerticalAlignment = Helpers.ParseEnum<Windows.UI.Xaml.VerticalAlignment>(this.VerticalAlignment),
-                    IsTextSelectionEnabled = this.IsTextSelectionEnabled,
-                    MaxLines = this.MaxLines,
-                    Opacity = (double)this.Opacity,
-                    TextWrapping = Helpers.ParseEnum<Windows.UI.Xaml.TextWrapping>(this.TextWrapping),
+                    IsTextSelectionEnabled = true,
                     MinHeight = 40,
                     MinWidth = 400
                 };
+
+                if (this.CharacterSpacing > 0) control.CharacterSpacing = this.CharacterSpacing;
+                if (this.FontSize > 0) control.FontSize = this.FontSize;
+                if (!string.IsNullOrEmpty(this.FontStretch)) control.FontStretch = Helpers.ParseEnum<FontStretch>(this.FontStretch);
+                if (!string.IsNullOrEmpty(this.FontStyle)) control.FontStyle = Helpers.ParseEnum<FontStyle>(this.FontStyle);
+                if (!string.IsNullOrEmpty(this.FontWeight)) control.FontWeight = Helpers.ParseEnum<FontWeight>(this.FontWeight);
+                if (!string.IsNullOrEmpty(this.Foreground)) control.Foreground = new SolidColorBrush(this.Foreground.GetColor());
+
+                if (this.LineHeight > 0) control.LineHeight = this.LineHeight;
+                if (!string.IsNullOrEmpty(this.LineStackingStrategy)) control.LineStackingStrategy = Helpers.ParseEnum<Windows.UI.Xaml.LineStackingStrategy>(this.LineStackingStrategy);
+                if (!string.IsNullOrEmpty(this.Margin)) control.Margin = Helpers.GetThickness(this.Margin);
+                if (!string.IsNullOrEmpty(this.TextAlignment)) control.TextAlignment = Helpers.ParseEnum<Windows.UI.Xaml.TextAlignment>(this.TextAlignment);
+                if (this.TextIndent > 0) control.TextIndent = this.TextIndent;
+
+                if (!string.IsNullOrEmpty(this.HorizontalAlignment)) control.HorizontalAlignment = Helpers.ParseEnum<Windows.UI.Xaml.HorizontalAlignment>(this.HorizontalAlignment);
+                if (!string.IsNullOrEmpty(this.VerticalAlignment)) control.VerticalAlignment = Helpers.ParseEnum<Windows.UI.Xaml.VerticalAlignment>(this.VerticalAlignment);
+                if (this.MaxLines > 0) control.MaxLines = this.MaxLines;
+                if (this.Opacity > 0.0M) control.Opacity = (double)this.Opacity;
+                if (!string.IsNullOrEmpty(this.LineStackingStrategy)) control.TextWrapping = Helpers.ParseEnum<Windows.UI.Xaml.TextWrapping>(this.TextWrapping);
 
                 foreach (var p in this.Paragraph)
                 {

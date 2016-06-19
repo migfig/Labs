@@ -8,6 +8,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:Trainer.Views"
       xmlns:ctrls="using:Trainer.Controls"
+      xmlns:models="using:Trainer.Models"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:Trainer.ViewModels" x:Name="ThisPage"
       mc:Ignorable="d">
@@ -60,13 +61,13 @@
                       RelativePanel.Below="pageHeader"
                       VerticalScrollBarVisibility="Auto">
 
-            <ctrls:SlideControl Padding="12,8,0,0" MinHeight="400" MinWidth="300"
-                                RelativePanel.AlignBottomWithPanel="True"
-                                RelativePanel.AlignLeftWithPanel="True"
-                                RelativePanel.AlignRightWithPanel="True"
-                                RelativePanel.Below="pageHeader"
-                                HorizontalAlignment="Stretch" 
-                                VerticalAlignment="Stretch" />
+                <ItemsControl ItemsSource="{x:Bind ViewModel.CurrentSlide.Block}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:RichTextBlock">
+                            <ContentControl Content="{Binding Mode=OneWay, Path=RichControl}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
         </ScrollViewer>
 
     </RelativePanel>

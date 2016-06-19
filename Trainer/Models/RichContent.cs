@@ -64,11 +64,11 @@ namespace Trainer.Models
 
         public RichTextBlock()
         {
-            SelectionHighlightColor = "#FAFBFCFF";
-            IsTextSelectionEnabled = true;
-            MaxLines = ((byte)(10));
-            TextWrapping = "Wrap";
-            TypographyCapitals = "True";
+            //SelectionHighlightColor = "#FAFBFCFF";
+            //IsTextSelectionEnabled = true;
+            //MaxLines = ((byte)(10));
+            //TextWrapping = "Wrap";
+            //TypographyCapitals = "True";
             Paragraph = new ObservableCollection<Models.Paragraph>();
         }
     }
@@ -118,7 +118,7 @@ namespace Trainer.Models
 
         public Image()
         {
-            Stretch = "Fill";
+            //Stretch = "Fill";
         }
     }
     
@@ -166,11 +166,11 @@ namespace Trainer.Models
 
         public Run(): base()
         {
-            FontSize = (byte)34;
-            FontStretch = "Normal";
-            FontStyle = "Normal";
-            FontWeight = "Normal";
-            Foreground = "#FF000000";
+            //FontSize = (byte)34;
+            //FontStretch = "Normal";
+            //FontStyle = "Normal";
+            //FontWeight = "Normal";
+            //Foreground = "#FF000000";
         }
     }
     
@@ -216,13 +216,13 @@ namespace Trainer.Models
 
         public UIElement(): base()
         {
-            HorizontalAlignment = "Stretch";
-            VerticalAlignment = "Stretch";
-            Margin = "0";
-            Opacity = (decimal)1.0m;
-            Padding = "0";
-            TextAlignment = "Justify";
-            Visibility = "Visible";
+            //HorizontalAlignment = "Stretch";
+            //VerticalAlignment = "Stretch";
+            //Margin = "0";
+            //Opacity = (decimal)1.0m;
+            //Padding = "0";
+            //TextAlignment = "Justify";
+            //Visibility = "Visible";
         }
     }
 
@@ -246,9 +246,9 @@ namespace Trainer.Models
 
         public Block()
         {
-            LineHeight = (byte)40;
-            LineStackingStrategy = "BlockLineHeight";
-            TextIndent = (byte)0;
+            //LineHeight = (byte)40;
+            //LineStackingStrategy = "BlockLineHeight";
+            //TextIndent = (byte)0;
         }
     }
 }

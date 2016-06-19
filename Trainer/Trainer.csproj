@@ -107,9 +107,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\XmlHelper.cs" />
-    <Compile Include="Controls\SlideControl.xaml.cs">
-      <DependentUpon>SlideControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Models\RichContent.Controls.cs" />
     <Compile Include="Models\RichContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -165,10 +162,6 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\SlideControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Styles\Custom.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

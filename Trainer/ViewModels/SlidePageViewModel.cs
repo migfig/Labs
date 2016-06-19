@@ -89,6 +89,16 @@ namespace Trainer.ViewModels
      </Paragraph>
    </RichTextBlock>
  </Slide>
+ <Slide Title='Sample Paragraph'>
+   <RichTextBlock SelectionHighlightColor='Green'>
+          <Paragraph>
+            RichTextBlock provides a rich text display container that supports
+            <Run FontStyle='Italic' FontWeight='Bold'>formatted text</Run>,
+            <Hyperlink NavigateUri='http://msdn.microsoft.com/en-us/library/windows/apps/windows.ui.xaml.documents.hyperlink.aspx'>hyperlinks</Hyperlink>, inline images, and other rich content.
+          </Paragraph>
+          <Paragraph>RichTextBlock also supports a built-in overflow model.</Paragraph>
+        </RichTextBlock>
+        </Slide>
 </Presentation>".Replace("'","\""));
             #endregion 
 
@@ -104,7 +114,7 @@ namespace Trainer.ViewModels
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            CurrentSlide.Title = (suspensionState.ContainsKey(nameof(CurrentSlide.Title))) ? suspensionState[nameof(CurrentSlide.Title)]?.ToString() : parameter?.ToString();
+            //CurrentSlide.Title = (suspensionState.ContainsKey(nameof(CurrentSlide.Title))) ? suspensionState[nameof(CurrentSlide.Title)]?.ToString() : parameter?.ToString();
 
             await Task.CompletedTask;
         }
