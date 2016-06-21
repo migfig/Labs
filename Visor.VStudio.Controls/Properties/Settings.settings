@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Visor.VStudio.Controls.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ExtensionsDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Code\RelatedRecords.Tests\Binaries\extensions</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

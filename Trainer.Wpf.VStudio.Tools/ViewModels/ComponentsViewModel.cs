@@ -82,7 +82,8 @@ namespace Visor.Wpf.TodoCoder.ViewModels
                 foreach(var dep in component.Dependency)
                 {
                     dep.Component = items.First(x => x.Id.Equals(dep.Id));
-                    dep.Component.SourcePath = component.SourcePath;
+                    if(!string.IsNullOrEmpty(component.SourcePath) && string.IsNullOrEmpty(dep.Component.SourcePath))
+                        dep.Component.SourcePath = component.SourcePath;
                     dep.Component = ResolveDependencies(dep.Component);
                 }
             }

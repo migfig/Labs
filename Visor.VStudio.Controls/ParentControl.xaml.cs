@@ -18,13 +18,17 @@ namespace Visor.VStudio.Controls
 
         private void Init()
         {
-            var folder = string.Empty;
+            var folder = Properties.Settings.Default.ExtensionsDirectory;
             try
             {
                 var assembly = GetType().Assembly;
                 var catalog = new AggregateCatalog();
                 catalog.Catalogs.Add(new AssemblyCatalog(assembly));
-                folder = Path.Combine(Path.GetDirectoryName(assembly.Location), "extensions");
+
+                if (!Directory.Exists(folder))
+                {
+                    folder = Path.Combine(Path.GetDirectoryName(assembly.Location), "extensions");
+                }
                 catalog.Catalogs.Add(new DirectoryCatalog(folder));
                 var container = new CompositionContainer(catalog);
                 container.ComposeParts(this);

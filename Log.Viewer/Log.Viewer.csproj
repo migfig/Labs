@@ -104,9 +104,9 @@
       <Project>{b3d67467-91d8-4c6f-9e16-465ab01498fa}</Project>
       <Name>Log.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Log.Wpf.Controls\Log.Wpf.Controls.csproj">
-      <Project>{03c6a50b-c45d-4e7e-886e-70ce8cdaf048}</Project>
-      <Name>Log.Wpf.Controls</Name>
+    <ProjectReference Include="..\Visor.VStudio.Controls\Visor.VStudio.Controls.csproj">
+      <Project>{48cd960e-ed17-4d6a-b550-1e2813505643}</Project>
+      <Name>Visor.VStudio.Controls</Name>
     </ProjectReference>
     <ProjectReference Include="..\Visor.VStudio\Visor.VStudio.csproj">
       <Project>{af1104dc-4938-46b3-8d7c-516df8bc7b95}</Project>

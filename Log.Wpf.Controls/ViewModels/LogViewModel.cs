@@ -13,31 +13,7 @@ using System.Windows.Input;
 using Windows.ApplicationModel;
 
 namespace Log.Wpf.Controls.ViewModels
-{
-    #region event args 
-
-    public class ViewCodeArgs: EventArgs
-    {
-        public string NameSpace { get; private set; }
-        public string ClassName { get; private set; }
-        public int LineNumber { get; private set; }
-        public string ProgId { get; private set; }
-
-        public ViewCodeArgs(string progId, string fullName, int lineNumber)
-        {
-            ProgId = progId;
-            if (!string.IsNullOrWhiteSpace(fullName))
-            {
-                var parts = fullName.Replace(".cs", string.Empty).Split('\\');
-                NameSpace = string.Join("\\", parts.Take(parts.Length - 1));
-                ClassName = parts.Last() + ".cs";
-            }
-            LineNumber = lineNumber;
-        }
-    }
-
-    #endregion
-
+{    
     public class LogViewModel: INotifyPropertyChanged
     {
         private static LogViewModel _viewModel = new LogViewModel();

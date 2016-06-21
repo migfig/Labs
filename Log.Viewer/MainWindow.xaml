@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Log.Viewer"
-        xmlns:controls="clr-namespace:Log.Wpf.Controls;assembly=Log.Wpf.Controls"
+        xmlns:controls="clr-namespace:Visor.VStudio.Controls;assembly=Visor.VStudio.Controls"
         mc:Ignorable="d"
         Title="Log Viewer" Height="350" Width="525"
         WindowState="Maximized">
     <Grid>
-        <controls:LogViewerControl x:Name="logViewerControl" />
+        <controls:ParentControl />
     </Grid>
 </Window>
