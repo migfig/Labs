@@ -8,6 +8,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:Trainer.Views"
       xmlns:models="using:Trainer.Models"
+      xmlns:domain="using:Trainer.Domain"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:Trainer.ViewModels" x:Name="ThisPage"
       mc:Ignorable="d">
@@ -63,6 +64,7 @@
                       Margin="0,0,0,50"
                       VerticalScrollBarVisibility="Auto">
 
+            <StackPanel>
                 <ItemsControl ItemsSource="{x:Bind ViewModel.CurrentSlide.Block}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="models:RichTextBlock">
@@ -70,6 +72,16 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                <ItemsControl ItemsSource="{x:Bind ViewModel.CurrentSlide.Component}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="domain:Component">
+                            <Border Margin="0,0,8,0" Padding="4" CornerRadius="4" Background="#FFE2F7FF">
+                                <ContentControl Content="{Binding Mode=OneWay, Path=RichControl}" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
         </ScrollViewer>
 
         <CommandBar RelativePanel.Below="slidesContent" 
@@ -77,6 +89,12 @@
                     RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignBottomWith="slidesContent"
                     Margin="0,-50,0,0">
+            
+            <AppBarButton Icon="Copy" Label="Copy Code" 
+                          Click="{x:Bind ViewModel.CopyCode}"
+                          Visibility="{x:Bind ViewModel.CopyCodeVisibility}"/>
+            <AppBarSeparator Visibility="{x:Bind ViewModel.CopyCodeVisibility}"/>
+            
             <AppBarButton Icon="Previous" Label="Previous" 
                           Click="{x:Bind ViewModel.GotoPreviousSlide}"
                           IsEnabled="{x:Bind ViewModel.CanGotoPreviousSlide}"/>

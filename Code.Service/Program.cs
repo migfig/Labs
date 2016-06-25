@@ -2,7 +2,7 @@
 using Castle.Windsor.Installer;
 using Topshelf;
 
-namespace Log.Service
+namespace Code.Service
 {
     static class Program
     {
@@ -11,25 +11,25 @@ namespace Log.Service
         /// </summary>
         static void Main()
         {
-            LogService.Container = new WindsorContainer();
-            LogService.Container.Install(FromAssembly.This());
+            CodeService.Container = new WindsorContainer();
+            CodeService.Container.Install(FromAssembly.This());
 
-            var logServices = LogService.Container.Resolve<ILogServices>();
-            var webApp = LogService.Container.Resolve<IServiceable>();
+            var codeServices = CodeService.Container.Resolve<ICodeServices>();
+            var webApp = CodeService.Container.Resolve<IServiceable>();
 
             var hostObj = HostFactory.New(x =>
             {
-                x.Service<LogService>(s =>
+                x.Service<CodeService>(s =>
                 {
-                    s.ConstructUsing(name => new LogService(logServices, webApp));
+                    s.ConstructUsing(name => new CodeService(codeServices, webApp));
                     s.WhenStarted((ls, host) => ls.Start(host));
                     s.WhenStopped((ls, host) => ls.Stop(host));                    
                 });
 
                 x.RunAsLocalSystem();
-                x.SetDescription("Log services console");
-                x.SetDisplayName("Log Service");
-                x.SetServiceName("LogService");
+                x.SetDescription("Code services console");
+                x.SetDisplayName("Code Service");
+                x.SetServiceName("CodeService");
                 x.StartAutomatically();
             });
 

@@ -1,11 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 namespace Trainer.Domain
 {
     /// <remarks/>
     [System.Xml.Serialization.XmlType(AnonymousType = true)]
     [System.Xml.Serialization.XmlRoot(Namespace = "", IsNullable = false)]
-    public partial class Components
+    public partial class Components: IDisposable
     {
         private ObservableCollection<Component> componentField;
         public Components()
@@ -25,6 +26,10 @@ namespace Trainer.Domain
             {
                 this.componentField = value;
             }
+        }
+
+        public void Dispose()
+        {
         }
     }
 

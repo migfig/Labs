@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 using Template10.Mvvm;
+using Trainer.Domain;
 
 namespace Trainer.Models
 {
@@ -27,8 +28,11 @@ namespace Trainer.Models
         [XmlAttribute]
         public string Title { get; set; }
 
-        [XmlElement("RichTextBlock")]
+        [XmlElement("RichTextBlock", Order = 0)]
         public ObservableCollection<RichTextBlock> Block { get; set; }
+
+        [XmlElement("Component", Order = 1)]
+        public ObservableCollection<Trainer.Domain.Component> Component { get; set; }
 
         public Slide()
         {

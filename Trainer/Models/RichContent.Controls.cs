@@ -197,6 +197,33 @@ namespace Trainer.Models
         }
     }
 
+    public partial class Component: Trainer.Domain.Component
+    {
+        [XmlIgnore]
+        public Windows.UI.Xaml.Controls.RichTextBlock RichControl
+        {
+            get
+            {
+                var control = new Windows.UI.Xaml.Controls.RichTextBlock
+                {
+                    IsTextSelectionEnabled = true,
+                    MinHeight = 40,
+                    MinWidth = 400,
+                };
+                
+                control.Blocks.Add(new Paragraph
+                {
+                    FontStyle = "Italic",
+                    Padding = "4",
+                    TextIndent = 4,
+                    Text = Code.Value.Split(Environment.NewLine.ToArray())
+                }.Control);
+
+                return control;
+            }
+        }
+    }
+
     public static class Helpers
     {
         public static T ParseEnum<T>(string value)
@@ -243,5 +270,10 @@ namespace Trainer.Models
                      Byte.Parse(color.Substring(5, 2), NumberStyles.HexNumber),
                      Byte.Parse(color.Substring(7, 2), NumberStyles.HexNumber));
         }
+
+        //public static string[] GetText(this Component component)
+        //{
+        //    return component.c
+        //}
     }
 }

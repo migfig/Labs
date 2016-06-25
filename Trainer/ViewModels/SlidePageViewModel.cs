@@ -1,27 +1,26 @@
 using Common;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using Template10.Common;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Trainer.Models;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
 namespace Trainer.ViewModels
 {
     public class SlidePageViewModel : ViewModelBase
     {
+        private readonly ICodeServices _codeServices;
+
         public SlidePageViewModel()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
             }
+
+            _codeServices = new CodeServices();
         }
 
         public string Header
@@ -49,7 +48,7 @@ namespace Trainer.ViewModels
         private void GetPresentation()
         {
             #region dummy data
-            _presentation = XmlHelper<Presentation>.LoadFromString(                
+            _presentation = XmlHelper<Presentation>.LoadFromString(
 @"<?xml version='1.0' encoding='utf - 8' ?>
 <Presentation Title='Trainer Assistant'>
  <Slide Title='Maintenable Applications'>
@@ -58,6 +57,11 @@ namespace Trainer.ViewModels
        <Bold>Static vs Dynamic Components</Bold>
      </Paragraph>
    </RichTextBlock>
+   <Component Id='6d2c6b5b5a2f4cada68fd348d287ff26' Name='Application Styles Dependency' Image='' TargetFile='App.xaml' Line='5'>
+    <Code>
+      <![CDATA[xmlns: common = 'using:AppUIBasics.Common']]>
+    </Code>
+   </Component>
  </Slide>
  <Slide Title='Extensibility with MEF'>
    <RichTextBlock FontSize='20' FontWeight='DemiBold'>
@@ -143,21 +147,14 @@ namespace Trainer.ViewModels
         public void GotoPreviousSlide() =>
             NavigationService.Navigate(typeof(Views.SlidePage), GetPreviousSlideTitle());
 
-        public bool CanGotoPreviousSlide
-        { 
-            get
-            {
-                return !_currentSlide.Title.Equals(_presentation.Slide.First().Title);
-            }
-        }
+        public void CopyCode() =>
+            _codeServices.CopyCode(CurrentSlide.Component);
 
-        public bool CanGotoNextSlide
-        {
-            get
-            {
-                return !_currentSlide.Title.Equals(_presentation.Slide.Last().Title);
-            }
-        }
+        public Visibility CopyCodeVisibility { get { return CurrentSlide.Component.Any() ? Visibility.Visible : Visibility.Collapsed; } }            
+
+        public bool CanGotoPreviousSlide { get { return !_currentSlide.Title.Equals(_presentation.Slide.First().Title); } }
+
+        public bool CanGotoNextSlide { get { return !_currentSlide.Title.Equals(_presentation.Slide.Last().Title); } }
 
         private string GetNextSlideTitle()
         {
