@@ -102,7 +102,7 @@ namespace Trainer.ViewModels
 </Presentation>".Replace("'","\""));
             #endregion 
 
-            CurrentSlide = _presentation.Slide.Last();
+            CurrentSlide = _presentation.Slide.First();
         }
 
         private Slide _currentSlide;
@@ -114,7 +114,10 @@ namespace Trainer.ViewModels
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            //CurrentSlide.Title = (suspensionState.ContainsKey(nameof(CurrentSlide.Title))) ? suspensionState[nameof(CurrentSlide.Title)]?.ToString() : parameter?.ToString();
+            if(null != parameter)
+            {
+                CurrentSlide = _presentation.Slide.First(x => x.Title.Equals(parameter.ToString()));
+            }
 
             await Task.CompletedTask;
         }
@@ -132,6 +135,50 @@ namespace Trainer.ViewModels
         {
             args.Cancel = false;
             await Task.CompletedTask;
+        }
+
+        public void GotoNextSlide() =>
+            NavigationService.Navigate(typeof(Views.SlidePage), GetNextSlideTitle());
+
+        public void GotoPreviousSlide() =>
+            NavigationService.Navigate(typeof(Views.SlidePage), GetPreviousSlideTitle());
+
+        public bool CanGotoPreviousSlide
+        { 
+            get
+            {
+                return !_currentSlide.Title.Equals(_presentation.Slide.First().Title);
+            }
+        }
+
+        public bool CanGotoNextSlide
+        {
+            get
+            {
+                return !_currentSlide.Title.Equals(_presentation.Slide.Last().Title);
+            }
+        }
+
+        private string GetNextSlideTitle()
+        {
+            var index = _presentation.Slide.IndexOf(_currentSlide);
+            if(index < _presentation.Slide.Count-1)
+            {
+                return _presentation.Slide.ElementAt(index + 1).Title;
+            }
+
+            return _presentation.Slide.First().Title;
+        }
+
+        private string GetPreviousSlideTitle()
+        {
+            var index = _presentation.Slide.IndexOf(_currentSlide);
+            if (index > 0)
+            {
+                return _presentation.Slide.ElementAt(index - 1).Title;
+            }
+
+            return _presentation.Slide.First().Title;
         }
     }
 }

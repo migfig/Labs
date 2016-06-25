@@ -7,7 +7,6 @@
       xmlns:controls="using:Template10.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:Trainer.Views"
-      xmlns:ctrls="using:Trainer.Controls"
       xmlns:models="using:Trainer.Models"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:Trainer.ViewModels" x:Name="ThisPage"
@@ -52,13 +51,16 @@
         <controls:PageHeader x:Name="pageHeader" Frame="{x:Bind Frame}"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" Text="{x:Bind ViewModel.Header, Mode=OneWay}" />
+                             RelativePanel.AlignTopWithPanel="True" 
+                             Text="{x:Bind ViewModel.Header, Mode=OneWay}" />
 
         <!--  content  -->
-        <ScrollViewer Padding="12,8,0,0" RelativePanel.AlignBottomWithPanel="True"
+        <ScrollViewer x:Name="slidesContent" Padding="12,8,0,0" 
+                      RelativePanel.AlignBottomWithPanel="True"
                       RelativePanel.AlignLeftWithPanel="True"
-                      RelativePanel.AlignRightWithPanel="True"
-                      RelativePanel.Below="pageHeader"
+                      RelativePanel.AlignRightWithPanel="True"                      
+                      RelativePanel.Below="pageHeader" 
+                      Margin="0,0,0,50"
                       VerticalScrollBarVisibility="Auto">
 
                 <ItemsControl ItemsSource="{x:Bind ViewModel.CurrentSlide.Block}">
@@ -69,6 +71,20 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
         </ScrollViewer>
+
+        <CommandBar RelativePanel.Below="slidesContent" 
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignBottomWith="slidesContent"
+                    Margin="0,-50,0,0">
+            <AppBarButton Icon="Previous" Label="Previous" 
+                          Click="{x:Bind ViewModel.GotoPreviousSlide}"
+                          IsEnabled="{x:Bind ViewModel.CanGotoPreviousSlide}"/>
+            <AppBarSeparator/>
+            <AppBarButton Icon="Next" Label="Next" 
+                          Click="{x:Bind ViewModel.GotoNextSlide}"
+                          IsEnabled="{x:Bind ViewModel.CanGotoNextSlide}"/>
+        </CommandBar>
 
     </RelativePanel>
 </Page>

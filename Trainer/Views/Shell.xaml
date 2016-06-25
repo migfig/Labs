@@ -29,7 +29,7 @@
 
         <Controls:HamburgerMenu.SecondaryButtons>
             <!--  slidepage button  -->
-            <Controls:HamburgerButtonInfo x:Name="SlidesButton" PageParameter="0"
+            <Controls:HamburgerButtonInfo x:Name="SlidesButton"
                                           PageType="views:SlidePage">
                 <Controls:HamburgerButtonInfo.NavigationTransitionInfo>
                     <SuppressNavigationTransitionInfo />

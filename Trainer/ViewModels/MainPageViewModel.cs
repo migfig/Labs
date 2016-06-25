@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
+using System.Collections.ObjectModel;
+using Trainer.Models;
 
 namespace Trainer.ViewModels
 {
@@ -14,18 +16,21 @@ namespace Trainer.ViewModels
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                Value = "Designtime value";
             }
         }
 
-        string _Value = "Gas";
-        public string Value { get { return _Value; } set { Set(ref _Value, value); } }
+        public ObservableCollection<Presentation> Presentations
+        {
+            get
+            {
+                return new ObservableCollection<Presentation>();
+            }
+        }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
             if (suspensionState.Any())
             {
-                Value = suspensionState[nameof(Value)]?.ToString();
             }
             await Task.CompletedTask;
         }
@@ -34,7 +39,6 @@ namespace Trainer.ViewModels
         {
             if (suspending)
             {
-                suspensionState[nameof(Value)] = Value;
             }
             await Task.CompletedTask;
         }
@@ -46,7 +50,7 @@ namespace Trainer.ViewModels
         }
 
         public void GotoDetailsPage() =>
-            NavigationService.Navigate(typeof(Views.DetailPage), Value);
+            NavigationService.Navigate(typeof(Views.DetailPage), "");
 
         public void GotoSettings() =>
             NavigationService.Navigate(typeof(Views.SettingsPage), 0);
@@ -56,7 +60,6 @@ namespace Trainer.ViewModels
 
         public void GotoAbout() =>
             NavigationService.Navigate(typeof(Views.SettingsPage), 2);
-
     }
 }
 
