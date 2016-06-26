@@ -38,7 +38,7 @@ namespace Log.Visor.VStudio
             // we are not calling Dispose on this object. This is because ToolWindowPane calls Dispose on
             // the object returned by the Content property.
             //this.Content = new LogViewerControl();
-            this.Content = new ParentControl();
+            this.Content = new HostControl();
             var control = (IPlugableWindow)this.Content;
             try
             {

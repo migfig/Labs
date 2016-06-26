@@ -8,9 +8,9 @@ namespace Visor.VStudio.Controls
     /// <summary>
     /// Interaction logic for ParentControl.xaml
     /// </summary>
-    public partial class ParentControl : PlugableWindow
+    public partial class HostControl : PlugableWindow
     {
-        public ParentControl()
+        public HostControl()
         {
             InitializeComponent();
             Init();

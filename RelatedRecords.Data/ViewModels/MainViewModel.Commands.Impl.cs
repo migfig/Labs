@@ -457,7 +457,7 @@ namespace RelatedRecords.Data.ViewModels
             });
         }
 
-        private async void DoTableIdWhereIdOperatorValue(string tableName, string columnName,
+        private void DoTableIdWhereIdOperatorValue(string tableName, string columnName,
             string value, Type type = null, string compOperator = "")
         {
             var table = findTable(tableName);

@@ -9,6 +9,6 @@
         Title="Log Viewer" Height="350" Width="525"
         WindowState="Maximized">
     <Grid>
-        <controls:ParentControl />
+        <controls:HostControl />
     </Grid>
 </Window>

@@ -19,7 +19,7 @@ namespace Common
                     return (T)ser.Deserialize(stream);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
 
@@ -36,7 +36,7 @@ namespace Common
                     return (T)ser.Deserialize(stream);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
 
@@ -60,9 +60,8 @@ namespace Common
 
                 return builder.ToString();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                var x = e.Message;
             }
 
             return string.Empty;
