@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Components>
-  <Component Id="6d2c6b5b5a2f4cada68fd348d287ff26" Name="Application Styles Dependency" Image="" TargetFile="App.xaml" Line="5">
+  <Component Id="6d2c6b5b5a2f4cada68fd348d287ff26" Name="Application Styles Dependency" Image="" TargetFile="App.xaml" Line="5" TargetProject="Trainer.UWP">
     <Code>
       <![CDATA[xmlns:common="using:AppUIBasics.Common"]]>
     </Code>

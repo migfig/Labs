@@ -8,6 +8,9 @@ using System;
 using Common.Commands;
 using System.Windows.Input;
 using Visor.VStudio;
+using System.Threading;
+using Log.Common.Services;
+using System.Collections.Generic;
 
 namespace Visor.Wpf.TodoCoder.ViewModels
 {
@@ -18,6 +21,51 @@ namespace Visor.Wpf.TodoCoder.ViewModels
 
         public IPlugableWindow ParentWindow { get; set; }
         private ObservableCollection<Component> items;
+
+        private Timer _timer;
+
+        public ComponentsViewModel()
+        {
+            _timer = new Timer(OnTimerTick);
+            _timer.Change(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(10));
+        }
+
+        async void OnTimerTick(object state)
+        {
+            _timer.Change(TimeSpan.FromHours(10), TimeSpan.FromHours(10));
+
+            try
+            {
+                using (var service = ApiServiceFactory.CreateService<Component>())
+                {
+                    var items = await service.GetItems("components");
+                    foreach(var item in items)
+                    {
+                        await service.RemoveItem(item, "Id");
+                    }
+                    AddCodeComponents(items);
+                }
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                _timer.Change(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(10));
+            }
+        }
+
+        private void AddCodeComponents(IEnumerable<Component> components)
+        {
+            if (null != components && components.Any())
+            {
+                foreach (var component in components)
+                {
+                    var item = items.FirstOrDefault(x => x.Id.Equals(component.Id));
+                    AddCodeCommand.Execute(item);
+                }
+            }
+        }
 
         private ObservableCollection<Component> _items;
         public ObservableCollection<Component> Items

@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace Common
 {
-    public class XmlHelper<T> where T: class
+    public class XmlHelper2<T> where T: class
     {
         public static T Load(XElement source)
         {

@@ -36,9 +36,8 @@ namespace Trainer.Domain
 
     /// <remarks/>
     [System.Xml.Serialization.XmlType(AnonymousType = true)]
-    public partial class Component
+    public partial class Component: IDisposable
     {
-
         private ObservableCollection<Dependency> dependencyField;
 
         private Code codeField;
@@ -217,6 +216,10 @@ namespace Trainer.Domain
             {
                 this.targetProjectField = value;
             }
+        }
+
+        public void Dispose()
+        {
         }
     }
 

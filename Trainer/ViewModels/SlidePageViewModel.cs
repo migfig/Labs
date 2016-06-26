@@ -48,7 +48,7 @@ namespace Trainer.ViewModels
         private void GetPresentation()
         {
             #region dummy data
-            _presentation = XmlHelper<Presentation>.LoadFromString(
+            _presentation = XmlHelper2<Presentation>.LoadFromString(
 @"<?xml version='1.0' encoding='utf - 8' ?>
 <Presentation Title='Trainer Assistant'>
  <Slide Title='Maintenable Applications'>
@@ -57,7 +57,7 @@ namespace Trainer.ViewModels
        <Bold>Static vs Dynamic Components</Bold>
      </Paragraph>
    </RichTextBlock>
-   <Component Id='6d2c6b5b5a2f4cada68fd348d287ff26' Name='Application Styles Dependency' Image='' TargetFile='App.xaml' Line='5'>
+   <Component Id='6d2c6b5b5a2f4cada68fd348d287ff26' Name='Application Styles Dependency' Image='' TargetFile='App.xaml' Line='5'  TargetProject='Trainer.UWP'>
     <Code>
       <![CDATA[xmlns: common = 'using:AppUIBasics.Common']]>
     </Code>

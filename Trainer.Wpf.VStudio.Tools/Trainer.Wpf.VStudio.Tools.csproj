@@ -67,8 +67,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{4D5ECA11-0727-485D-985A-7FCADCFB25C7}</Project>
+      <Project>{4d5eca11-0727-485d-985a-7fcadcfb25c7}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Log.Common.Services\Log.Common.Services.csproj">
+      <Project>{c6c0949a-16b7-480e-9c6a-6d1e691d7ed7}</Project>
+      <Name>Log.Common.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trainer.Domain\Trainer.Domain.csproj">
       <Project>{8cb4a0bd-82a1-4b4c-b3a1-dd880b82dab7}</Project>

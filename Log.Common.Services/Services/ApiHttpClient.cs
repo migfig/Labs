@@ -74,7 +74,7 @@ namespace Log.Common.Services
             }
             else
             {
-                value = XmlHelper<T>.Save(item);
+                value = XmlHelper2<T>.Save(item);
             }
             using (var content = new ByteArrayContent(Encoding.UTF8.GetBytes(value)))
             {
@@ -88,7 +88,7 @@ namespace Log.Common.Services
         public async Task<bool> RemoveItem(T item, string propertyName)
         {
             var className = item.GetType().FullName.Split('.').Last().ToLower();
-            var response = await _client.DeleteAsync(_baseUrl + className + "/remove/" + item.GetType().GetRuntimeProperty(propertyName).GetValue(item).ToString());
+            var response = await _client.DeleteAsync(_baseUrl + className + "s/remove/" + item.GetType().GetRuntimeProperty(propertyName).GetValue(item).ToString());
 
             return response.IsSuccessStatusCode;
         }
