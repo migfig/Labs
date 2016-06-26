@@ -22,6 +22,12 @@ namespace Code.Service
                 routeTemplate: "api/{controller}/add"
             );
 
+            config.Routes.MapHttpRoute(
+                name: "RemoveApi",
+                routeTemplate: "api/{controller}/remove/{id}",
+                defaults: new { id = string.Empty }
+            );
+
             //config.Routes.MapHttpRoute(
             //    name: "AddItemsApi",
             //    routeTemplate: "api/{controller}/additems"

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text;
 using Common;
+using System.Reflection;
 
 namespace Log.Common.Services
 {
@@ -14,6 +15,7 @@ namespace Log.Common.Services
         Task<IEnumerable<T>> GetItems(string url);
         Task<bool> AddItems(IEnumerable<T> items);
         Task<bool> AddItem(T item);
+        Task<bool> RemoveItem(T item, string propertyName);
     }
 
     public interface IApiService: IDisposable
@@ -81,6 +83,14 @@ namespace Log.Common.Services
                 var response = await _client.PostAsync(_baseUrl + className + "/add", content);
                 return response.IsSuccessStatusCode;
             }
+        }
+
+        public async Task<bool> RemoveItem(T item, string propertyName)
+        {
+            var className = item.GetType().FullName.Split('.').Last().ToLower();
+            var response = await _client.DeleteAsync(_baseUrl + className + "/remove/" + item.GetType().GetRuntimeProperty(propertyName).GetValue(item).ToString());
+
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> AddItems(IEnumerable<T> items)

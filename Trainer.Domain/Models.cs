@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 
 namespace Trainer.Domain
@@ -176,6 +177,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
+        [JsonIgnore]
         [System.Xml.Serialization.XmlIgnore()]
         public bool LineSpecified
         {
@@ -262,6 +264,7 @@ namespace Trainer.Domain
         }
 
         [System.Xml.Serialization.XmlIgnore]
+        [JsonIgnore]
         public Component Component
         {
             get { return this.componentField; }
@@ -312,6 +315,7 @@ namespace Trainer.Domain
 
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnore()]
+        [JsonIgnore]
         public string ComposedValue
         {
             get

@@ -6,6 +6,7 @@ using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Media;
 using Xaml = Windows.UI.Xaml.Documents;
+using Newtonsoft.Json;
 
 namespace Trainer.Models
 {
@@ -200,6 +201,7 @@ namespace Trainer.Models
     public partial class Component: Trainer.Domain.Component
     {
         [XmlIgnore]
+        [JsonIgnore]
         public Windows.UI.Xaml.Controls.RichTextBlock RichControl
         {
             get

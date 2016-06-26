@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Trainer.Domain;
@@ -9,6 +10,7 @@ namespace Code.Service
     {
         Task<IEnumerable<Component>> GetItems();
         Task<bool> AddItems(IEnumerable<Component> items);
+        Task<bool> RemoveItem(string id);
     }
 
     public class CodeServices: ICodeServices
@@ -33,6 +35,18 @@ namespace Code.Service
                 _components.Component.Add(item);
 
             return Task.FromResult(true);
+        }
+
+        public Task<bool> RemoveItem(string id)
+        {
+            var component = _components.Component.FirstOrDefault(x => x.Id.Equals(id));
+            if (null != component)
+            {
+                _components.Component.Remove(component);
+                return Task.FromResult(true);
+            }
+
+            return Task.FromResult(false);
         }
     }
 }

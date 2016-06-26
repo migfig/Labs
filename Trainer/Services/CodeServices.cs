@@ -7,12 +7,12 @@ namespace Trainer.ViewModels
 {
     public interface ICodeServices
     {
-        Task<bool> CopyCode(IEnumerable<Domain.Component> components);
+        Task<bool> CopyCode(IEnumerable<Models.Component> components);
     }
 
     public class CodeServices: ICodeServices
     {
-        public async Task<bool> CopyCode(IEnumerable<Domain.Component> components)
+        public async Task<bool> CopyCode(IEnumerable<Models.Component> components)
         {
             var list = new Components();
             foreach(var c in components)
@@ -20,7 +20,7 @@ namespace Trainer.ViewModels
                 list.Component.Add(c);
             }
 
-            using (var service = ApiServiceFactory.CreateService<Domain.Components>(useJson: false))
+            using (var service = ApiServiceFactory.CreateService<Domain.Components>())
             {
                 return await service.AddItem(list);
             }

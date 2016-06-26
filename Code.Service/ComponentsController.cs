@@ -37,5 +37,11 @@ namespace Code.Service
         {
             return await _codeServices.AddItems(item.Component);
         }
+
+        [Route("api/components/remove/{id}"), HttpDelete]
+        public async Task<bool> RemoveItem(string id)
+        {
+            return await _codeServices.RemoveItem(id);
+        }
     }
 }
