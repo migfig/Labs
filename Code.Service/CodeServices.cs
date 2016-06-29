@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Trainer.Domain;
+using System.Reflection;
 
 namespace Code.Service
-{
+{    
     public interface ICodeServices
     {
         Task<IEnumerable<Component>> GetItems();

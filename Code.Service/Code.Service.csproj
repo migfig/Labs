@@ -91,6 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PresentationsController.cs" />
     <Compile Include="ComponentsController.cs" />
     <Compile Include="IoC\ServiceInstaller.cs" />
     <Compile Include="CodeService.cs" />
@@ -105,6 +106,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common.Generics\Common.Generics.csproj">
+      <Project>{6cf371cd-4bae-4cc7-8baa-a984863ae040}</Project>
+      <Name>Common.Generics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trainer.Domain\Trainer.Domain.csproj">
       <Project>{8cb4a0bd-82a1-4b4c-b3a1-dd880b82dab7}</Project>
       <Name>Trainer.Domain</Name>

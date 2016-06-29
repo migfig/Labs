@@ -28,6 +28,12 @@ namespace Code.Service
                 defaults: new { id = string.Empty }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "RemoveGenericApi",
+                routeTemplate: "api/{controller}/remove/{propertyName}/{id}",
+                defaults: new { propertyName = string.Empty, id = string.Empty }
+            );
+
             //config.Routes.MapHttpRoute(
             //    name: "AddItemsApi",
             //    routeTemplate: "api/{controller}/additems"
