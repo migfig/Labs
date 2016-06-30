@@ -7,6 +7,8 @@ namespace Common.Generics
 {
     public interface IGenericServices<T> where T : class
     {
+        string Path { get; }
+        string Pattern { get; }
         Task<IEnumerable<T>> GetItems();
         Task<bool> AddItem(T item);
         Task<bool> RemoveItem(string propertyName, object id);
@@ -21,6 +23,9 @@ namespace Common.Generics
         private readonly string _pattern;
 
         private IList<T> _items;
+
+        public string Path { get { return _path; } }
+        public string Pattern { get { return _pattern; } }
 
         public GenericServices(int maxItems, string path, string pattern)
         {

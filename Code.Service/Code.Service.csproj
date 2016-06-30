@@ -110,6 +110,10 @@
       <Project>{6cf371cd-4bae-4cc7-8baa-a984863ae040}</Project>
       <Name>Common.Generics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{4d5eca11-0727-485d-985a-7fcadcfb25c7}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Trainer.Domain\Trainer.Domain.csproj">
       <Project>{8cb4a0bd-82a1-4b4c-b3a1-dd880b82dab7}</Project>
       <Name>Trainer.Domain</Name>

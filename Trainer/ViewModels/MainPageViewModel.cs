@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
-using Trainer.Models;
+using Trainer.Domain;
 
 namespace Trainer.ViewModels
 {

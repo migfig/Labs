@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
+using Trainer.Domain;
 using Trainer.Models;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
