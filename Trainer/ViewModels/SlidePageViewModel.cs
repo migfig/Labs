@@ -1,11 +1,11 @@
 using Common;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Trainer.Domain;
-using Trainer.Models;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
@@ -22,6 +22,7 @@ namespace Trainer.ViewModels
             }
 
             _codeServices = new CodeServices();
+            MainViewModel.ViewModel.GetPresentations((items) => Presentations = items);
         }
 
         public string Header
@@ -29,92 +30,41 @@ namespace Trainer.ViewModels
             get { return Presentation.Title + " - " + CurrentSlide.Title; }
         }
 
+        private ObservableCollection<Presentation> _presentations;
+        public ObservableCollection<Presentation> Presentations
+        {
+            get
+            {
+                return _presentations;
+            }
+
+            private set
+            {
+                Set(ref _presentations, value);
+                Presentation = _presentations.FirstOrDefault();
+            }
+        }
+
+
         private Presentation _presentation;
         public Presentation Presentation
         {
             get
             {
-                if(_presentation == null)
-                {
-                    GetPresentation();
-                }
                 return _presentation;
             }
-            set
+            private set
             {
                 Set(ref _presentation, value);
+                CurrentSlide = _presentation.Slide.FirstOrDefault();
             }
-        }
-
-        private void GetPresentation()
-        {
-            #region dummy data
-            _presentation = XmlHelper2<Presentation>.LoadFromString(
-@"<?xml version='1.0' encoding='utf - 8' ?>
-<Presentation Title='Trainer Assistant'>
- <Slide Title='Maintenable Applications'>
-   <RichTextBlock FontSize='20' FontWeight='DemiBold'>
-     <Paragraph>
-       <Bold>Static vs Dynamic Components</Bold>
-     </Paragraph>
-   </RichTextBlock>
-   <Component Id='6d2c6b5b5a2f4cada68fd348d287ff26' Name='Application Styles Dependency' Image='' TargetFile='App.xaml' Line='5'  TargetProject='Trainer.UWP'>
-    <Code>
-      <![CDATA[xmlns: common = 'using:AppUIBasics.Common']]>
-    </Code>
-   </Component>
- </Slide>
- <Slide Title='Extensibility with MEF'>
-   <RichTextBlock FontSize='20' FontWeight='DemiBold'>
-     <Paragraph>
-       <Bold>What is MEF</Bold>
-     </Paragraph>
-     <Paragraph>
-       <Bold>How does MEF works</Bold>
-     </Paragraph>
-   </RichTextBlock>
- </Slide>
- <Slide Title='Integration with Visual Studio'>
-   <RichTextBlock FontSize='20' FontWeight='DemiBold'>
-     <Paragraph>
-       <Bold>Visual Studio Add - ins</Bold>
-     </Paragraph>
-     <Paragraph>
-       <Bold>A Generic place holder</Bold>
-     </Paragraph>
-   </RichTextBlock>
- </Slide>
- <Slide Title='Integration with Universal Windows Platform Applications'>
-   <RichTextBlock FontSize='20' FontWeight='DemiBold'>
-     <Paragraph>
-       <Bold>UWP Applications</Bold>
-     </Paragraph>
-     <Paragraph>
-       <Bold>Template 10 Extension</Bold>
-     </Paragraph>
-   </RichTextBlock>
- </Slide>
- <Slide Title='Sample Paragraph'>
-   <RichTextBlock SelectionHighlightColor='Green'>
-          <Paragraph>
-            RichTextBlock provides a rich text display container that supports
-            <Run FontStyle='Italic' FontWeight='Bold'>formatted text</Run>,
-            <Hyperlink NavigateUri='http://msdn.microsoft.com/en-us/library/windows/apps/windows.ui.xaml.documents.hyperlink.aspx'>hyperlinks</Hyperlink>, inline images, and other rich content.
-          </Paragraph>
-          <Paragraph>RichTextBlock also supports a built-in overflow model.</Paragraph>
-        </RichTextBlock>
-        </Slide>
-</Presentation>".Replace("'","\""));
-            #endregion 
-
-            CurrentSlide = _presentation.Slide.First();
         }
 
         private Slide _currentSlide;
         public Slide CurrentSlide
         {
             get { return _currentSlide; }
-            set { Set(ref _currentSlide, value); }
+            private set { Set(ref _currentSlide, value); }
         }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)

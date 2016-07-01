@@ -38,13 +38,13 @@ namespace Log.Common.Services
             return new ApiHttpClient(baseUrl);
         }
 
-        public static IGenericApiService<T> CreateService<T>(bool useJson = true) where T : class, IDisposable
+        public static IGenericApiService<T> CreateService<T>(bool useJson = true) where T : class
         {
             const string baseUrl = "http://localhost:3033/api/";
             return new GenericApiHttpClient<T>(baseUrl, useJson);
         }
 
-        public static IGenericApiService<T> CreateService<T>(string baseUrl, bool useJson = true) where T: class, IDisposable
+        public static IGenericApiService<T> CreateService<T>(string baseUrl, bool useJson = true) where T: class
         {
             return new GenericApiHttpClient<T>(baseUrl, useJson);
         }

@@ -7,6 +7,7 @@ using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using Trainer.Domain;
+using Log.Common.Services;
 
 namespace Trainer.ViewModels
 {
@@ -17,13 +18,21 @@ namespace Trainer.ViewModels
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
             }
+
+            MainViewModel.ViewModel.GetPresentations((items) => Presentations = items);
         }
 
+        private ObservableCollection<Presentation> _presentations;
         public ObservableCollection<Presentation> Presentations
         {
-            get
+            get 
             {
-                return new ObservableCollection<Presentation>();
+                return _presentations;
+            }
+
+            private set
+            {
+                Set(ref _presentations, value);
             }
         }
 

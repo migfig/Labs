@@ -7,7 +7,7 @@ namespace Trainer.Domain
     /// <remarks/>
     [System.Xml.Serialization.XmlType(AnonymousType = true)]
     [System.Xml.Serialization.XmlRoot(Namespace = "", IsNullable = false)]
-    public partial class Components: IDisposable
+    public partial class Components
     {
         private ObservableCollection<Component> componentField;
         public Components()
@@ -28,15 +28,11 @@ namespace Trainer.Domain
                 this.componentField = value;
             }
         }
-
-        public void Dispose()
-        {
-        }
     }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlType(AnonymousType = true)]
-    public partial class Component: IDisposable
+    public partial class Component
     {
         private ObservableCollection<Dependency> dependencyField;
 
@@ -216,10 +212,6 @@ namespace Trainer.Domain
             {
                 this.targetProjectField = value;
             }
-        }
-
-        public void Dispose()
-        {
         }
     }
 
