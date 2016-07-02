@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Presentation Title="Trainer Assistant">
+<Presentation Title="Trainer Assistant" Image="Images\green-frame.png">
   <Slide Title="Maintenable Applications">
     <RichTextBlock FontSize="20" FontWeight="DemiBold">
       <Paragraph>

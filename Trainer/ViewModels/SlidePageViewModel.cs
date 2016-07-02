@@ -1,4 +1,3 @@
-using Common;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -25,9 +24,9 @@ namespace Trainer.ViewModels
             MainViewModel.ViewModel.GetPresentations((items) => Presentations = items);
         }
 
-        public string Header
+        public string Foother
         {
-            get { return Presentation.Title + " - " + CurrentSlide.Title; }
+            get { return string.Format("Slide {0} of {1}", Presentation.Slide.IndexOf(CurrentSlide) + 1, Presentation.Slide.Count); }
         }
 
         private ObservableCollection<Presentation> _presentations;
@@ -65,6 +64,11 @@ namespace Trainer.ViewModels
         {
             get { return _currentSlide; }
             private set { Set(ref _currentSlide, value); }
+        }
+
+        public string BackgroundImageUrl
+        {
+            get { return !string.IsNullOrEmpty(CurrentSlide.Image) ? CurrentSlide.Image : Presentation.Image; }
         }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)

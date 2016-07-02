@@ -57,7 +57,7 @@
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True" 
-                             Text="{x:Bind ViewModel.Header, Mode=OneWay}" />
+                             Text="{x:Bind ViewModel.CurrentSlide.Title, Mode=OneWay}" />
 
         <!--  content  -->
         <ScrollViewer x:Name="slidesContent" Padding="12,8,0,0" 
@@ -67,7 +67,9 @@
                       RelativePanel.Below="pageHeader" 
                       Margin="0,0,0,50"
                       VerticalScrollBarVisibility="Auto">
-
+            <ScrollViewer.Background>
+                <ImageBrush ImageSource="{x:Bind ViewModel.BackgroundImageUrl}"/>
+            </ScrollViewer.Background>
             <StackPanel>
                 <ItemsControl ItemsSource="{x:Bind ViewModel.CurrentSlide.Block}">
                     <ItemsControl.ItemTemplate>
@@ -88,12 +90,27 @@
             </StackPanel>
         </ScrollViewer>
 
+        <Border RelativePanel.Below="slidesContent" 
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignBottomWith="slidesContent"
+                    BorderThickness="0"
+                    Background="#FFE6E6E6"
+                    Margin="0,-50,0,0">
+            <TextBlock Text="{x:Bind ViewModel.Foother}" 
+                    FontWeight="SemiLight"
+                    FontSize="13"
+                    Padding="4"
+                    Margin="8,0,0,0"   
+                    VerticalAlignment="Center"/>
+        </Border>
+
         <CommandBar RelativePanel.Below="slidesContent" 
                     RelativePanel.AlignLeftWithPanel="True"
                     RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignBottomWith="slidesContent"
-                    Margin="0,-50,0,0">
-            
+                    Margin="100,-50,0,0">
+
             <AppBarButton Icon="Copy" Label="Copy Code" 
                           Click="{x:Bind ViewModel.CopyCode}"
                           Visibility="{x:Bind ViewModel.CopyCodeVisibility}"/>

@@ -11,6 +11,9 @@ namespace Trainer.Domain
         [XmlAttribute]
         public string Title { get; set; }
 
+        [XmlAttribute]
+        public string Image { get; set; }
+
         [XmlElement("Slide")]
         public ObservableCollection<Slide> Slide { get; set; }
 
@@ -25,6 +28,9 @@ namespace Trainer.Domain
     {
         [XmlAttribute]
         public string Title { get; set; }
+
+        [XmlAttribute]
+        public string Image { get; set; }
 
         [XmlElement("RichTextBlock", Order = 0)]
         public ObservableCollection<RichTextBlock> Block { get; set; }

@@ -93,12 +93,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Models\presentation.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Models\richcontent.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Trainer_TemporaryKey.pfx" />
     <None Include="project.json" />
   </ItemGroup>
@@ -148,8 +142,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Help.htm" />
-    <Content Include="Models\presentation.xml" />
-    <Content Include="Models\richcontent.xml" />
+    <Content Include="Images\blue-stripes.png" />
+    <Content Include="Images\cyan-clothes.png" />
+    <Content Include="Images\gray-perspective.png" />
+    <Content Include="Images\green-clothes.png" />
+    <Content Include="Images\green-frame.png" />
+    <Content Include="Images\green-stripes.png" />
+    <Content Include="Images\herbs.png" />
+    <Content Include="Images\orange-stripes.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

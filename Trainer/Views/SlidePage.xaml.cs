@@ -1,4 +1,3 @@
-using Trainer.ViewModels;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Controls;
 

@@ -42,6 +42,8 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <Content Include="common.xml" />
+    <Content Include="presentation.xml" />
+    <Content Include="richcontent.xml" />
     <Content Include="styles.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +56,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="key.snk" />
+    <None Include="presentation.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="richcontent.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

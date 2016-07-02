@@ -103,10 +103,12 @@
               </xs:element>
             </xs:sequence>
             <xs:attribute name="Title" type="xs:string" use="required" />
+            <xs:attribute name="Image" type="xs:string" use="optional" />
           </xs:complexType>
         </xs:element>
       </xs:sequence>
       <xs:attribute name="Title" type="xs:string" use="required" />
+      <xs:attribute name="Image" type="xs:string" use="optional" />
     </xs:complexType>
   </xs:element>
 </xs:schema>
