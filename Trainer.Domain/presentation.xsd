@@ -101,9 +101,40 @@
                   <xs:attribute name="Visibility" type="xs:string" use="optional" default="Visible" />
                 </xs:complexType>
               </xs:element>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="Component">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="Dependency">
+                      <xs:complexType>
+                        <xs:attribute name="Id" type="xs:string" use="required" />
+                        <xs:attribute name="Location" type="xs:string" use="optional" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="Code">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="SourceFile" type="xs:string" use="optional" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="Id" type="xs:string" use="required" />
+                  <xs:attribute name="Name" type="xs:string" use="required" />
+                  <xs:attribute name="Image" type="xs:string" use="required" />
+                  <xs:attribute name="TargetFile" type="xs:string" use="optional" />
+                  <xs:attribute name="SourcePath" type="xs:string" use="optional" />
+                  <xs:attribute name="Line" type="xs:unsignedByte" use="optional" />
+                  <xs:attribute name="IsBrowsable" type="xs:boolean" use="optional"/>
+                  <xs:attribute name="TargetProject" type="xs:string" use="optional" />
+                </xs:complexType>
+              </xs:element>
             </xs:sequence>
             <xs:attribute name="Title" type="xs:string" use="required" />
             <xs:attribute name="Image" type="xs:string" use="optional" />
+            <xs:attribute name="Margin" type="xs:string" use="optional" />
+            <xs:attribute name="Padding" type="xs:string" use="optional" />
           </xs:complexType>
         </xs:element>
       </xs:sequence>

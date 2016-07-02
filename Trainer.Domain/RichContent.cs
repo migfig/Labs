@@ -55,6 +55,12 @@ namespace Trainer.Domain
         [XmlAttribute]
         public string Image { get; set; }
 
+        [XmlAttribute]
+        public string Margin { get; set; }
+
+        [XmlAttribute]
+        public string Padding { get; set; }
+
         [XmlElement("RichTextBlock", Order = 0)]
         public ObservableCollection<RichTextBlock> Block { get; set; }
 

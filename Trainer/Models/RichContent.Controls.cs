@@ -160,7 +160,7 @@ namespace Trainer.Models
             {
                 IsTextSelectionEnabled = true,
                 MinHeight = 40,
-                MinWidth = 400,
+                MinWidth = 400
             };
 
             control.Blocks.Add(new Domain.Paragraph
