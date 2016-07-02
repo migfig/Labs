@@ -143,6 +143,7 @@
   <ItemGroup>
     <Content Include="Help.htm" />
     <Content Include="Images\blue-stripes.png" />
+    <Resource Include="Images\component.png" />
     <Content Include="Images\cyan-clothes.png" />
     <Content Include="Images\gray-perspective.png" />
     <Content Include="Images\green-clothes.png" />

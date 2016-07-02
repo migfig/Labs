@@ -1,6 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using System.Linq;
+using System.IO;
+using System.Text;
 
 namespace Trainer.Domain
 {
@@ -20,6 +23,26 @@ namespace Trainer.Domain
         public Presentation()
         {
             Slide = new ObservableCollection<Slide>();
+        }
+
+        [XmlIgnore]
+        public string Xml
+        {
+            get
+            {
+                if(Slide.Any())
+                {
+                    var ser = new XmlSerializer(GetType());
+                    var builder = new StringBuilder();
+                    using(var stream = new StringWriter(builder))
+                    {
+                        ser.Serialize(stream, this);
+                        return builder.ToString();
+                    }
+                }
+
+                return string.Empty;
+            }
         }
     }
 
