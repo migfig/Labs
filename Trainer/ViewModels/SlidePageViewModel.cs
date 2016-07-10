@@ -105,7 +105,8 @@ namespace Trainer.ViewModels
         public void CopyCode() =>
             _codeServices.CopyCode(CurrentSlide.Component);
 
-        public Visibility CopyCodeVisibility { get { return CurrentSlide.Component.Any() ? Visibility.Visible : Visibility.Collapsed; } }            
+        public Visibility CopyCodeVisibility { get { return CurrentSlide.Component.Any(x => x.IsBrowsable)                     
+                        ? Visibility.Visible : Visibility.Collapsed; } }            
 
         public bool CanGotoPreviousSlide { get { return !_currentSlide.Title.Equals(_presentation.Slide.First().Title); } }
 
