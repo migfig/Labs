@@ -1,5 +1,6 @@
 ﻿using Log.Common.Services;
 using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Template10.Mvvm;

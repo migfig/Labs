@@ -9,6 +9,7 @@
       xmlns:local="using:Trainer.Views"
       xmlns:ctrls="using:Trainer.Controls"
       xmlns:domain="using:Trainer.Domain"
+      xmlns:converters="using:Trainer.Converters"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:Trainer.ViewModels" mc:Ignorable="d">
 
@@ -73,7 +74,7 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="domain:Presentation">
-                    <ctrls:PresentationControl Width="300" Height="200" DataContext="{x:Bind}"/>
+                    <ctrls:PresentationControl Width="300" Height="200" DataContext="{x:Bind}" Margin="4"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
