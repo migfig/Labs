@@ -87,9 +87,12 @@ namespace Trainer.Models
                 control.Inlines.Add(new Xaml.Run { Text = string.Join(Environment.NewLine, item.Text) });
             }
 
-            if (item.Bold != null)
+            if (item.Bold != null && item.Bold.Any())
             {
-                control.Inlines.Add(item.Bold.Control());
+                foreach (var bold in item.Bold)
+                {
+                    control.Inlines.Add(bold.Control());
+                }
             }
 
             if (item.Hyperlink != null)
@@ -97,9 +100,12 @@ namespace Trainer.Models
                 control.Inlines.Add(item.Hyperlink.Control());
             }
 
-            if (item.Run != null)
+            if (item.Run != null && item.Run.Any())
             {
-                control.Inlines.Add(item.Run.Control());
+                foreach (var run in item.Run)
+                {
+                    control.Inlines.Add(run.Control());
+                }
             }
 
             if (item.InlineUIContainer != null)

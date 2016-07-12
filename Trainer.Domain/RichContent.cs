@@ -117,16 +117,22 @@ namespace Trainer.Domain
         public InlineUIContainer InlineUIContainer { get; set; }
 
         [XmlElement("Bold")]
-        public Bold Bold { get; set; }
+        public ObservableCollection<Bold> Bold { get; set; }
 
         [XmlElement("Run")]
-        public Run Run { get; set; }
+        public ObservableCollection<Run> Run { get; set; }
 
         [XmlElement("Hyperlink")]
         public HyperLink Hyperlink { get; set; }
 
         [XmlText()]
         public string[] Text { get; set; }
+
+        public Paragraph()
+        {
+            Bold = new ObservableCollection<Domain.Bold>();
+            Run = new ObservableCollection<Domain.Run>();
+        }
     }
 
     [XmlType(AnonymousType = true)]
