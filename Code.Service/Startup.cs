@@ -7,9 +7,8 @@ namespace Code.Service
     {
         public void Configuration(IAppBuilder builder)
         {
-            // Configure Web API for self-host. 
             var config = new HttpConfiguration();
-            //todo: need to assign IoC resolver
+            config.DependencyResolver = new WindsorDependencyResolver(CodeService.Container.Kernel);
            
             config.Routes.MapHttpRoute(
                 name: "Default",

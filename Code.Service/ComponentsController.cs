@@ -9,12 +9,6 @@ namespace Code.Service
     {
         private readonly ICodeServices _codeServices;  
         
-        //todo: need to propery configure IoC resolver
-        public ComponentsController()
-        {
-            _codeServices = (CodeService.Container.Resolve<ICodeServices>());
-        }      
-
         public ComponentsController(ICodeServices codeServices)
         {
             _codeServices = codeServices;

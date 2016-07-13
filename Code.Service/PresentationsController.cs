@@ -10,12 +10,6 @@ namespace Code.Service
     {
         private readonly IGenericServices<Presentation> _codeServices;  
         
-        //todo: need to propery configure IoC resolver
-        public PresentationsController()
-        {
-            _codeServices = (CodeService.Container.Resolve<IGenericServices<Presentation>>());
-        }      
-
         public PresentationsController(IGenericServices<Presentation> codeServices)
         {
             _codeServices = codeServices;

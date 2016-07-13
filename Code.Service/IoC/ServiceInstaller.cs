@@ -2,6 +2,7 @@
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Common.Generics;
+using System.Web.Http;
 using domain = Trainer.Domain;
 
 namespace Code.Service
@@ -26,14 +27,12 @@ namespace Code.Service
                     .DependsOn(Dependency.OnAppSettingsValue("port"))
                     .LifestyleTransient(),
 
-                Component.For<ComponentsController>()
-                    .LifestyleTransient(),
-
-                Component.For<PresentationsController>()
-                    .LifestyleTransient(),
-
                 Component.For<CodeService>()
-                    .LifestyleSingleton()
+                    .LifestyleSingleton(),
+                
+                Classes.FromThisAssembly()
+                    .BasedOn<ApiController>()
+                    .LifestyleScoped()
                 );
         }
     }

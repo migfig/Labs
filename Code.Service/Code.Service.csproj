@@ -91,6 +91,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IoC\WindsorDependencyResolver.cs" />
+    <Compile Include="IoC\WindsorDependencyScope.cs" />
     <Compile Include="PresentationsController.cs" />
     <Compile Include="ComponentsController.cs" />
     <Compile Include="IoC\ServiceInstaller.cs" />
