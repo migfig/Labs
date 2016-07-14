@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using System.Linq;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Trainer.Domain
 {
@@ -19,6 +20,9 @@ namespace Trainer.Domain
 
         [XmlElement("Slide")]
         public ObservableCollection<Slide> Slide { get; set; }
+
+        [XmlIgnore]
+        public IEnumerable<Slide> FewSlide { get { return Slide.Take(6); } }
 
         public Presentation()
         {

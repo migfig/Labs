@@ -49,7 +49,7 @@
                     VerticalAlignment="Center"/>
             </StackPanel>
 
-            <ItemsControl Grid.Row="1" ItemsSource="{Binding Slide}">
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding FewSlide}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="13" Padding="8,2,2,2" />

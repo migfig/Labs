@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Presentation Title="Trainer Assistant" Image="ms-appx:///Images/green-frame.png">
+  <Slide Title="Maintenable Applications" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold" LineHeight="50">
+      <Paragraph>
+        <Bold>Universal Windows Platform Apps with T10</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Integration with Visual Studio - VSIX Packages</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Composition with MEF</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Portable Libraries</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Web API Integration with OWIN Self-Host</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Windows Services with TopShelf</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Log Viewer Control</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Dependency Injection with Windsor Castle</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Universal Windows Platform Apps with T10" Margin="-200,0,0,0">
+    <RichTextBlock>
+      <Paragraph>
+        <Bold>Sample Templates</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- Blank</Paragraph>
+      <Paragraph TextIndent="4">- Hamburger</Paragraph>
+      <Paragraph TextIndent="4">- Minimal</Paragraph>
+      <Paragraph>
+        <Bold>Controls</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- PageHeader</Paragraph>
+      <Paragraph TextIndent="4">- Hamburger Menu</Paragraph>
+      <Paragraph TextIndent="4">- Modal Dialog</Paragraph>
+      <Paragraph TextIndent="4">- Resizer</Paragraph>
+      <Paragraph>
+        <Bold>Behaviors</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- BackButtonBehavior</Paragraph>
+      <Paragraph TextIndent="4">- EllipsisBehavior</Paragraph>
+      <Paragraph TextIndent="4">- KeyBehavior</Paragraph>
+      <Paragraph TextIndent="4">- NavToPageAction</Paragraph>
+      <Paragraph TextIndent="4">- FocusAction</Paragraph>
+      <Paragraph>
+        <Bold>MVVM</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- ViewModelBase</Paragraph>
+      <Paragraph TextIndent="4">- DelegateCommand</Paragraph>
+      <Paragraph TextIndent="4">- AwaitableDelegateCommand</Paragraph>
+      <Paragraph TextIndent="4">- ChangedCommandAdapter</Paragraph>
+      <Paragraph>
+        <Bold>Services</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- FileService</Paragraph>
+      <Paragraph TextIndent="4">- KeyboardService</Paragraph>
+      <Paragraph TextIndent="4">- LoggingService</Paragraph>
+      <Paragraph TextIndent="4">- NavigationService</Paragraph>
+      <Paragraph TextIndent="4">- SerializationService</Paragraph>
+      <Paragraph TextIndent="4">- SettingsService</Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Integration with Visual Studio - VSIX Packages" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Visual Studio Add-ins</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- Blank</Paragraph>
+      <Paragraph TextIndent="4">- Hamburger</Paragraph>
+      <Paragraph TextIndent="4">- Minimal</Paragraph>
+      <Paragraph>
+        <Bold>Controls</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- PageHeader</Paragraph>
+      <Paragraph TextIndent="4">- Hamburger Menu</Paragraph>
+      <Paragraph TextIndent="4">- Modal Dialog</Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Composition with MEF" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Static vs Dynamic Components</Bold>
+      </Paragraph>
+    </RichTextBlock>
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>What is MEF</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>How does MEF works</Bold>
+      </Paragraph>
+    </RichTextBlock>
+    <Component Id="6d2c6b5b5a2f4cada68fd348d287ff26" Name="Application Styles Dependency" Image="" TargetFile="App.xaml" Line="5"  TargetProject="Trainer.UWP">
+      <Code>
+        <![CDATA[xmlns: common = "using:AppUIBasics.Common"]]>
+      </Code>
+    </Component>
+  </Slide>
+  <Slide Title="Portable Libraries" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>UWP Applications</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Template 10 Extension</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Web API Integration with OWIN Self-Host" Margin="-200,0,0,0">
+    <RichTextBlock>
+      <Paragraph>
+        <Bold>OWIN Self-Host</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Windows Services with TopShelf">
+    <RichTextBlock>
+      <Paragraph>
+        <Bold>TopShelf</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Log Viewer Control" Margin="-200,0,0,0">
+    <RichTextBlock>
+      <Paragraph>
+        <Bold>Composition Sample</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Dependency Injection with Windsor Castle" Margin="-200,0,0,0">
+    <RichTextBlock>
+      <Paragraph>
+        <Bold>Container</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+</Presentation>

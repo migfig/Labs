@@ -45,6 +45,7 @@
     <Content Include="presentation.xml" />
     <Content Include="richcontent.xml" />
     <Content Include="styles.xml" />
+    <None Include="trainer.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models.cs" />
@@ -69,6 +70,9 @@
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y $(ProjectDir)trainer.xml c:\code\data\presentations</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

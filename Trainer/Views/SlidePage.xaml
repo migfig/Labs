@@ -72,8 +72,8 @@
                 <ImageBrush ImageSource="{x:Bind ViewModel.BackgroundImageUrl}"/>
             </ScrollViewer.Background>
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Margin="{Binding Path=ViewModel.CurrentSlide.Margin, Converter={StaticResource stringToMarginConverter}}"
-                        Padding="{Binding Path=ViewModel.CurrentSlide.Padding, Converter={StaticResource stringToMarginConverter}}">
+                        Margin="{x:Bind Path=ViewModel.CurrentSlide.Margin, Converter={StaticResource stringToMarginConverter}}"
+                        Padding="{x:Bind Path=ViewModel.CurrentSlide.Padding, Converter={StaticResource stringToMarginConverter}}">
                 <ItemsControl ItemsSource="{x:Bind ViewModel.CurrentSlide.Block}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="domain:RichTextBlock">
