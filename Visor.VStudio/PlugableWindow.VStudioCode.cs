@@ -80,7 +80,8 @@ namespace Visor.VStudio
             var window = item.Open();
             if (null != window)
             {
-                window.Activate();
+                if(!window.Visible)
+                    window.Activate();
                 var selection = (TextSelection)window.Document.Selection;
                 if(e.LineNumber > 0)
                     selection.GotoLine(e.LineNumber, Select: true);
@@ -114,18 +115,7 @@ namespace Visor.VStudio
             {
                 var parts = component.TargetFile.Split('\\');
                 var file = parts.Last();
-                ProjectItem folderItem = null;
-                foreach(var folder in parts.Where(x => !x.Equals(file)))
-                {
-                    if (folderItem == null)
-                    {
-                        folderItem = project.ProjectItems.Cast<ProjectItem>().FirstOrDefault(x => x.Name.Equals(folder));
-                    }
-                    else
-                    {
-                        folderItem = folderItem.ProjectItems.Cast<ProjectItem>().FirstOrDefault(x => x.Name.Equals(folder));
-                    }
-                }
+                var folderItem = EnsureFoldersExist(project, component);
 
                 ProjectItem item = null;
                 if(folderItem == null)
@@ -136,7 +126,22 @@ namespace Visor.VStudio
                 {
                     item = folderItem.ProjectItems.Cast<ProjectItem>().FirstOrDefault(x => x.Name.Equals(file));
                 }
-                InsertCode(item, component);
+
+                if (item != null)
+                {
+                    InsertCode(item, component);
+                }
+                else
+                {
+                    var fileName = GetFileName(project, component);
+                    using(var stream = File.CreateText(fileName))
+                    {
+                        stream.Write(component.Code.Value);
+                    }
+
+                    component.SourcePath = fileName;
+                    InsertCodeFromFile(project, component, isLinked: true);
+                }
             }
             else
             {
@@ -163,7 +168,6 @@ namespace Visor.VStudio
                 selection.NewLine();
                 selection.Insert(component.Code.Value);
                 Log("Inserting code for Component {0} into Item {1} at Line {2}", component.Name, item.Name, component.Line.ToString());
-                //return window.Document.Save() == vsSaveStatus.vsSaveSucceeded;
                 return true;
             }
             catch (Exception e)
@@ -174,13 +178,54 @@ namespace Visor.VStudio
             return false;
         }
 
-        private bool InsertCodeFromFile(Project project, Component component)
+        private bool InsertCodeFromFile(Project project, Component component, bool isLinked = false)
         {
             try
             {
                 var folders = component.TargetFile.Split('\\');
                 var file = folders.Last();
-                ProjectItem folderItem = null;
+                var folderItem = EnsureFoldersExist(project, component);
+                ProjectItem item = null;
+
+                if (folderItem != null)
+                {
+                    if(isLinked)
+                        item = folderItem.ProjectItems.AddFromFile(Path.Combine(component.SourcePath, component.Code.SourceFile));
+                    else
+                        item = folderItem.ProjectItems.AddFromFileCopy(Path.Combine(component.SourcePath, component.Code.SourceFile));
+
+                    Log("Inserting code for Component {0} into Folder Item {1} from Source file {2}", component.Name, folderItem.Name, component.Code.SourceFile);
+                    OpenItem(item, new ViewCodeArgs(string.Empty, string.Empty, 1));
+                }
+                else
+                {
+                    if(isLinked)
+                        item = project.ProjectItems.AddFromFile(Path.Combine(component.SourcePath, component.Code.SourceFile));
+                    else
+                        item = project.ProjectItems.AddFromFileCopy(Path.Combine(component.SourcePath, component.Code.SourceFile));
+
+                    Log("Inserting code for Component {0} into Project {1} from Source file {2}", component.Name, project.Name, component.Code.SourceFile);
+                    OpenItem(item, new ViewCodeArgs(string.Empty, string.Empty, 1));
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log("Error: {0}\nStack: {1}", e.Message, e.StackTrace);
+            }
+
+            return false;
+        }
+
+        private ProjectItem EnsureFoldersExist(Project project, Component component)
+        {
+            ProjectItem folderItem = null;
+
+            try
+            {
+                var folders = component.TargetFile.Split('\\');
+                var file = folders.Last();
                 foreach (var folder in folders.Where(x => !x.Equals(file)))
                 {
                     if (folderItem == null)
@@ -202,28 +247,43 @@ namespace Visor.VStudio
                         }
                     }
                 }
-
-                if (folderItem != null)
-                {
-                    var item = folderItem.ProjectItems.AddFromFileCopy(Path.Combine(component.SourcePath, component.Code.SourceFile));
-                    Log("Inserting code for Component {0} into Folder Item {1} from Source file {2}", component.Name, folderItem.Name, component.Code.SourceFile);
-                    OpenItem(item, new ViewCodeArgs(string.Empty, string.Empty, 1));
-                }
-                else
-                {
-                    var item = project.ProjectItems.AddFromFileCopy(Path.Combine(component.SourcePath, component.Code.SourceFile));
-                    Log("Inserting code for Component {0} into Project {1} from Source file {2}", component.Name, project.Name, component.Code.SourceFile);
-                    OpenItem(item, new ViewCodeArgs(string.Empty, string.Empty, 1));
-                }
-
-                return true;
             }
             catch (Exception e)
             {
                 Log("Error: {0}\nStack: {1}", e.Message, e.StackTrace);
             }
 
-            return false;
+            return folderItem;
+        }
+
+        private string GetFileName(Project project, Component component)
+        {
+            var fileName = project.FullName;
+            var folders = component.TargetFile.Split('\\');
+            var file = folders.Last();
+            ProjectItem folderItem = null;
+
+            foreach (var folder in folders.Where(x => !x.Equals(file)))
+            {
+                if (folderItem == null)
+                {
+                    folderItem = project.ProjectItems.Cast<ProjectItem>().FirstOrDefault(x => x.Name.Equals(folder));
+                    if (folderItem != null)
+                    {
+                        fileName += "\\" + folderItem.Name;
+                    }
+                }
+                else
+                {
+                    folderItem = folderItem.ProjectItems.Cast<ProjectItem>().FirstOrDefault(x => x.Name.Equals(folder));
+                    if (folderItem != null)
+                    {
+                        fileName += "\\" + folderItem.Name;
+                    }
+                }
+            }
+
+            return fileName += "\\" + file;
         }
     }
 }
