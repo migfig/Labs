@@ -31,8 +31,7 @@
             </ListView.ItemTemplate>
         </ListView>
     </DockPanel>
-</UserControl>
-      ]]>
+</UserControl>]]>
     </Code>
   </Component>
   <Component Id="5835A95E-0551-4EA3-8D2C-36A78FBBE658" Name="Plugable Control Class" Image="" IsBrowsable="false" TargetFile="Controls\PlugableControl.xaml.cs">
@@ -66,8 +65,7 @@ namespace Plugable.Sample
             _parentWindow = window;
         }
     }
-}
-      ]]>
+}]]>
     </Code>
   </Component>
   <Component Id="948E05B5-20CB-4BE6-B83E-913C6792F3DD" Name="Plugable Control ViewModel" Image="" IsBrowsable="false" TargetFile="ViewModels\PlugableControlViewModel.cs">
@@ -99,8 +97,7 @@ namespace Plugable.Sample.ViewModels
             }
         }
     }
-}
-      ]]>
+}]]>
     </Code>
   </Component>
   <Component Id="C6E1E3F1-57EC-4797-8129-B064D4BF8C21" Name="Plugable Control Model" Image="" IsBrowsable="false" TargetFile="Models\PlugableControlModel.cs">
@@ -113,8 +110,7 @@ namespace Plugable.Sample.ViewModels
         public string ClassName { get; set; }
         public string Code { get; set; }
     }
-}
-      ]]>
+}]]>
     </Code>
   </Component>
   <Component Id="BE98E321-48A0-41CC-A5F5-066833352A0F" Name="Plugable Code Items" Image="" IsBrowsable="true" TargetProject="Plugable.Sample">

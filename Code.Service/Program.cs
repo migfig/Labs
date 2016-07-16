@@ -29,8 +29,7 @@ namespace Code.Service
                     s.WhenStopped((ls, host) => ls.Stop(host));                    
                 });
 
-                x.RunAsLocalSystem();
-                x.SetDescription("Code services console");
+                x.RunAsLocalSystem().SetDescription("Code services console");
                 x.SetDisplayName("Code Service");
                 x.SetServiceName("CodeService");
                 x.StartAutomatically();
