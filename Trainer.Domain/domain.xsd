@@ -30,9 +30,18 @@
             <xs:attribute name="Line" type="xs:unsignedByte" use="optional" />
             <xs:attribute name="IsBrowsable" type="xs:boolean" use="optional"/>
             <xs:attribute name="TargetProject" type="xs:string" use="optional" />
+            <xs:attribute name="Action" type="ComponentAction" use="optional" default="None" />
           </xs:complexType>
         </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:simpleType name="ComponentAction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None"/>
+      <xs:enumeration value="Copy"/>
+      <xs:enumeration value="View"/>
+      <xs:enumeration value="Remove"/>
+    </xs:restriction> 
+  </xs:simpleType>
 </xs:schema>

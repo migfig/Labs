@@ -30,6 +30,14 @@ namespace Trainer.Domain
         }
     }
 
+    public enum ComponentAction
+    {
+        None,
+        Copy,
+        View,
+        Remove
+    }
+
     /// <remarks/>
     [System.Xml.Serialization.XmlType(AnonymousType = true)]
     public partial class Component
@@ -53,11 +61,13 @@ namespace Trainer.Domain
         private bool lineFieldSpecified;
         private bool isBrowsableField;
         private string targetProjectField;
+        private ComponentAction actionField;
 
         public Component()
         {
             codeField = new Code();
             dependencyField = new ObservableCollection<Dependency>();
+            actionField = ComponentAction.None;
         }
 
         /// <remarks/>
@@ -211,6 +221,20 @@ namespace Trainer.Domain
             set
             {
                 this.targetProjectField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttribute()]
+        public ComponentAction Action
+        {
+            get
+            {
+                return this.actionField;
+            }
+            set
+            {
+                this.actionField = value;
             }
         }
     }

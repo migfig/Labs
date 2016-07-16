@@ -284,7 +284,7 @@
         <Bold>MEF Controls discovery from Directory Catalog</Bold>
       </Paragraph>
     </RichTextBlock>
-    <Component Id="BE98E321-48A0-41CC-A5F5-066833352A0F" Name="Plugable Code Items" IsBrowsable="true" TargetProject="Plugable.Sample">
+    <Component Id="BE98E321-48A0-41CC-A5F5-066833352A0F" Name="Plugable Code Items" IsBrowsable="true" TargetProject="Plugable.Sample" Action="Copy">
       <Code>
         <![CDATA[using System.ComponentModel.Composition;
 using System.Windows.Controls;
