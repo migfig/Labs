@@ -20,12 +20,6 @@ namespace Code.Service
             return await _codeServices.GetItems();
         }
 
-        //[Route("api/components/additems"), HttpPost]
-        //public async Task<bool> AddItems([FromBody] IEnumerable<Component> items)
-        //{
-        //    return await _codeServices.AddItems(items);
-        //}
-
         [Route("api/components/add"), HttpPost]
         public async Task<bool> AddItem([FromBody] Components item)
         {
@@ -36,6 +30,12 @@ namespace Code.Service
         public async Task<bool> RemoveItem(string id)
         {
             return await _codeServices.RemoveItem(id);
+        }
+
+        [Route("api/components/view"), HttpPost]
+        public async Task<bool> ViewItem([FromBody] Components item)
+        {
+            return await _codeServices.AddItems(item.Component);
         }
     }
 }

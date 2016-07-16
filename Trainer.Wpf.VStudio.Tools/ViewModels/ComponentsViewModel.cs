@@ -62,7 +62,10 @@ namespace Visor.Wpf.TodoCoder.ViewModels
                 foreach (var component in components)
                 {
                     var item = items.FirstOrDefault(x => x.Id.Equals(component.Id));
-                    AddCodeCommand.Execute(item);
+                    if (item.Action.Equals(ComponentAction.Copy))
+                        AddCodeCommand.Execute(item);
+                    else
+                        ViewCodeCommand.Execute(item);
                 }
             }
         }
@@ -114,6 +117,27 @@ namespace Visor.Wpf.TodoCoder.ViewModels
                         if (!string.IsNullOrWhiteSpace(component.Code.ComposedValue))
                         {
                             if (ParentWindow != null) ParentWindow.AddCode(ResolveDependencies(component));
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return !string.IsNullOrWhiteSpace((tag as Component).Code.ComposedValue);
+                    }));
+            }
+        }
+
+        private RelayCommand _viewCodeCommand;
+        public ICommand ViewCodeCommand
+        {
+            get
+            {
+                return _viewCodeCommand ?? (_viewCodeCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        var component = tag as Component;
+                        if (!string.IsNullOrWhiteSpace(component.Code.ComposedValue))
+                        {
+                            if (ParentWindow != null) ParentWindow.ViewCode(ResolveDependencies(component));
                         }
                     },
                     (tag) =>

@@ -26,6 +26,7 @@ namespace Visor.VStudio
         DTE2 Dte { get; set; }
         void Log(string format, params string[] message);
         bool AddCode(Component component);
+        bool ViewCode(Component component);
         string ViewCode(ViewCodeArgs e);
     }
 
@@ -61,6 +62,11 @@ namespace Visor.VStudio
         public bool AddCode(Component component)
         {
             return AddCode(component, null);
+        }
+
+        public bool ViewCode(Component component)
+        {
+            return ViewCode(new ViewCodeArgs(ProgId, component.TargetFile, 1)).Length.Equals(0);
         }
     }
 }

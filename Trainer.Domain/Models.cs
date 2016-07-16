@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.ObjectModel;
 
 namespace Trainer.Domain

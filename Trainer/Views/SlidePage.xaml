@@ -118,7 +118,12 @@
                           Click="{x:Bind ViewModel.CopyCode}"
                           Visibility="{x:Bind ViewModel.CopyCodeVisibility}"/>
             <AppBarSeparator Visibility="{x:Bind ViewModel.CopyCodeVisibility}"/>
-            
+
+            <AppBarButton Icon="View" Label="View Code" 
+                          Click="{x:Bind ViewModel.ViewCode}"
+                          Visibility="{x:Bind ViewModel.ViewCodeVisibility}"/>
+            <AppBarSeparator Visibility="{x:Bind ViewModel.ViewCodeVisibility}"/>
+
             <AppBarButton Icon="Previous" Label="Previous" 
                           Click="{x:Bind ViewModel.GotoPreviousSlide}"
                           IsEnabled="{x:Bind ViewModel.CanGotoPreviousSlide}"/>
