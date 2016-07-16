@@ -84,7 +84,7 @@
                 <ItemsControl ItemsSource="{x:Bind ViewModel.CurrentSlide.Component}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="domain:Component">
-                            <Border Margin="0,0,8,0" Padding="4" CornerRadius="4" Background="#FFE2F7FF">
+                            <Border Margin="0,2,8,2" Padding="4" CornerRadius="4" Background="#FFE2F7FF">
                                 <ContentControl Content="{Binding Mode=OneWay, Converter={StaticResource ResourceKey=domainToModelsConverter}}" />
                             </Border>
                         </DataTemplate>

@@ -21,10 +21,10 @@
         <Bold>Windows Services with TopShelf</Bold>
       </Paragraph>
       <Paragraph>
-        <Bold>Log Viewer Control</Bold>
+        <Bold>Dependency Injection with Windsor Castle</Bold>
       </Paragraph>
       <Paragraph>
-        <Bold>Dependency Injection with Windsor Castle</Bold>
+        <Bold>Log Viewer Control</Bold>
       </Paragraph>
     </RichTextBlock>
   </Slide>
@@ -57,7 +57,6 @@
       <Paragraph TextIndent="4">- ViewModelBase</Paragraph>
       <Paragraph TextIndent="4">- DelegateCommand</Paragraph>
       <Paragraph TextIndent="4">- AwaitableDelegateCommand</Paragraph>
-      <Paragraph TextIndent="4">- ChangedCommandAdapter</Paragraph>
       <Paragraph>
         <Bold>Services</Bold>
       </Paragraph>
@@ -72,17 +71,15 @@
   <Slide Title="Integration with Visual Studio - VSIX Packages" Margin="-200,0,0,0">
     <RichTextBlock FontSize="20" FontWeight="DemiBold">
       <Paragraph>
-        <Bold>Visual Studio Add-ins</Bold>
+        <Bold>Three ways to create Visual Studio Add-ins</Bold>
       </Paragraph>
-      <Paragraph TextIndent="4">- Blank</Paragraph>
+      <Paragraph TextIndent="4">- EnvDTE</Paragraph>
       <Paragraph TextIndent="4">- Hamburger</Paragraph>
       <Paragraph TextIndent="4">- Minimal</Paragraph>
       <Paragraph>
         <Bold>Controls</Bold>
       </Paragraph>
       <Paragraph TextIndent="4">- PageHeader</Paragraph>
-      <Paragraph TextIndent="4">- Hamburger Menu</Paragraph>
-      <Paragraph TextIndent="4">- Modal Dialog</Paragraph>
     </RichTextBlock>
   </Slide>
   <Slide Title="Composition with MEF" Margin="-200,0,0,0">
@@ -91,17 +88,39 @@
         <Bold>Static vs Dynamic Components</Bold>
       </Paragraph>
     </RichTextBlock>
-    <RichTextBlock FontSize="20" FontWeight="DemiBold">
-      <Paragraph>
-        <Bold>What is MEF</Bold>
-      </Paragraph>
-      <Paragraph>
-        <Bold>How does MEF works</Bold>
-      </Paragraph>
-    </RichTextBlock>
-    <Component Id="6d2c6b5b5a2f4cada68fd348d287ff26" Name="Application Styles Dependency" Image="" TargetFile="App.xaml" Line="5"  TargetProject="Trainer.UWP">
+    <Component Id="867E3673-FBF9-4366-AB05-2E7683C564F1" Name="Composition Assemblies and Exports">
       <Code>
-        <![CDATA[xmlns: common = "using:AppUIBasics.Common"]]>
+        <![CDATA[
+        using System.ComponentModel.Composition;
+        
+        [Export(typeof(IChildWindow))]
+        [ExportMetadata("Title", "Todo Coder")]
+        ]]>
+      </Code>      
+    </Component>
+    <Component Id="EFD2753C-8463-4EE1-89B5-DC745BE54D58" Name="Composition Imports">
+      <Code>
+        <![CDATA[
+        [ImportMany]
+        IEnumerable<Lazy<IChildWindow, ITitledWindow>> children;
+        ]]>
+      </Code>      
+    </Component>
+    <Component Id="3A907454-4488-47D8-BA4B-EE828C7AD2DD" Name="Composition Catalogs">
+      <Code>
+        <![CDATA[
+        var assembly = GetType().Assembly;
+        var catalog = new AggregateCatalog();
+        catalog.Catalogs.Add(new AssemblyCatalog(assembly));
+
+        if (!Directory.Exists(folder))
+        {
+          folder = Path.Combine(Path.GetDirectoryName(assembly.Location), "extensions");
+        }
+        catalog.Catalogs.Add(new DirectoryCatalog(folder));
+        var container = new CompositionContainer(catalog);
+        container.ComposeParts(this);
+      ]]>
       </Code>
     </Component>
   </Slide>
@@ -129,17 +148,17 @@
       </Paragraph>
     </RichTextBlock>
   </Slide>
-  <Slide Title="Log Viewer Control" Margin="-200,0,0,0">
-    <RichTextBlock>
-      <Paragraph>
-        <Bold>Composition Sample</Bold>
-      </Paragraph>
-    </RichTextBlock>
-  </Slide>
   <Slide Title="Dependency Injection with Windsor Castle" Margin="-200,0,0,0">
     <RichTextBlock>
       <Paragraph>
         <Bold>Container</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Log Viewer Control" Margin="-200,0,0,0">
+    <RichTextBlock>
+      <Paragraph>
+        <Bold>Composition Sample</Bold>
       </Paragraph>
     </RichTextBlock>
   </Slide>
