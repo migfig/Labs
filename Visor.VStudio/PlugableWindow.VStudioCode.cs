@@ -136,7 +136,7 @@ namespace Visor.VStudio
                     var fileName = GetFileName(project, component);
                     using(var stream = File.CreateText(fileName))
                     {
-                        stream.Write(component.Code.Value);
+                        stream.Write(component.Code.Value.Trim());
                     }
 
                     component.SourcePath = fileName;
@@ -190,7 +190,7 @@ namespace Visor.VStudio
                 if (folderItem != null)
                 {
                     if(isLinked)
-                        item = folderItem.ProjectItems.AddFromFile(Path.Combine(component.SourcePath, component.Code.SourceFile));
+                        item = folderItem.ProjectItems.AddFromFile(component.SourcePath);
                     else
                         item = folderItem.ProjectItems.AddFromFileCopy(Path.Combine(component.SourcePath, component.Code.SourceFile));
 
@@ -200,7 +200,7 @@ namespace Visor.VStudio
                 else
                 {
                     if(isLinked)
-                        item = project.ProjectItems.AddFromFile(Path.Combine(component.SourcePath, component.Code.SourceFile));
+                        item = project.ProjectItems.AddFromFile(component.SourcePath);
                     else
                         item = project.ProjectItems.AddFromFileCopy(Path.Combine(component.SourcePath, component.Code.SourceFile));
 
@@ -258,7 +258,7 @@ namespace Visor.VStudio
 
         private string GetFileName(Project project, Component component)
         {
-            var fileName = project.FullName;
+            var fileName = Path.GetDirectoryName(project.FullName);
             var folders = component.TargetFile.Split('\\');
             var file = folders.Last();
             ProjectItem folderItem = null;

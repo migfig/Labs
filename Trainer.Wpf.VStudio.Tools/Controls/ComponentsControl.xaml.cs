@@ -18,7 +18,7 @@ namespace Trainer.Wpf.VStudio.Tools.Controls
 
         private void Image_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var component = (sender as Image).Tag as Component;
+            var component = (sender as System.Windows.Controls.Image).Tag as Component;
             if (ComponentsViewModel.ViewModel.AddCodeCommand.CanExecute(component))
             {
                 ComponentsViewModel.ViewModel.AddCodeCommand.Execute(component);

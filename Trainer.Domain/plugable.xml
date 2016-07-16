@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Components>
+  <Component Id="B39954A2-0C32-4439-B5F2-B4FD8E7B8D8C" Name="Plugable Control Xaml" Image="" IsBrowsable="false" TargetFile="Controls\PlugableControl.xaml">
+    <Code>
+      <![CDATA[<UserControl x:Class="Plugable.Sample.PlugableControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Plugable.Sample"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel LastChildFill="True">
+        <ListView ItemsSource="{Binding Items}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Content="Done" IsChecked="{Binding IsDone}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ClassName}" FontWeight="DemiBold" Margin="4,0,4,0"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Code}" FontStyle="Italic"/>
+                        <Button Grid.Column="3" Content="Add" Margin="4,0,0,0" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </DockPanel>
+</UserControl>
+      ]]>
+    </Code>
+  </Component>
+  <Component Id="5835A95E-0551-4EA3-8D2C-36A78FBBE658" Name="Plugable Control Class" Image="" IsBrowsable="false" TargetFile="Controls\PlugableControl.xaml.cs">
+    <Code>
+      <![CDATA[using System.ComponentModel.Composition;
+using System.Windows.Controls;
+using Visor.VStudio;
+using Plugable.Sample.ViewModels;
+
+namespace Plugable.Sample
+{
+    /// <summary>
+    /// Interaction logic for PlugableControl.xaml
+    /// </summary>
+    [Export(typeof(IChildWindow))]
+    [ExportMetadata("Title", "Plugable Control")]
+    public partial class PlugableControl : UserControl, IChildWindow, ITitledWindow
+    {
+        public PlugableControl()
+        {
+            DataContext = PlugableControlViewModel.ViewModel;
+            InitializeComponent();
+        }
+
+        private IPlugableWindow _parentWindow;
+        public string Title { get { return "Plugable Control"; } }
+        UserControl IChildWindow.Content { get { return this; } }
+
+        public void SetParentWindow(IPlugableWindow window)
+        {
+            _parentWindow = window;
+        }
+    }
+}
+      ]]>
+    </Code>
+  </Component>
+  <Component Id="948E05B5-20CB-4BE6-B83E-913C6792F3DD" Name="Plugable Control ViewModel" Image="" IsBrowsable="false" TargetFile="ViewModels\PlugableControlViewModel.cs">
+    <Code>
+      <![CDATA[using System.Collections.Generic;
+using Plugable.Sample.Models;
+
+namespace Plugable.Sample.ViewModels
+{
+    public class PlugableControlViewModel
+    {
+        private static PlugableControlViewModel _viewModel = new PlugableControlViewModel();
+        public static PlugableControlViewModel ViewModel { get { return _viewModel; } }
+
+        public IEnumerable<PlugableControlModel> Items
+        {
+            get {
+                return new List<PlugableControlModel>
+                {
+                    new PlugableControlModel
+                    {
+                        IsDone = false,
+                        ClassName = "Sample.Code\\Models\\BaseModel.cs",
+                        Code = @"public class BaseModel {
+                                    public bool IsBusy {get;set;}
+                                 }"
+                    }
+                };
+            }
+        }
+    }
+}
+      ]]>
+    </Code>
+  </Component>
+  <Component Id="C6E1E3F1-57EC-4797-8129-B064D4BF8C21" Name="Plugable Control Model" Image="" IsBrowsable="false" TargetFile="Models\PlugableControlModel.cs">
+    <Code>
+      <![CDATA[namespace Plugable.Sample.Models
+{
+    public class PlugableControlModel
+    {
+        public bool IsDone { get; set; }
+        public string ClassName { get; set; }
+        public string Code { get; set; }
+    }
+}
+      ]]>
+    </Code>
+  </Component>
+  <Component Id="BE98E321-48A0-41CC-A5F5-066833352A0F" Name="Plugable Code Items" Image="" IsBrowsable="true" TargetProject="Plugable.Sample">
+    <Dependency Id="B39954A2-0C32-4439-B5F2-B4FD8E7B8D8C"/>
+    <Dependency Id="5835A95E-0551-4EA3-8D2C-36A78FBBE658"/>
+    <Dependency Id="948E05B5-20CB-4BE6-B83E-913C6792F3DD"/>
+    <Dependency Id="C6E1E3F1-57EC-4797-8129-B064D4BF8C21"/>
+  </Component> 
+</Components>
