@@ -29,6 +29,12 @@
       <Paragraph>
         <Bold>Plugable Control Sample</Bold>
       </Paragraph>
+      <Paragraph>
+        <Bold>References</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Q &amp; A</Bold>
+      </Paragraph>
     </RichTextBlock>
   </Slide>
   <Slide Title="Universal Windows Platform Apps with T10" Margin="-250,0,0,0">
@@ -311,5 +317,52 @@ namespace Plugable.Sample {
 }]]>
       </Code>
     </Component>
+  </Slide>
+  <Slide Title="References" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>UWP Apps with T10</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://aka.ms/Template10">http://aka.ms/Template10</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Windsor Castle DI</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://www.castleproject.org">http://www.castleproject.org</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>TopShelf Services</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://topshelf-project.com">http://topshelf-project.com</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>OWIN Self-Hosting</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="https://www.nuget.org/packages/Microsoft.Owin.SelfHost">https://www.nuget.org/packages/Microsoft.Owin.SelfHost</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Visual Studio Extensibility</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="https://www.safaribooksonline.com">Microsoft Visual Studio 2015 Unleashed - Safari Books Online</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>MEF Composition</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://aka.ms/Template10">Fundamentals of the Managed Extensibility Framework - Safari Books Online</Hyperlink>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Q &amp; A" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="40" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Questions &amp; Answers</Bold>
+      </Paragraph>
+    </RichTextBlock>
   </Slide>
 </Presentation>

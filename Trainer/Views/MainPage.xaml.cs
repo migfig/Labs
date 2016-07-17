@@ -1,9 +1,6 @@
-using System;
 using Trainer.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
-using System.Collections.ObjectModel;
 
 namespace Trainer.Views
 {
@@ -13,6 +10,11 @@ namespace Trainer.Views
         {
             InitializeComponent();
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as MainPageViewModel).GotoSlides();
         }
     }
 }

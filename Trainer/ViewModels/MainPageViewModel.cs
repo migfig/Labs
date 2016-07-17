@@ -1,13 +1,11 @@
 using Template10.Mvvm;
 using System.Collections.Generic;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using Trainer.Domain;
-using Log.Common.Services;
 
 namespace Trainer.ViewModels
 {
@@ -69,6 +67,9 @@ namespace Trainer.ViewModels
 
         public void GotoAbout() =>
             NavigationService.Navigate(typeof(Views.SettingsPage), 2);
+
+        public void GotoSlides() =>
+            NavigationService.Navigate(typeof(Views.SlidePage), Presentations.First().Slide.First().Title);
     }
 }
 
