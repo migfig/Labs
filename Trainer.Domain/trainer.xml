@@ -90,7 +90,7 @@
         <Bold>Windsor Castle Container</Bold>
       </Paragraph>
     </RichTextBlock>
-    <Component Id="94928827-5412-4BC8-A279-EB88E21AC64F" Name="Windsor Castle">
+    <Component Id="94928827-5412-4BC8-A279-EB88E21AC64F" Name="Windsor Castle" IsBrowsable="true" Action="View" TargetFile="IoC\ServiceInstaller.cs" TargetProject="Code.Service">
       <Code>
         <![CDATA[ using Castle.Windsor;
   using Castle.Windsor.Installer;
@@ -127,7 +127,7 @@
       </Paragraph>
       <Paragraph>Easy to debug and install your Windows Services</Paragraph>
     </RichTextBlock>
-    <Component Id="2EE6AC89-B4C7-462D-ADA2-D5507949F19E" Name="Topshell">
+    <Component Id="2EE6AC89-B4C7-462D-ADA2-D5507949F19E" Name="Topshell" IsBrowsable="true" Action="View" TargetFile="Program.cs" TargetProject="Code.Service">
       <Code>
         <![CDATA[ using Topshelf;
         
@@ -162,7 +162,7 @@
         <Bold>Self-Hosting with OWIN</Bold>
       </Paragraph>
     </RichTextBlock>
-    <Component Id="4BBC728E-34B2-455C-BCBF-CED13DC222DD" Name="OWIN-SelfHost">
+    <Component Id="4BBC728E-34B2-455C-BCBF-CED13DC222DD" Name="OWIN-SelfHost" IsBrowsable="true" Action="View" TargetFile="WebApiApp.cs" TargetProject="Code.Service">
     <Code>
       <![CDATA[ using Microsoft.Owin.Hosting;
   using Owin;
@@ -228,7 +228,7 @@
         IEnumerable<Lazy<IChildWindow, ITitledWindow>> children;]]>
       </Code>      
     </Component>
-    <Component Id="3A907454-4488-47D8-BA4B-EE828C7AD2DD" Name="Composition Catalogs">
+    <Component Id="3A907454-4488-47D8-BA4B-EE828C7AD2DD" Name="Composition Catalogs" IsBrowsable="true" Action="View" TargetFile="HostControl.xaml.cs" TargetProject="Trainer.Wpf.VStudio.Tools">
       <Code>
         <![CDATA[        var assembly = GetType().Assembly;
         var catalog = new AggregateCatalog();
@@ -253,7 +253,7 @@
       <Paragraph TextIndent="4">- AppAccelerator</Paragraph>
       <Paragraph TextIndent="4"></Paragraph>
     </RichTextBlock>
-    <Component Id="A32BD709-B3EA-428C-AC55-5385DA41AC51" Name="MEF HostControl">
+    <Component Id="A32BD709-B3EA-428C-AC55-5385DA41AC51" Name="MEF HostControl" IsBrowsable="true" Action="View" TargetFile="PlugableWindow.cs" TargetProject="Visor.VStudio">
       <Code>
         <![CDATA[ public interface IChildWindow
   {

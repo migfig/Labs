@@ -66,7 +66,7 @@ namespace Visor.VStudio
 
         public bool ViewCode(Component component)
         {
-            return ViewCode(new ViewCodeArgs(ProgId, component.TargetFile, 1)).Length.Equals(0);
+            return ViewCode(new ViewCodeArgs(ProgId, component.TargetFile, 1, component.TargetProject)).Length.Equals(0);
         }
     }
 }

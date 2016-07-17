@@ -31,11 +31,5 @@ namespace Code.Service
         {
             return await _codeServices.RemoveItem(id);
         }
-
-        [Route("api/components/view"), HttpPost]
-        public async Task<bool> ViewItem([FromBody] Components item)
-        {
-            return await _codeServices.AddItems(item.Component);
-        }
     }
 }

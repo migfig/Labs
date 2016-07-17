@@ -9,8 +9,19 @@ namespace Visor.VStudio
         public string ClassName { get; private set; }
         public int LineNumber { get; private set; }
         public string ProgId { get; private set; }
+        public string ProjectName { get; private set; }
 
         public ViewCodeArgs(string progId, string fullName, int lineNumber)
+            :this(progId, fullName, string.Empty, lineNumber)
+        {
+        }
+
+        public ViewCodeArgs(string progId, string fullName, int lineNumber, string projectName)
+            :this(progId, fullName, projectName, lineNumber)
+        {
+        }
+
+        protected ViewCodeArgs(string progId, string fullName, string projectName, int lineNumber)
         {
             ProgId = progId;
             if (!string.IsNullOrWhiteSpace(fullName))
@@ -20,6 +31,7 @@ namespace Visor.VStudio
                 ClassName = parts.Last() + ".cs";
             }
             LineNumber = lineNumber;
+            ProjectName = projectName;
         }
     }
 }

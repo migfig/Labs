@@ -22,11 +22,6 @@ namespace Code.Service
             );
 
             config.Routes.MapHttpRoute(
-                name: "ViewApi",
-                routeTemplate: "api/{controller}/view"
-            );
-
-            config.Routes.MapHttpRoute(
                 name: "RemoveApi",
                 routeTemplate: "api/{controller}/remove/{id}",
                 defaults: new { id = string.Empty }

@@ -16,7 +16,6 @@ namespace Log.Common.Services
         Task<bool> AddItems(IEnumerable<T> items);
         Task<bool> AddItem(T item);
         Task<bool> RemoveItem(T item, string propertyName);
-        Task<bool> ViewItem(T item);
     }
 
     public interface IApiService: IDisposable
@@ -129,27 +128,6 @@ namespace Log.Common.Services
             catch (Exception) {; }
 
             return new List<T>();
-        }
-
-        public async Task<bool> ViewItem(T item)
-        {
-            var className = item.GetType().FullName.Split('.').Last().ToLower();
-            string value = string.Empty;
-            if (_contentType.EndsWith("json"))
-            {
-                value = JsonConvert.SerializeObject(item);
-            }
-            else
-            {
-                value = XmlHelper2<T>.Save(item);
-            }
-            using (var content = new ByteArrayContent(Encoding.UTF8.GetBytes(value)))
-            {
-                content.Headers.Add("Content-Type", _contentType);
-                content.Headers.Add("Content-Length", value.Length.ToString());
-                var response = await _client.PostAsync(_baseUrl + className + "/view", content);
-                return response.IsSuccessStatusCode;
-            }
         }
 
         public void Dispose()
