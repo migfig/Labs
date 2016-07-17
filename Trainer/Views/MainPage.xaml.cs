@@ -1,3 +1,4 @@
+using Trainer.Domain;
 using Trainer.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -14,7 +15,7 @@ namespace Trainer.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            (DataContext as MainPageViewModel).GotoSlides();
+            (DataContext as MainPageViewModel).GotoSlides((sender as Button).Tag as Presentation);
         }
     }
 }

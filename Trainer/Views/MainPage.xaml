@@ -74,7 +74,7 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="domain:Presentation">
-                    <Button Background="Transparent" BorderThickness="0" Click="Button_Click">
+                    <Button Background="Transparent" BorderThickness="0" Tag="{Binding}" Click="Button_Click">
                         <Button.Content>
                             <ctrls:PresentationControl Width="300" Height="200" DataContext="{x:Bind}" Margin="2"/>
                         </Button.Content>
