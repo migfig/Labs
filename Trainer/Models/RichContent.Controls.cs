@@ -5,6 +5,8 @@ using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Media;
 using Xaml = Windows.UI.Xaml.Documents;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Trainer.Models
 {
@@ -160,6 +162,47 @@ namespace Trainer.Models
             return control;
         }
 
+        private static List<Xaml.Run> GetInlines(string line)
+        {
+            var regExps = new string[] {
+                @"(?<keyword>var|using|public|private|protected|class|new|void|bool|string|int|static)",
+                @"(?<comment>//[\w\s]*)",
+                @"(?<string>""[\w\s]*"")",
+                @"(?<number>=\s[0-9.]*)"
+            };
+            var dict = new Dictionary<string, string>
+            {
+                {"keyword", "#FF569CD6"},
+                {"comment", "#FF82C65B"},
+                {"string" , "#FFD69D85"},
+                {"number" , "#FF89FFBE"},
+            };
+            var words = line.Split(' ');
+            var list = new List<Xaml.Run>();
+            foreach(var word in words)
+            {
+                var color = "#FF1E1E1E";
+                foreach (var exp in regExps)
+                {
+                    var regEx = new Regex(exp);
+                    var match = regEx.Match(word);
+                    if(match != null && match.Success)
+                    {
+                        var key = exp.Substring(3, exp.IndexOf('>')-3);
+                        if (dict.ContainsKey(key)) color = dict[key];
+                        break;
+                    }
+                }
+
+                list.Add(new Xaml.Run
+                {
+                    Text = word + " ",
+                    Foreground = new SolidColorBrush(Helpers.GetColor(color))
+                });
+            }
+            return list;
+        }
+
         public static Windows.UI.Xaml.Controls.RichTextBlock Control(this Domain.Component item)
         {
             var control = new Windows.UI.Xaml.Controls.RichTextBlock
@@ -169,13 +212,18 @@ namespace Trainer.Models
                 MinWidth = 400
             };
 
-            control.Blocks.Add(new Domain.Paragraph
+            foreach(var line in item.Code.Value.Split(Environment.NewLine.ToArray()))
             {
-                FontStyle = "Italic",
-                Padding = "4",
-                TextIndent = 4,
-                Text = item.Code.Value.Split(Environment.NewLine.ToArray())
-            }.Control());
+                var par = new Xaml.Paragraph
+                {
+                    FontStyle = FontStyle.Italic,
+                    TextIndent = 4
+                };
+                foreach (var inline in GetInlines(line)) {
+                    par.Inlines.Add(inline);
+                }
+                control.Blocks.Add(par);
+            }
 
             return control;
         }
