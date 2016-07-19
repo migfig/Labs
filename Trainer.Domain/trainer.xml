@@ -199,15 +199,9 @@
   <Slide Title="Integration with Visual Studio - VSIX Packages" Margin="-200,0,0,0">
     <RichTextBlock FontSize="20" FontWeight="DemiBold">
       <Paragraph>
-        <Bold>Ways to create Visual Studio Add-ins</Bold>
+        <Bold>EnvDTE Programming Model and VSIX Packages</Bold>
       </Paragraph>
-      <Paragraph TextIndent="4">- EnvDTE</Paragraph>
       <Paragraph TextIndent="4">- VSIX Packages</Paragraph>
-      <Paragraph TextIndent="4">- </Paragraph>
-      <Paragraph></Paragraph>
-      <Paragraph>
-        <Bold>EnvDTE Programming Model</Bold>
-      </Paragraph>
       <Paragraph TextIndent="4">- EnvDTE</Paragraph>
       <Paragraph TextIndent="4">- EnvDTE80</Paragraph>
       <Paragraph TextIndent="4">- EnvDTE90</Paragraph>

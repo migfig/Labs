@@ -92,6 +92,12 @@
                                 RelativePanel.AlignBottomWith="BusyTextTextBox"
                                 RelativePanel.RightOf="BusyTextTextBox" />
 
+                        <TextBox x:Name="CodeServicesUrlTextBox" Width="200"
+                                 Margin="0,12,0,0" HorizontalAlignment="Left"
+                                 Header="Code Services Url" RelativePanel.AlignLeftWithPanel="True"
+                                 RelativePanel.Below="BusyTextTextBox"
+                                 Text="{Binding CodeServicesUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
                     </RelativePanel>
 
                 </ScrollViewer>

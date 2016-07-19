@@ -165,9 +165,9 @@ namespace Trainer.Models
         private static List<Xaml.Run> GetInlines(string line)
         {
             var regExps = new string[] {
-                @"(?<keyword>var|using|public|private|protected|class|new|void|bool|string|int|static)",
+                @"(?<keyword>var|using|public|private|protected|partial|class|new|void|bool|string|int|static|typeof|get|set|return|this|params)",
                 @"(?<comment>//[\w\s]*)",
-                @"(?<string>""[\w\s]*"")",
+                @"(?<string>""[\w\s/:,]*"")",
                 @"(?<number>=\s[0-9.]*)"
             };
             var dict = new Dictionary<string, string>
@@ -182,15 +182,18 @@ namespace Trainer.Models
             foreach(var word in words)
             {
                 var color = "#FF1E1E1E";
-                foreach (var exp in regExps)
+                if (word.Length > 0)
                 {
-                    var regEx = new Regex(exp);
-                    var match = regEx.Match(word);
-                    if(match != null && match.Success)
+                    foreach (var exp in regExps)
                     {
-                        var key = exp.Substring(3, exp.IndexOf('>')-3);
-                        if (dict.ContainsKey(key)) color = dict[key];
-                        break;
+                        var regEx = new Regex(exp);
+                        var match = regEx.Match(word);
+                        if (match != null && match.Success)
+                        {
+                            var key = exp.Substring(3, exp.IndexOf('>') - 3);
+                            if (dict.ContainsKey(key)) color = dict[key];
+                            break;
+                        }
                     }
                 }
 

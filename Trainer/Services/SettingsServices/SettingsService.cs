@@ -54,6 +54,15 @@ namespace Trainer.Services.SettingsServices
                 BootStrapper.Current.CacheMaxDuration = value;
             }
         }
+
+        public string CodeServicesUrl
+        {
+            get { return _helper.Read<string>(nameof(CodeServicesUrl), "http://localhost:3033/api/"); }
+            set
+            {
+                _helper.Write(nameof(CodeServicesUrl), value);
+            }
+        }
     }
 }
 

@@ -41,6 +41,16 @@ namespace Trainer.ViewModels
             set { _settings.AppTheme = value ? ApplicationTheme.Light : ApplicationTheme.Dark; base.RaisePropertyChanged(); }
         }
 
+        public string CodeServicesUrl
+        {
+            get { return _settings.CodeServicesUrl; }
+            set
+            {
+                _settings.CodeServicesUrl = value;
+                base.RaisePropertyChanged();
+            }
+        }
+
         private string _BusyText = "Please wait...";
         public string BusyText
         {
