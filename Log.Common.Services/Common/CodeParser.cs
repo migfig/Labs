@@ -79,10 +79,7 @@ namespace Log.Common.Services.Common
                 }
             }
 
-            if(word.Length > 0)
-            {
-                tokens.Add(word);
-            }
+            if(word.Length > 0) tokens.Add(word);
 
             return tokens.ToArray();
         }
@@ -99,11 +96,7 @@ namespace Log.Common.Services.Common
 
         internal static bool IsString(this char c)
         {
-            return c == '"';
-        }
-        internal static bool IsSpace(this char c)
-        {
-            return c == '"';
+            return c == '"' || c == '\'';
         }
     }
 
