@@ -7,6 +7,7 @@ using Windows.UI.Xaml.Media;
 using Xaml = Windows.UI.Xaml.Documents;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Log.Common.Services.Common;
 
 namespace Trainer.Models
 {
@@ -164,43 +165,25 @@ namespace Trainer.Models
 
         private static List<Xaml.Run> GetInlines(string line)
         {
-            var regExps = new string[] {
-                @"(?<keyword>var|using|public|private|protected|partial|class|new|void|bool|string|int|static|typeof|get|set|return|this|params)",
-                @"(?<comment>//[\w\s]*)",
-                @"(?<string>""[\w\s/:,]*"")",
-                @"(?<number>=\s[0-9.]*)"
-            };
-            var dict = new Dictionary<string, string>
+            var tokens = CodeParser.Parse(line);
+            var dict = new Dictionary<TokenType, string>
             {
-                {"keyword", "#FF569CD6"},
-                {"comment", "#FF82C65B"},
-                {"string" , "#FFD69D85"},
-                {"number" , "#FF89FFBE"},
+                {TokenType.Keyword, "#FF569CD6"},
+                {TokenType.Comment, "#FF82C65B"},
+                {TokenType.String , "#FFD69D85"},
+                {TokenType.Number , "#FF00C68B"},
+                {TokenType.Operator,"#FF000000"},
+                {TokenType.Symbol , "#FF1E1E1E"},
+                {TokenType.Regular, "#FF1E1E1E"}
             };
-            var words = line.Split(' ');
             var list = new List<Xaml.Run>();
-            foreach(var word in words)
+            foreach(var token in tokens)
             {
-                var color = "#FF1E1E1E";
-                if (word.Length > 0)
-                {
-                    foreach (var exp in regExps)
-                    {
-                        var regEx = new Regex(exp);
-                        var match = regEx.Match(word);
-                        if (match != null && match.Success)
-                        {
-                            var key = exp.Substring(3, exp.IndexOf('>') - 3);
-                            if (dict.ContainsKey(key)) color = dict[key];
-                            break;
-                        }
-                    }
-                }
 
                 list.Add(new Xaml.Run
                 {
-                    Text = word + " ",
-                    Foreground = new SolidColorBrush(Helpers.GetColor(color))
+                    Text = token.Value,
+                    Foreground = new SolidColorBrush(Helpers.GetColor(dict[token.Type]))
                 });
             }
             return list;
