@@ -148,7 +148,7 @@ namespace Plugable.Sample.ViewModels
   }]]>
     </Code>
   </Component>
-  <Component Id="2EE6AC89-B4C7-462D-ADA2-D5507949F19E" Name="Topshell" Image="" IsBrowsable="true" Action="View" TargetFile="Program.cs" TargetProject="Code.Service">
+  <Component Id="2EE6AC89-B4C7-462D-ADA2-D5507949F19E" Name="Topshell" Image="" IsBrowsable="true" Action="View" TargetFile="Programer.cs" TargetProject="Code.Service">
     <Code>
       <![CDATA[ using Topshelf;
         

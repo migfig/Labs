@@ -6,7 +6,7 @@ using Trainer.Domain;
 
 namespace Code.Service
 {
-    static class Program
+    static class Programer
     {
         /// <summary>
         /// The main entry point for the application.
