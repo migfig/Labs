@@ -61,8 +61,8 @@ namespace Visor.Wpf.TodoCoder.ViewModels
             {
                 foreach (var component in components)
                 {
-                    var item = items.FirstOrDefault(x => x.Id.Equals(component.Id));
-                    if (component.Action.Equals(ComponentAction.Copy))
+                    var item = items.FirstOrDefault(x => x.Id.Equals(component.Id)) ?? component;
+                    if (item.Action.Equals(ComponentAction.Copy))
                         AddCodeCommand.Execute(item);
                     else
                         ViewCodeCommand.Execute(item);
