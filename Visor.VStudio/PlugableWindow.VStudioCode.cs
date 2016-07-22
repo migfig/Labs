@@ -76,6 +76,8 @@ namespace Visor.VStudio
 
         private bool OpenItem(ProjectItem item, ViewCodeArgs e)
         {
+            Dte.Application.MainWindow.Activate();
+
             Log("Code item found [{0}] in project [{1}]", item.Name, item.ContainingProject.Name);
             var window = item.Open();
             if (null != window)
