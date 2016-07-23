@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="SourcePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Code\RelatedRecords.Tests\Trainer.Domain</Value>
+      <Value Profile="(Default)">C:\Code\Data</Value>
     </Setting>
     <Setting Name="FileMask" Type="System.String" Scope="User">
       <Value Profile="(Default)">*.xml</Value>

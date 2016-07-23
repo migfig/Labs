@@ -25,7 +25,7 @@ namespace Trainer.Wpf.VStudio.Tools.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Code\\RelatedRecords.Tests\\Trainer.Domain")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Code\\Data")]
         public string SourcePath {
             get {
                 return ((string)(this["SourcePath"]));
