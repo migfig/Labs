@@ -11,6 +11,8 @@ using Visor.VStudio;
 using System.Threading;
 using Log.Common.Services;
 using System.Collections.Generic;
+using Trainer.Wpf.VStudio.Tools.Views;
+using Trainer.Wpf.VStudio.Tools.ViewModels;
 
 namespace Visor.Wpf.TodoCoder.ViewModels
 {
@@ -116,6 +118,7 @@ namespace Visor.Wpf.TodoCoder.ViewModels
                         var component = tag as Component;
                         if (!string.IsNullOrWhiteSpace(component.Code.ComposedValue))
                         {
+                            component = ResolveParameters(component);
                             if (ParentWindow != null) ParentWindow.AddCode(ResolveDependencies(component));
                         }
                     },
@@ -124,6 +127,47 @@ namespace Visor.Wpf.TodoCoder.ViewModels
                         return !string.IsNullOrWhiteSpace((tag as Component).Code.ComposedValue);
                     }));
             }
+        }
+
+        private Component ResolveParameters(Component component)
+        {
+            if (!string.IsNullOrWhiteSpace(component.Code.ComposedValue))
+            {
+                var replacementVars = component.ReplacementVars;
+                if (replacementVars.Any())
+                {
+                    var className = replacementVars.FirstOrDefault(x => x.ToLower().Contains("class"));
+                    var nameSpace = replacementVars.FirstOrDefault(x => x.ToLower().Contains("namespace"));
+                    if (!string.IsNullOrEmpty(className) || !string.IsNullOrEmpty(nameSpace))
+                    {
+                        var viewModel = new ComponentVarsViewModel("Class", ParentWindow.Projects.ToList());
+                        var cv = new ComponentVars(viewModel);
+                        var result = cv.ShowDialog();
+                        if (result.HasValue && result.Value.Equals(true))
+                        {
+                            var fileParts = component.TargetFile.Split('\\');
+                            var suffixFolder = fileParts.Length > 1 ? "." + fileParts[fileParts.Length - 2] : string.Empty;
+                            if (!string.IsNullOrEmpty(nameSpace))
+                            {
+                                component.Code.Value = component.Code.Value.Replace(nameSpace, viewModel.SelectedProject + suffixFolder);
+                            }
+
+                            if(!string.IsNullOrEmpty(viewModel.SelectedProject))
+                            {
+                                component.TargetProject = viewModel.SelectedProject;
+                            }
+
+                            if (!string.IsNullOrEmpty(className))
+                            {
+                                component.Code.Value = component.Code.Value.Replace(className, viewModel.ClassName);
+                                component.TargetFile = component.TargetFile.Replace(className, viewModel.ClassName);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return component;
         }
 
         private RelayCommand _viewCodeCommand;

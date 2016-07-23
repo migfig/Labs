@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace Trainer.Domain
 {
@@ -234,6 +236,25 @@ namespace Trainer.Domain
             set
             {
                 this.actionField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public IEnumerable<string> ReplacementVars
+        {
+            get
+            {
+                var list = new List<string>();
+                if(codeField != null && !string.IsNullOrWhiteSpace(codeField.Value))
+                {
+                    var matches = new Regex(@"(?<var>\$[a-zA-Z0-9]*\$)").Matches(codeField.Value);
+                    foreach(Match m in matches)
+                    {
+                        list.Add(m.Groups["var"].Value);
+                    }
+                }
+
+                return list;
             }
         }
     }

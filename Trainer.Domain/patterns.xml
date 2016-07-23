@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Components>
+  <Component Id="98D899D2-C8A4-4BB1-985B-B62BABAB1D0F" Name="Singleton Class" Action="Copy" IsBrowsable="true" TargetFile="$classname$.cs">
+    <Code>
+      <![CDATA[namespace $rootnamespace$
+{
+  public class $classname$ 
+  {
+    private static $classname$ _instance = new $classname$();
+    public static $classname$ Instance { get { return _instance; } }
+          
+    public $classname$() 
+    {
+    }
+  }
+}]]>
+    </Code>
+  </Component>
+</Components>

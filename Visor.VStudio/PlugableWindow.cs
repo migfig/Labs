@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using EnvDTE80;
 using EnvDTE;
 using Trainer.Domain;
+using System.Linq;
 
 namespace Visor.VStudio
 {
@@ -28,6 +29,7 @@ namespace Visor.VStudio
         bool AddCode(Component component);
         bool ViewCode(Component component);
         string ViewCode(ViewCodeArgs e);
+        IEnumerable<string> Projects { get; }
     }
 
     [Export(typeof(IPlugableWindow))]
@@ -40,6 +42,21 @@ namespace Visor.VStudio
 
         public DTE2 Dte { get; set; }
         public string ProgId { get { return Properties.Settings.Default.VisualStudioProgId; } }
+
+        public IEnumerable<string> Projects
+        {
+            get
+            {
+                if(Dte != null)
+                {
+                    return Dte.Solution.Projects.Cast<Project>()
+                        .Where(x => x != null)
+                        .Select(x => x.Name);
+                }
+
+                return new List<string>();
+            }
+        }
 
         public void Attach()
         {
