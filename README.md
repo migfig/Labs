@@ -4,6 +4,8 @@
 This is a series of lab experiment projects created for helping a developer in certain situations. They have been created just for **Fun and Joy** as of being a Developer and obviously to be helpful.
 
 The projects created up to this moment are:
+> Trainer Assistant - Universal Windows Platform (**UWP**)
+> 
 > Fluent Testing
 > 
 > Interviewer Universal App
@@ -18,18 +20,22 @@ The projects created up to this moment are:
 > 
 > Related Records (Gold Parser) Project
 > 
+> UWP Interviewer Project
+> 
 > WPF Interviewer Project
+> 
+> Some more projects...
 
 
 **Disclaimer**:
-This projects are WIP (Work in Progress), and because of this they may not behave completely as (crashes are) expected, they will be soon.
+Some of this projects are WIP (Work in Progress), and because of this they may not behave completely as (crashes are) expected, they might be done soon.
 Some code parts also may need some re-factoring in classes and its methods, please be aware this code has been developed in a rush manner.
 
-They have been created from scratch using **MS Visual Studio**  on a **Microsoft Surface 3** with its corresponding **Type Cover**.
+They have been created from scratch using **MS Visual Studio**  on a **Microsoft Surface 3 & 4** with its corresponding **Type Cover**.
 Also using **ReSharper** add-in.
 Icons from **SyncFusion** Metro studio.
 
-Other tools, nuget packages used are:
+Other tools or nuget packages being used are:
 > Newtonsoft.Json
 > 
 > Serilog
@@ -43,8 +49,23 @@ Other tools, nuget packages used are:
 > StringTemplate
 > 
 > ExportDll
+> 
+> TopShelf
+> 
+> Dependency Injection (DI) with Windsor Castle
+> 
+> OWIN Self Hosting
+> 
+> Template 10 (Universal Windows Platform)
 
+## Trainer Assistant Universal Windows Platform Project ##
+The **Trainer Assistant** project is a **Template 10**  based Universal Windows Platform (**UWP**) application, which integrates with **Web API** back-end services running on top of **TopShelf**, using DI with **Windsor Castle**; also integrated with **Visual Studio** thru MEF Extensibility and VSIX packages. This application intends to be an assistant for a Programming trainer, where he/she can render **xml** based presentations to be used on any specific topic and switching back and forth with Visual Studio via appBar Commands to view or insert code components. 
+![relatedrecords](trainer-main-slide.png)
 
+This application can also display slides containing code components, being rendered thru **RichTextBlock** controls with some sort for sintax coloring for C# via its own simple C# parser class.
+![relatedrecords](trainer-component.png)
+
+**What's missing**: Some sort of designer to quickly create/edit presentation slides or code components. Might also render MS Office PowerPoint presentations instead of xml ones. Add Web API authentication support. 
 
 ## Fluent Testing Project ##
 
