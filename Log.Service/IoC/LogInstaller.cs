@@ -16,7 +16,7 @@ namespace Log.Service
                     .DependsOn(Dependency.OnAppSettingsValue("networkPath"),
                         Dependency.OnAppSettingsValue("path"),
                         Dependency.OnAppSettingsValue("name"),
-                        Dependency.OnValue<IEntryProvider>(new ArmorEntryProvider()))
+                        Dependency.OnValue<IEntryProvider>(new CustomEntryProvider()))
                     .LifestyleSingleton(),
 
                 Component.For<ILogServices>()
