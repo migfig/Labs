@@ -1,12 +1,14 @@
 ﻿using Common;
 using System.Collections.Generic;
 using System.Linq;
+using Trainer.Domain;
 
 namespace Trainer.Wpf.VStudio.Tools.ViewModels
 {
-    public class ComponentVarsViewModel: BaseModel
+    public class ComponentVarsViewModel : BaseModel
     {
-        public string ClassName { get; private set; }
+        public IList<Parameter> Parameters { get; private set; }
+        public IEnumerable<Parameter> VisibleParameters { get { return Parameters.Where(x => x.IsVisible.Equals(true)); } }
         public IList<string> Projects { get; private set; }
 
         private string _selectedProject;
@@ -15,19 +17,24 @@ namespace Trainer.Wpf.VStudio.Tools.ViewModels
             set
             {
                 _selectedProject = value;
+                var p = Parameters.FirstOrDefault(x => x.IsProjectName.Equals(true));
+                if(p != null)
+                {
+                    p.Value = value;
+                }
             }
         }
 
         public bool IsValid {
             get
             {
-                return !string.IsNullOrEmpty(ClassName) && !string.IsNullOrEmpty(SelectedProject);
+                return Parameters.All(x => x.IsValid) && !string.IsNullOrEmpty(SelectedProject);
             }
         }
 
-        public ComponentVarsViewModel(string className, IList<string> projects)
+        public ComponentVarsViewModel(IList<Parameter> parameters, IList<string> projects)
         {
-            ClassName = className;
+            Parameters = parameters;
             Projects = projects;
             SelectedProject = Projects.FirstOrDefault();
         }

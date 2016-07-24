@@ -12,6 +12,15 @@
                   <xs:attribute name="Location" type="xs:string" use="optional" />
                 </xs:complexType>
               </xs:element>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="Parameter">
+                <xs:complexType>
+                  <xs:attribute name="Label" type="xs:string" use="required" />
+                  <xs:attribute name="Name" type="xs:string" use="required" />
+                  <xs:attribute name="Value" type="xs:string" use="optional" />
+                  <xs:attribute name="IsProjectName" type="xs:boolean" use="optional" default="false" />
+                  <xs:attribute name="IsVisible" type="xs:boolean" use="optional" default="true" />
+                </xs:complexType>
+              </xs:element>
               <xs:element minOccurs="0" name="Code">
                 <xs:complexType>
                   <xs:simpleContent>

@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Components>
   <Component Id="98D899D2-C8A4-4BB1-985B-B62BABAB1D0F" Name="Singleton Class" Action="Copy" IsBrowsable="true" TargetFile="Patterns\$classname$.cs">
+    <Parameter Label="Namespace" Name="$rootnamespace$" IsVisible="false" IsProjectName="true" />
+    <Parameter Label="Class Name" Name="$classname$" Value="Class" />
     <Code>
       <![CDATA[namespace $rootnamespace$
 {

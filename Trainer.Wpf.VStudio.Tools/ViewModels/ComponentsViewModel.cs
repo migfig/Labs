@@ -129,47 +129,6 @@ namespace Visor.Wpf.TodoCoder.ViewModels
             }
         }
 
-        private Component ResolveParameters(Component component)
-        {
-            if (!string.IsNullOrWhiteSpace(component.Code.ComposedValue))
-            {
-                var replacementVars = component.ReplacementVars;
-                if (replacementVars.Any())
-                {
-                    var className = replacementVars.FirstOrDefault(x => x.ToLower().Contains("class"));
-                    var nameSpace = replacementVars.FirstOrDefault(x => x.ToLower().Contains("namespace"));
-                    if (!string.IsNullOrEmpty(className) || !string.IsNullOrEmpty(nameSpace))
-                    {
-                        var viewModel = new ComponentVarsViewModel("Class", ParentWindow.Projects.ToList());
-                        var cv = new ComponentVars(viewModel);
-                        var result = cv.ShowDialog();
-                        if (result.HasValue && result.Value.Equals(true))
-                        {
-                            var fileParts = component.TargetFile.Split('\\');
-                            var suffixFolder = fileParts.Length > 1 ? "." + fileParts[fileParts.Length - 2] : string.Empty;
-                            if (!string.IsNullOrEmpty(nameSpace))
-                            {
-                                component.Code.Value = component.Code.Value.Replace(nameSpace, viewModel.SelectedProject + suffixFolder);
-                            }
-
-                            if(!string.IsNullOrEmpty(viewModel.SelectedProject))
-                            {
-                                component.TargetProject = viewModel.SelectedProject;
-                            }
-
-                            if (!string.IsNullOrEmpty(className))
-                            {
-                                component.Code.Value = component.Code.Value.Replace(className, viewModel.ClassName);
-                                component.TargetFile = component.TargetFile.Replace(className, viewModel.ClassName);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return component;
-        }
-
         private RelayCommand _viewCodeCommand;
         public ICommand ViewCodeCommand
         {
@@ -203,6 +162,44 @@ namespace Visor.Wpf.TodoCoder.ViewModels
                     dep.Component = ResolveDependencies(dep.Component);
                 }
             }
+            return component;
+        }
+
+        private Component ResolveParameters(Component component)
+        {
+            if (!string.IsNullOrWhiteSpace(component.Code.ComposedValue))
+            {
+                if (component.Parameter.Any())
+                {
+                    var viewModel = new ComponentVarsViewModel(component.Parameter, ParentWindow.Projects.ToList());
+                    var cv = new ComponentVars(viewModel);
+                    var result = cv.ShowDialog();
+                    if (result.HasValue && result.Value.Equals(true))
+                    {
+                        var fileParts = component.TargetFile.Split('\\');
+                        var suffixFolder = fileParts.Length > 1 ? "." + fileParts[fileParts.Length - 2] : string.Empty;
+
+                        if (!string.IsNullOrEmpty(viewModel.SelectedProject))
+                        {
+                            component.TargetProject = viewModel.SelectedProject;
+                        }
+
+                        foreach (var p in viewModel.Parameters)
+                        {
+                            if (!string.IsNullOrEmpty(p.Value) && p.IsProjectName)
+                            {
+                                component.Code.Value = component.Code.Value.Replace(p.Name, viewModel.SelectedProject + suffixFolder);
+                            }
+                            else if (!string.IsNullOrEmpty(p.Value))
+                            {
+                                component.Code.Value = component.Code.Value.Replace(p.Name, p.Value);
+                                component.TargetFile = component.TargetFile.Replace(p.Name, p.Value);
+                            }
+                        }
+                    }
+                }
+            }
+
             return component;
         }
     }

@@ -7,26 +7,32 @@
         Title="Select Variable Values"
         mc:Ignorable="d" 
         d:DesignHeight="300" d:DesignWidth="300"
-        Width="300" Height="150"
+        Width="300" Height="170"
         WindowState="Normal" 
         WindowStyle="ToolWindow" 
         WindowStartupLocation="CenterScreen">
     <Grid Margin="4">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.3*"/>
-            <ColumnDefinition Width="0.7*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Class Name" VerticalAlignment="Center"/>
-        <TextBox Text="{Binding Mode=TwoWay, Path=ClassName}" Grid.Column="1" VerticalAlignment="Center"/>
+        <ItemsControl ItemsSource="{Binding VisibleParameters}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Label}" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding Mode=TwoWay, Path=Value}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-        <TextBlock Grid.Row="1" Text="Project" VerticalAlignment="Center"/>
-        <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Projects}" SelectedItem="{Binding Mode=TwoWay, Path=SelectedProject}" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Project" VerticalAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding Projects}" SelectedItem="{Binding Mode=TwoWay, Path=SelectedProject}" VerticalAlignment="Center"/>
+        </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Click="cmdOk_Click">

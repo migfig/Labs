@@ -44,7 +44,7 @@ namespace Trainer.Domain
     public partial class Component
     {
         private ObservableCollection<Dependency> dependencyField;
-
+        private ObservableCollection<Parameter> parameterField;
         private Code codeField;
 
         private string idField;
@@ -68,11 +68,12 @@ namespace Trainer.Domain
         {
             codeField = new Code();
             dependencyField = new ObservableCollection<Dependency>();
+            parameterField = new ObservableCollection<Parameter>();
             actionField = ComponentAction.None;
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElement("Dependency")]
+        [System.Xml.Serialization.XmlElement("Dependency", Order=0)]
         public ObservableCollection<Dependency> Dependency
         {
             get
@@ -86,6 +87,21 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
+        [System.Xml.Serialization.XmlElement("Parameter", Order = 1)]
+        public ObservableCollection<Parameter> Parameter
+        {
+            get
+            {
+                return this.parameterField;
+            }
+            set
+            {
+                this.parameterField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElement("Code", Order = 2)]
         public Code Code
         {
             get
@@ -238,23 +254,94 @@ namespace Trainer.Domain
                 this.actionField = value;
             }
         }
+    }
 
-        [System.Xml.Serialization.XmlIgnore]
-        public IEnumerable<string> ReplacementVars
+    /// <remarks/>
+    [System.Xml.Serialization.XmlType(AnonymousType = true)]
+    public partial class Parameter
+    {
+        private string labelField;
+        private string nameField;
+        private string valueField;
+        private bool   isProjectNameField;
+        private bool   isVisibleField = true; //default
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttribute()]
+        public string Label
         {
             get
             {
-                var list = new List<string>();
-                if(codeField != null && !string.IsNullOrWhiteSpace(codeField.Value))
-                {
-                    var matches = new Regex(@"(?<var>\$[a-zA-Z0-9]*\$)").Matches(codeField.Value);
-                    foreach(Match m in matches)
-                    {
-                        list.Add(m.Groups["var"].Value);
-                    }
-                }
+                return this.labelField;
+            }
+            set
+            {
+                this.labelField = value;
+            }
+        }
 
-                return list;
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttribute()]
+        public string Name
+        {
+            get
+            {
+                return this.nameField;
+            }
+            set
+            {
+                this.nameField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttribute()]
+        public string Value
+        {
+            get
+            {
+                return this.valueField;
+            }
+            set
+            {
+                this.valueField= value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttribute()]
+        public bool IsProjectName
+        {
+            get
+            {
+                return this.isProjectNameField;
+            }
+            set
+            {
+                this.isProjectNameField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttribute()]
+        public bool IsVisible
+        {
+            get
+            {
+                return this.isVisibleField;
+            }
+            set
+            {
+                this.isVisibleField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsValid
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(this.valueField);
             }
         }
     }
