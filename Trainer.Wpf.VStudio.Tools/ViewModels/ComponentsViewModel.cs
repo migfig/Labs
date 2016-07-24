@@ -12,9 +12,8 @@ using System.Threading;
 using Log.Common.Services;
 using System.Collections.Generic;
 using Trainer.Wpf.VStudio.Tools.Views;
-using Trainer.Wpf.VStudio.Tools.ViewModels;
 
-namespace Visor.Wpf.TodoCoder.ViewModels
+namespace Trainer.Wpf.VStudio.Tools.ViewModels
 {
     public class ComponentsViewModel: BaseModel
     {
@@ -104,6 +103,104 @@ namespace Visor.Wpf.TodoCoder.ViewModels
                 }
 
                 return _items;
+            }
+        }
+
+        private void SaveComponents(Component component, bool isRemoved = false)
+        {
+            var file = Directory.GetFiles(Settings.Default.SourcePath, "patterns" + Settings.Default.FileMask)
+                .FirstOrDefault();
+            if(file != null)
+            {
+                var item = XmlHelper<Components>.Load(file);
+                if (null != item)
+                {
+                    if(isRemoved)
+                        item.Component.Remove(component);
+                    else
+                        item.Component.Add(component);
+                    XmlHelper<Components>.Save(file, item);
+                }
+            }
+        }
+
+        private void SaveComponents(IEnumerable<Component> components)
+        {
+            var file = Directory.GetFiles(Settings.Default.SourcePath, "patterns" + Settings.Default.FileMask)
+                .FirstOrDefault();
+            if (file != null)
+            {
+                var item = XmlHelper<Components>.Load(file);
+                if (null != item)
+                {
+                    foreach (var component in components)
+                    {
+                        item.Component.Add(component);
+                        component.IsDirty = false;
+                    }
+                    XmlHelper<Components>.Save(file, item);
+                }
+            }
+        }
+
+        private RelayCommand _saveComponentCommand;
+        public ICommand SaveComponentCommand
+        {
+            get
+            {
+                return _saveComponentCommand ?? (_saveComponentCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        var components = Items.Where(x => x.IsDirty.Equals(true));
+                        if (null != components && components.Any())
+                        {
+                            SaveComponents(components);
+                        }
+                    },
+                    (tag) => true));
+            }
+        }
+
+        private RelayCommand _addComponentCommand;
+        public ICommand AddComponentCommand
+        {
+            get
+            {
+                return _addComponentCommand ?? (_addComponentCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        var component = XmlHelper<Component>.LoadFromString(Settings.Default.DefaultComponent);
+                        if (null != component)
+                        {
+                            component.Id = Guid.NewGuid().ToString("N");
+                            component.IsDirty = true;
+                            items.Add(component);
+                            _items.Add(component);
+                            OnPropertyChanged("Items");
+                        }
+                    },
+                    (tag) => true));
+            }
+        }
+
+        private RelayCommand _removeComponentCommand;
+        public ICommand RemoveComponentCommand
+        {
+            get
+            {
+                return _removeComponentCommand ?? (_removeComponentCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        var component = tag as Component;
+                        if (component != null)
+                        {
+                            items.Remove(component);
+                            _items.Remove(component);
+                            SaveComponents(component, isRemoved: true);
+                            OnPropertyChanged("Items");
+                        }
+                    },
+                    (tag) => true));
             }
         }
 

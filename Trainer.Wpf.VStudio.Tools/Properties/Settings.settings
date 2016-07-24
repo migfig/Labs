@@ -8,5 +8,22 @@
     <Setting Name="FileMask" Type="System.String" Scope="User">
       <Value Profile="(Default)">*.xml</Value>
     </Setting>
+    <Setting Name="DefaultComponent" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt;Component Id="" Name="Class" Action="Copy" IsBrowsable="true" TargetFile="$classname$.cs"&gt;
+    &lt;Parameter Label="Namespace" Name="$rootnamespace$" IsVisible="false" IsProjectName="true" /&gt;
+    &lt;Parameter Label="Class Name" Name="$classname$" Value="Class" /&gt;
+    &lt;Code&gt;
+      &lt;![CDATA[namespace $rootnamespace$
+{
+  public class $classname$ 
+  {
+    public $classname$() 
+    {
+    }
+  }
+}]]&gt;
+    &lt;/Code&gt;
+  &lt;/Component&gt;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -65,16 +65,73 @@
                              MaxLines="50"/>
                 </Expander>
 
-                <Image Source="..\Images\add.png" 
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top">
+                    <Image Source="..\Images\add.png" 
                        Width="32" Height="32" 
                        Margin="0,0,4,0"
                        Opacity="0.9"
                        Tag="{Binding}"
-                       Grid.Row="1" Grid.Column="1"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
                        Cursor="Hand"                       
                        MouseUp="Image_MouseUp"/>
+
+                    <Button Tag="{Binding}" Click="Button_Click" ToolTip="Remove Component">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="LightGray"/>
+                                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                <Setter Property="Height" Value="32"/>
+                                <Setter Property="Width" Value="32"/>
+                                <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                <Setter Property="BorderBrush">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                            <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                            <GradientStop Color="#FF718597" Offset="0.375"/>
+                                            <GradientStop Color="#FF617584" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid>
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup x:Name="CommonStates">
+                                                        <VisualState x:Name="Normal"/>
+                                                        <VisualState x:Name="MouseOver">
+                                                            <Storyboard>
+                                                                <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                        <VisualState x:Name="Pressed"/>
+                                                        <VisualState x:Name="Disabled"/>
+                                                    </VisualStateGroup>
+                                                    <VisualStateGroup x:Name="FocusStates">
+                                                        <VisualState x:Name="Focused"/>
+                                                        <VisualState x:Name="Unfocused"/>
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+                                                <Path x:Name="path" Data="M16.647001,25.854004L16.647001,27.22998 23.535002,27.22998 23.535002,25.854004z M19.95999,20.653992C23.093,20.653992 25.632,23.19397 25.632,26.327026 25.632,29.460022 23.093,32 19.95999,32 16.826994,32 14.287001,29.460022 14.287001,26.327026 14.287001,23.19397 16.826994,20.653992 19.95999,20.653992z M3.1970057,18.226013L3.1970057,19.73999 13.822996,19.73999 13.822996,18.226013z M3.1970057,11.664978L3.1970057,13.179016 18.423002,13.179016 18.423002,11.664978z M15.813993,1.072998L20.600996,6.1680298 16.822996,6.1680298C16.264997,6.1680298,15.813993,5.7150269,15.813993,5.15802z M2.1869959,0L14.356001,0 14.356001,5.4390259C14.356001,6.6469727,15.33499,7.6270142,16.542997,7.6270142L21.645994,7.6270142 21.645994,19.299011C21.104002,19.169006 20.540998,19.093018 19.95999,19.093018 15.970991,19.093018 12.725996,22.338013 12.725996,26.327026 12.725996,28.034973 13.324003,29.604004 14.317991,30.843018L2.1869959,30.843018C0.97900381,30.843018,4.0429768E-08,29.864014,0,28.656006L0,2.1870117C4.0429768E-08,0.97900391,0.97900381,0,2.1869959,0z" Stretch="Uniform" Fill="#FFF77700" Width="32" Height="32" RenderTransformOrigin="0.5,0.5">
+                                                    <Path.RenderTransform>
+                                                        <TransformGroup>
+                                                            <TransformGroup.Children>
+                                                                <RotateTransform Angle="0" />
+                                                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                            </TransformGroup.Children>
+                                                        </TransformGroup>
+                                                    </Path.RenderTransform>
+                                                </Path>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
             </Grid>
         </Border>
     </DockPanel>

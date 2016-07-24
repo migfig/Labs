@@ -8,7 +8,120 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel LastChildFill="True">
-        <ListBox ItemsSource="{Binding Path=Items}"
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button Command="{Binding AddComponentCommand}" ToolTip="Add Component">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Width" Value="32"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="Disabled"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused"/>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M19.087009,21.455994L19.087009,24.719971 15.822024,24.719971 15.822024,26.349976 19.087009,26.349976 19.087009,29.613953 20.716006,29.613953 20.716006,26.349976 23.981021,26.349976 23.981021,24.719971 20.716006,24.719971 20.716006,21.455994z M19.746005,18.561951C23.457004,18.561951 26.464999,21.570984 26.464999,25.279968 26.464999,28.991943 23.457004,32 19.746005,32 16.035005,32 13.027009,28.991943 13.027009,25.279968 13.027009,21.570984 16.035005,18.561951 19.746005,18.561951z M2.876007,16.389954L2.876007,17.750977 12.431001,17.750977 12.431001,16.389954z M2.876007,10.48999L2.876007,11.850952 16.567018,11.850952 16.567018,10.48999z M14.221009,0.96398926L18.527009,5.5459595 15.129,5.5459595C14.628022,5.5459595,14.221009,5.1389771,14.221009,4.6389771z M1.9670106,0L12.910005,0 12.910005,4.8919678C12.910005,5.9779663,13.791017,6.8579712,14.877015,6.8579712L19.466006,6.8579712 19.466006,16.725952C14.871003,16.875977 11.17801,20.651978 11.17801,25.280945 11.17801,26.133972 11.308015,26.95697 11.541017,27.735962L1.9670106,27.735962C0.88201898,27.735962,-1.7346792E-07,26.85498,0,25.768982L0,1.96698C-1.7346792E-07,0.87994385,0.88201898,0,1.9670106,0z" Stretch="Uniform" Fill="#FF599737" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <TransformGroup.Children>
+                                                        <RotateTransform Angle="0" />
+                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                    </TransformGroup.Children>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Rectangle Height="30" Width="1" Fill="AntiqueWhite"/>
+            <Button Command="{Binding SaveComponentCommand}" ToolTip="Save Components">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="LightGray"/>
+                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                        <Setter Property="Height" Value="32"/>
+                        <Setter Property="Width" Value="32"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed"/>
+                                                <VisualState x:Name="Disabled"/>
+                                            </VisualStateGroup>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused"/>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Path x:Name="path" Data="M17.114999,28.275024L17.114999,29.719971 25.532003,29.719971 25.532003,28.275024z M17.154,21.616028L17.154,24.494019 25.476979,24.494019 25.476979,21.616028z M17.935996,18.916016L24.226979,18.916016 27.349994,21.481018 27.349994,25.994019 27.354999,25.994019 27.354999,32 15.258996,32 15.258996,25.994019 15.264001,25.994019 15.264001,21.588013C15.264001,20.11499,16.462991,18.916016,17.935996,18.916016z M3.0299973,17.268005L3.0299973,18.703003 13.098002,18.703003 13.098002,17.268005z M3.0299973,11.051025L3.0299973,12.486023 17.456001,12.486023 17.456001,11.051025z M14.984002,1.0159912L19.519996,5.8439941 15.939996,5.8439941C15.411004,5.8439941,14.984002,5.414978,14.984002,4.8870239z M2.0720052,0L13.601999,0 13.601999,5.1539917C13.601999,6.2979736,14.529992,7.2260132,15.67399,7.2260132L20.508994,7.2260132 20.508994,17.572998 17.818992,17.572998C15.674997,17.572998,13.930993,19.317017,13.930993,21.460022L13.930993,29.052979C13.930993,29.111023,13.945993,29.164978,13.947992,29.223022L2.0720052,29.223022C0.92800841,29.223022,-2.1523465E-07,28.294983,0,27.150024L0,2.0720215C-2.1523465E-07,0.92700195,0.92800841,0,2.0720052,0z" Stretch="Uniform" Fill="#FF06A1F1" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <TransformGroup.Children>
+                                                        <RotateTransform Angle="0" />
+                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                    </TransformGroup.Children>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+        <ListBox DockPanel.Dock="Bottom" ItemsSource="{Binding Path=Items}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>

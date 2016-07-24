@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using Trainer.Domain;
-using Visor.Wpf.TodoCoder.ViewModels;
+using Trainer.Wpf.VStudio.Tools.ViewModels;
 
 namespace Trainer.Wpf.VStudio.Tools.Controls
 {
@@ -35,6 +35,15 @@ namespace Trainer.Wpf.VStudio.Tools.Controls
         {
             this.Width = 600;
             this.Height = 500;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var component = (sender as Button).Tag as Component;
+            if (ComponentsViewModel.ViewModel.RemoveComponentCommand.CanExecute(component))
+            {
+                ComponentsViewModel.ViewModel.RemoveComponentCommand.Execute(component);
+            }
         }
     }
 }

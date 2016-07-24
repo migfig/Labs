@@ -46,5 +46,31 @@ namespace Trainer.Wpf.VStudio.Tools.Properties {
                 this["FileMask"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<Component Id="""" Name=""Class"" Action=""Copy"" IsBrowsable=""true"" TargetFile=""$classname$.cs"">
+    <Parameter Label=""Namespace"" Name=""$rootnamespace$"" IsVisible=""false"" IsProjectName=""true"" />
+    <Parameter Label=""Class Name"" Name=""$classname$"" Value=""Class"" />
+    <Code>
+      <![CDATA[namespace $rootnamespace$
+{
+  public class $classname$ 
+  {
+    public $classname$() 
+    {
+    }
+  }
+}]]>
+    </Code>
+  </Component>")]
+        public string DefaultComponent {
+            get {
+                return ((string)(this["DefaultComponent"]));
+            }
+            set {
+                this["DefaultComponent"] = value;
+            }
+        }
     }
 }

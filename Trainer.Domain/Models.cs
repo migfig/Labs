@@ -63,6 +63,7 @@ namespace Trainer.Domain
         private bool isBrowsableField;
         private string targetProjectField;
         private ComponentAction actionField;
+        private bool isDirtyField;
 
         public Component()
         {
@@ -252,6 +253,20 @@ namespace Trainer.Domain
             set
             {
                 this.actionField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnore()]
+        public bool IsDirty
+        {
+            get
+            {
+                return this.isDirtyField;
+            }
+            set
+            {
+                this.isDirtyField = value;
             }
         }
     }

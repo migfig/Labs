@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Controls;
+using Trainer.Wpf.VStudio.Tools.ViewModels;
 using Visor.VStudio;
-using Visor.Wpf.TodoCoder.ViewModels;
 
 namespace Trainer.Wpf.VStudio.Tools
 {
