@@ -116,7 +116,7 @@ namespace Trainer.Wpf.VStudio.Tools.ViewModels
                 if (null != item)
                 {
                     if(isRemoved)
-                        item.Component.Remove(component);
+                        item.Component.Remove(item.Component.First(x => x.Id.Equals(component.Id)));
                     else
                         item.Component.Add(component);
                     XmlHelper<Components>.Save(file, item);
