@@ -65,7 +65,7 @@ The **Trainer Assistant** project is a **Template 10**  based Universal Windows 
 This application can also display slides containing code components, being rendered thru **RichTextBlock** controls with some sort for sintax coloring for C# via its own simple C# parser class.
 ![relatedrecords](trainer-component.png)
 
-**What's missing**: Some sort of designer to quickly create/edit presentation slides or code components. Might also render MS Office PowerPoint presentations instead of xml ones. Add Web API authentication support. 
+**What's missing**: Some sort of designer to quickly create/edit presentation slides or code components. Might also render MS Office PowerPoint presentations instead of xml ones. Add Web API authentication support. **Azure** and **AWS** implementations for Web Api endpoints. Removal of xml content files from projects into data folder.
 
 ## Fluent Testing Project ##
 
