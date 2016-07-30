@@ -32,6 +32,9 @@ namespace ApiTester.Client.Controls
                     var taskObj = XmlHelper<Task>.Load(XElement.Load(new StringReader(task.xml)));
                     taskObj.Passed = task.Passed;
                     taskObj.ResultsObject = task.ResultsObject;
+                    taskObj.SelectedCondition = task.SelectedCondition;
+                    taskObj.SelectedOperator = task.SelectedOperator;
+                    taskObj.SelectedProperty = task.SelectedProperty;
 
                     MainViewModel.ViewModel.SaveTask.Execute(taskObj);
                 }

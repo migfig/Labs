@@ -15,6 +15,9 @@
     using System.Reflection;
     using FluentTesting;
     using System.Windows;
+    using Common.Commands;
+    using System.Windows.Input;
+    using System.Collections.Generic;
     [XmlTypeAttribute(AnonymousType = true)]
     [XmlRootAttribute(Namespace = "", IsNullable = false)]
     public partial class apiConfiguration: BaseModel
@@ -426,6 +429,10 @@
                 OnPropertyChanged("bodyBackground");
                 OnPropertyChanged("Results");
                 OnPropertyChanged("ResultsTable");
+                OnPropertyChanged("Properties");
+                OnPropertyChanged("SelectedCondition");
+                OnPropertyChanged("SelectedOperator");
+                OnPropertyChanged("SelectedProperty");
             }
         }
 
@@ -596,6 +603,10 @@
                     itemType = type;
                     if (type.IsArray)
                     {
+                        foreach (var p in type.GetProperties().Where(x => x.Name.Equals("Length")))
+                        {
+                            if (!_properties.ContainsKey(p.Name)) _properties.Add(p.Name, p.PropertyType.ToString());
+                        }
                         size = (int)type.GetProperty("Length").GetValue(resultsObjectField);
                         getMethod = type.GetMethod("Get");
                         itemType = getMethod.Invoke(resultsObjectField, new object[] {0}).GetType();
@@ -605,6 +616,10 @@
                     foreach (var prop in props)
                     {
                         table.Columns.Add(prop.Name, prop.PropertyType);
+                        if(!type.IsArray && !_properties.ContainsKey(prop.Name))
+                        {
+                            _properties.Add(prop.Name, prop.PropertyType.ToString());
+                        }
                     }
 
                     if (size > 0)
@@ -630,6 +645,12 @@
                         }
                         table.Rows.Add(row);
                     }
+                }
+
+                if(string.IsNullOrEmpty(SelectedProperty.Key) && _properties.Any())
+                {
+                    SelectedProperty = _properties.First();
+                    ((RelayCommand)AddCondition).RaiseCanExecuteChanged();
                 }
 
                 return table;
@@ -696,6 +717,126 @@
                 return hasPassedField ? "#FF8DFD87" : "#FFFCE48A";
             }
         }
+
+        #region commands and helpers
+
+        private ObservableCollection<eCondition> _conditions = new ObservableCollection<eCondition>();
+        [XmlIgnore]
+        public ObservableCollection<eCondition> Conditions
+        {
+            get
+            {
+                if(!_conditions.Any())
+                {
+                    foreach(var c in Enum.GetValues(typeof(eCondition)))
+                    {
+                        _conditions.Add((eCondition)c);
+                    }
+                }
+
+                return _conditions;
+            }
+        }
+
+        private eCondition _selectedCondition = eCondition.And;
+        [XmlIgnore]
+        public eCondition SelectedCondition
+        {
+            get { return _selectedCondition; }
+            set
+            {
+                _selectedCondition = (eCondition)Enum.Parse(typeof(eCondition), value.ToString());
+            }
+        }
+
+        private ObservableCollection<eOperator> _operators = new ObservableCollection<eOperator>();
+        [XmlIgnore]
+        public ObservableCollection<eOperator> Operators
+        {
+            get
+            {
+                if (!_operators.Any())
+                {
+                    foreach (var c in Enum.GetValues(typeof(eOperator)))
+                    {
+                        _operators.Add((eOperator)c);
+                    }
+                }
+
+                return _operators;
+            }
+        }
+
+        private eOperator _selectedOperator = eOperator.isEqualTo;
+        [XmlIgnore]
+        public eOperator SelectedOperator
+        {
+            get { return _selectedOperator; }
+            set
+            {
+                _selectedOperator = (eOperator)Enum.Parse(typeof(eOperator), value.ToString());
+            }
+        }
+
+        private Dictionary<string, string> _properties = new Dictionary<string, string>();
+        [XmlIgnore]
+        public Dictionary<string, string> Properties
+        {
+            get { return _properties; } 
+        }
+
+        private KeyValuePair<string, string> _selectedProperty;
+        [XmlIgnore]
+        public KeyValuePair<string, string> SelectedProperty
+        {
+            get { return _selectedProperty; }
+            set
+            {
+                _selectedProperty = value;
+            }
+        }
+
+        RelayCommand _addCondition;
+        [XmlIgnore]
+        public ICommand AddCondition
+        {
+            get
+            {
+                _addCondition = _addCondition ?? new RelayCommand(
+                    (parameter) => {
+                        this.resultValue.Add(new ResultValue
+                        {
+                            condition = SelectedCondition,
+                            propertyName = SelectedProperty.Key,
+                            @operator = _selectedOperator,
+                            value = SelectedProperty.Value.ToLower().Contains("int") ? "0" : ""
+                        });
+                        xml = string.Empty;
+                        OnPropertyChanged("xml");
+                    },
+                    x => _properties.Any());
+                return _addCondition;
+            }
+        }
+
+        RelayCommand _removeCondition;
+        [XmlIgnore]
+        public ICommand RemoveCondition
+        {
+            get
+            {
+                _removeCondition = _removeCondition ?? new RelayCommand(
+                    (parameter) => {
+                        resultValue.RemoveAt(resultValue.Count-1);
+                        xml = string.Empty;
+                        OnPropertyChanged("xml");
+                    },
+                    x => resultValue.Any());
+                return _removeCondition;
+            }
+        }
+
+        #endregion
     }
 
     [XmlTypeAttribute(AnonymousType = true)]
@@ -705,19 +846,6 @@
         private eCondition conditionField;
         private eOperator operatorField;
         private string valueField;
-
-        [XmlAttributeAttribute()]
-        public string propertyName
-        {
-            get
-            {
-                return this.propertyNameField;
-            }
-            set
-            {
-                this.propertyNameField = value;
-            }
-        }
 
         [XmlAttributeAttribute()]
         public eCondition condition
@@ -731,6 +859,19 @@
                 this.conditionField = value;
             }
         }
+
+        [XmlAttributeAttribute()]
+        public string propertyName
+        {
+            get
+            {
+                return this.propertyNameField;
+            }
+            set
+            {
+                this.propertyNameField = value;
+            }
+        }        
 
         [XmlAttributeAttribute()]
         public eOperator @operator
