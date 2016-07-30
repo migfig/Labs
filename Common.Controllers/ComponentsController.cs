@@ -3,8 +3,15 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Trainer.Domain;
 
-namespace Code.Service
+namespace Common.Controllers
 {
+    public interface ICodeServices
+    {
+        Task<IEnumerable<Component>> GetItems();
+        Task<bool> AddItems(IEnumerable<Component> items);
+        Task<bool> RemoveItem(string id);
+    }
+
     public class ComponentsController: ApiController
     {
         private readonly ICodeServices _codeServices;  

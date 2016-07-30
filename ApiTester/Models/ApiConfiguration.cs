@@ -860,6 +860,8 @@
         public static DataTable ToTable(this apiConfiguration configuration)
         {
             var table = new DataTable("Configuration");
+            if (configuration == null) return table;
+
             foreach (var p in configuration.method.First().GetType().GetProperties()
                 .Where(x => x.GetCustomAttributes(typeof(ColumnIgnoreAttribute), false).Count() == 0))
             {

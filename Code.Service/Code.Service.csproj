@@ -93,8 +93,6 @@
   <ItemGroup>
     <Compile Include="IoC\WindsorDependencyResolver.cs" />
     <Compile Include="IoC\WindsorDependencyScope.cs" />
-    <Compile Include="PresentationsController.cs" />
-    <Compile Include="ComponentsController.cs" />
     <Compile Include="IoC\ServiceInstaller.cs" />
     <Compile Include="CodeService.cs" />
     <Compile Include="CodeServices.cs" />
@@ -108,6 +106,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common.Controllers\Common.Controllers.csproj">
+      <Project>{2dda8938-b74b-4a3c-8635-d2ea41a0b9c8}</Project>
+      <Name>Common.Controllers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common.Generics\Common.Generics.csproj">
       <Project>{6cf371cd-4bae-4cc7-8baa-a984863ae040}</Project>
       <Name>Common.Generics</Name>

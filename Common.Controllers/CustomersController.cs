@@ -1,30 +1,21 @@
 ﻿using Common.Data;
 using Common.Data.Models;
 using Common.Data.Models.Requests;
-using Common.Data.Repositories;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Linq;
 using System;
 
-namespace WebApi.Example.Controllers
+namespace Common.Controllers
 {
     /// <summary>
     /// Customer services 
     /// </summary>
-    [RoutePrefix("customers")]
+    [RoutePrefix("api/customers")]
     public class CustomersController : ApiController
     {
         private readonly IRepository<Customer> _repository;
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public CustomersController()
-            :this(new CustomerRepository())
-        {
-        }
 
         /// <summary>
         /// Constructor for IOC
@@ -181,7 +172,7 @@ namespace WebApi.Example.Controllers
         /// </summary>
         /// <param name="id">customer id</param>
         /// <returns>deleted customer</returns>
-        [Route("delete/{id:int}"), HttpDelete]
+        [Route("remove/{id:int}"), HttpDelete]
         [ResponseType(typeof(Customer))]
         public IHttpActionResult DeleteCustomer(int id)
         {

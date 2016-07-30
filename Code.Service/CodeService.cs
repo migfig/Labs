@@ -6,6 +6,7 @@ using System.IO;
 using Topshelf;
 using Trainer.Domain;
 using System.Linq;
+using Common.Controllers;
 
 namespace Code.Service
 {

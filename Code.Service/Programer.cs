@@ -1,5 +1,6 @@
 ﻿using Castle.Windsor;
 using Castle.Windsor.Installer;
+using Common.Controllers;
 using Common.Generics;
 using Topshelf;
 using Trainer.Domain;

@@ -1,6 +1,7 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using Common.Controllers;
 using Common.Generics;
 using System.Web.Http;
 using domain = Trainer.Domain;
@@ -34,6 +35,8 @@ namespace Code.Service
                     .BasedOn<ApiController>()
                     .LifestyleScoped()
                 );
+
+            new ControllersInstaller().Install(container, store);
         }
     }
 }

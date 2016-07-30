@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Trainer.Domain;
 
-namespace Code.Service
+namespace Common.Controllers
 {
     public class PresentationsController: ApiController
     {

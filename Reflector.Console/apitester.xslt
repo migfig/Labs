@@ -23,10 +23,10 @@
           <xsl:value-of select="@source"/>
         </xsl:attribute>
 
-        <host name="localhost" baseAddress="http://localhost:60264">
+        <host name="localhost" baseAddress="http://localhost:3033">
           <header name="X-Header" value="0"/>
         </host>
-        <host name="remotehost" baseAddress="http://remote:60264">
+        <host name="remotehost" baseAddress="http://remote:3033">
           <header name="X-Header" value="1"/>
         </host>
         <header name="Content-Type" value="application/json" />
