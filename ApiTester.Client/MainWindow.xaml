@@ -192,14 +192,17 @@
             </Fluent:Ribbon.Menu>
         </Fluent:Ribbon>
 
+        <TextBlock DockPanel.Dock="Top" Text="Workflow Tasks" />
         <!--View Current configuration Details-->
-        <ListBox ItemsSource="{Binding Path=SelectedWorkflowDef.task}"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListBox DockPanel.Dock="Bottom" ItemsSource="{Binding Path=SelectedWorkflowDef.task}"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <controls:TaskControl DataContext="{Binding}" Width="200" Height="100"/>
+                    <controls:TaskControl DataContext="{Binding}" Width="200" Height="132"/>
                 </DataTemplate>
-            </ListBox.ItemTemplate>            
+            </ListBox.ItemTemplate>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal"/>

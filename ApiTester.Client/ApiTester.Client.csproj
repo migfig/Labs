@@ -74,6 +74,7 @@
     <Compile Include="Controls\TaskControl.xaml.cs">
       <DependentUpon>TaskControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\StringToBrushColorConverter.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="..\ApiTester.Wpf\ConfigTemplate.xaml">
       <Link>ConfigTemplate.xaml</Link>

@@ -112,7 +112,17 @@ namespace ApiTester.Wpf.ViewModels
                         SelectedWorkflowDef.task.Add(new Task
                         {
                             name = SelectedMethod.name,
-                            parameter = new ObservableCollection<Parameter>( SelectedMethod.parameter.ToArray())
+                            parameter = new ObservableCollection<Parameter>( SelectedMethod.parameter.ToArray()),
+                            resultValue = new ObservableCollection<ResultValue>
+                            {
+                               new ResultValue
+                               {
+                                   condition = eCondition.And,
+                                   propertyName = "Length",
+                                   @operator = eOperator.isGreaterThan,
+                                   value = "0"
+                               }
+                            }
                         });
                     },
                     x => SelectedConfiguration != null
@@ -473,7 +483,7 @@ namespace ApiTester.Wpf.ViewModels
 
         private void executeMethod(Method method, Models.Task task)
         {
-            var outFile = method.name + ".json";
+            var outFile = "output\\" + method.name + ".json";
             if (File.Exists(outFile)) File.Delete(outFile);
 
             var exitCode = Common.Extensions.runProcess(SelectedConfiguration.setup.commandLine,

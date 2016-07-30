@@ -423,6 +423,9 @@
             {
                 hasPassedField = value;
                 OnPropertyChanged("IsVisible");
+                OnPropertyChanged("bodyBackground");
+                OnPropertyChanged("Results");
+                OnPropertyChanged("ResultsTable");
             }
         }
 
@@ -577,6 +580,62 @@
             }
         }
 
+        [XmlIgnore]
+        public DataTable ResultsTable
+        {
+            get
+            {
+                var table = new DataTable("Results");
+
+                if(resultsObjectField != null)
+                {
+                    Type itemType = null;
+                    MethodInfo getMethod = null;
+                    var type = resultsObjectField.GetType();
+                    var size = 0;
+                    itemType = type;
+                    if (type.IsArray)
+                    {
+                        size = (int)type.GetProperty("Length").GetValue(resultsObjectField);
+                        getMethod = type.GetMethod("Get");
+                        itemType = getMethod.Invoke(resultsObjectField, new object[] {0}).GetType();
+                    }
+                    var props = from p in itemType.GetProperties()
+                                select p;
+                    foreach (var prop in props)
+                    {
+                        table.Columns.Add(prop.Name, prop.PropertyType);
+                    }
+
+                    if (size > 0)
+                    {
+                        for (var i = 0; i < size; i++)
+                        {
+                            var item = getMethod.Invoke(resultsObjectField, new object[] {i});
+
+                            var row = table.NewRow();
+                            foreach (var prop in props)
+                            {
+                                row[prop.Name] = prop.GetValue(item);
+                            }
+                            table.Rows.Add(row);
+                        }
+                    }
+                    else //sigle item type
+                    {
+                        var row = table.NewRow();
+                        foreach (var prop in props)
+                        {
+                            row[prop.Name] = prop.GetValue(resultsObjectField);
+                        }
+                        table.Rows.Add(row);
+                    }
+                }
+
+                return table;
+            }
+        }
+
         [ColumnIgnore]
         [EditColumnIgnore]
         [XmlIgnore]
@@ -626,6 +685,15 @@
             set
             {
                 xmlField = value;
+            }
+        }
+
+        [XmlIgnore]
+        public string bodyBackground
+        {
+            get
+            {
+                return hasPassedField ? "#FF8DFD87" : "#FFFCE48A";
             }
         }
     }
@@ -997,7 +1065,7 @@
 
         public static string ToArgs(this Method method, Task task)
         {
-            return string.Format("-X {0} {1} -o {2} {3} {4}",
+            return string.Format("-X {0} {1} -o output\\{2} {3} {4}",
                 method.httpMethod.ToUpper(),
                 string.Format("{0}{1}", "{0}", task.QueryUrl(method.url)), //for baseAddress
                 method.name + ".json",

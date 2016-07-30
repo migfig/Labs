@@ -4,10 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ApiTester.Client.Controls"
+             xmlns:converters="clr-namespace:ApiTester.Client.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <DockPanel LastChildFill="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">       
+    <UserControl.Resources>
+        <converters:StringToBrushColorConverter x:Key="stringToBrushColorConverter"/>
+    </UserControl.Resources>
+
+    <DockPanel LastChildFill="True">       
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20*"/>
@@ -31,11 +36,13 @@
 
         <Border DockPanel.Dock="Bottom" 
                 BorderBrush="#FF606064" 
-                BorderThickness="0"                
-                Background="#FFFCE48A">
+                BorderThickness="0"
+                Padding="4"
+                Background="{Binding bodyBackground, Converter={StaticResource stringToBrushColorConverter}}">
 
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -71,37 +78,116 @@
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Right"/>
 
+                <TextBlock Grid.Row="2"
+                    Text="Conditions" Foreground="Black" 
+                       FontSize="12" 
+                       Margin="4"
+                       VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="2" Grid.Column="1"
+                           Text="{Binding resultValue.Count}" FontWeight="DemiBold" 
+                           Foreground="#FF1B1A1A" 
+                       FontSize="12" 
+                       Margin="4"
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Right"/>
+
                 <Expander x:Name="expanderTasks" Header="Edit"
                           Collapsed="expanderTasks_Collapsed"
                           Expanded="expanderTasks_Expanded"
                           Tag="{Binding}"
-                          Grid.Row="2"
+                          Grid.Row="3"
                           Grid.ColumnSpan="2">
-                    <TextBox Text="{Binding Mode=TwoWay, Path=xml}" 
+                    <DockPanel LastChildFill="True">
+                        <Expander DockPanel.Dock="Top" x:Name="expanderTaskResults" Header="Task Results" Visibility="{Binding IsVisible}">
+                            <StackPanel>
+                                <TextBox Text="{Binding Mode=OneWay, Path=Results}" 
+                                   FontSize="14" 
+                                   Foreground="#FF1B1A1A"
+                                   TextWrapping="WrapWithOverflow"
+                                   IsReadOnly="True"
+                                   MaxLines="50"/>
+                            </StackPanel>
+                        </Expander>
+                        <Expander DockPanel.Dock="Top" x:Name="expanderTaskResultsTable" Header="Task Results Table" Visibility="{Binding IsVisible}">
+                            <StackPanel>
+                                <DataGrid ItemsSource="{Binding ResultsTable}"
+                                      CanUserResizeRows="False" 
+                                      SelectionMode="Extended" 
+                                      AlternatingRowBackground="LemonChiffon" 
+                                      ClipboardCopyMode="IncludeHeader" 
+                                      IsReadOnly="True" 
+                                      IsTextSearchEnabled="True"
+                                      AutoGenerateColumns="True"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch">
+                                </DataGrid>
+                            </StackPanel>
+                        </Expander>
+                        <TextBox DockPanel.Dock="Bottom" Text="{Binding Mode=TwoWay, Path=xml}" 
                                FontSize="14" 
                                Foreground="#FF1B1A1A"
                                TextWrapping="WrapWithOverflow"
                              MaxLines="50"/>
+                    </DockPanel>
                 </Expander>
 
-                <Image Source="..\Images\passed.png" 
-                       Width="16" Height="16" 
-                       Opacity="0.99"
-                       Visibility="{Binding IsVisible}"
-                       Margin="0,0,16,0"
-                       Grid.Row="2" Grid.Column="1"
+                <Button Grid.Row="3" Grid.Column="1" Tag="{Binding}" Click="Button_Click" ToolTip="Remove Task"
                        HorizontalAlignment="Right"
-                       VerticalAlignment="Top"/>
-
-                <Image Source="..\Images\clear.png" 
-                       Width="16" Height="16" 
-                       Opacity="0.4"
-                       Tag="{Binding}"
-                       Grid.Row="2" Grid.Column="1"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
-                       Cursor="Hand"
-                       MouseUp="Image_MouseUp"/>
+                       VerticalAlignment="Top">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="LightGray"/>
+                            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                            <Setter Property="Height" Value="24"/>
+                            <Setter Property="Width" Value="24"/>
+                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                            <Setter Property="BorderBrush">
+                                <Setter.Value>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                        <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                        <GradientStop Color="#FF718597" Offset="0.375"/>
+                                        <GradientStop Color="#FF617584" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Grid>
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="CommonStates">
+                                                    <VisualState x:Name="Normal"/>
+                                                    <VisualState x:Name="MouseOver">
+                                                        <Storyboard>
+                                                            <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                        </Storyboard>
+                                                    </VisualState>
+                                                    <VisualState x:Name="Pressed"/>
+                                                    <VisualState x:Name="Disabled"/>
+                                                </VisualStateGroup>
+                                                <VisualStateGroup x:Name="FocusStates">
+                                                    <VisualState x:Name="Focused"/>
+                                                    <VisualState x:Name="Unfocused"/>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                            <Path x:Name="path" Data="M16.647001,25.854004L16.647001,27.22998 23.535002,27.22998 23.535002,25.854004z M19.95999,20.653992C23.093,20.653992 25.632,23.19397 25.632,26.327026 25.632,29.460022 23.093,32 19.95999,32 16.826994,32 14.287001,29.460022 14.287001,26.327026 14.287001,23.19397 16.826994,20.653992 19.95999,20.653992z M3.1970057,18.226013L3.1970057,19.73999 13.822996,19.73999 13.822996,18.226013z M3.1970057,11.664978L3.1970057,13.179016 18.423002,13.179016 18.423002,11.664978z M15.813993,1.072998L20.600996,6.1680298 16.822996,6.1680298C16.264997,6.1680298,15.813993,5.7150269,15.813993,5.15802z M2.1869959,0L14.356001,0 14.356001,5.4390259C14.356001,6.6469727,15.33499,7.6270142,16.542997,7.6270142L21.645994,7.6270142 21.645994,19.299011C21.104002,19.169006 20.540998,19.093018 19.95999,19.093018 15.970991,19.093018 12.725996,22.338013 12.725996,26.327026 12.725996,28.034973 13.324003,29.604004 14.317991,30.843018L2.1869959,30.843018C0.97900381,30.843018,4.0429768E-08,29.864014,0,28.656006L0,2.1870117C4.0429768E-08,0.97900391,0.97900381,0,2.1869959,0z" Stretch="Uniform" Fill="#FFF77700" Width="24" Height="24" RenderTransformOrigin="0.5,0.5">
+                                                <Path.RenderTransform>
+                                                    <TransformGroup>
+                                                        <TransformGroup.Children>
+                                                            <RotateTransform Angle="0" />
+                                                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                        </TransformGroup.Children>
+                                                    </TransformGroup>
+                                                </Path.RenderTransform>
+                                            </Path>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </Grid>
         </Border>
     </DockPanel>
