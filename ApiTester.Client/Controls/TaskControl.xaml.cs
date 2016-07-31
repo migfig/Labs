@@ -51,12 +51,21 @@ namespace ApiTester.Client.Controls
             this.Height = 500;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnRemoveTask_Click(object sender, RoutedEventArgs e)
         {
             var task = (sender as Button).Tag as Task;
             if (MainViewModel.ViewModel.RemoveTask.CanExecute(null))
             {
                 MainViewModel.ViewModel.RemoveTask.Execute(task);
+            }
+        }
+
+        private void btnAddSubtask_Click(object sender, RoutedEventArgs e)
+        {
+            var task = (sender as Button).Tag as Task;
+            if (task.AddSubtask.CanExecute(MainViewModel.ViewModel.SelectedMethod != null))
+            {
+                task.AddSubtask.Execute(MainViewModel.ViewModel.SelectedMethod);
             }
         }
     }

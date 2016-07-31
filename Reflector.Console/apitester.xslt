@@ -14,7 +14,7 @@
       <xsl:attribute name="documentationUrl">
         <xsl:value-of select="concat('http://localhost:1010/',utils:ToLower(utils:TypeName(@name)),'-swagger')"/>
       </xsl:attribute>
-      <setup commandLine="C:\Program Files (x86)\Git\bin\curl.exe">
+      <setup commandLine="C:\Program Files\Git\usr\bin\curl.exe">
         <xsl:attribute name="name">
           <xsl:value-of select="@name"/>
         </xsl:attribute>
@@ -30,15 +30,16 @@
           <header name="X-Header" value="1"/>
         </host>
         <header name="Content-Type" value="application/json" />
-        <buildHeader name="Authorization" provider="ApiTester.Providers.Default">
-          <task name="Authenticate" pattern="auth/authenticate">
-            <parameter name="User" defaultValue="me"/>
-            <parameter name="Password" defaultValue="pwd"/>
-            <task name="GetToken" pattern="auth/token">
-              <parameter name="code" />
+        <header name="Authorization">
+          <buildHeader name="GetHeader" provider="ApiTester.Providers.DefaultProvider">
+            <task name="Authenticate">
+              <task name="GetToken">
+                <resultValue condition="And" propertyName="Token" operator="isNotEqualTo" value="" />
+              </task>
+              <resultValue condition="And" propertyName="Code" operator="isNotEqualTo" value="" />
             </task>
-          </task>
-        </buildHeader>
+          </buildHeader>
+        </header>
         <workflow>
           <xsl:attribute name="name">
             <xsl:value-of select="concat(utils:TypeName(@name),'-apitester-workflow.xml')"/>

@@ -39,7 +39,6 @@
                 BorderThickness="0"
                 Padding="4"
                 Background="{Binding bodyBackground, Converter={StaticResource stringToBrushColorConverter}}">
-
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -142,10 +141,24 @@
                                 Style="{DynamicResource ResourceKey=AddButton}">
                             </Button>
 
-                            <Rectangle Fill="LightGray" Width="2" Height="20"/>
-
                             <Button Command="{Binding RemoveCondition}"
                                 ToolTip="Remove Condition"
+                                Style="{DynamicResource ResourceKey=RemoveButton}">
+                            </Button>
+
+                            <Rectangle Fill="LightGray" Width="2" Height="20"/>
+                            <CheckBox Content="Is Disabled" IsChecked="{Binding Mode=TwoWay, Path=isDisabled}"
+                                      VerticalAlignment="Center"/>
+
+                            <Rectangle Fill="LightGray" Width="2" Height="20"/>
+                            <Button x:Name="btnAddSubtask" Tag="{Binding}"
+                                Click="btnAddSubtask_Click" 
+                                ToolTip="Add SubTask"
+                                Style="{DynamicResource ResourceKey=AddButton}">
+                            </Button>
+
+                            <Button Command="{Binding RemoveSubtask}"
+                                ToolTip="Remove SubTask"
                                 Style="{DynamicResource ResourceKey=RemoveButton}">
                             </Button>
                         </StackPanel>
@@ -157,7 +170,7 @@
                     </DockPanel>
                 </Expander>
 
-                <Button Grid.Row="3" Grid.Column="1" Tag="{Binding}" Click="Button_Click" ToolTip="Remove Task"
+                <Button x:Name="btnRemoveTask" Grid.Row="3" Grid.Column="1" Tag="{Binding}" Click="btnRemoveTask_Click" ToolTip="Remove Task"
                        Style="{DynamicResource ResourceKey=RemoveButton}"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Top">

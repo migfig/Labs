@@ -99,7 +99,6 @@
     public partial class Setup: BaseModel
     {
         private ObservableCollection<Header> headerField;
-        private ObservableCollection<BuildHeader> buildHeaderField;
         private ObservableCollection<Host> hostField;
         private ObservableCollection<workflow> workflowField;
 
@@ -110,7 +109,6 @@
         public Setup()
         {
             headerField = new ObservableCollection<Header>();
-            buildHeaderField = new ObservableCollection<BuildHeader>();
             hostField = new ObservableCollection<Host>();
             workflowField = new ObservableCollection<workflow>();
         }
@@ -126,21 +124,8 @@
             {
                 this.headerField = value;
             }
-        }
+        }        
         
-        [XmlElementAttribute("buildHeader", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public ObservableCollection<BuildHeader> buildHeader
-        {
-            get
-            {
-                return this.buildHeaderField;
-            }
-            set
-            {
-                this.buildHeaderField = value;
-            }
-        }
-
         [XmlElementAttribute("host", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ObservableCollection<Host> host
         {
@@ -264,10 +249,14 @@
     {
 
         private string nameField;
-
         private string valueField;
+        private ObservableCollection<BuildHeader> buildHeaderField;
 
-        
+        public Header()
+        {
+            buildHeaderField = new ObservableCollection<BuildHeader>();
+        }
+
         [XmlAttributeAttribute()]
         public string name
         {
@@ -292,6 +281,19 @@
             set
             {
                 this.valueField = value;
+            }
+        }
+
+        [XmlElementAttribute("buildHeader", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ObservableCollection<BuildHeader> buildHeader
+        {
+            get
+            {
+                return this.buildHeaderField;
+            }
+            set
+            {
+                this.buildHeaderField = value;
             }
         }
     }
@@ -680,6 +682,9 @@
             set
             {
                 this.isDisabledField = value;
+                OnPropertyChanged("bodyBackground");
+                xml = string.Empty;
+                OnPropertyChanged("xml");
             }
         }
 
@@ -714,7 +719,13 @@
         {
             get
             {
-                return hasPassedField ? "#FF8DFD87" : "#FFFCE48A";
+                return isDisabledField 
+                    ? "#FFCDD1CC" //gray tone
+                    : ResultsObject == null
+                        ? "#FFFCE48A" //yellow tone
+                        : hasPassedField 
+                            ? "#FFBCEDB9" //green tone
+                            : "#FFECAA6A"; //orange tone
             }
         }
 
@@ -833,6 +844,57 @@
                     },
                     x => resultValue.Any());
                 return _removeCondition;
+            }
+        }
+
+        RelayCommand _addSubtask;
+        [XmlIgnore]
+        public ICommand AddSubtask
+        {
+            get
+            {
+                _addSubtask = _addSubtask ?? new RelayCommand(
+                    (parameter) => {
+                        var SelectedMethod = parameter as Method;
+                        taskField.Add(new Task
+                        {
+                            name = SelectedMethod.name,
+                            parameter = new ObservableCollection<Parameter>(SelectedMethod.parameter.ToArray()),
+                            resultValue = new ObservableCollection<ResultValue>
+                            {
+                               new ResultValue
+                               {
+                                   condition = eCondition.And,
+                                   propertyName = "Length",
+                                   @operator = eOperator.isGreaterThan,
+                                   value = "0"
+                               }
+                            }
+                        });
+                        xml = string.Empty;
+                        OnPropertyChanged("xml");
+                        ((RelayCommand)RemoveSubtask).RaiseCanExecuteChanged();
+                    },
+                    x => (bool)x.Equals(true));
+                return _addSubtask;
+            }
+        }
+
+        RelayCommand _removeSubtask;
+        [XmlIgnore]
+        public ICommand RemoveSubtask
+        {
+            get
+            {
+                _removeSubtask = _removeSubtask ?? new RelayCommand(
+                    (parameter) => {
+                        task.RemoveAt(task.Count - 1);
+                        xml = string.Empty;
+                        OnPropertyChanged("xml");
+                        ((RelayCommand)RemoveSubtask).RaiseCanExecuteChanged();
+                    },
+                    x => task.Any());
+                return _removeSubtask;
             }
         }
 
@@ -1271,7 +1333,7 @@
         public static string ToHeaders(this Setup setup)
         {
             var headers = new StringBuilder();
-            foreach (var h in setup.header)
+            foreach (var h in setup.header.Where(x => !x.buildHeader.Any()))
             {
                 headers.AppendFormat("-H \"{0}:{1}\" ", h.name, h.value);
             }
@@ -1282,7 +1344,7 @@
         public static string ToHeaders(this Host host)
         {
             var headers = new StringBuilder();
-            foreach (var h in host.header)
+            foreach (var h in host.header.Where(x => !x.buildHeader.Any()))
             {
                 headers.AppendFormat("-H \"{0}:{1}\" ", h.name, h.value);
             }

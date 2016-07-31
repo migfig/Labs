@@ -4,6 +4,7 @@ using Common.Commands;
 using FluentTesting;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
@@ -42,6 +43,11 @@ namespace ApiTester.Wpf.ViewModels
             {
                 _runWorkflowTests = _runWorkflowTests ?? new RelayCommand(
                     (parameter) => {
+                        if(BuildHeaders.CanExecute(null))
+                        {
+                            BuildHeaders.Execute(null);
+                        }
+
                         ToggleSelection.Execute(true);
                         runWorkflowForSelectedMethods(SelectedWorkflowDef);
                     },
@@ -293,8 +299,11 @@ namespace ApiTester.Wpf.ViewModels
             {
                 _buildHeaders = _buildHeaders ?? new RelayCommand(
                     (parameter) => {
+                        buildHeaders();
                     },
-                    x => true);
+                    x => SelectedConfiguration != null 
+                        && SelectedConfiguration.setup.header.Any()
+                        && SelectedConfiguration.setup.header.Any(y => y.buildHeader.Any() && string.IsNullOrEmpty(y.value)));
 
                 return _buildHeaders;
             }
@@ -416,6 +425,18 @@ namespace ApiTester.Wpf.ViewModels
 
 #region run workflow
 
+        private void buildHeaders()
+        {
+            var headers = from h in SelectedConfiguration.setup.header
+                          from bh in h.buildHeader
+                          where bh != null && string.IsNullOrEmpty(h.value)
+                          select h;
+            foreach (var header in headers)
+            {
+                runWorkflowForSelectedMethods(header.buildHeader.First().workflow);
+            }
+        }
+
         private void runWorkflowForSelectedMethods()
         {
             var workflow = XmlHelper<workflow>.Load(
@@ -424,7 +445,7 @@ namespace ApiTester.Wpf.ViewModels
             runWorkflowForSelectedMethods(workflow);
         }
 
-        private void runWorkflowForSelectedMethods(workflow workflow)
+        public void runWorkflowForSelectedMethods(workflow workflow)
         {
             Common.Extensions.TraceLog.Information("Running workflow {name}", SelectedWorkflow.name);
 
@@ -449,6 +470,39 @@ namespace ApiTester.Wpf.ViewModels
             {
                 ExecutedWorkflow = workflow;
 
+                if (SelectedConfiguration.method
+                    .Any(m => m.isValidTest == eValidTest.Passed || m.isValidTest == eValidTest.Failed))
+                {
+                    OnPropertyChanged("MethodsTable");
+                }
+                IsBusy = false;
+            };
+            worker.RunWorkerAsync();
+        }
+
+        public void runWorkflowForSelectedMethods(IEnumerable<Task> tasks)
+        {
+            Common.Extensions.TraceLog.Information("Running {Count} tasks", tasks.Count());
+
+            var worker = new BackgroundWorker();
+            worker.DoWork += (o, s) =>
+            {
+                IsBusy = true;
+
+                try
+                {
+                    foreach (var task in tasks.Where(x => !x.isDisabled))
+                    {
+                        runTask(task);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Common.Extensions.ErrorLog.Error(e, "@ runWorkflowForSelectedMethods");
+                }
+            };
+            worker.RunWorkerCompleted += (o, s) =>
+            {
                 if (SelectedConfiguration.method
                     .Any(m => m.isValidTest == eValidTest.Passed || m.isValidTest == eValidTest.Failed))
                 {

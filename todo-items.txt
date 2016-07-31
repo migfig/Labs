@@ -3,8 +3,8 @@ setup a header 'Workflow Tasks' for task list
 change color of task body background depending on result
 display result value conditions count on task item
 display task results as json value
+improve task editor for task and result values conditions
+display task results as list and/or tree depending on results hierarchy availability
 
 TODO:
 improve ui on workflow items display and selection
-improve task editor for task and result values conditions
-display task results as list and/or tree depending on results hierarchy availability

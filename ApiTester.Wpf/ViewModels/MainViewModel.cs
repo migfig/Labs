@@ -200,9 +200,17 @@ namespace ApiTester.Wpf.ViewModels
                     table.Rows.Add(row);
                 }
 
-                foreach (var h in SelectedConfiguration.setup.buildHeader)
+
+                var headers = from h in SelectedConfiguration.setup.header
+                              from bh in h.buildHeader
+                              where bh != null && string.IsNullOrEmpty(h.value)
+                              select h;
+                foreach (var h in headers)
                 {
-                    table.Rows.Add(buildHeaderRow(h, table));
+                    foreach (var bh in h.buildHeader)
+                    {
+                        table.Rows.Add(buildHeaderRow(bh, table));
+                    }
                 }
 
                 return table;
