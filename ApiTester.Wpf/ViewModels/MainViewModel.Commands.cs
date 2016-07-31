@@ -552,6 +552,24 @@ namespace ApiTester.Wpf.ViewModels
 
                 task.ResultsObject = loadResults(type, outFile);
                 method.isValidTest = task.IsValidTest ? eValidTest.Passed : eValidTest.Failed;
+
+                if(method.isValidTest.Equals(eValidTest.Passed) && task.isHeaderBuilder)
+                {
+                    var headers = from h in SelectedConfiguration.setup.header
+                                 from hb in h.buildHeader
+                                 where h.buildHeader.Any()
+                                 select h;
+                    var header = (from h in headers
+                                 from bh in h.buildHeader
+                                 let tsk = bh.workflow.FirstOrDefault(x => x.name.Equals(task.name))
+                                 where tsk != null
+                                 select h).FirstOrDefault();
+                    if(null != header)
+                    {
+                        header.value = task.GetInstance()
+                            .GetPropertyValue(header.propertyName).ToString();
+                    }
+                }
             }
         }
 

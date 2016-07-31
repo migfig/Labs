@@ -48,6 +48,11 @@ namespace FluentTesting
             return this;
         }
 
+        public object GetPropertyValue(string propertyName)
+        {
+            return Target.GetType().GetProperty(propertyName).GetValue(Target);
+        }
+
         protected void CheckResults()
         {
             ResultsPassed = true;

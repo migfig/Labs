@@ -250,6 +250,7 @@
 
         private string nameField;
         private string valueField;
+        private string propertyNameField;
         private ObservableCollection<BuildHeader> buildHeaderField;
 
         public Header()
@@ -269,7 +270,6 @@
                 this.nameField = value;
             }
         }
-
         
         [XmlAttributeAttribute()]
         public string value
@@ -296,8 +296,22 @@
                 this.buildHeaderField = value;
             }
         }
+
+        [XmlAttributeAttribute()]
+        public string propertyName
+        {
+            get
+            {
+                return this.propertyNameField;
+            }
+            set
+            {
+                this.propertyNameField = value;
+            }
+        }
+
     }
-    
+
     [XmlTypeAttribute(AnonymousType = true)]
     public partial class BuildHeader: BaseModel
     {
@@ -410,6 +424,7 @@
         private Task parentTaskField;
         private bool isDisabledField;
         private bool hasPassedField;
+        private bool isHeaderBuilderField;
         private string xmlField;
 
         public Task()
@@ -438,6 +453,12 @@
             }
         }
 
+        private Instance _instance;
+        public Instance GetInstance()
+        {
+            return _instance;
+        }
+
         [ColumnIgnore]
         [EditColumnIgnore]
         [XmlIgnore]
@@ -450,10 +471,10 @@
 
                 if (resultValue.Any())
                 {
-                    var instance = new Instance("Verifying results for Task [" + this.name + "] ", ResultsObject);
+                    _instance = new Instance("Verifying results for Task [" + this.name + "] ", ResultsObject);
                     foreach (var val in resultValue)
                     {
-                        var item = instance.VerifyProperty(val.propertyName);
+                        var item = _instance.VerifyProperty(val.propertyName);
                         switch (val.@operator)
                         {
                             case eOperator.isEqualTo:
@@ -477,7 +498,7 @@
                         }
                     }
 
-                    Passed = instance.GetResults().ResultsPassed;
+                    Passed = _instance.GetResults().ResultsPassed;
                     return hasPassedField;
                 }
 
@@ -685,6 +706,20 @@
                 OnPropertyChanged("bodyBackground");
                 xml = string.Empty;
                 OnPropertyChanged("xml");
+            }
+        }
+
+        [ColumnIgnore]
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool isHeaderBuilder
+        {
+            get
+            {
+                return this.isHeaderBuilderField;
+            }
+            set
+            {
+                this.isHeaderBuilderField = value;
             }
         }
 
