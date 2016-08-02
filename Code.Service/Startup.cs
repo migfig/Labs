@@ -44,6 +44,16 @@ namespace Code.Service
                 defaults: new { id = string.Empty }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "AuthenticateApi",
+                routeTemplate: "api/{controller}/authenticate"
+            );
+            config.Routes.MapHttpRoute(
+                name: "TokenAuthenticateApi",
+                routeTemplate: "api/{controller}/token/{code}",
+                defaults: new { code = string.Empty }
+            );
+
             builder.UseWebApi(config);
         }
     }

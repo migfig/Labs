@@ -10,14 +10,9 @@ namespace Common.Controllers
     [RoutePrefix("api/authentication")]
     public class AuthenticationController: ApiController
     {
-        /// <summary>
-        /// Add Category
-        /// </summary>
-        /// <param name="request">Category values</param>
-        /// <returns>added Category</returns>
-        [Route("token"), HttpPost]
+        [Route("authenticate"), HttpPost]
         [ResponseType(typeof(AuthenticationResponse))]
-        public IHttpActionResult GetToken([FromBody] AuthenticationRequest request)
+        public IHttpActionResult Authenticate([FromBody] AuthenticationRequest request)
         {
             if(request == null || !request.IsValid())
                 return BadRequest("Invalid request provided");
@@ -26,10 +21,28 @@ namespace Common.Controllers
                 .Subtract(new DateTime(1970, 1, 1))
                 .TotalSeconds.ToString();
 
-            return Created("Token Created", new AuthenticationResponse
+            return Created("Authorization Code Created", new AuthenticationResponse
+            {
+                Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(expires)),
+                ExpirationDate = expires
+            });
+        }
+
+        [Route("token/{code:string}"), HttpPost]
+        [ResponseType(typeof(TokenResponse))]
+        public IHttpActionResult GetToken([FromUri] string code, [FromBody] TokenRequest request)
+        {
+            if (request == null || !request.IsValid())
+                return BadRequest("Invalid request provided");
+
+            var expires = DateTime.UtcNow.AddMinutes(30)
+                .Subtract(new DateTime(1970, 1, 1))
+                .TotalSeconds.ToString();
+
+            return Created("Token Granted", new TokenResponse
             {
                 Token = Convert.ToBase64String(Encoding.UTF8.GetBytes(expires)),
-                ExpiretionDate = expires
+                ExpirationDate = expires
             });
         }
     }

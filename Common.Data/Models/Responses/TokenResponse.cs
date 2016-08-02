@@ -1,9 +1,9 @@
 ﻿
 namespace Common.Data.Models.Responses
 {
-    public class AuthenticationResponse
+    public class TokenResponse
     {
-        public string Code { get; set; }
+        public string Token { get; set; }
         public string ExpirationDate { get; set; }
     }
 }

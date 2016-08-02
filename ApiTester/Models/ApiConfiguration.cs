@@ -1314,16 +1314,29 @@
         }
 
         public static string Json(this Task task)
-        {
+        {            
             var parameter = task.parameter.FirstOrDefault(p => p.location.ToLower() == "body");
-            if(null != parameter && !string.IsNullOrEmpty(parameter.jsonObject))
-                    return parameter.jsonObject
-                        .Replace(Environment.NewLine, string.Empty)
-                        .Replace("\n", string.Empty)
-                        .Replace("{", "{{")
-                        .Replace("}", "}}")
-                        .Replace("\"", "\\\"")
-                        .Trim();
+            if (null != parameter && !string.IsNullOrEmpty(parameter.jsonObject))
+            {
+                var value = string.Empty;
+                if (!string.IsNullOrEmpty(parameter.valueFromProperty) && task.ParentTask != null)
+                {
+                    value = getDefaultValue(parameter, task.ParentTask);
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        parameter.jsonObject = parameter.jsonObject
+                            .Replace("$"+parameter.valueFromProperty+"$", value);
+                    }
+                }
+
+                return parameter.jsonObject
+                    .Replace(Environment.NewLine, string.Empty)
+                    .Replace("\n", string.Empty)
+                    .Replace("{", "{{")
+                    .Replace("}", "}}")
+                    .Replace("\"", "\\\"")
+                    .Trim();
+            }
 
             return string.Empty;
         }
