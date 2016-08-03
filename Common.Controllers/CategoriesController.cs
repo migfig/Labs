@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Linq;
+using System.Web.Http.Controllers;
 
 namespace Common.Controllers
 {
@@ -23,9 +24,9 @@ namespace Common.Controllers
         public CategoriesController(IRepository<Category> repository)
         {
             _repository = repository;
-            _repository.Load();
+            _repository.Load();            
         }
-
+        
         /// <summary>
         /// Get Categories list
         /// </summary>

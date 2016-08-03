@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using System.Text;
+
 namespace Common.Data.Models.Requests
 {
     public class TokenRequest
@@ -8,8 +10,12 @@ namespace Common.Data.Models.Requests
 
         public bool IsValid()
         {
+            var codeDate = DateTime.UtcNow;
+            
             return !string.IsNullOrEmpty(TargetUrl) 
-                && !string.IsNullOrEmpty(Code);
+                && !string.IsNullOrEmpty(Code)
+                && DateTime.TryParse(Encoding.UTF8.GetString(Convert.FromBase64String(Code)), out codeDate)
+                && DateTime.UtcNow.Subtract(codeDate).Seconds <= 60;
         }
     }
 }

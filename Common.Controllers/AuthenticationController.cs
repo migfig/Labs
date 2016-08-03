@@ -17,14 +17,12 @@ namespace Common.Controllers
             if(request == null || !request.IsValid())
                 return BadRequest("Invalid request provided");
 
-            var expires = DateTime.UtcNow.AddMinutes(30)
-                .Subtract(new DateTime(1970, 1, 1))
-                .TotalSeconds.ToString();
+            var expires = DateTime.UtcNow.AddMinutes(1).ToString("yyyy-MM-dd hh:mm:ss");
 
             return Created("Authorization Code Created", new AuthenticationResponse
             {
                 Code = Convert.ToBase64String(Encoding.UTF8.GetBytes(expires)),
-                ExpirationDate = expires
+                TargetUrl = request.TargetUrl
             });
         }
 
@@ -35,14 +33,13 @@ namespace Common.Controllers
             if (request == null || !request.IsValid())
                 return BadRequest("Invalid request provided");
 
-            var expires = DateTime.UtcNow.AddMinutes(30)
-                .Subtract(new DateTime(1970, 1, 1))
-                .TotalSeconds.ToString();
+            var expires = DateTime.UtcNow.AddMinutes(30).ToString("yyyy-MM-dd hh:mm:ss");
 
             return Created("Token Granted", new TokenResponse
             {
                 Token = Convert.ToBase64String(Encoding.UTF8.GetBytes(expires)),
-                ExpirationDate = expires
+                ExpirationDate = expires,
+                TargetUrl = request.TargetUrl
             });
         }
     }

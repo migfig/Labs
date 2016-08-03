@@ -18,6 +18,7 @@
     using Common.Commands;
     using System.Windows.Input;
     using System.Collections.Generic;
+
     [XmlTypeAttribute(AnonymousType = true)]
     [XmlRootAttribute(Namespace = "", IsNullable = false)]
     public partial class apiConfiguration: BaseModel
