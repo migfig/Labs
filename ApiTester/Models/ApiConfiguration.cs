@@ -243,6 +243,11 @@
                 this.headerField = value;
             }
         }
+
+        public override string ToString()
+        {
+            return this.name;
+        }
     }
 
     [XmlTypeAttribute(AnonymousType = true)]

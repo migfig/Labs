@@ -123,9 +123,18 @@
                     </Fluent:InRibbonGallery>
                 </Fluent:RibbonGroupBox>
 
+                <Fluent:RibbonGroupBox Header="Hosts" Name="PPPP">
+                    <Fluent:InRibbonGallery ItemWidth="110" ItemHeight="56" ResizeMode="Both"
+                                      MinItemsInRow="1" MaxItemsInRow="1"                             
+                                      ItemTemplate="{DynamicResource ItemCardTemplate}"
+                                      ItemsSource="{Binding SelectedConfiguration.setup.host}"
+                                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedHost}">
+                    </Fluent:InRibbonGallery>
+                </Fluent:RibbonGroupBox>
+
                 <Fluent:RibbonGroupBox Header="Commands">
-                    <Fluent:Button Header="Toggle Selection" Command="{Binding ToggleSelection}" Icon="Images\List.png" LargeIcon="Images\List.png"/>
-                    <Fluent:Button Header="Build Headers" Command="{Binding BuildHeaders}" Icon="Images\html.png" LargeIcon="Images\html.png"/>
+                    <Fluent:Button Header="Toggle Selection" Command="{Binding ToggleSelection}" Icon="Images\List.png" LargeIcon="Images\List.png" Visibility="Collapsed"/>
+                    <Fluent:Button Header="Build Headers" Command="{Binding BuildHeaders}" Icon="Images\html.png" LargeIcon="Images\html.png" Visibility="Collapsed"/>
                     <Fluent:Button Header="Add Task" Command="{Binding AddTask}" Icon="Images\addtask.png" LargeIcon="Images\addtask.png"/>
                     <Fluent:Button Header="Add Workflow" Command="{Binding AddWorkflow}" Icon="Images\workflow.png" LargeIcon="Images\workflow.png"/>
                     <Fluent:Button Header="Save" Command="{Binding SaveWorkflowItems}" Icon="Images\save.png" LargeIcon="Images\save.png"/>
