@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<workflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Categories-apitester-workflow1.xml">
+  <task name="GetCategories" isDisabled="false">
+    <resultValue condition="And" propertyName="Length" operator="isGreaterThan" value="0" />
+  </task>
+  <task name="GetCategory" isDisabled="true">
+    <parameter name="id" type="System.Int32" location="query" defaultValue="1" />
+    <resultValue condition="And" propertyName="Id" operator="isNotEqualTo" value="0" />
+  </task>
+</workflow>

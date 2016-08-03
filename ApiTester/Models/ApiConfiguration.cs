@@ -1381,7 +1381,7 @@
         public static string ToHeaders(this Setup setup)
         {
             var headers = new StringBuilder();
-            foreach (var h in setup.header.Where(x => !x.buildHeader.Any()))
+            foreach (var h in setup.header.Where(x => !x.buildHeader.Any() || !string.IsNullOrEmpty(x.value)))
             {
                 headers.AppendFormat("-H \"{0}:{1}\" ", h.name, h.value);
             }
@@ -1392,7 +1392,7 @@
         public static string ToHeaders(this Host host)
         {
             var headers = new StringBuilder();
-            foreach (var h in host.header.Where(x => !x.buildHeader.Any()))
+            foreach (var h in host.header.Where(x => !x.buildHeader.Any() || !string.IsNullOrEmpty(x.value)))
             {
                 headers.AppendFormat("-H \"{0}:{1}\" ", h.name, h.value);
             }

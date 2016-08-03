@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<workflow name="Common.Controllers" xmlns:utils="urn:schemas-reflector-com:xslt">
+  <task name="GetCategories">
+    <resultValue condition="And" propertyName="Length" operator="isNotEqualTo" value="0" />
+  </task>
+  <task name="GetCategory">
+    <parameter name="id" type="System.Int32" location="query" defaultValue="0" />
+    <resultValue condition="And" propertyName="Id" operator="isNotEqualTo" value="" />
+  </task>
+  <task name="AddCategory">
+    <parameter name="request" type="Common.Data.Models.Requests.CategoryRequest" location="body">
+      <jsonObject><![CDATA[
+          {
+    "Name": "Name"
+          }
+          ]]></jsonObject>
+    </parameter>
+    <resultValue condition="And" propertyName="Id" operator="isNotEqualTo" value="" />
+  </task>
+  <task name="UpdateCategory">
+    <parameter name="id" type="System.Int32" location="query" defaultValue="0" />
+    <parameter name="request" type="Common.Data.Models.Requests.CategoryRequest" location="body">
+      <jsonObject><![CDATA[
+          {
+    "Name": "Name"
+          }
+          ]]></jsonObject>
+    </parameter>
+    <resultValue condition="And" propertyName="Id" operator="isNotEqualTo" value="" />
+  </task>
+  <task name="DeleteCategory">
+    <parameter name="id" type="System.Int32" location="query" defaultValue="0" />
+    <resultValue condition="And" propertyName="Id" operator="isNotEqualTo" value="" />
+  </task>
+</workflow>

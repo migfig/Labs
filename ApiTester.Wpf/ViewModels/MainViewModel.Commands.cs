@@ -43,13 +43,19 @@ namespace ApiTester.Wpf.ViewModels
             {
                 _runWorkflowTests = _runWorkflowTests ?? new RelayCommand(
                     (parameter) => {
-                        if(BuildHeaders.CanExecute(null))
-                        {
-                            BuildHeaders.Execute(null);
-                        }
-
                         ToggleSelection.Execute(true);
-                        runWorkflowForSelectedMethods(SelectedWorkflowDef);
+
+                        var requiresBuildingHeaders = BuildHeaders.CanExecute(null);
+                        if (requiresBuildingHeaders)
+                        {
+                            buildHeaders(() => {
+                                runWorkflowForSelectedMethods(SelectedWorkflowDef);
+                            });
+                        }
+                        else
+                        {
+                            runWorkflowForSelectedMethods(SelectedWorkflowDef);
+                        }
                     },
                     x => SelectedConfiguration != null
                         && SelectedWorkflowDef != null
@@ -425,7 +431,7 @@ namespace ApiTester.Wpf.ViewModels
 
 #region run workflow
 
-        private void buildHeaders()
+        private void buildHeaders(Action whenDone = null)
         {
             var headers = from h in SelectedConfiguration.setup.header
                           from bh in h.buildHeader
@@ -433,7 +439,7 @@ namespace ApiTester.Wpf.ViewModels
                           select h;
             foreach (var header in headers)
             {
-                runWorkflowForSelectedMethods(header.buildHeader.First().workflow);
+                runWorkflowForSelectedMethods(header.buildHeader.First().workflow, whenDone);
             }
         }
 
@@ -480,7 +486,7 @@ namespace ApiTester.Wpf.ViewModels
             worker.RunWorkerAsync();
         }
 
-        public void runWorkflowForSelectedMethods(IEnumerable<Task> tasks)
+        public void runWorkflowForSelectedMethods(IEnumerable<Task> tasks, Action whenDone = null)
         {
             Common.Extensions.TraceLog.Information("Running {Count} tasks", tasks.Count());
 
@@ -509,6 +515,11 @@ namespace ApiTester.Wpf.ViewModels
                     OnPropertyChanged("MethodsTable");
                 }
                 IsBusy = false;
+
+                if(null != whenDone)
+                {
+                    whenDone.Invoke();
+                }
             };
             worker.RunWorkerAsync();
         }
@@ -561,8 +572,8 @@ namespace ApiTester.Wpf.ViewModels
                                  select h;
                     var header = (from h in headers
                                  from bh in h.buildHeader
-                                 let tsk = bh.workflow.FirstOrDefault(x => x.name.Equals(task.name))
-                                 where tsk != null
+                                 from t in bh.workflow
+                                 where t != null && headerFound(t, task.name)
                                  select h).FirstOrDefault();
                     if(null != header)
                     {
@@ -571,6 +582,19 @@ namespace ApiTester.Wpf.ViewModels
                     }
                 }
             }
+        }
+
+        private bool headerFound(Task task, string taskName)
+        {
+            if (task.name.Equals(taskName)) return true;
+
+            foreach(var t in task.task)
+            {
+                var found = headerFound(t, taskName);
+                if (found) return true;
+            }
+
+            return false;
         }
 
         private object loadResults(Type type, string fileName)

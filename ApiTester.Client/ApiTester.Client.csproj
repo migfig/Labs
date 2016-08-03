@@ -323,7 +323,15 @@
   <ItemGroup>
     <Resource Include="Images\workflow.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Samples\Categories-apitester-workflow.xml" />
+    <None Include="Samples\Categories-apitester-workflow1.xml" />
+    <None Include="Samples\Categories-apitester.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y $(ProjectDir)Samples\*.* C:\Code\RelatedRecords.Tests\Binaries\output</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
