@@ -12,6 +12,7 @@ namespace Common.Controllers
         Task<bool> RemoveItem(string id);
     }
 
+    [IgnoreReflection]
     public class ComponentsController: ApiController
     {
         private readonly ICodeServices _codeServices;  

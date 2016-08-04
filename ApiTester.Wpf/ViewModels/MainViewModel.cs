@@ -156,20 +156,22 @@ namespace ApiTester.Wpf.ViewModels
 
         private void loadAssembly(string source)
         {
-            var asm = getAssembly(source);
+            if (!_assemblies.ContainsKey(source))
+            {
+                var asm = getAssembly(source);
 
-            if(null != asm)
-                _assemblies.Add(source, asm);
+                if (null != asm)
+                    _assemblies.Add(source, asm);
+            }
         }
 
         private Assembly getAssembly(string source)
         {
             try {
-                if (_assemblies.ContainsKey(source)) return null;
-
                 return Assembly.LoadFrom(source);
-            } catch(Exception)
+            } catch(Exception e)
             {
+                Common.Extensions.ErrorLog.Error(e, "@ getAssembly {source}", source);
                 return null;
             }
         }
@@ -502,8 +504,12 @@ namespace ApiTester.Wpf.ViewModels
                     }
 
                     foreach (var file in Directory.GetFiles(BinariesPath, "*.dll"))
-                    {                        
-                        _availableAssemblies.Add(getAssembly(file));
+                    {
+                        var asm = getAssembly(file);
+                        if (null != asm)
+                        {
+                            _availableAssemblies.Add(asm);
+                        }
                     }
 
                     list = _availableAssemblies;

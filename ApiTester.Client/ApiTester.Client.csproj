@@ -47,6 +47,10 @@
     <Reference Include="Serilog.FullNetFx">
       <HintPath>..\packages\Serilog.1.5.7\lib\net45\Serilog.FullNetFx.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Miscelaneous\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -71,6 +75,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\ApiTester.Wpf\Converters\IntToVisibilityConverter.cs">
+      <Link>Converters\IntToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\ApiTester.Wpf\Views\LoadAssembly.xaml.cs">
+      <Link>Views\LoadAssembly.xaml.cs</Link>
+      <DependentUpon>LoadAssembly.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TaskControl.xaml.cs">
       <DependentUpon>TaskControl.xaml</DependentUpon>
     </Compile>
@@ -83,6 +94,11 @@
     </Page>
     <Page Include="..\ApiTester.Wpf\Themes\Generic.xaml">
       <Link>Themes\Generic.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\ApiTester.Wpf\Views\LoadAssembly.xaml">
+      <Link>Views\LoadAssembly.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

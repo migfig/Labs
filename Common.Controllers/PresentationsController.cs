@@ -6,6 +6,7 @@ using Trainer.Domain;
 
 namespace Common.Controllers
 {
+    [IgnoreReflection]
     public class PresentationsController: ApiController
     {
         private readonly IGenericServices<Presentation> _codeServices;  

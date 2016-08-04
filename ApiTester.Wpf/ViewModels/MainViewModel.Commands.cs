@@ -242,21 +242,13 @@ namespace ApiTester.Wpf.ViewModels
         {
             get
             {
-#if API_REFLECTOR
                 _loadConfiguration = _loadConfiguration ?? new RelayCommand(
                     (parameter) => {
                         new LoadAssembly().ShowDialog();
                         OnPropertyChanged("Configurations");
                     },
                     x => true);
-#else
-                _loadConfiguration = _loadConfiguration ?? new RelayCommand(
-                    (parameter) => {
-                        //new LoadAssembly().ShowDialog();
-                        //OnPropertyChanged("Configurations");
-                    },
-                    x => true);
-#endif
+
                 return _loadConfiguration;
             }
         }
