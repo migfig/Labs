@@ -68,8 +68,8 @@ namespace Trainer.ViewModels
         public void GotoAbout() =>
             NavigationService.Navigate(typeof(Views.SettingsPage), 2);
 
-        public void GotoSlides(Presentation presentation) =>
-            NavigationService.Navigate(typeof(Views.SlidePage), Presentations.First(x => x.Title.Equals(presentation.Title)).Slide.First().Title);
+        public void GotoSlides(string title) =>
+            NavigationService.Navigate(typeof(Views.SlidePage), new { Title = title });
     }
 }
 

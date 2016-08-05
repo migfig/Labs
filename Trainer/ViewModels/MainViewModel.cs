@@ -34,5 +34,7 @@ namespace Trainer.ViewModels
                 action.Invoke(_presentations);
             }
         }
+
+        public string SelectedPresentationTitle { get; set; }
     }
 }
