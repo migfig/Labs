@@ -15,19 +15,19 @@ namespace Trainer.ViewModels
         public static MainViewModel ViewModel { get { return _viewModel; } }
 
         private ObservableCollection<Presentation> _presentations;
-        public void GetPresentations(Action<ObservableCollection<Presentation>> action)
+        public void GetPresentations(Action<ObservableCollection<Presentation>> action = null)
         {
             if (null == _presentations)
             {
                 LoadPresentations(action);
             }
-            else
+            else if(action != null)
             {
                 action.Invoke(_presentations);
             }  
         }
 
-        private async void LoadPresentations(Action<ObservableCollection<Presentation>> action)
+        private async void LoadPresentations(Action<ObservableCollection<Presentation>> action = null)
         {
             using (var service = ApiServiceFactory.CreateService<Presentation>())
             {
@@ -40,7 +40,8 @@ namespace Trainer.ViewModels
                         _presentations.Add(defaultPresentation);
                     }
                 }
-                action.Invoke(_presentations);
+
+                if(action != null) action.Invoke(_presentations);
             }
         }
 

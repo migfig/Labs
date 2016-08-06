@@ -355,7 +355,7 @@ namespace Plugable.Sample {
   <Slide Title="Q &amp; A" Margin="-200,0,0,0">
     <RichTextBlock FontSize="40" FontWeight="DemiBold">
       <Paragraph>
-        <Bold>Questions &amp; Answers</Bold>
+        <Bold>Questions &amp; Answers!</Bold>
       </Paragraph>
     </RichTextBlock>
   </Slide>

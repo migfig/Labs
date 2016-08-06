@@ -138,15 +138,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Help.htm" />
+    <Content Include="Images\appcelerator.png" />
     <Content Include="Images\blue-stripes.png" />
     <Resource Include="Images\component.png" />
     <Content Include="Images\cyan-clothes.png" />
     <Content Include="Images\gray-perspective.png" />
     <Content Include="Images\green-clothes.png" />
+    <Content Include="Images\green-frame-services.png" />
+    <Content Include="Images\green-frame-viewer.png" />
     <Content Include="Images\green-frame.png" />
     <Content Include="Images\green-stripes.png" />
     <Content Include="Images\herbs.png" />
     <Content Include="Images\orange-stripes.png" />
+    <Content Include="Images\services-console.png" />
     <Content Include="Presentations\default.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />

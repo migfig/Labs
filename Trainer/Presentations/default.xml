@@ -9,7 +9,7 @@
     <RichTextBlock FontSize="16">
       <Paragraph>This application is intended to be a developer's trainer tool for speeding up the insertion or review of code snippets while doing a training session. Is required to have Visual Studio loaded with the proper trainer packages installed and open and related services running.</Paragraph>
       <Paragraph />
-      <Paragraph>To fully take advantage of this application, download the Trainer Visual Studio Packages and its related Services from github repository:</Paragraph>
+      <Paragraph>To fully take advantage of this application, download the Trainer Visual Studio Packages and its related Services from github repository.</Paragraph>
       <Paragraph />
       <Paragraph>
         <Bold>Packages</Bold>
@@ -29,7 +29,48 @@
       </Paragraph>
     </RichTextBlock>
   </Slide>
-  <Slide Title="Component controls in Slides" Margin="-200,0,0,0">
+  <Slide Title="Web API Integration" Padding="100,-150,200,0" Image="ms-appx:///Images/green-frame-services.png">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Services</Bold>
+      </Paragraph>
+    </RichTextBlock>
+    <RichTextBlock FontSize="16">
+      <Paragraph>The Trainer Assistant retrieves presentations from REST services available through a TopShelf console hosted using OWIN. Support for retrieving presentations from Azure and AWS services is going to be developed.</Paragraph>
+      <Paragraph />
+      <Paragraph>To fully take advantage of this application, download the Trainer related Services from github repository.</Paragraph>
+      <Paragraph />      
+      <Paragraph>
+        <Bold>Download</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Hyperlink NavigateUri="https://github.com/migfig/Labs/tree/master/Code.Service">Code.Service</Hyperlink>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Visual Studio Integration" Padding="100,-200,200,0" Image="ms-appx:///Images/green-frame-viewer.png">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Services</Bold>
+      </Paragraph>
+    </RichTextBlock>
+    <RichTextBlock FontSize="16">
+      <Paragraph>The Trainer Assistant sends REST commands to Visual Studio trainer package. It is required this package is loaded into your Visual Studio session.</Paragraph>
+      <Paragraph />
+      <Paragraph>To fully take advantage of this application, download the Trainer Visual Studio Packages from github repository.</Paragraph>      
+      <Paragraph />
+      <Paragraph>
+        <Bold>Download</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Hyperlink NavigateUri="https://github.com/migfig/Labs/tree/master/Log.Visor.VStudio">Log.Visor.VStudio</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Hyperlink NavigateUri="https://github.com/migfig/Labs/tree/master/Trainer.Wpf.VStudio.Tools">Trainer.Wpf.VStudio.Tools</Hyperlink>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Component controls in Slides..." Margin="-200,0,0,0">
     <RichTextBlock FontSize="20" FontWeight="DemiBold">
       <Paragraph>
         <Bold>Sample Component code hosted in the Slide</Bold>
@@ -60,5 +101,59 @@
   }]]>
       </Code>
     </Component>
+  </Slide>
+  <Slide Title="One more slide..." Margin="-200,0,0,0">
+    <RichTextBlock FontSize="18" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Add as much Slides as you need....</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="References - sample slide" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="16" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>UWP Apps with T10</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://aka.ms/Template10">http://aka.ms/Template10</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Windsor Castle DI</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://www.castleproject.org">http://www.castleproject.org</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>TopShelf Services</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://topshelf-project.com">http://topshelf-project.com</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>OWIN Self-Hosting</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="https://www.nuget.org/packages/Microsoft.Owin.SelfHost">https://www.nuget.org/packages/Microsoft.Owin.SelfHost</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Visual Studio Extensibility</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="https://www.safaribooksonline.com">Microsoft Visual Studio 2015 Unleashed - Safari Books Online</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>MEF Composition</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://aka.ms/Template10">Fundamentals of the Managed Extensibility Framework - Safari Books Online</Hyperlink>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Q &amp; A - sample slide" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="40" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Questions &amp; Answers!</Bold>
+      </Paragraph>
+    </RichTextBlock>
   </Slide>
 </Presentation>

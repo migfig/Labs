@@ -13,13 +13,27 @@ namespace Trainer.ViewModels
     {
         public MainPageViewModel()
         {
-            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
+                IsBusy = true;
             }
 
-            MainViewModel.ViewModel.GetPresentations((items) => Presentations = items);
+
+            MainViewModel.ViewModel.GetPresentations((items) => {
+                Presentations = items;
+                IsBusy = false;
+                });
         }
 
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                Set(ref _isBusy, value);
+            }
+        }
         private ObservableCollection<Presentation> _presentations;
         public ObservableCollection<Presentation> Presentations
         {

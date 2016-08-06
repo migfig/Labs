@@ -60,6 +60,14 @@
 
         </controls:PageHeader>
 
+        <ProgressRing IsActive="{x:Bind Mode=TwoWay, Path=ViewModel.IsBusy}" 
+                    Width="50" Height="50"
+                    Visibility="Visible"
+                    RelativePanel.AlignBottomWithPanel="True"
+                    RelativePanel.AlignHorizontalCenterWithPanel="True"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"                      
+                    RelativePanel.Below="pageHeader"/>
+
         <ListView ItemsSource="{x:Bind Mode=OneWay, Path=ViewModel.Presentations}"
                   Padding="12,8,0,0"
                   RelativePanel.AlignBottomWithPanel="True"
