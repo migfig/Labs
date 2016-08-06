@@ -1,10 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Presentation Title="Trainer Assistant" Image="ms-appx:///Images/cyan-clothes.png">
-  <Slide Title="Presentation Services">
+<Presentation Title="Trainer Assistant" Image="ms-appx:///Images/green-frame.png">
+  <Slide Title="Trainer Assistant" Padding="100,0,200,0">
     <RichTextBlock FontSize="20" FontWeight="DemiBold">
       <Paragraph>
-        <Bold>Sample Slide</Bold>
+        <Bold>Description</Bold>
       </Paragraph>
     </RichTextBlock>
+    <RichTextBlock FontSize="16">
+      <Paragraph>This application is intended to be a developer's trainer tool for speeding up the insertion or review of code snippets while doing a training session. Is required to have Visual Studio loaded with the proper trainer packages installed and open and related services running.</Paragraph>
+      <Paragraph />
+      <Paragraph>To fully take advantage of this application, download the Trainer Visual Studio Packages and its related Services from github repository:</Paragraph>
+      <Paragraph />
+      <Paragraph>
+        <Bold>Packages</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Hyperlink NavigateUri="https://github.com/migfig/Labs/tree/master/Log.Visor.VStudio">Log.Visor.VStudio</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Hyperlink NavigateUri="https://github.com/migfig/Labs/tree/master/Trainer.Wpf.VStudio.Tools">Trainer.Wpf.VStudio.Tools</Hyperlink>
+      </Paragraph>
+      <Paragraph />
+      <Paragraph>
+        <Bold>Services</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Hyperlink NavigateUri="https://github.com/migfig/Labs/tree/master/Code.Service">Code.Service</Hyperlink>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Component controls in Slides" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Sample Component code hosted in the Slide</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4"></Paragraph>
+    </RichTextBlock>
+    <Component Id="936C7C94-F4E8-4A9B-AD94-8FE8EBEC2876" Name="MEF HostControl" IsBrowsable="false" Action="None" TargetFile="PlugableWindow.cs" TargetProject="Visor.VStudio">
+      <Code>
+        <![CDATA[ public interface IChildWindow
+  {
+      UserControl Content { get; }
+      void SetParentWindow(IPlugableWindow window);
+  }
+
+  public interface ITitledWindow
+  {
+      string Title { get; }
+  }
+
+  public interface IPlugableWindow
+  {
+      string ProgId { get; }
+      void Attach();
+      DTE2 Dte { get; set; }
+      void Log(string format, params string[] message);
+      bool AddCode(Component component);
+      string ViewCode(ViewCodeArgs e);
+  }]]>
+      </Code>
+    </Component>
   </Slide>
 </Presentation>
