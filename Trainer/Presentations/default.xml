@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Presentation Title="Trainer Assistant" Image="ms-appx:///Images/cyan-clothes.png">
+  <Slide Title="Presentation Services">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Sample Slide</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+</Presentation>
