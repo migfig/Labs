@@ -4,6 +4,8 @@ using Log.Common.Services;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Template10.Services.DialogService;
+using System;
 
 namespace Trainer.ViewModels
 {
@@ -21,7 +23,18 @@ namespace Trainer.ViewModels
 
             using (var service = ApiServiceFactory.CreateService<Components>(Services.SettingsServices.SettingsService.Instance.CodeServicesUrl))
             {
-                return await service.AddItem(list);
+                var result = false;
+                try
+                {
+                    result = await service.AddItem(list);
+                }
+                catch (Exception) {; }
+
+                if (!result)
+                {
+                    await new DialogService().ShowAsync(string.Format("Make sure Services are installed and running at url {0}. See About page for details.", Services.SettingsServices.SettingsService.Instance.CodeServicesUrl), "Unsuccessful Operation");
+                }
+                return result;
             }
         }
 
@@ -31,7 +44,17 @@ namespace Trainer.ViewModels
 
             using (var service = ApiServiceFactory.CreateService<Components>(Services.SettingsServices.SettingsService.Instance.CodeServicesUrl))
             {
-                return await service.AddItem(list);
+                var result = false;
+                try
+                {
+                    result = await service.AddItem(list);
+                } catch(Exception) {;}
+
+                if (!result)
+                {
+                    await new DialogService().ShowAsync(string.Format("Make sure Services are installed and running at url {0}. See About page for details.", Services.SettingsServices.SettingsService.Instance.CodeServicesUrl), "Unsuccessful Operation");
+                }
+                return result;
             }
         }
     }

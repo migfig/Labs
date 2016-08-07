@@ -77,7 +77,7 @@
       </Paragraph>
       <Paragraph TextIndent="4"></Paragraph>
     </RichTextBlock>
-    <Component Id="936C7C94-F4E8-4A9B-AD94-8FE8EBEC2876" Name="MEF HostControl" IsBrowsable="false" Action="None" TargetFile="PlugableWindow.cs" TargetProject="Visor.VStudio">
+    <Component Id="936C7C94-F4E8-4A9B-AD94-8FE8EBEC2876" Name="MEF HostControl" IsBrowsable="true" Action="View" TargetFile="PlugableWindow.cs" TargetProject="Visor.VStudio">
       <Code>
         <![CDATA[ public interface IChildWindow
   {
