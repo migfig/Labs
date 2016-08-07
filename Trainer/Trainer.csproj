@@ -149,6 +149,7 @@
     <Content Include="Images\green-frame.png" />
     <Content Include="Images\green-stripes.png" />
     <Content Include="Images\herbs.png" />
+    <Content Include="Images\modern.png" />
     <Content Include="Images\orange-stripes.png" />
     <Content Include="Images\services-console.png" />
     <Content Include="Presentations\default.xml" />
