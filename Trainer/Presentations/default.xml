@@ -29,7 +29,7 @@
       </Paragraph>
     </RichTextBlock>
   </Slide>
-  <Slide Title="Web API Integration" Padding="100,-150,200,0" Image="ms-appx:///Images/green-frame-services.png">
+  <Slide Title="Web API Integration" Padding="100,-150,200,0" Image="ms-appx:///Images/modern-services.png">
     <RichTextBlock FontSize="20" FontWeight="DemiBold">
       <Paragraph>
         <Bold>Services</Bold>
@@ -48,7 +48,7 @@
       </Paragraph>
     </RichTextBlock>
   </Slide>
-  <Slide Title="Visual Studio Integration" Padding="100,-200,200,0" Image="ms-appx:///Images/green-frame-viewer.png">
+  <Slide Title="Visual Studio Integration" Padding="100,-200,200,0" Image="ms-appx:///Images/modern-viewer.png">
     <RichTextBlock FontSize="20" FontWeight="DemiBold">
       <Paragraph>
         <Bold>Services</Bold>
@@ -139,20 +139,20 @@
         <Bold>Visual Studio Extensibility</Bold>
       </Paragraph>
       <Paragraph TextIndent="4">
-        <Hyperlink NavigateUri="https://www.safaribooksonline.com">Microsoft Visual Studio 2015 Unleashed - Safari Books Online</Hyperlink>
+        <Hyperlink NavigateUri="https://www.amazon.com">Microsoft Visual Studio 2015 Unleashed - Amazon Books</Hyperlink>
       </Paragraph>
       <Paragraph>
         <Bold>MEF Composition</Bold>
       </Paragraph>
       <Paragraph TextIndent="4">
-        <Hyperlink NavigateUri="http://aka.ms/Template10">Fundamentals of the Managed Extensibility Framework - Safari Books Online</Hyperlink>
+        <Hyperlink NavigateUri="https://www.safaribooksonline.com">Fundamentals of the Managed Extensibility Framework - Safari Books Online</Hyperlink>
       </Paragraph>
     </RichTextBlock>
   </Slide>
   <Slide Title="Q &amp; A - sample slide" Margin="-200,0,0,0">
     <RichTextBlock FontSize="40" FontWeight="DemiBold">
       <Paragraph>
-        <Bold>Questions &amp; Answers!</Bold>
+        <Bold Foreground="#FF79AB36">Questions &amp; Answers!</Bold>
       </Paragraph>
     </RichTextBlock>
   </Slide>
