@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Presentation Title="Trainer Assistant" Image="ms-appx:///Images/modern.png">
+  <Slide Title="Assisting the Trainer" Margin="-100,0,0,0">
+    <RichTextBlock FontSize="18" FontWeight="DemiBold" LineHeight="20">
+      <Paragraph>
+        <Bold FontSize="70" Foreground="#FFDE8C18">Trainer Assistant</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="30">
+        <Run FontSize="40" Foreground="#FF79AB36">Who doesn't want some HELP!</Run>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
   <Slide Title="Trainer Assistant" Padding="100,0,200,0">
     <RichTextBlock FontSize="20" FontWeight="DemiBold">
       <Paragraph>
