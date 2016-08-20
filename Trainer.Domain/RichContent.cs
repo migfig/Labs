@@ -126,6 +126,9 @@ namespace Trainer.Domain
         [XmlElement("Run")]
         public ObservableCollection<Run> Run { get; set; }
 
+        [XmlElement("LineBreak")]
+        public ObservableCollection<LineBreak> LineBreak { get; set; }
+
         [XmlElement("Hyperlink")]
         public HyperLink Hyperlink { get; set; }
 
@@ -168,7 +171,15 @@ namespace Trainer.Domain
             //Stretch = "Fill";
         }
     }
-    
+
+    [XmlType(AnonymousType = true)]
+    public partial class LineBreak : Run
+    {
+        public LineBreak() : base()
+        {
+        }
+    }
+
     [XmlType(AnonymousType = true)]
     public partial class Bold: Run
     {

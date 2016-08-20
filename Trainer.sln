@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainer", "Trainer\Trainer.csproj", "{83405A9A-D945-45C5-B9B7-9E8F4651CF1C}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log.Common", "Log.Common\Log.Common.csproj", "{B3D67467-91D8-4C6F-9E16-465AB01498FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log.Common.Services", "Log.Common.Services\Log.Common.Services.csproj", "{C6C0949A-16B7-480E-9C6A-6D1E691D7ED7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log.Common.Services.Tests", "Log.Common.Services.Tests\Log.Common.Services.Tests.csproj", "{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -255,6 +257,22 @@ Global
 		{C6C0949A-16B7-480E-9C6A-6D1E691D7ED7}.Release|x64.Build.0 = Release|Any CPU
 		{C6C0949A-16B7-480E-9C6A-6D1E691D7ED7}.Release|x86.ActiveCfg = Release|Any CPU
 		{C6C0949A-16B7-480E-9C6A-6D1E691D7ED7}.Release|x86.Build.0 = Release|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Debug|ARM.Build.0 = Debug|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Debug|x64.Build.0 = Debug|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Debug|x86.Build.0 = Debug|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Release|ARM.ActiveCfg = Release|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Release|ARM.Build.0 = Release|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Release|x64.ActiveCfg = Release|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Release|x64.Build.0 = Release|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Release|x86.ActiveCfg = Release|Any CPU
+		{3BD43A34-CDCC-4E5F-88DE-EB7E78711802}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

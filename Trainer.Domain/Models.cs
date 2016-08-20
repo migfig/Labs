@@ -39,6 +39,18 @@ namespace Trainer.Domain
         Remove
     }
 
+    public enum Language
+    {
+        All,
+        CSharp,
+        Xml,
+        Html,
+        JScript,
+        JSon,
+        Java,
+        Sql
+    }
+
     /// <remarks/>
     [System.Xml.Serialization.XmlType(AnonymousType = true)]
     public partial class Component
@@ -48,22 +60,17 @@ namespace Trainer.Domain
         private Code codeField;
 
         private string idField;
-
         private string nameField;
-
         private string imageField;
-
         private string targetFileField;
-
         private string sourcePathField;
-
         private byte lineField;
-
         private bool lineFieldSpecified;
         private bool isBrowsableField;
         private string targetProjectField;
         private ComponentAction actionField;
         private bool isDirtyField;
+        private Language languageField;
 
         public Component()
         {
@@ -71,6 +78,7 @@ namespace Trainer.Domain
             dependencyField = new ObservableCollection<Dependency>();
             parameterField = new ObservableCollection<Parameter>();
             actionField = ComponentAction.None;
+            languageField = Language.CSharp;
         }
 
         /// <remarks/>
@@ -267,6 +275,20 @@ namespace Trainer.Domain
             set
             {
                 this.isDirtyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttribute()]
+        public Language Language
+        {
+            get
+            {
+                return this.languageField;
+            }
+            set
+            {
+                this.languageField = value;
             }
         }
     }

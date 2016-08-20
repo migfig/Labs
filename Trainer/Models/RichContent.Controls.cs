@@ -165,7 +165,7 @@ namespace Trainer.Models
 
         private static List<Xaml.Run> GetInlines(string line)
         {
-            var tokens = CodeParser.Parse(line);
+            var tokens = ParserFactory.CreateParser().Parse(line);
             var dict = new Dictionary<TokenType, string>
             {
                 {TokenType.Keyword, "#FF569CD6"},
