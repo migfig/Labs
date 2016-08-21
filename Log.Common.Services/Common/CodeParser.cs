@@ -57,7 +57,7 @@ namespace Log.Common.Services.Common
             var items = new List<Token>();            
 
             var tokens = this.Tokenize(code.Trim());
-            var exps = _regExps;
+            var exps = _regExps.Where(x => !x.Contains("Xml") && !x.Contains("Json") && !x.Contains("Csharp"));
             foreach (var token in tokens)
             {
                 foreach (var exp in exps)
@@ -72,7 +72,7 @@ namespace Log.Common.Services.Common
                         {
                             var tok = token.Replace("```", string.Empty);
                             tok = tok.Substring(0, 1).ToUpper() + tok.Substring(1);
-                            exps = _regExps.Where(x => x.Contains("<"+tok+">") || x.Contains("InlineCode")).ToArray();
+                            exps = _regExps.Where(x => x.Contains("<" + tok + ">") || x.Contains("InlineCode") || x.Contains("NewLine")).ToArray();
                         }
 
                         break;
@@ -189,9 +189,10 @@ namespace Log.Common.Services.Common
 
             _regExps = new string[] {
                 @"(?<Indented>\.\.\." + openText + ")",
-                @"(?<Xml>(\<\w+(\s+\w+='\w+')*[/]?\>(\s*\w+\s*)*)(\</\w+\>)?|(\</\w+\>)|[\s]*)",
+                @"(?<Xml>(\<\w+(\s+\w+='\w+')*[/]?\>(\s*\w+\s*)*)(\</\w+\>)?|(\</\w+\>))",
                 @"(?<NewLine>[\r])",
                 @"(?<Json>([\{\}':\[\],\w\s\-])*)",
+                @"(?<Csharp>([\{\}':\[\]\<\>,;\w\s\-\.\(\)!@#\$%\^\*_\+=\|\\\?])*)",
                 @"(?<Blockquotes>\>" + openText + ")",
                 @"(?<InlineCode>```(csharp|javascript|xml|html|java|sql|json|))",
                 Normalize(headerFmt, '#', 6),
@@ -227,6 +228,8 @@ namespace Log.Common.Services.Common
         public override string[] Tokenize(string code)
         {
             var tokens = new List<string>();
+            var inOnlineCode = false;
+            var exps = _regExps.Where(x => !x.Contains("Xml") && !x.Contains("Json") && !x.Contains("Csharp"));
 
             var lines = code.Split(new char[] { '\n' }, StringSplitOptions.None);
             for (var i=0;i<lines.Length; i++)
@@ -248,12 +251,20 @@ namespace Log.Common.Services.Common
 
                 while (line.Length > 0)
                 {
-                    foreach (var exp in _regExps)
+                    foreach (var exp in exps)
                     {
                         var regEx = new Regex(exp);
                         var match = regEx.Match(line);
                         if (match != null && match.Success && match.Value.Length > 0)
                         {
+                            var token = match.Value;
+                            if (exp.Contains("InlineCode") && token.Length > 3)
+                            {
+                                var tok = token.Replace("```", string.Empty);
+                                tok = tok.Substring(0, 1).ToUpper() + tok.Substring(1);
+                                exps = _regExps.Where(x => x.Contains("<" + tok + ">") || x.Contains("InlineCode") || x.Contains("NewLine")).ToArray();
+                            }
+
                             tokens.Add(match.Value);
                             if (match.Value.Length.Equals(line.Length))
                             {
@@ -346,7 +357,8 @@ namespace Log.Common.Services.Common
         InlineCode,
         NewLine,
         Xml,
-        Json
+        Json,
+        Csharp
     }
 
     #endregion
