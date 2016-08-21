@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 
 namespace Log.Common.Services.Common
 {
+    #region parser interface & factory
+
     public interface IParser
     {
         IEnumerable<Token> Parse(string code);
@@ -13,6 +15,7 @@ namespace Log.Common.Services.Common
         bool IsComment(char c);
         bool IsString(char c);
         string Language { get; }
+        string Concat(IEnumerable<Token> tokens);
     }
 
     public class ParserFactory
@@ -28,6 +31,8 @@ namespace Log.Common.Services.Common
             }
         }
     }
+
+    #endregion
 
     #region default methods for language parser
 
@@ -49,12 +54,13 @@ namespace Log.Common.Services.Common
 
         public virtual IEnumerable<Token> Parse(string code)
         {
-            var items = new List<Token>();
+            var items = new List<Token>();            
 
             var tokens = this.Tokenize(code.Trim());
+            var exps = _regExps;
             foreach (var token in tokens)
             {
-                foreach (var exp in _regExps)
+                foreach (var exp in exps)
                 {
                     var regEx = new Regex(exp);
                     var match = regEx.Match(token);
@@ -62,12 +68,27 @@ namespace Log.Common.Services.Common
                     {
                         var key = exp.Substring(3, exp.IndexOf('>') - 3);
                         items.Add(new Token(token, (TokenType)Enum.Parse(typeof(TokenType), key)));
+                        if (exp.Contains("InlineCode") && token.Length > 3)
+                        {
+                            var tok = token.Replace("```", string.Empty);
+                            tok = tok.Substring(0, 1).ToUpper() + tok.Substring(1);
+                            exps = _regExps.Where(x => x.Contains("<"+tok+">") || x.Contains("InlineCode")).ToArray();
+                        }
+
                         break;
                     }
                 }
             }
 
             return items;
+        }
+
+        public string Concat(IEnumerable<Token> tokens)
+        {
+            return tokens.Aggregate("", (aggregated, token) =>
+            {
+                aggregated += token.RawValue; return aggregated;
+            });
         }
 
         public abstract string[] Tokenize(string code);
@@ -168,7 +189,9 @@ namespace Log.Common.Services.Common
 
             _regExps = new string[] {
                 @"(?<Indented>\.\.\." + openText + ")",
-                @"(?<Xml>(\<\w+(\s+\w+='\w+')*[/]?\>(\s*\w+\s*)*)(\</\w+\>)?|(\</\w+\>))",
+                @"(?<Xml>(\<\w+(\s+\w+='\w+')*[/]?\>(\s*\w+\s*)*)(\</\w+\>)?|(\</\w+\>)|[\s]*)",
+                @"(?<NewLine>[\r])",
+                @"(?<Json>([\{\}':\[\],\w\s\-])*)",
                 @"(?<Blockquotes>\>" + openText + ")",
                 @"(?<InlineCode>```(csharp|javascript|xml|html|java|sql|json|))",
                 Normalize(headerFmt, '#', 6),
@@ -177,7 +200,6 @@ namespace Log.Common.Services.Common
                 Normalize(headerFmt, '#', 3),
                 Normalize(headerFmt, '#', 2),
                 Normalize(headerFmt, '#'),
-                @"(?<NewLine>" + Environment.NewLine + ")",
                 @"(?<Regular>[\sa-zA-Z_\-]*)",
                 NormalizeChars(charReplFmt, "Bold", @"\*", 2),
                 NormalizeChars(charReplFmt, "Italics", @"\*"),
@@ -206,15 +228,22 @@ namespace Log.Common.Services.Common
         {
             var tokens = new List<string>();
 
-            var lines = code.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            for(var i=0;i<lines.Length; i++)
+            var lines = code.Split(new char[] { '\n' }, StringSplitOptions.None);
+            for (var i=0;i<lines.Length; i++)
             {
                 var line = lines[i];
 
-                if(line.Length == 0)
+                if(line.Length == 1 && line[0] == '\r')
                 {
                     tokens.Add(Environment.NewLine);
                     continue;
+                }
+
+                var retRemoved = false;
+                if (line[line.Length - 1] == '\r')
+                {
+                    line = line.Substring(0, line.Length - 1);
+                    retRemoved = true;
                 }
 
                 while (line.Length > 0)
@@ -229,11 +258,12 @@ namespace Log.Common.Services.Common
                             if (match.Value.Length.Equals(line.Length))
                             {
                                 line = string.Empty;
+                                if (retRemoved) tokens.Add(Environment.NewLine);
+
                                 break;
                             }
 
                             line = line.Substring(match.Value.Length);
-                            //if (line.Length > 0) break;
                         }
                     }
                 }
@@ -256,7 +286,34 @@ namespace Log.Common.Services.Common
             Start = start;
             End = end;
         }
-        public string Value { get; private set; }
+
+        private string _value;
+        public string Value
+        {
+            get
+            {
+                switch(Type)
+                {
+                    case TokenType.Bold:
+                    case TokenType.Italics:
+                        return _value.Replace("*", string.Empty);
+                    case TokenType.Strikethrough:
+                        return _value.Replace("~", string.Empty);
+                    case TokenType.H1:
+                    case TokenType.H2:
+                    case TokenType.H3:
+                    case TokenType.H4:
+                    case TokenType.H5:
+                    case TokenType.H6:
+                        return _value.Replace("#", string.Empty);
+                    default:
+                        return _value;
+                }
+            }
+            private set { _value = value; }
+        }
+        public string RawValue { get { return _value; } }
+
         public TokenType Type { get; private set; }
         public int Start { get; private set; }
         public int End { get; private set; }
@@ -288,7 +345,8 @@ namespace Log.Common.Services.Common
         Blockquotes,
         InlineCode,
         NewLine,
-        Xml
+        Xml,
+        Json
     }
 
     #endregion
