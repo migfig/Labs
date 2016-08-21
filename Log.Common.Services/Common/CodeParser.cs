@@ -57,7 +57,7 @@ namespace Log.Common.Services.Common
             var items = new List<Token>();            
 
             var tokens = this.Tokenize(code.Trim());
-            var exps = _regExps.Where(x => !x.Contains("Xml") && !x.Contains("Json") && !x.Contains("Csharp"));
+            var exps = NonCodeRegExps();
             foreach (var token in tokens)
             {
                 foreach (var exp in exps)
@@ -70,9 +70,7 @@ namespace Log.Common.Services.Common
                         items.Add(new Token(token, (TokenType)Enum.Parse(typeof(TokenType), key)));
                         if (exp.Contains("InlineCode") && token.Length > 3)
                         {
-                            var tok = token.Replace("```", string.Empty);
-                            tok = tok.Substring(0, 1).ToUpper() + tok.Substring(1);
-                            exps = _regExps.Where(x => x.Contains("<" + tok + ">") || x.Contains("InlineCode") || x.Contains("NewLine")).ToArray();
+                            exps = OnlyCodeRegExps(token);
                         }
 
                         break;
@@ -82,6 +80,23 @@ namespace Log.Common.Services.Common
 
             return items;
         }
+
+        #region protected helpers
+
+        protected string[] NonCodeRegExps()
+        {
+            return _regExps.Where(x => !x.Contains("Xml") && !x.Contains("Json") && !x.Contains("Csharp")).ToArray();
+        }
+
+        protected string[] OnlyCodeRegExps(string token)
+        {
+            var tok = token.Replace("```", string.Empty);
+            tok = tok.Substring(0, 1).ToUpper() + tok.Substring(1);
+
+            return _regExps.Where(x => x.Contains("<" + tok + ">") || x.Contains("InlineCode") || x.Contains("NewLine")).ToArray();
+        }
+
+        #endregion
 
         public string Concat(IEnumerable<Token> tokens)
         {
@@ -228,8 +243,7 @@ namespace Log.Common.Services.Common
         public override string[] Tokenize(string code)
         {
             var tokens = new List<string>();
-            var inOnlineCode = false;
-            var exps = _regExps.Where(x => !x.Contains("Xml") && !x.Contains("Json") && !x.Contains("Csharp"));
+            var exps = NonCodeRegExps();
 
             var lines = code.Split(new char[] { '\n' }, StringSplitOptions.None);
             for (var i=0;i<lines.Length; i++)
@@ -260,9 +274,7 @@ namespace Log.Common.Services.Common
                             var token = match.Value;
                             if (exp.Contains("InlineCode") && token.Length > 3)
                             {
-                                var tok = token.Replace("```", string.Empty);
-                                tok = tok.Substring(0, 1).ToUpper() + tok.Substring(1);
-                                exps = _regExps.Where(x => x.Contains("<" + tok + ">") || x.Contains("InlineCode") || x.Contains("NewLine")).ToArray();
+                                exps = OnlyCodeRegExps(token);
                             }
 
                             tokens.Add(match.Value);
