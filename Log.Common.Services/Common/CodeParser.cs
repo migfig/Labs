@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
+using Trainer.Domain;
 
 namespace Log.Common.Services.Common
 {
@@ -18,6 +20,11 @@ namespace Log.Common.Services.Common
         string Concat(IEnumerable<Token> tokens);
     }
 
+    public interface ITokenParser<T> where T: class
+    {
+        T Parse(IEnumerable<Token> tokens);
+    }
+
     public class ParserFactory
     {
         public static IParser CreateParser(string language = "csharp")
@@ -29,6 +36,14 @@ namespace Log.Common.Services.Common
                 default:
                     return new CSharpParser(language);
             }
+        }
+    }
+
+    public class TokenParserFactory<T> where T: class
+    {
+        public static ITokenParser<T> CreateParser()
+        {
+            return (ITokenParser<T>)new PresentationTokenParser();
         }
     }
 
@@ -68,9 +83,12 @@ namespace Log.Common.Services.Common
                     {
                         var key = exp.Substring(3, exp.IndexOf('>') - 3);
                         items.Add(new Token(token, (TokenType)Enum.Parse(typeof(TokenType), key)));
-                        if (exp.Contains("InlineCode") && token.Length > 3)
+                        if (exp.Contains("InlineCode"))
                         {
-                            exps = OnlyCodeRegExps(token);
+                            if (token.Length > 3)
+                                exps = OnlyCodeRegExps(token);
+                            else
+                                exps = NonCodeRegExps();
                         }
 
                         break;
@@ -100,7 +118,7 @@ namespace Log.Common.Services.Common
 
         public string Concat(IEnumerable<Token> tokens)
         {
-            return tokens.Aggregate("", (aggregated, token) =>
+            return tokens.Aggregate(string.Empty, (aggregated, token) =>
             {
                 aggregated += token.RawValue; return aggregated;
             });
@@ -272,9 +290,12 @@ namespace Log.Common.Services.Common
                         if (match != null && match.Success && match.Value.Length > 0)
                         {
                             var token = match.Value;
-                            if (exp.Contains("InlineCode") && token.Length > 3)
+                            if (exp.Contains("InlineCode"))
                             {
-                                exps = OnlyCodeRegExps(token);
+                                if (token.Length > 3)
+                                    exps = OnlyCodeRegExps(token);
+                                else
+                                    exps = NonCodeRegExps();
                             }
 
                             tokens.Add(match.Value);
@@ -293,6 +314,72 @@ namespace Log.Common.Services.Common
             }
 
             return tokens.ToArray();
+        }
+    }
+
+    #endregion
+
+    #region Presentation token parser
+
+    public class PresentationTokenParser : ITokenParser<Presentation>
+    {
+        public Presentation Parse(IEnumerable<Token> tokens)
+        {
+            var p = new Presentation { Title = "Sample Presentation", Image = "ms-appx:///Images/modern.png" };
+            var tokenArray = tokens.ToArray();
+            var list = FindGroups(tokenArray);
+            for(var i = 0; i < list.Length; i++)
+            {
+                var item = list[i];
+                if(item != list.Last())
+                {
+                    p.Slide.Add(BuildSlide(tokenArray.Skip(item).Take(list[i + 1]-1)));
+                }
+                else
+                {
+                    p.Slide.Add(BuildSlide(tokenArray.Skip(item).Take(tokenArray.Length - item - 1)));
+                }
+            }
+
+            return p;
+        }
+
+        private int[] FindGroups(Token[] tokens)
+        {
+            var list = new List<int>();
+            for (var i = 0; i < tokens.Length; i++)
+                if (tokens[i].Type.Equals(TokenType.H1))
+                        list.Add(i);
+
+            return list.ToArray();
+        }
+
+        private Slide BuildSlide(IEnumerable<Token> tokens)
+        {
+            if (tokens == null || !tokens.Any()) return null;
+
+            var xml = new XElement("tokens", 
+                from t in tokens.Where(x => !x.IsCode && !x.Type.Equals(TokenType.InlineCode))
+                    select new XElement(t.Type.ToString(),
+                        new XAttribute("value", t.Value),
+                        new XAttribute("rawValue", t.RawValue),
+                        new XAttribute("start", t.Start),
+                        new XAttribute("end", t.End)),
+                    from c in tokens.Where(x => x.Type.Equals(TokenType.InlineCode) && x.Value.Length > 3)
+                    select new XElement("code",
+                        new XAttribute("language", c.Value.Substring(3)),
+                        new XCData( 
+                            tokens.Where(tk => tk.IsCode).Aggregate(string.Empty, (aggregated, token) =>
+                            {
+                                aggregated += token.RawValue + Environment.NewLine; return aggregated;
+                            })))
+                );
+
+            var slide = new Slide { Title = tokens.First().Value };
+            var block = new RichTextBlock { };
+            slide.Block.Add(block);
+
+            return slide;
         }
     }
 
@@ -340,6 +427,15 @@ namespace Log.Common.Services.Common
         public TokenType Type { get; private set; }
         public int Start { get; private set; }
         public int End { get; private set; }
+        public bool IsCode
+        {
+            get
+            {
+                return Type.Equals(TokenType.Xml) 
+                    || Type.Equals(TokenType.Json)
+                    || Type.Equals(TokenType.Csharp);
+            }
+        }
     }
 
     public enum TokenType

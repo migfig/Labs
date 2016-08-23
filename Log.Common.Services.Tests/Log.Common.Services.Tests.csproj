@@ -51,12 +51,17 @@
   </Choose>
   <ItemGroup>
     <Compile Include="MarkdownParserTests.cs" />
+    <Compile Include="MarkdownToPresentationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Log.Common.Services\Log.Common.Services.csproj">
       <Project>{c6c0949a-16b7-480e-9c6a-6d1e691d7ed7}</Project>
       <Name>Log.Common.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trainer.Domain\Trainer.Domain.csproj">
+      <Project>{8cb4a0bd-82a1-4b4c-b3a1-dd880b82dab7}</Project>
+      <Name>Trainer.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
