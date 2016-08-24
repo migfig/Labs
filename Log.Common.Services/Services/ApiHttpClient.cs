@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Text;
 using Common;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace Log.Common.Services
 {
@@ -16,6 +17,7 @@ namespace Log.Common.Services
         Task<bool> AddItems(IEnumerable<T> items);
         Task<bool> AddItem(T item);
         Task<bool> RemoveItem(T item, string propertyName);
+        Task<T> TransformXml(XElement xml);
     }
 
     public interface IApiService: IDisposable
@@ -130,10 +132,15 @@ namespace Log.Common.Services
             return new List<T>();
         }
 
+        public Task<T> TransformXml(XElement xml)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
             _client.Dispose();
-        }
+        }        
     }
 
     public class ApiHttpClient: IApiService, IDisposable

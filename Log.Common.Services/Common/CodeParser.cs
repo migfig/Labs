@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Trainer.Domain;
 
@@ -41,9 +43,9 @@ namespace Log.Common.Services.Common
 
     public class TokenParserFactory<T> where T: class
     {
-        public static ITokenParser<T> CreateParser()
+        public static ITokenParser<T> CreateParser(IGenericApiService<Slide> apiService)
         {
-            return (ITokenParser<T>)new PresentationTokenParser();
+            return (ITokenParser<T>)new PresentationTokenParser(apiService);
         }
     }
 
@@ -323,6 +325,12 @@ namespace Log.Common.Services.Common
 
     public class PresentationTokenParser : ITokenParser<Presentation>
     {
+        private readonly IGenericApiService<Slide> _apiService;
+        public PresentationTokenParser(IGenericApiService<Slide> apiService)
+        {
+            _apiService = apiService;
+        }
+
         public Presentation Parse(IEnumerable<Token> tokens)
         {
             var p = new Presentation { Title = "Sample Presentation", Image = "ms-appx:///Images/modern.png" };
@@ -358,28 +366,25 @@ namespace Log.Common.Services.Common
         {
             if (tokens == null || !tokens.Any()) return null;
 
-            var xml = new XElement("tokens", 
+            var xml = new XElement("tokens",
                 from t in tokens.Where(x => !x.IsCode && !x.Type.Equals(TokenType.InlineCode))
-                    select new XElement(t.Type.ToString(),
-                        new XAttribute("value", t.Value),
-                        new XAttribute("rawValue", t.RawValue),
-                        new XAttribute("start", t.Start),
-                        new XAttribute("end", t.End)),
+                select new XElement("token",
+                    new XAttribute("type", t.Type.ToString()),
+                    new XAttribute("value", t.Value),
+                    new XAttribute("rawValue", t.RawValue),
+                    new XAttribute("start", t.Start),
+                    new XAttribute("end", t.End)),
                     from c in tokens.Where(x => x.Type.Equals(TokenType.InlineCode) && x.Value.Length > 3)
                     select new XElement("code",
                         new XAttribute("language", c.Value.Substring(3)),
-                        new XCData( 
+                        new XCData(
                             tokens.Where(tk => tk.IsCode).Aggregate(string.Empty, (aggregated, token) =>
                             {
                                 aggregated += token.RawValue + Environment.NewLine; return aggregated;
                             })))
                 );
 
-            var slide = new Slide { Title = tokens.First().Value };
-            var block = new RichTextBlock { };
-            slide.Block.Add(block);
-
-            return slide;
+            return _apiService.TransformXml(xml).GetAwaiter().GetResult();
         }
     }
 

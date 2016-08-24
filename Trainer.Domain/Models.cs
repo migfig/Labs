@@ -42,11 +42,11 @@ namespace Trainer.Domain
     public enum Language
     {
         All,
-        CSharp,
-        Xml,
+        csharp,
+        xml,
         Html,
         JScript,
-        JSon,
+        json,
         Java,
         Sql
     }
@@ -78,7 +78,7 @@ namespace Trainer.Domain
             dependencyField = new ObservableCollection<Dependency>();
             parameterField = new ObservableCollection<Parameter>();
             actionField = ComponentAction.None;
-            languageField = Language.CSharp;
+            languageField = Language.csharp;
         }
 
         /// <remarks/>
