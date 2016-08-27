@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="MarkdownParserTests.cs" />
     <Compile Include="MarkdownToPresentationTests.cs" />
+    <Compile Include="ObjectHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

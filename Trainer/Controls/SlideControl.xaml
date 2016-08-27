@@ -40,13 +40,25 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-            <ItemsControl ItemsSource="{Binding Block}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="domain:RichTextBlock">
-                        <ContentControl Content="{Binding Mode=OneWay, Converter={StaticResource ResourceKey=domainToModelsConverter}}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ItemsControl ItemsSource="{Binding Block}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="domain:RichTextBlock">
+                            <ContentControl Content="{Binding Mode=OneWay, Converter={StaticResource ResourceKey=domainToModelsConverter}, ConverterParameter=true}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+                <ItemsControl ItemsSource="{Binding Component}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="domain:Component">
+                            <Border Margin="0,2,8,2" Padding="4" CornerRadius="4" Background="#FFFDFCEB">
+                                <ContentControl Content="{Binding Mode=OneWay, Converter={StaticResource ResourceKey=domainToModelsConverter}, ConverterParameter=true}" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
         </Grid>
     </RelativePanel>
 </UserControl>

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Trainer.Domain;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
+using Common;
 
 namespace Trainer.ViewModels
 {
@@ -112,23 +112,28 @@ namespace Trainer.ViewModels
         public void GotoPreviousSlide() =>
             NavigationService.Navigate(typeof(Views.SlidePage), GetPreviousSlideTitle());
 
-        public void CopyCode() =>
-            _codeServices.CopyCode(CurrentSlide.Component);
+        public void CopySlide() =>
+            Presentation.Slide.Insert(Presentation.Slide.IndexOf(Presentation.Slide.First(x => x.Title.Equals(_currentSlide.Title))), Clone(_currentSlide));
 
-        public void ViewCode() =>
-            _codeServices.ViewCode(CurrentSlide.Component);
-
-        public Visibility CopyCodeVisibility { get { return CurrentSlide.Component.Any(x => x.IsBrowsable && x.Action.Equals(ComponentAction.Copy))                     
-                        ? Visibility.Visible : Visibility.Collapsed; } }
-
-        public Visibility ViewCodeVisibility
-        {
-            get
+        public void AddSlide() =>
+            Presentation.Slide.Add(new Slide
             {
-                return CurrentSlide.Component.Any(x => x.IsBrowsable && x.Action.Equals(ComponentAction.View))
-                    ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
+                Title = "Slide Title",
+                Block = new ObservableCollection<RichTextBlock>
+                {
+                    new RichTextBlock
+                    {
+                        FontSize = 18,
+                        FontWeight = "DemiBold",
+                        LineHeight = 20
+                    }
+                }
+            });
+
+        public bool CanRemoveSlide { get { return Presentation.Slide.Count > 1; } }
+
+        public void RemoveSlide() =>
+            Presentation.Slide.Remove(Presentation.Slide.First(x => x.Title.Equals(_currentSlide.Title)));
 
         public bool CanGotoPreviousSlide { get { return !_currentSlide.Title.Equals(_presentation.Slide.First().Title); } }
 
@@ -154,6 +159,12 @@ namespace Trainer.ViewModels
             }
 
             return _presentation.Slide.First().Title;
+        }
+
+        private Slide Clone(Slide source)
+        {
+            var xml = XmlHelper2<Slide>.Save(source);
+            return XmlHelper2<Slide>.LoadFromString(xml);
         }
     }
 }

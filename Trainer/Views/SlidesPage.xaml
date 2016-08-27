@@ -20,7 +20,7 @@
         <converters:StringToMarginConverter x:Key="stringToMarginConverter"/>
     </Page.Resources>
     <Page.DataContext>
-        <vm:SlidePageViewModel x:Name="ViewModel" />
+        <vm:SlidesPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -110,7 +110,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="domain:Component">
                             <Border Margin="0,2,8,2" Padding="4" CornerRadius="4" Background="#FFFDFCEB">
-                                <ContentControl Content="{Binding Mode=OneWay, Converter={StaticResource ResourceKey=domainToModelsConverter}}" />
+                                <ContentControl Content="{Binding Mode=OneWay, Converter={StaticResource ResourceKey=domainToModelsConverter}, ConverterParameter=false}" />
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -139,23 +139,15 @@
                     RelativePanel.AlignBottomWith="slideContent"
                     Margin="100,-50,0,0">
 
-            <AppBarButton Icon="Copy" Label="Copy Code" 
-                          Click="{x:Bind ViewModel.CopyCode}"
-                          Visibility="{x:Bind ViewModel.CopyCodeVisibility}"/>
-            <AppBarSeparator Visibility="{x:Bind ViewModel.CopyCodeVisibility}"/>
-
-            <AppBarButton Icon="View" Label="View Code" 
-                          Click="{x:Bind ViewModel.ViewCode}"
-                          Visibility="{x:Bind ViewModel.ViewCodeVisibility}"/>
-            <AppBarSeparator Visibility="{x:Bind ViewModel.ViewCodeVisibility}"/>
-
-            <AppBarButton Icon="Previous" Label="Previous" 
-                          Click="{x:Bind ViewModel.GotoPreviousSlide}"
-                          IsEnabled="{x:Bind ViewModel.CanGotoPreviousSlide}"/>
+            <AppBarButton Icon="Copy" Label="Copy" 
+                          Click="{x:Bind ViewModel.CopySlide}"/>
             <AppBarSeparator/>
-            <AppBarButton Icon="Next" Label="Next" 
-                          Click="{x:Bind ViewModel.GotoNextSlide}"
-                          IsEnabled="{x:Bind ViewModel.CanGotoNextSlide}"/>
+            <AppBarButton Icon="Add" Label="Add" 
+                          Click="{x:Bind ViewModel.AddSlide}"/>
+            <AppBarSeparator/>
+            <AppBarButton Icon="Remove" Label="Remove" 
+                          Click="{x:Bind ViewModel.RemoveSlide}"
+                          IsEnabled="{x:Bind ViewModel.CanRemoveSlide}"/>
         </CommandBar>
 
     </RelativePanel>

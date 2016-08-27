@@ -12,13 +12,19 @@ namespace Trainer.Converters
         {
             if(value != null)
             {
-                if(value is RichTextBlock)
+                var isThumbnail = false;
+                if (null != parameter)
                 {
-                    return ((RichTextBlock)value).Control();
+                    bool.TryParse(parameter.ToString(), out isThumbnail);
+                }
+
+                if (value is RichTextBlock)
+                { 
+                    return ((RichTextBlock)value).Control(isThumbnail);
                 }
                 else if(value is Component)
                 {
-                    return ((Component)value).Control();
+                    return ((Component)value).Control(isThumbnail);
                 }
             }
 
