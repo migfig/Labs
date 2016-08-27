@@ -9,41 +9,55 @@
         <xsl:value-of select="token[@type='H1'][@value]"/>
       </xsl:attribute>
       <RichTextBlock FontSize="20" FontWeight="DemiBold" LineHeight="40">
-        <xsl:apply-templates select="token"/>
+        <Paragraph>
+          <xsl:apply-templates select="token"/>
+        </Paragraph>
       </RichTextBlock>
       <xsl:apply-templates select="code"/>
     </Slide>
   </xsl:template>
 
   <xsl:template match="token[@type='Bold']">
-    <Paragraph>
       <Bold>
         <xsl:value-of select="@value"/>
       </Bold>
-    </Paragraph>
   </xsl:template>
 
   <xsl:template match="token[@type='Italics']">
-    <Paragraph>
       <Run>
         <xsl:attribute name="FontStyle">
           <xsl:value-of select="string('Italic')"/>
         </xsl:attribute>
         <xsl:value-of select="@value"/>
       </Run>
-    </Paragraph>
   </xsl:template>
 
   <xsl:template match="token[@type='Regular']">
-    <Paragraph>
+    <Run>
       <xsl:value-of select="@value"/>
-    </Paragraph>
+    </Run>
+  </xsl:template>
+
+  <xsl:template match="token[@type='Strikethrough']">
+    <Run>
+      <xsl:value-of select="@value"/>
+    </Run>
+  </xsl:template>
+
+  <xsl:template match="token[@type='Blockquotes']">
+    <Run>
+      <xsl:value-of select="@value"/>
+    </Run>
+  </xsl:template>
+
+  <xsl:template match="token[@type='Indented']">
+    <Run TextIndent="4">
+      <xsl:value-of select="@value"/>
+    </Run>
   </xsl:template>
 
   <xsl:template match="token[@type='NewLine']">
-    <Paragraph>
       <LineBreak />
-    </Paragraph>
   </xsl:template>
 
   <xsl:template match="code">

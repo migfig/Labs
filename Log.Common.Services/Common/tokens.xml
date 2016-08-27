@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<tokens>
+﻿<tokens>
   <token type="H1" value=" First Slide " rawValue="# First Slide #" start="0" end="0" />
   <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
   <token type="Blockquotes" value="&gt; This is a bolded " rawValue="&gt; This is a bolded " start="0" end="0" />
@@ -23,9 +22,6 @@
   <token type="Indented" value="... And what about this " rawValue="... And what about this " start="0" end="0" />
   <token type="Italics" value="Indented" rawValue="*Indented*" start="0" end="0" />
   <token type="Regular" value=" text" rawValue=" text" start="0" end="0" />
-  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
-  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
-  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
   <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
   <code language="xml">
     <![CDATA[<code>this is inline code</code>

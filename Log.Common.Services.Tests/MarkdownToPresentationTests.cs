@@ -27,7 +27,7 @@ namespace Log.Common.Services.Tests
             #region code string
 
             var code = @"# First Slide #
-> This is a bolded **Quote** inside the slide
+> This is text **Bolded** inside the slide
 
 This is some sample text on *Italics*
 Yet another text **Bolded** going through
@@ -41,7 +41,7 @@ And some Strikethrough ~~Text~~
 ```
 
 # Second Slide #
-> This is a bolded **Quote** inside the slide
+> This is text **Bolded** inside the slide
 
 This is some sample text on *Italics*
 Yet another text **Bolded** going through

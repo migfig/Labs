@@ -313,7 +313,7 @@ namespace Log.Common.Services.Common
                         }
                     }
                 }
-            }
+            }            
 
             return tokens.ToArray();
         }
@@ -335,7 +335,7 @@ namespace Log.Common.Services.Common
         {
             var p = new Presentation { Title = "Sample Presentation", Image = "ms-appx:///Images/modern.png" };
             var tokenArray = tokens.ToArray();
-            var list = FindGroups(tokenArray);
+            var list = tokens.FindGroups(TokenType.H1);
             for(var i = 0; i < list.Length; i++)
             {
                 var item = list[i];
@@ -350,31 +350,22 @@ namespace Log.Common.Services.Common
             }
 
             return p;
-        }
-
-        private int[] FindGroups(Token[] tokens)
-        {
-            var list = new List<int>();
-            for (var i = 0; i < tokens.Length; i++)
-                if (tokens[i].Type.Equals(TokenType.H1))
-                        list.Add(i);
-
-            return list.ToArray();
-        }
+        }        
 
         private Slide BuildSlide(IEnumerable<Token> tokens)
         {
             if (tokens == null || !tokens.Any()) return null;
 
             var xml = new XElement("tokens",
-                from t in tokens.Where(x => !x.IsCode && !x.Type.Equals(TokenType.InlineCode))
+                from t in tokens.NonCodeTokens().First()
                 select new XElement("token",
                     new XAttribute("type", t.Type.ToString()),
                     new XAttribute("value", t.Value),
                     new XAttribute("rawValue", t.RawValue),
                     new XAttribute("start", t.Start),
                     new XAttribute("end", t.End)),
-                    from c in tokens.Where(x => x.Type.Equals(TokenType.InlineCode) && x.Value.Length > 3)
+                    from c in tokens.CodeTokens().First()
+                        .Where(x => x.Type.Equals(TokenType.InlineCode) && x.Value.Length > 3)
                     select new XElement("code",
                         new XAttribute("language", c.Value.Substring(3)),
                         new XCData(
@@ -385,6 +376,54 @@ namespace Log.Common.Services.Common
                 );
 
             return _apiService.TransformXml(xml).GetAwaiter().GetResult();
+        }
+    }
+
+    #endregion
+
+    #region token extensions
+
+    public static class TokenX
+    {
+        public static int[] FindGroups(this IEnumerable<Token> tokens, TokenType type)
+        {
+            var tokenArray = tokens.ToArray();
+            var list = new List<int>();
+            for (var i = 0; i < tokenArray.Length; i++)
+                if (tokenArray[i].Type.Equals(type))
+                    list.Add(i);
+
+            return list.ToArray();
+        }
+
+        public static List<IEnumerable<Token>> NonCodeTokens(this IEnumerable<Token> tokens)
+        {
+            var tokenList = new List<IEnumerable<Token>>();
+            var tokenArray = tokens.ToArray();
+            var list = tokens.FindGroups(TokenType.InlineCode);
+            for (var i = 0; i < list.Length; i++)
+            {
+                var item = list[i];
+                tokenList.Add(tokenArray.Skip(i).Take(item));
+                i += item;
+            }
+
+            return tokenList;
+        }
+
+        public static List<IEnumerable<Token>> CodeTokens(this IEnumerable<Token> tokens)
+        {
+            var tokenList = new List<IEnumerable<Token>>();
+            var tokenArray = tokens.ToArray();
+            var list = tokens.FindGroups(TokenType.InlineCode);
+            for (var i = 0; i < list.Length; i++)
+            {
+                var item = list[i];
+                tokenList.Add(tokenArray.Skip(item).Take(tokenArray.Length - item - 1));
+                i += item;
+            }
+
+            return tokenList;
         }
     }
 
@@ -414,6 +453,8 @@ namespace Log.Common.Services.Common
                         return _value.Replace("*", string.Empty);
                     case TokenType.Strikethrough:
                         return _value.Replace("~", string.Empty);
+                    case TokenType.Indented:
+                        return _value.TrimStart('.');
                     case TokenType.H1:
                     case TokenType.H2:
                     case TokenType.H3:
