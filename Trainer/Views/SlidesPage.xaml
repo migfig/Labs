@@ -1,4 +1,4 @@
-<Page x:Class="Trainer.Views.SlidePage"
+<Page x:Class="Trainer.Views.SlidesPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:Behaviors="using:Template10.Behaviors"
@@ -6,6 +6,7 @@
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:controls="using:Template10.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:ctrls="using:Trainer.Controls"
       xmlns:local="using:Trainer.Views"
       xmlns:models="using:Trainer.Models"
       xmlns:domain="using:Trainer.Domain"
@@ -60,11 +61,35 @@
                              RelativePanel.AlignTopWithPanel="True" 
                              Text="{x:Bind ViewModel.CurrentSlide.Title, Mode=OneWay}" />
 
-        <!--  content  -->
+        <!-- slides content  -->
+        <ListView x:Name="slidesContent" 
+                    ItemsSource="{x:Bind Mode=OneWay, Path=ViewModel.Presentation.Slide}"
+                    Padding="0,8,0,0" 
+                    RelativePanel.AlignBottomWithPanel="True"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="False"                      
+                    RelativePanel.Below="pageHeader" 
+                    Margin="0,0,0,50"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="domain:Slide">
+                    <Border BorderBrush="LightGray" BorderThickness="1" Margin="1">
+                        <Button Background="Transparent" BorderThickness="0" Tag="{Binding}">
+                            <Button.Content>
+                                <ctrls:SlideControl Width="200" Height="133" DataContext="{x:Bind}"/>
+                            </Button.Content>
+                        </Button>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!--  slide content -->
         <ScrollViewer x:Name="slideContent" Padding="12,8,0,0" 
                       RelativePanel.AlignBottomWithPanel="True"
-                      RelativePanel.AlignLeftWithPanel="True"
-                      RelativePanel.AlignRightWithPanel="True"                      
+                      RelativePanel.AlignLeftWithPanel="False"
+                      RelativePanel.AlignRightWithPanel="True"
+                      RelativePanel.RightOf="slidesContent"
                       RelativePanel.Below="pageHeader" 
                       Margin="0,0,0,50"
                       VerticalScrollBarVisibility="Auto">
