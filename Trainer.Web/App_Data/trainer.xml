@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Presentation Title="Trainer Assistant" Image="ms-appx:///Images/green-frame.png">
+  <Slide Title="Application and Services Integration" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold" LineHeight="40">
+      <Paragraph>
+        <Bold>Universal Windows Platform Apps with T10</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Portable Libraries</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Dependency Injection with Windsor Castle</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Windows Services with TopShelf</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Web API Integration with OWIN Self-Host</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Integration with Visual Studio - VSIX Packages</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Composition with MEF</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Composition Sample within a Visual Studio ToolWindowPane</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Plugable Control Sample</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>References</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Q &amp; A</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Universal Windows Platform Apps with T10" Margin="-250,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Sample Templates</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- Blank</Paragraph>
+      <Paragraph TextIndent="4">- Hamburger</Paragraph>
+      <Paragraph TextIndent="4">- Minimal</Paragraph>
+      <Paragraph>
+        <Bold>Controls</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- PageHeader</Paragraph>
+      <Paragraph TextIndent="4">- Hamburger Menu</Paragraph>
+      <Paragraph TextIndent="4">- Modal Dialog</Paragraph>
+      <Paragraph TextIndent="4">- Resizer</Paragraph>
+      <Paragraph>
+        <Bold>Behaviors</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- BackButtonBehavior</Paragraph>
+      <Paragraph TextIndent="4">- EllipsisBehavior</Paragraph>
+      <Paragraph TextIndent="4">- KeyBehavior</Paragraph>
+      <Paragraph TextIndent="4">- NavToPageAction</Paragraph>
+      <Paragraph TextIndent="4">- FocusAction</Paragraph>
+      <Paragraph>
+        <Bold>MVVM</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- ViewModelBase</Paragraph>
+      <Paragraph TextIndent="4">- DelegateCommand</Paragraph>
+      <Paragraph TextIndent="4">- AwaitableDelegateCommand</Paragraph>
+      <Paragraph>
+        <Bold>Services</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- FileService</Paragraph>
+      <Paragraph TextIndent="4">- KeyboardService</Paragraph>
+      <Paragraph TextIndent="4">- LoggingService</Paragraph>
+      <Paragraph TextIndent="4">- NavigationService</Paragraph>
+      <Paragraph TextIndent="4">- SerializationService</Paragraph>
+      <Paragraph TextIndent="4">- SettingsService</Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Portable Libraries" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>PCL Libraries</Bold>
+      </Paragraph>
+      <Paragraph>To be used everywhere:</Paragraph>
+      <Paragraph TextIndent="4">- WUP Apps</Paragraph>
+      <Paragraph TextIndent="4">- Xamarin Apps</Paragraph>
+      <Paragraph TextIndent="4">- Desktop Apps</Paragraph>
+      <Paragraph></Paragraph>
+      <Paragraph>Soon more widely used due to a growing subset of libraries...</Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Dependency Injection with Windsor Castle" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Windsor Castle Container</Bold>
+      </Paragraph>
+    </RichTextBlock>
+    <Component Id="94928827-5412-4BC8-A279-EB88E21AC64F" Name="Windsor Castle" IsBrowsable="true" Action="View" TargetFile="IoC\ServiceInstaller.cs" TargetProject="Code.Service">
+      <Code>
+        <![CDATA[ using Castle.Windsor;
+  using Castle.Windsor.Installer;
+  using Castle.MicroKernel.Registration;
+  using Castle.MicroKernel.SubSystems.Configuration;
+  
+  var container = new WindsorContainer();
+  container.Install(FromAssembly.This());
+  //usage:
+  var codeServices = container.Resolve<ICodeServices>();
+
+  public class ServiceInstaller : IWindsorInstaller  {
+      public void Install(IWindsorContainer container, IConfigurationStore store)  {
+          container.Register(
+              Component.For<IGenericServices<domain.Presentation>>()
+                  .ImplementedBy<GenericServices<domain.Presentation>>()
+                  .DependsOn(Dependency.OnAppSettingsValue("path"), 
+                    Dependency.OnAppSettingsValue("pattern"))
+                  .LifestyleSingleton(),
+               
+              Classes.FromThisAssembly()
+                  .BasedOn<ApiController>()
+                  .LifestyleScoped()
+              );
+      }
+  }]]>
+      </Code>
+    </Component>
+  </Slide>
+  <Slide Title="Windows Services with TopShelf" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>TopShelf: Services made easy</Bold>
+      </Paragraph>
+      <Paragraph>Easy to debug and install your Windows Services</Paragraph>
+    </RichTextBlock>
+    <Component Id="2EE6AC89-B4C7-462D-ADA2-D5507949F19E" Name="Topshell" IsBrowsable="true" Action="View" TargetFile="Programer.cs" TargetProject="Code.Service">
+      <Code>
+        <![CDATA[ using Topshelf;
+        
+  public class CodeService: ServiceControl
+  {
+    public bool Start(HostControl host) {...}
+    public bool Stop(HostControl host) {...}
+  }
+        
+  var hostObj = HostFactory.New(x =>
+  {
+      x.Service<CodeService>(s =>
+      {
+          s.ConstructUsing(name => new CodeService(codeServices, presentationServices, webApp));
+          s.WhenStarted((ls, host) => ls.Start(host));
+          s.WhenStopped((ls, host) => ls.Stop(host));                    
+      });
+
+      x.RunAsLocalSystem().SetDescription("Code services console");
+      x.SetDisplayName("Code Service");
+      x.SetServiceName("CodeService");
+      x.StartAutomatically();
+  });
+
+  hostObj.Run();]]>
+      </Code>      
+    </Component>
+  </Slide>
+  <Slide Title="Web API Integration with OWIN Self-Host" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Self-Hosting with OWIN</Bold>
+      </Paragraph>
+    </RichTextBlock>
+    <Component Id="4BBC728E-34B2-455C-BCBF-CED13DC222DD" Name="OWIN-SelfHost" IsBrowsable="true" Action="View" TargetFile="WebApiApp.cs" TargetProject="Code.Service">
+    <Code>
+      <![CDATA[ using Microsoft.Owin.Hosting;
+  using Owin;
+  using System.Web.Http;
+
+  var _portNumber = 3030;
+  var _instance = WebApp.Start<Startup>(string.Format("http://localhost:{0}", _portNumber));
+
+  public class Startup
+  {
+      public void Configuration(IAppBuilder builder)
+      {
+          var config = new HttpConfiguration();
+          config.DependencyResolver = new WindsorDependencyResolver(container.Kernel);
+           
+          config.Routes.MapHttpRoute(
+              name: "Default",
+              routeTemplate: "api/{controller}/{id}",
+              defaults: new { id = RouteParameter.Optional }
+          );
+
+          builder.UseWebApi(config);
+      }
+  }]]>  
+    </Code>    
+    </Component>
+  </Slide>
+  <Slide Title="Integration with Visual Studio - VSIX Packages" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>EnvDTE Programming Model and VSIX Packages</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- VSIX Packages</Paragraph>
+      <Paragraph TextIndent="4">- EnvDTE</Paragraph>
+      <Paragraph TextIndent="4">- EnvDTE80</Paragraph>
+      <Paragraph TextIndent="4">- EnvDTE90</Paragraph>
+      <Paragraph TextIndent="4">- EnvDTE100</Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Composition with MEF" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Static vs Dynamic Components</Bold>
+      </Paragraph>
+    </RichTextBlock>
+    <Component Id="867E3673-FBF9-4366-AB05-2E7683C564F1" Name="Composition Assemblies and Exports">
+      <Code>
+        <![CDATA[        using System.ComponentModel.Composition;
+        
+        [Export(typeof(IChildWindow))]
+        [ExportMetadata("Title", "Todo Coder")]]]>
+      </Code>      
+    </Component>
+    <Component Id="EFD2753C-8463-4EE1-89B5-DC745BE54D58" Name="Composition Imports">
+      <Code>
+        <![CDATA[        [ImportMany]
+        IEnumerable<Lazy<IChildWindow, ITitledWindow>> children;]]>
+      </Code>      
+    </Component>
+    <Component Id="3A907454-4488-47D8-BA4B-EE828C7AD2DD" Name="Composition Catalogs" IsBrowsable="true" Action="View" TargetFile="HostControl.xaml.cs" TargetProject="Trainer.Wpf.VStudio.Tools">
+      <Code>
+        <![CDATA[        var assembly = GetType().Assembly;
+        var catalog = new AggregateCatalog();
+        catalog.Catalogs.Add(new AssemblyCatalog(assembly));
+
+        if (!Directory.Exists(folder))
+        {
+          folder = Path.Combine(Path.GetDirectoryName(assembly.Location), "extensions");
+        }
+        catalog.Catalogs.Add(new DirectoryCatalog(folder));
+        var container = new CompositionContainer(catalog);
+        container.ComposeParts(this);]]>
+      </Code>
+    </Component>
+  </Slide>
+  <Slide Title="Composition Sample within a Visual Studio ToolWindowPane" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Host MEF Controls in a Tab Control</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- LogViewerControl</Paragraph>
+      <Paragraph TextIndent="4">- AppAccelerator</Paragraph>
+      <Paragraph TextIndent="4"></Paragraph>
+    </RichTextBlock>
+    <Component Id="A32BD709-B3EA-428C-AC55-5385DA41AC51" Name="MEF HostControl" IsBrowsable="true" Action="View" TargetFile="PlugableWindow.cs" TargetProject="Visor.VStudio">
+      <Code>
+        <![CDATA[ public interface IChildWindow
+  {
+      UserControl Content { get; }
+      void SetParentWindow(IPlugableWindow window);
+  }
+
+  public interface ITitledWindow
+  {
+      string Title { get; }
+  }
+
+  public interface IPlugableWindow
+  {
+      string ProgId { get; }
+      void Attach();
+      DTE2 Dte { get; set; }
+      void Log(string format, params string[] message);
+      bool AddCode(Component component);
+      string ViewCode(ViewCodeArgs e);
+  }]]>
+      </Code>
+    </Component>
+  </Slide>
+  <Slide Title="Plugable Control Sample" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>MEF Controls discovery from Directory Catalog</Bold>
+      </Paragraph>
+    </RichTextBlock>
+    <Component Id="BE98E321-48A0-41CC-A5F5-066833352A0F" Name="Plugable Code Items" IsBrowsable="true" TargetProject="Plugable.Sample" Action="Copy">
+      <Code>
+        <![CDATA[using System.ComponentModel.Composition;
+using System.Windows.Controls;
+using Visor.VStudio;
+using Plugable.Sample.ViewModels;
+
+namespace Plugable.Sample {
+    [Export(typeof(IChildWindow))]
+    [ExportMetadata("Title", "Plugable Control")]
+    public partial class PlugableControl : UserControl, IChildWindow, ITitledWindow {
+        public PlugableControl() {
+            DataContext = PlugableControlViewModel.ViewModel;
+            InitializeComponent();
+        }
+
+        private IPlugableWindow _parentWindow;
+        public string Title { get { return "Plugable Control"; } }
+        UserControl IChildWindow.Content { get { return this; } }
+
+        public void SetParentWindow(IPlugableWindow window) {
+            _parentWindow = window;
+        }
+    }
+}]]>
+      </Code>
+    </Component>
+  </Slide>
+  <Slide Title="References" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>UWP Apps with T10</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://aka.ms/Template10">http://aka.ms/Template10</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Windsor Castle DI</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://www.castleproject.org">http://www.castleproject.org</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>TopShelf Services</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://topshelf-project.com">http://topshelf-project.com</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>OWIN Self-Hosting</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="https://www.nuget.org/packages/Microsoft.Owin.SelfHost">https://www.nuget.org/packages/Microsoft.Owin.SelfHost</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Visual Studio Extensibility</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="https://www.safaribooksonline.com">Microsoft Visual Studio 2015 Unleashed - Safari Books Online</Hyperlink>
+      </Paragraph>
+      <Paragraph>
+        <Bold>MEF Composition</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="http://aka.ms/Template10">Fundamentals of the Managed Extensibility Framework - Safari Books Online</Hyperlink>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Q &amp; A" Margin="-200,0,0,0">
+    <RichTextBlock FontSize="40" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Questions &amp; Answers!</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+</Presentation>

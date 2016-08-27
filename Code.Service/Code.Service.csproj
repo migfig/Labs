@@ -91,6 +91,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentProviders\AwsContentProvider.cs" />
+    <Compile Include="ContentProviders\AzureContentProvider.cs" />
+    <Compile Include="ContentProviders\FileSystemContentProvider.cs" />
+    <Compile Include="ContentProviders\IContentProvider.cs" />
     <Compile Include="IoC\WindsorDependencyResolver.cs" />
     <Compile Include="IoC\WindsorDependencyScope.cs" />
     <Compile Include="IoC\ServiceInstaller.cs" />

@@ -26,7 +26,7 @@ namespace Common.Controllers
             });
         }
 
-        [Route("token/{code:string}"), HttpPost]
+        [Route("token/{code}"), HttpPost]
         [ResponseType(typeof(TokenResponse))]
         public IHttpActionResult GetToken([FromUri] string code, [FromBody] TokenRequest request)
         {

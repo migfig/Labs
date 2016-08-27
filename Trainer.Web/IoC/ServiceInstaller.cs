@@ -16,26 +16,27 @@ namespace Code.Service
             container.Register(
                 Component.For<IGenericServices<domain.Presentation>>()
                     .ImplementedBy<GenericServices<domain.Presentation>>()
+                    .Named("presentationServices")
                     .DependsOn(Dependency.OnAppSettingsValue("maxItems"), Dependency.OnAppSettingsValue("path"), Dependency.OnAppSettingsValue("pattern"))
                     .LifestyleSingleton(),
 
                 Component.For<IContentProvider<domain.Presentation>>()
                     .ImplementedBy<FileSystemContentProvider>()
+                    .Named("contentProvider")
                     .LifestyleSingleton(),
 
                 Component.For<ICodeServices>()
                     .ImplementedBy<CodeServices>()
+                    .Named("codeServices")
                     .DependsOn(Dependency.OnAppSettingsValue("maxItems"))
                     .LifestyleSingleton(),
 
-                Component.For<IServiceable>()
-                    .ImplementedBy<WebApiApp>()
-                    .DependsOn(Dependency.OnAppSettingsValue("port"))
-                    .LifestyleTransient(),
-
-                Component.For<CodeService>()
+                Component.For<CodeServiceWeb>()
+                    .DependsOn(Dependency.OnComponent("codeServices", "codeServices"),
+                        Dependency.OnComponent("presentationServices", "presentationServices"),
+                        Dependency.OnComponent("contentProvider", "contentProvider"))
                     .LifestyleSingleton(),
-                
+
                 Classes.FromThisAssembly()
                     .BasedOn<ApiController>()
                     .LifestyleScoped()
