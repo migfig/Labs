@@ -1,18 +1,16 @@
-﻿using Common;
-using Microsoft.Azure.Documents;
+﻿using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Trainer.Domain;
 
 namespace Code.Service.ContentProviders
 {
-    public class AzureContentProvider : IContentProvider<Presentation>
+    public class AzureContentProvider : CloudProvider, IContentProvider<Presentation>
     {
         private readonly DocumentClient _client;
         private const string _databaseId = "Trainer";
@@ -64,8 +62,7 @@ namespace Code.Service.ContentProviders
                     await _client.CreateDocumentAsync(collection.SelfLink, presentation);
                 }
 
-                query = from p in _client.CreateDocumentQuery<Presentation>(collection.SelfLink)
-                        select p;
+                query = contents.AsQueryable();
             }
 
             return query.AsEnumerable();
@@ -84,28 +81,6 @@ namespace Code.Service.ContentProviders
         public void DeleteContent(object id)
         {
             throw new NotImplementedException();
-        }
-
-        private IEnumerable<Presentation> GetAllLocalContent(string path, string pattern)
-        {
-            var list = new List<Presentation>();
-            try
-            {
-                var files = Directory.GetFiles(path, pattern);
-                foreach (var file in files)
-                {
-                    var p = XmlHelper<Presentation>.Load(file);
-                    if (p != null && p.Slide.Any())
-                    {
-                        list.Add(p);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-            return list;
-        }
+        }       
     }
 }

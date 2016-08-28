@@ -93,9 +93,40 @@
       <HintPath>$(SolutionDir)\packages\Microsoft.Azure.Documents.Client.0.9.2-preview\lib\net40\Microsoft.Azure.Documents.Client.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <Choose>
+    <When Condition=" '$(TargetFrameworkVersion)' == 'v3.5' Or '$(TargetFrameworkVersion)' == 'v4.0' ">
+      <ItemGroup>
+        <Reference Include="AWSSDK.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <Private>True</Private>
+          <HintPath>C:\Program Files (x86)\AWS SDK for .NET\bin\Net35\AWSSDK.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="AWSSDK.DynamoDBv2, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <Private>True</Private>
+          <HintPath>C:\Program Files (x86)\AWS SDK for .NET\bin\Net35\AWSSDK.DynamoDBv2.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="AWSSDK.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <Private>True</Private>
+          <HintPath>C:\Program Files (x86)\AWS SDK for .NET\bin\Net45\AWSSDK.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="AWSSDK.DynamoDBv2, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <Private>True</Private>
+          <HintPath>C:\Program Files (x86)\AWS SDK for .NET\bin\Net45\AWSSDK.DynamoDBv2.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
     <Compile Include="ContentProviders\AwsContentProvider.cs" />
     <Compile Include="ContentProviders\AzureContentProvider.cs" />
+    <Compile Include="ContentProviders\CloudProvider.cs" />
     <Compile Include="ContentProviders\FileSystemContentProvider.cs" />
     <Compile Include="ContentProviders\IContentProvider.cs" />
     <Compile Include="IoC\WindsorDependencyResolver.cs" />
