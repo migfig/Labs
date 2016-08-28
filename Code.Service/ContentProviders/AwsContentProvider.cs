@@ -17,12 +17,20 @@ namespace Code.Service.ContentProviders
 
         public AwsContentProvider()
         {
-            _client = new AmazonDynamoDBClient();
+            try
+            {
+                _client = new AmazonDynamoDBClient();
+            } catch(Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
         }
 
         public async Task<IEnumerable<Presentation>> GetAllContent(string path, string pattern)
         {
             var list = new List<Presentation>();
+            if (null == _client) return list;
+
             var context = new DynamoDBContext(_client);
             var tables = _client.ListTables().TableNames;
             if(!tables.Any())

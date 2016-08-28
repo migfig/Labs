@@ -44,8 +44,9 @@ namespace Code.Service
                     await _presentationServices.AddItem(presentation);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                System.Console.WriteLine(e.Message);
             }
         }
     }

@@ -30,7 +30,7 @@ namespace Code.Service.ContentProviders
         public async Task<IEnumerable<Presentation>> GetAllContent(string path, string pattern)
         {
             var list = new List<Presentation>();
-            if (null != _client) return list;
+            if (null == _client) return list;
 
             var db = _client.CreateDatabaseQuery()
                 .Where(x => x.Id.Equals(_databaseId))
