@@ -4,6 +4,7 @@ using Castle.Windsor;
 using Code.Service.ContentProviders;
 using Common.Controllers;
 using Common.Generics;
+using System.Configuration;
 using System.Web.Http;
 using domain = Trainer.Domain;
 
@@ -13,6 +14,38 @@ namespace Code.Service
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
+            #region content providers
+
+            ComponentRegistration<IContentProvider<domain.Presentation>> contentProviderReg;
+            var provider = ConfigurationManager.AppSettings["contentProvider"];
+            if (string.IsNullOrEmpty(provider))
+            {
+                provider = typeof(FileSystemContentProvider).ToString();
+            }
+            switch (provider)
+            {
+                case "Code.Service.ContentProviders.AwsContentProvider":
+                    contentProviderReg = Component.For<IContentProvider<domain.Presentation>>()
+                    .ImplementedBy<AwsContentProvider>()
+                    .Named("contentProvider")
+                    .LifestyleSingleton();
+                    break;
+                case "Code.Service.ContentProviders.AzureContentProvider":
+                    contentProviderReg = Component.For<IContentProvider<domain.Presentation>>()
+                    .ImplementedBy<AzureContentProvider>()
+                    .Named("contentProvider")
+                    .LifestyleSingleton();
+                    break;
+                default:
+                    contentProviderReg = Component.For<IContentProvider<domain.Presentation>>()
+                    .ImplementedBy<FileSystemContentProvider>()
+                    .Named("contentProvider")
+                    .LifestyleSingleton();
+                    break;
+            }
+            
+            #endregion
+
             container.Register(
                 Component.For<IGenericServices<domain.Presentation>>()
                     .ImplementedBy<GenericServices<domain.Presentation>>()
@@ -20,10 +53,7 @@ namespace Code.Service
                     .DependsOn(Dependency.OnAppSettingsValue("maxItems"), Dependency.OnAppSettingsValue("path"), Dependency.OnAppSettingsValue("pattern"))
                     .LifestyleSingleton(),
 
-                Component.For<IContentProvider<domain.Presentation>>()
-                    .ImplementedBy<FileSystemContentProvider>()
-                    .Named("contentProvider")
-                    .LifestyleSingleton(),
+                contentProviderReg,
 
                 Component.For<ICodeServices>()
                     .ImplementedBy<CodeServices>()

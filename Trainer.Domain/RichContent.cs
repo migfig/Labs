@@ -13,6 +13,9 @@ namespace Trainer.Domain
     public partial class Presentation
     {
         [XmlAttribute]
+        public string Id { get; set; }
+
+        [XmlAttribute]
         public string Title { get; set; }
 
         [XmlAttribute]

@@ -1,7 +1,12 @@
-﻿using System;
+﻿using Common;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Trainer.Domain;
 
@@ -9,14 +14,61 @@ namespace Code.Service.ContentProviders
 {
     public class AzureContentProvider : IContentProvider<Presentation>
     {
-        public void DeleteContent(object id)
+        private readonly DocumentClient _client;
+        private const string _databaseId = "Trainer";
+        private const string _collectionId = "Presentations";
+
+        public AzureContentProvider()
         {
-            throw new NotImplementedException();
+            try
+            {
+                _client = new DocumentClient(new Uri(ConfigurationManager.AppSettings["azureServiceEndpoint"]), ConfigurationManager.AppSettings["azureAuthKey"]);
+            } catch(Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
         }
 
-        public Task<IEnumerable<Presentation>> GetAllContent(string path, string pattern)
+        public async Task<IEnumerable<Presentation>> GetAllContent(string path, string pattern)
         {
-            throw new NotImplementedException();
+            var list = new List<Presentation>();
+            if (null != _client) return list;
+
+            var db = _client.CreateDatabaseQuery()
+                .Where(x => x.Id.Equals(_databaseId))
+                .AsEnumerable()
+                .FirstOrDefault();
+            if(null == db)
+            {
+                //db does not exist, create it
+                db = await _client.CreateDatabaseAsync(new Database { Id = _databaseId });
+            }
+
+            var collection = _client.CreateDocumentCollectionQuery(db.SelfLink)
+                .Where(x => x.Id.Equals(_collectionId))
+                .AsEnumerable()
+                .FirstOrDefault();
+            if(null == collection)
+            {
+                //docs collection does not exist, create it
+                collection = await _client.CreateDocumentCollectionAsync(db.SelfLink, new DocumentCollection { Id = _collectionId });
+            }
+
+            var query = from p in _client.CreateDocumentQuery<Presentation>(collection.SelfLink)
+                        select p;
+            if(!query.AsEnumerable().Any())
+            {
+                var contents = GetAllLocalContent(ConfigurationManager.AppSettings["path"], ConfigurationManager.AppSettings["pattern"]);
+                foreach (var presentation in contents)
+                {
+                    await _client.CreateDocumentAsync(collection.SelfLink, presentation);
+                }
+
+                query = from p in _client.CreateDocumentQuery<Presentation>(collection.SelfLink)
+                        select p;
+            }
+
+            return query.AsEnumerable();
         }
 
         public Task<Presentation> GetContentById(object id)
@@ -27,6 +79,33 @@ namespace Code.Service.ContentProviders
         public void UpdateContent(Presentation item)
         {
             throw new NotImplementedException();
+        }
+
+        public void DeleteContent(object id)
+        {
+            throw new NotImplementedException();
+        }
+
+        private IEnumerable<Presentation> GetAllLocalContent(string path, string pattern)
+        {
+            var list = new List<Presentation>();
+            try
+            {
+                var files = Directory.GetFiles(path, pattern);
+                foreach (var file in files)
+                {
+                    var p = XmlHelper<Presentation>.Load(file);
+                    if (p != null && p.Slide.Any())
+                    {
+                        list.Add(p);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            return list;
         }
     }
 }
