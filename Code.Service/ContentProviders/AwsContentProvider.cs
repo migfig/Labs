@@ -31,14 +31,13 @@ namespace Code.Service.ContentProviders
             var list = new List<Presentation>();
             if (null == _client) return list;
 
-            var context = new DynamoDBContext(_client);
             var tables = _client.ListTables().TableNames;
             if(!tables.Any())
             {
                 //presentations table not found, create it
-                await _client.CreateTableAsync(new CreateTableRequest
+                var response = await _client.CreateTableAsync(new CreateTableRequest
                 {
-                    TableName = "Presentations",
+                    TableName = "Presentation",
                     ProvisionedThroughput = new ProvisionedThroughput { ReadCapacityUnits = 3, WriteCapacityUnits = 1 },
                     KeySchema = new List<KeySchemaElement>
                     {
@@ -54,14 +53,20 @@ namespace Code.Service.ContentProviders
                     }
                 });
 
+                var created = response.TableDescription.TableName.Equals("Presentation");
+
+                var ctx = new DynamoDBContext(_client);
                 var contents = GetAllLocalContent(ConfigurationManager.AppSettings["path"], ConfigurationManager.AppSettings["pattern"]);
                 foreach (var presentation in contents)
                 {
-                    await context.SaveAsync<Presentation>(presentation);
+                    await ctx.SaveAsync<Presentation>(presentation);
                 }
+
+                return contents;
             }
 
-            var query = context.QueryAsync<Presentation>("Title",  QueryOperator.GreaterThan, new string[] { "" }.AsEnumerable());
+            var context = new DynamoDBContext(_client);
+            var query = context.ScanAsync<Presentation>(new List<ScanCondition> { new ScanCondition("Image", ScanOperator.BeginsWith, "ms-appx") });            
             while (!query.IsDone)
             {
                 list = await query.GetNextSetAsync();
