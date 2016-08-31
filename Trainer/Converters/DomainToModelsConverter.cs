@@ -3,6 +3,8 @@ using Trainer.Domain;
 using Windows.UI.Xaml.Data;
 using Trainer.Models;
 using Windows.UI.Xaml;
+using Log.Common.Services.Common;
+using Log.Common.Services;
 
 namespace Trainer.Converters
 {
@@ -47,6 +49,28 @@ namespace Trainer.Converters
             }
 
             return new Thickness(0);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class SlideToMarkdownConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value != null && value is Slide)
+            {
+                using (var service = ApiServiceFactory.CreateService<string>(Services.SettingsServices.SettingsService.Instance.CodeServicesUrl))
+                {
+                    var parser = ParserFactory<Slide>.CreateSlideParser(service);
+                    return parser.Parse(value as Slide);
+                }
+            }
+
+            return string.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

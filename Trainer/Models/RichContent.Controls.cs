@@ -187,7 +187,7 @@ namespace Trainer.Models
 
         private static List<Xaml.Run> GetInlines(string line, bool isThumbnail= false)
         {
-            var tokens = ParserFactory.CreateParser().Parse(line);
+            var tokens = ParserFactory<object>.CreateParser().Parse(line);
             var dict = new Dictionary<TokenType, string>
             {
                 {TokenType.Keyword, "#FF569CD6"},

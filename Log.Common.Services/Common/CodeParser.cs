@@ -1,6 +1,7 @@
 ﻿using Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using Trainer.Domain;
 
 namespace Log.Common.Services.Common
 {
-    #region parser interface & factory
+    #region parser interfaces & factories
 
     public interface IParser
     {
@@ -27,7 +28,12 @@ namespace Log.Common.Services.Common
         T Parse(IEnumerable<Token> tokens);
     }
 
-    public class ParserFactory
+    public interface IGenericParser<T> where T : class
+    {
+        string Parse(T item);
+    }
+
+    public class ParserFactory<T> where T : class
     {
         public static IParser CreateParser(string language = "csharp")
         {
@@ -39,16 +45,18 @@ namespace Log.Common.Services.Common
                     return new CSharpParser(language);
             }
         }
-    }
 
-    public class TokenParserFactory<T> where T: class
-    {
         public static ITokenParser<T> CreateParser(IGenericApiService<Slide> apiService)
         {
             return (ITokenParser<T>)new PresentationTokenParser(apiService);
         }
-    }
 
+        public static IGenericParser<T> CreateSlideParser(IGenericApiService<string> apiService)
+        {
+            return (IGenericParser<T>)new SlideToMarkdownParser(apiService);
+        }
+    }        
+    
     #endregion
 
     #region default methods for language parser
@@ -376,6 +384,25 @@ namespace Log.Common.Services.Common
                 );
 
             return _apiService.TransformXml(xml).GetAwaiter().GetResult();
+        }
+    }
+
+    #endregion
+
+    #region Slide to Markdown parser
+
+    public class SlideToMarkdownParser : IGenericParser<Slide>
+    {
+        private readonly IGenericApiService<string> _apiService;
+        public SlideToMarkdownParser(IGenericApiService<string> apiService)
+        {
+            _apiService = apiService;
+        }
+
+        public string Parse(Slide item)
+        {
+            var xml = XmlHelper2<Slide>.Save(item);
+            return _apiService.TransformXml(XElement.Load(new StringReader(xml))).GetAwaiter().GetResult();
         }
     }
 

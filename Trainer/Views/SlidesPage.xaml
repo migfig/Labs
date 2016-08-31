@@ -18,6 +18,7 @@
     <Page.Resources>
         <converters:DomainToModelsConverter x:Key="domainToModelsConverter"/>
         <converters:StringToMarginConverter x:Key="stringToMarginConverter"/>
+        <converters:SlideToMarkdownConverter x:Key="slideToMarkdownConverter"/>
     </Page.Resources>
     <Page.DataContext>
         <vm:SlidesPageViewModel x:Name="ViewModel" />
@@ -91,7 +92,7 @@
                       RelativePanel.AlignRightWithPanel="True"
                       RelativePanel.RightOf="slidesContent"
                       RelativePanel.Below="pageHeader" 
-                      Margin="0,0,0,50"
+                      Margin="0,0,0,0"
                       VerticalScrollBarVisibility="Auto">
             <ScrollViewer.Background>
                 <ImageBrush ImageSource="{x:Bind ViewModel.BackgroundImageUrl}"/>
@@ -118,7 +119,19 @@
             </StackPanel>
         </ScrollViewer>
 
-        <Border RelativePanel.Below="slideContent" 
+        <TextBox Text="{x:Bind ViewModel.CurrentSlide, Converter={StaticResource ResourceKey=slideToMarkdownConverter}}"
+                 x:Name="slideMarkdown" Padding="12,8,0,0" 
+                      RelativePanel.AlignBottomWithPanel="True"
+                      RelativePanel.AlignLeftWithPanel="True"
+                      RelativePanel.AlignRightWithPanel="True"
+                      RelativePanel.RightOf="slidesContent"
+                      RelativePanel.Below="slideContent" 
+                      Margin="0,0,0,50"
+                      TextWrapping="WrapWholeWords"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+
+        <Border RelativePanel.Below="slideMarkdown" 
                     RelativePanel.AlignLeftWithPanel="True"
                     RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignBottomWith="slideContent"

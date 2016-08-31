@@ -21,7 +21,7 @@ namespace Log.Common.Services.Tests
         [TestInitialize]
         public void Setup()
         {
-            var parser = ParserFactory.CreateParser("markdown");
+            var parser = ParserFactory<object>.CreateParser("markdown");
             Assert.IsNotNull(parser);
 
             #region code string
@@ -79,7 +79,7 @@ namespace Markdown.Parsers
         [TestMethod]
         public void Markdown_Translated_ToPresentation_WhenValidXmlAndCSharpCode()
         {
-            var parser = TokenParserFactory<Presentation>.CreateParser(new MockApiService());
+            var parser = ParserFactory<Presentation>.CreateParser(new MockApiService());
             Assert.IsNotNull(parser);
             var presentation = parser.Parse(_tokens);
             Assert.IsNotNull(presentation);
