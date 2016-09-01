@@ -31,16 +31,16 @@
   </xsl:template>
 
   <xsl:template match="Component">
+    ```<xsl:value-of select="@Language"/>
     <xsl:apply-templates select="Code"/>
+    ```
   </xsl:template>
 
   <xsl:template match="LineBreak">
-    <xsl:value-of select="string('#0x10#0x13')"/>      
+    <xsl:value-of select="string('&#13;&#10;')"/>      
   </xsl:template>
 
   <xsl:template match="Code">
-    ```<xsl:value-of select="@Language"/>
-        <xsl:value-of select="text()"/>
-    ```
+        <xsl:value-of select="string('&#13;&#10;')"/><xsl:value-of select="text()"/>
   </xsl:template>
 </xsl:stylesheet>

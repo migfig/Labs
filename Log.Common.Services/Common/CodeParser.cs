@@ -33,7 +33,7 @@ namespace Log.Common.Services.Common
         string Parse(T item);
     }
 
-    public class ParserFactory<T> where T : class
+    public class ParserFactory
     {
         public static IParser CreateParser(string language = "csharp")
         {
@@ -46,14 +46,14 @@ namespace Log.Common.Services.Common
             }
         }
 
-        public static ITokenParser<T> CreateParser(IGenericApiService<Slide> apiService)
+        public static ITokenParser<Presentation> CreatePresentationParser(IGenericApiService<Slide> apiService)
         {
-            return (ITokenParser<T>)new PresentationTokenParser(apiService);
+            return new PresentationTokenParser(apiService);
         }
 
-        public static IGenericParser<T> CreateSlideParser(IGenericApiService<string> apiService)
+        public static IGenericParser<Slide> CreateSlideParser(IGenericApiService<string> apiService)
         {
-            return (IGenericParser<T>)new SlideToMarkdownParser(apiService);
+            return new SlideToMarkdownParser(apiService);
         }
     }        
     
@@ -383,7 +383,13 @@ namespace Log.Common.Services.Common
                             })))
                 );
 
-            return _apiService.TransformXml(xml).GetAwaiter().GetResult();
+            var transXml = _apiService.TransformXml(xml, "token2slide.xslt").GetAwaiter().GetResult();
+            if (!string.IsNullOrEmpty(transXml))
+            {
+                return XmlHelper2<Slide>.LoadFromString(transXml);
+            }
+
+            return new Slide();
         }
     }
 
@@ -402,7 +408,7 @@ namespace Log.Common.Services.Common
         public string Parse(Slide item)
         {
             var xml = XmlHelper2<Slide>.Save(item);
-            return _apiService.TransformXml(XElement.Load(new StringReader(xml))).GetAwaiter().GetResult();
+            return _apiService.TransformXml(XElement.Load(new StringReader(xml)), "slide2markdown.xslt").GetAwaiter().GetResult();
         }
     }
 

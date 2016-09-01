@@ -1,5 +1,6 @@
 ﻿using Common;
 using Log.Common.Services.Common;
+using Log.Common.Services.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -37,10 +38,12 @@ namespace Log.Common.Services.Tests
            <Paragraph>     
              <Bold>Windsor Castle Container</Bold>        
            </Paragraph>
-        
+           <Paragraph>
+            <Run>Dependency Injection</Run>
+           </Paragraph>
            </RichTextBlock>
         
-           <Component Id='94928827-5412-4BC8-A279-EB88E21AC64F' Name='Windsor Castle' IsBrowsable='true' Action='View' TargetFile='IoC\ServiceInstaller.cs' TargetProject='Code.Service'>
+           <Component Id='94928827-5412-4BC8-A279-EB88E21AC64F' Name='Windsor Castle' IsBrowsable='true' Action='View' TargetFile='IoC\ServiceInstaller.cs' TargetProject='Code.Service' Language='csharp'>
                    
              <Code>
                    <![CDATA[ using Castle.Windsor;
@@ -74,12 +77,13 @@ namespace Log.Common.Services.Tests
     </Component>
   </Slide>".Trim().Replace("'", "\"");
 
-            var _markDown = @"
+            var expectedMarkdown = @"
     #Dependency Injection with Windsor Castle#
     
       *Windsor Castle Container*
-  
-    ``` using Castle.Windsor;
+  Dependency Injection
+    ```csharp
+ using Castle.Windsor;
             using Castle.Windsor.Installer;
             using Castle.MicroKernel.Registration;
             using Castle.MicroKernel.SubSystems.Configuration;
@@ -104,19 +108,22 @@ namespace Log.Common.Services.Tests
                         .BasedOn<ApiController>()
                         .LifestyleScoped()
                     );
+            }
         }
-    }
       
     ```
   ".Replace("'","\"");
 
             #endregion
 
-            var parser = ParserFactory<Slide>.CreateSlideParser(new MockApiServiceString());
+            var parser = ParserFactory.CreateSlideParser(new MockApiServiceString());
             Assert.IsNotNull(parser);
 
             var markdown = parser.Parse(XmlHelper2<Slide>.LoadFromString(xml));
-            Assert.AreEqual(_markDown.Trim(), markdown.Trim());
+
+            TextHelper.SaveFileContent("expected-markdown.txt", expectedMarkdown);
+            TextHelper.SaveFileContent("actual-markdown.txt", markdown);
+            Assert.AreEqual(expectedMarkdown.Trim(), markdown.Trim());
         }
     }
 
@@ -153,10 +160,10 @@ namespace Log.Common.Services.Tests
 
         #endregion
 
-        public Task<string> TransformXml(XElement xml)
+        public Task<string> TransformXml(XElement xml, string styleSheet)
         {
             var xslt = new XslCompiledTransform(true);
-            xslt.Load(@"C:\Code\RelatedRecords.Tests\Log.Common.Services\Common\slide2markdown.xslt");
+            xslt.Load(@"C:\Code\RelatedRecords.Tests\Log.Common.Services\Common\" + styleSheet);
 
             var builder = new StringBuilder();
             using (var stream =  new StringWriter(builder))

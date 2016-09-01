@@ -5,6 +5,7 @@ using Trainer.Models;
 using Windows.UI.Xaml;
 using Log.Common.Services.Common;
 using Log.Common.Services;
+using System.Linq;
 
 namespace Trainer.Converters
 {
@@ -65,7 +66,7 @@ namespace Trainer.Converters
             {
                 using (var service = ApiServiceFactory.CreateService<string>(Services.SettingsServices.SettingsService.Instance.CodeServicesUrl))
                 {
-                    var parser = ParserFactory<Slide>.CreateSlideParser(service);
+                    var parser = ParserFactory.CreateSlideParser(service);
                     return parser.Parse(value as Slide);
                 }
             }
@@ -75,7 +76,20 @@ namespace Trainer.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            throw new NotImplementedException();
+            if (value is string && !string.IsNullOrEmpty(value.ToString()))
+            {
+                using (var service = ApiServiceFactory.CreateService<Slide>(Services.SettingsServices.SettingsService.Instance.CodeServicesUrl))
+                {
+                    var mdParser = ParserFactory.CreateParser("markdown");
+                    var tokens = mdParser.Parse(value.ToString());
+                    var pParser = ParserFactory.CreatePresentationParser(service);
+                    var presentation = pParser.Parse(tokens);
+
+                    if (null != presentation) return presentation.Slide.FirstOrDefault();                    
+                }
+            }
+
+            return null;
         }
     }
 }

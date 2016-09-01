@@ -37,8 +37,9 @@ namespace Common
                     return (T)ser.Deserialize(stream);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                var x = e.Message;
             }
 
             return Activator.CreateInstance<T>();

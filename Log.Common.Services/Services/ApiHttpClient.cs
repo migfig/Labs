@@ -17,7 +17,7 @@ namespace Log.Common.Services
         Task<bool> AddItems(IEnumerable<T> items);
         Task<bool> AddItem(T item);
         Task<bool> RemoveItem(T item, string propertyName);
-        Task<T> TransformXml(XElement xml);
+        Task<string> TransformXml(XElement xml, string styleSheet);
     }
 
     public interface IApiService: IDisposable
@@ -132,9 +132,25 @@ namespace Log.Common.Services
             return new List<T>();
         }
 
-        public Task<T> TransformXml(XElement xml)
+        public async Task<string> TransformXml(XElement xml, string styleSheet)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string value = xml.ToString();
+                using (var content = new ByteArrayContent(Encoding.UTF8.GetBytes(value)))
+                {
+                    content.Headers.Add("Content-Type", _contentType);
+                    content.Headers.Add("Content-Length", value.Length.ToString());
+                    var response = await _client.PostAsync(_baseUrl + "xslt/transform?stylesheet=" + styleSheet, content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return await response.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+            catch (Exception) {; }
+
+            return string.Empty;
         }
 
         public void Dispose()

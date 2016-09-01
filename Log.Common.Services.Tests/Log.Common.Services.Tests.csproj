@@ -52,6 +52,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Common\TextHelper.cs" />
     <Compile Include="MarkdownParserTests.cs" />
     <Compile Include="MarkdownToPresentationTests.cs" />
     <Compile Include="ObjectHelperTests.cs" />

@@ -21,7 +21,7 @@ namespace Log.Common.Services.Tests
         [TestInitialize]
         public void Setup()
         {
-            var parser = ParserFactory<object>.CreateParser("markdown");
+            var parser = ParserFactory.CreateParser("markdown");
             Assert.IsNotNull(parser);
 
             #region code string
@@ -79,7 +79,7 @@ namespace Markdown.Parsers
         [TestMethod]
         public void Markdown_Translated_ToPresentation_WhenValidXmlAndCSharpCode()
         {
-            var parser = ParserFactory<Presentation>.CreateParser(new MockApiService());
+            var parser = ParserFactory.CreatePresentationParser(new MockApiService());
             Assert.IsNotNull(parser);
             var presentation = parser.Parse(_tokens);
             Assert.IsNotNull(presentation);
@@ -117,19 +117,18 @@ namespace Markdown.Parsers
 
         #endregion
 
-        public Task<Slide> TransformXml(XElement xml)
+        public Task<string> TransformXml(XElement xml, string styleSheet)
         {
             var xslt = new XslCompiledTransform(true);
-            xslt.Load(@"C:\Code\RelatedRecords.Tests\Log.Common.Services\Common\token2slide.xslt");
+            xslt.Load(@"C:\Code\RelatedRecords.Tests\Log.Common.Services\Common\" + styleSheet);
 
             var builder = new StringBuilder();
             using (var stream = XmlWriter.Create(builder))
             {
                 xslt.Transform(xml.CreateReader(), stream);
             }
-            var slideXml = XElement.Parse(builder.ToString());
 
-            return Task.FromResult(XmlHelper2<Slide>.Load(slideXml));
+            return Task.FromResult(builder.ToString());
         }
     }
 }

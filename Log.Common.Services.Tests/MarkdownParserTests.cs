@@ -22,7 +22,7 @@ namespace Log.Common.Services.Tests
         [TestMethod]
         public void Markdown_Parsed_WhenValidTextAndXmlCode()
         {
-            var parser = ParserFactory<object>.CreateParser("markdown");
+            var parser = ParserFactory.CreateParser("markdown");
             Assert.IsNotNull(parser);
 
             #region code string
@@ -64,7 +64,7 @@ And some Strikethrough ~~Text~~
         [TestMethod]
         public void Markdown_Parsed_WhenValidTextAndJsonCode()
         {
-            var parser = ParserFactory<object>.CreateParser("markdown");
+            var parser = ParserFactory.CreateParser("markdown");
             Assert.IsNotNull(parser);
 
             #region code string
@@ -113,7 +113,7 @@ Yet another text **Bolded** going through
         [TestMethod]
         public void Markdown_Parsed_WhenValidTextAndCSharpCode()
         {
-            var parser = ParserFactory<object>.CreateParser("markdown");
+            var parser = ParserFactory.CreateParser("markdown");
             Assert.IsNotNull(parser);
 
             #region code string
