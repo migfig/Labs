@@ -13,19 +13,18 @@ namespace Common.Controllers
     public class XsltController: ApiController
     {
         [Route("transform"), HttpPost]
-        public async Task<string> TransformXml([FromBody] string xml, string styleSheet)
+        public async Task<string> TransformXml([FromBody] XElement xml, string styleSheet)
         {
             var result = string.Empty;
             try
             {
-                var value = XElement.Parse(xml);
                 var xslt = new XslCompiledTransform(true);
                 xslt.Load(Path.Combine(ConfigurationManager.AppSettings["xsltPath"], styleSheet));
 
                 var builder = new StringBuilder();
                 using (var stream = new StringWriter(builder))
                 {
-                    xslt.Transform(value.CreateReader(), null, stream);
+                    xslt.Transform(xml.CreateReader(), null, stream);
                 }
 
                 result = builder.ToString();

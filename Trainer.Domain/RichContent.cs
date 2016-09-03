@@ -5,6 +5,8 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace Trainer.Domain
 {
@@ -54,7 +56,7 @@ namespace Trainer.Domain
     }
 
     [XmlType(AnonymousType = true)]
-    public partial class Slide
+    public partial class Slide: BaseModel
     {
         [XmlAttribute]
         public string Title { get; set; }
@@ -73,6 +75,16 @@ namespace Trainer.Domain
 
         [XmlElement("Component", Order = 1)]
         public ObservableCollection<Component> Component { get; set; }
+
+        private string _markDown;
+        [XmlIgnore]
+        public string Markdown {
+            get { return _markDown; }
+            set {
+                _markDown = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Slide()
         {
@@ -311,5 +323,32 @@ namespace Trainer.Domain
             //LineStackingStrategy = "BlockLineHeight";
             //TextIndent = (byte)0;
         }
+    }
+
+    [AttributeUsage(AttributeTargets.Method)]
+    public sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
+    {
+        public NotifyPropertyChangedInvocatorAttribute() { }
+        public NotifyPropertyChangedInvocatorAttribute(string parameterName)
+        {
+            ParameterName = parameterName;
+        }
+
+        public string ParameterName { get; private set; }
+    }
+
+    public abstract class BaseModel : INotifyPropertyChanged
+    {
+        #region property changed handler
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion property changed handler    
     }
 }

@@ -5,7 +5,7 @@ using Trainer.Domain;
 
 namespace Trainer.Wpf.VStudio.Tools.ViewModels
 {
-    public class ComponentVarsViewModel : BaseModel
+    public class ComponentVarsViewModel : Common.BaseModel
     {
         public IList<Parameter> Parameters { get; private set; }
         public IEnumerable<Parameter> VisibleParameters { get { return Parameters.Where(x => x.IsVisible.Equals(true)); } }

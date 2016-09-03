@@ -7,6 +7,10 @@ using Template10.Services.NavigationService;
 using Trainer.Domain;
 using Windows.UI.Xaml.Navigation;
 using Common;
+using System;
+using Log.Common.Services;
+using Log.Common.Services.Common;
+using System.Xml.Linq;
 
 namespace Trainer.ViewModels
 {
@@ -22,6 +26,24 @@ namespace Trainer.ViewModels
 
             _codeServices = new CodeServices();
             MainViewModel.ViewModel.GetPresentations((items) => Presentations = items);
+        }
+
+        private async void GetSlideMarkdown(Action<string> action)
+        {
+            using (var service = ApiServiceFactory.CreateService<string>(Services.SettingsServices.SettingsService.Instance.CodeServicesUrl, useJson: false))
+            {
+                var parser = ParserFactory.CreateSlideParser(service);
+                var markDown = await parser.Parse(_currentSlide);
+                if (!string.IsNullOrEmpty(markDown))
+                {
+                    markDown = XElement.Parse(markDown).Value;
+                }
+                if (action != null)
+                {
+                    
+                    action.Invoke(markDown);
+                }
+            }
         }
 
         public string Foother
@@ -65,7 +87,13 @@ namespace Trainer.ViewModels
         public Slide CurrentSlide
         {
             get { return _currentSlide; }
-            private set { Set(ref _currentSlide, value); }
+            private set {
+                Set(ref _currentSlide, value);
+                if(null != _currentSlide && string.IsNullOrEmpty(_currentSlide.Markdown))
+                {
+                    GetSlideMarkdown((markDown) => _currentSlide.Markdown = markDown);
+                }
+            }
         }
 
         public string BackgroundImageUrl

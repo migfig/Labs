@@ -30,7 +30,7 @@ namespace Log.Common.Services.Common
 
     public interface IGenericParser<T> where T : class
     {
-        string Parse(T item);
+        Task<string> Parse(T item);
     }
 
     public class ParserFactory
@@ -405,10 +405,10 @@ namespace Log.Common.Services.Common
             _apiService = apiService;
         }
 
-        public string Parse(Slide item)
+        public async Task<string> Parse(Slide item)
         {
             var xml = XmlHelper2<Slide>.Save(item);
-            return _apiService.TransformXml(XElement.Load(new StringReader(xml)), "slide2markdown.xslt").GetAwaiter().GetResult();
+            return await _apiService.TransformXml(XElement.Load(new StringReader(xml)), "slide2markdown.xslt");
         }
     }
 

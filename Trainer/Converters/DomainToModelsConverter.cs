@@ -6,6 +6,9 @@ using Windows.UI.Xaml;
 using Log.Common.Services.Common;
 using Log.Common.Services;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Trainer.Converters
 {
@@ -56,29 +59,25 @@ namespace Trainer.Converters
         {
             throw new NotImplementedException();
         }
-    }
+    }       
 
     public class SlideToMarkdownConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value != null && value is Slide)
-            {
-                using (var service = ApiServiceFactory.CreateService<string>(Services.SettingsServices.SettingsService.Instance.CodeServicesUrl))
-                {
-                    var parser = ParserFactory.CreateSlideParser(service);
-                    return parser.Parse(value as Slide);
-                }
+            {  
+                return string.Empty;
             }
 
             return string.Empty;
-        }
+        }    
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             if (value is string && !string.IsNullOrEmpty(value.ToString()))
             {
-                using (var service = ApiServiceFactory.CreateService<Slide>(Services.SettingsServices.SettingsService.Instance.CodeServicesUrl))
+                using (var service = ApiServiceFactory.CreateService<Slide>(Services.SettingsServices.SettingsService.Instance.CodeServicesUrl, useJson: false))
                 {
                     var mdParser = ParserFactory.CreateParser("markdown");
                     var tokens = mdParser.Parse(value.ToString());

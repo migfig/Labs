@@ -119,7 +119,7 @@ namespace Log.Common.Services.Tests
             var parser = ParserFactory.CreateSlideParser(new MockApiServiceString());
             Assert.IsNotNull(parser);
 
-            var markdown = parser.Parse(XmlHelper2<Slide>.LoadFromString(xml));
+            var markdown = parser.Parse(XmlHelper2<Slide>.LoadFromString(xml)).GetAwaiter().GetResult();
 
             TextHelper.SaveFileContent("expected-markdown.txt", expectedMarkdown);
             TextHelper.SaveFileContent("actual-markdown.txt", markdown);

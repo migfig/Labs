@@ -18,7 +18,7 @@
     <Page.Resources>
         <converters:DomainToModelsConverter x:Key="domainToModelsConverter"/>
         <converters:StringToMarginConverter x:Key="stringToMarginConverter"/>
-        <converters:SlideToMarkdownConverter x:Key="slideToMarkdownConverter"/>
+        <!--<converters:SlideToMarkdownConverter x:Key="slideToMarkdownConverter"/>-->
     </Page.Resources>
     <Page.DataContext>
         <vm:SlidesPageViewModel x:Name="ViewModel" />
@@ -87,7 +87,7 @@
 
         <!--  slide content -->
         <ScrollViewer x:Name="slideContent" Padding="12,8,0,0" 
-                      RelativePanel.AlignBottomWithPanel="True"
+                      RelativePanel.AlignBottomWithPanel="False"
                       RelativePanel.AlignLeftWithPanel="False"
                       RelativePanel.AlignRightWithPanel="True"
                       RelativePanel.RightOf="slidesContent"
@@ -119,17 +119,30 @@
             </StackPanel>
         </ScrollViewer>
 
-        <TextBox Text="{x:Bind ViewModel.CurrentSlide, Converter={StaticResource ResourceKey=slideToMarkdownConverter}}"
-                 x:Name="slideMarkdown" Padding="12,8,0,0" 
-                      RelativePanel.AlignBottomWithPanel="True"
-                      RelativePanel.AlignLeftWithPanel="True"
-                      RelativePanel.AlignRightWithPanel="True"
-                      RelativePanel.RightOf="slidesContent"
-                      RelativePanel.Below="slideContent" 
-                      Margin="0,0,0,50"
-                      TextWrapping="WrapWholeWords"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+        <!--<controls:Resizer x:Name="slideMarkdown" Padding="12,8,0,0"
+                 RelativePanel.AlignBottomWithPanel="True"
+                 RelativePanel.AlignLeftWithPanel="False"
+                 RelativePanel.AlignRightWithPanel="True"
+                 RelativePanel.RightOf="slidesContent"
+                 RelativePanel.Below="slideContent" 
+                 Margin="0,0,0,50">-->
+            <TextBox Text="{x:Bind Mode=TwoWay, Path=ViewModel.CurrentSlide.Markdown}"
+                 x:Name="slideMarkdown" Padding="12,8,0,0"
+                 RelativePanel.AlignBottomWithPanel="True"
+                 RelativePanel.AlignLeftWithPanel="False"
+                 RelativePanel.AlignRightWithPanel="True"
+                 RelativePanel.RightOf="slidesContent"
+                 RelativePanel.Below="slideContent" 
+                 Margin="0,0,0,50"
+                 BorderBrush="LightGray"
+                 BorderThickness="1"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+        <!--</controls:Resizer>-->        
 
         <Border RelativePanel.Below="slideMarkdown" 
                     RelativePanel.AlignLeftWithPanel="True"
@@ -146,10 +159,10 @@
                     VerticalAlignment="Center"/>
         </Border>
 
-        <CommandBar RelativePanel.Below="slideContent" 
+        <CommandBar RelativePanel.Below="slideMarkdown" 
                     RelativePanel.AlignLeftWithPanel="True"
                     RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.AlignBottomWith="slideContent"
+                    RelativePanel.AlignBottomWith="slideMarkdown"
                     Margin="100,-50,0,0">
 
             <AppBarButton Icon="Copy" Label="Copy" 
