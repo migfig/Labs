@@ -7,6 +7,7 @@ using System.Text;
 using System.Collections.Generic;
 using System;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 namespace Trainer.Domain
 {
@@ -26,6 +27,7 @@ namespace Trainer.Domain
         [XmlElement("Slide")]
         public ObservableCollection<Slide> Slide { get; set; }
 
+        [JsonIgnore]
         [XmlIgnore]
         public IEnumerable<Slide> FewSlide { get { return Slide.Take(6); } }
 
@@ -34,6 +36,7 @@ namespace Trainer.Domain
             Slide = new ObservableCollection<Slide>();
         }
 
+        [JsonIgnore]
         [XmlIgnore]
         public string Xml
         {
@@ -53,6 +56,20 @@ namespace Trainer.Domain
                 return string.Empty;
             }
         }
+
+        #region should serialize
+
+        public bool ShouldSerializeId()
+        {
+            return !string.IsNullOrEmpty(Id); 
+        }
+
+        public bool ShouldSerializeImage()
+        {
+            return !string.IsNullOrEmpty(Image); 
+        }
+
+        #endregion
     }
 
     [XmlType(AnonymousType = true)]
@@ -77,6 +94,7 @@ namespace Trainer.Domain
         public ObservableCollection<Component> Component { get; set; }
 
         private string _markDown;
+        [JsonIgnore]
         [XmlIgnore]
         public string Markdown {
             get { return _markDown; }
@@ -89,7 +107,32 @@ namespace Trainer.Domain
         public Slide()
         {
             Block = new ObservableCollection<RichTextBlock>();
+            Component = new ObservableCollection<Domain.Component>();
         }
+
+        #region serialization control
+
+        public bool ShouldSerializeImage()
+        {
+            return !string.IsNullOrEmpty(Image);
+        }
+
+        public bool ShouldSerializeMargin()
+        {
+            return !string.IsNullOrEmpty(Margin);
+        }
+
+        public bool ShouldSerializePadding()
+        {
+            return !string.IsNullOrEmpty(Padding);
+        }
+
+        public bool ShouldSerializeComponent()
+        {
+            return Component != null && Component.Any();
+        }
+
+        #endregion
     }
 
     [XmlType(AnonymousType = true)]
@@ -120,15 +163,34 @@ namespace Trainer.Domain
 
         public RichTextBlock()
         {
-            //SelectionHighlightColor = "#FAFBFCFF";
-            //IsTextSelectionEnabled = true;
-            //MaxLines = ((byte)(10));
-            //TextWrapping = "Wrap";
-            //TypographyCapitals = "True";
             Paragraph = new ObservableCollection<Paragraph>();
         }
+
+        #region should serialize
+
+        public bool ShouldSerializeSelectionHighlightColor()
+        {
+            return !string.IsNullOrEmpty(SelectionHighlightColor);
+        }
+
+        public bool ShouldSerializeMaxLines()
+        {
+            return MaxLines > 0; 
+        }
+
+        public bool ShouldSerializeTextWrapping()
+        {
+            return !string.IsNullOrEmpty(TextWrapping); 
+        }
+
+        public bool ShouldSerializeTypographyCapitals()
+        {
+            return !string.IsNullOrEmpty(TypographyCapitals); 
+        }
+
+        #endregion
     }
-    
+
     [XmlType(AnonymousType = true)]
     public partial class Paragraph: Run
     {
@@ -154,7 +216,42 @@ namespace Trainer.Domain
         {
             Bold = new ObservableCollection<Domain.Bold>();
             Run = new ObservableCollection<Domain.Run>();
+            LineBreak = new ObservableCollection<Domain.LineBreak>();
         }
+
+        #region should serialize
+
+        public bool ShouldSerializeInlineUIContainer()
+        {
+            return InlineUIContainer != null; 
+        }
+
+        public bool ShouldSerializeBold()
+        {
+            return Bold != null && Bold.Any(); 
+        }
+
+        public bool ShouldSerializeRun()
+        {
+            return Run != null && Run.Any(); 
+        }
+
+        public bool ShouldSerializeLineBreak()
+        {
+            return LineBreak != null && LineBreak.Any(); 
+        }
+
+        public bool ShouldSerializeHyperlink()
+        {
+            return Hyperlink != null; 
+        }
+
+        public bool ShouldSerializeText()
+        {
+            return Text != null && Text.Any(); 
+        }
+        
+        #endregion
     }
 
     [XmlType(AnonymousType = true)]
@@ -183,7 +280,6 @@ namespace Trainer.Domain
 
         public Image()
         {
-            //Stretch = "Fill";
         }
     }
 
@@ -239,12 +335,51 @@ namespace Trainer.Domain
 
         public Run(): base()
         {
-            //FontSize = (byte)34;
-            //FontStretch = "Normal";
-            //FontStyle = "Normal";
-            //FontWeight = "Normal";
-            //Foreground = "#FF000000";
         }
+
+        #region should serialize
+
+        public bool ShouldSerializeFontStyle()
+        {
+            return !string.IsNullOrEmpty(FontStyle); 
+        }
+
+        public bool ShouldSerializeFontWeight()
+        {
+            return !string.IsNullOrEmpty(FontWeight); 
+        }
+
+        public bool ShouldSerializeCharacterSpacing()
+        {
+            return CharacterSpacing > 0; 
+        }
+
+        public bool ShouldSerializeFontSize()
+        {
+            return FontSize > 0;
+        }
+
+        public bool ShouldSerializeFontStretch()
+        {
+            return !string.IsNullOrEmpty(FontStretch); 
+        }
+
+        public bool ShouldSerializeForeground()
+        {
+            return !string.IsNullOrEmpty(Foreground); 
+        }
+
+        public bool ShouldSerializeTypographyCapitalSpacing()
+        {
+            return !string.IsNullOrEmpty(TypographyCapitalSpacing); 
+        }
+
+        public bool ShouldSerializeValue()
+        {
+            return !string.IsNullOrEmpty(Value); 
+        }
+
+        #endregion
     }
     
     [XmlType(AnonymousType = true)]
@@ -289,14 +424,46 @@ namespace Trainer.Domain
 
         public UIElement(): base()
         {
-            //HorizontalAlignment = "Stretch";
-            //VerticalAlignment = "Stretch";
-            //Margin = "0";
-            //Opacity = (decimal)1.0m;
-            //Padding = "0";
-            //TextAlignment = "Justify";
-            //Visibility = "Visible";
         }
+
+        #region should serialize
+
+        public bool ShouldSerializeMargin()
+        {
+            return !string.IsNullOrEmpty(Margin); 
+        }
+
+        public bool ShouldSerializeOpacity()
+        {
+            return Opacity > 0.0M; 
+        }
+
+        public bool ShouldSerializePadding()
+        {
+            return !string.IsNullOrEmpty(Padding); 
+        }
+
+        public bool ShouldSerializeTextAlignment()
+        {
+            return !string.IsNullOrEmpty(TextAlignment); 
+        }
+
+        public bool ShouldSerializeHorizontalAlignment()
+        {
+            return !string.IsNullOrEmpty(HorizontalAlignment); 
+        }
+
+        public bool ShouldSerializeVerticalAlignment()
+        {
+            return !string.IsNullOrEmpty(VerticalAlignment); 
+        }
+
+        public bool ShouldSerializeVisibility()
+        {
+            return !string.IsNullOrEmpty(Visibility); 
+        }
+
+        #endregion
     }
 
     public class Block
@@ -313,16 +480,29 @@ namespace Trainer.Domain
         [DefaultValue(typeof(byte), "0")]
         public byte TextIndent { get; set; }
 
+        [JsonIgnore]
         [XmlIgnore()]
         [DefaultValue(false)]
         public bool TextIndentSpecified { get; set; }
 
-        public Block()
+        #region should serialize
+
+        public bool ShouldSerializeLineHeight()
         {
-            //LineHeight = (byte)40;
-            //LineStackingStrategy = "BlockLineHeight";
-            //TextIndent = (byte)0;
+            return LineHeight > 0; 
         }
+
+        public bool ShouldSerializeLineStackingStrategy()
+        {
+            return !string.IsNullOrEmpty(LineStackingStrategy); 
+        }
+
+        public bool ShouldSerializeTextIndent()
+        {
+            return TextIndent > 0; 
+        }
+
+        #endregion
     }
 
     [AttributeUsage(AttributeTargets.Method)]

@@ -59,7 +59,7 @@ namespace Code.Service.ContentProviders
                 var contents = GetAllLocalContent(ConfigurationManager.AppSettings["path"], ConfigurationManager.AppSettings["pattern"]);
                 foreach (var presentation in contents)
                 {
-                    await ctx.SaveAsync<Presentation>(presentation);
+                    await ctx.SaveAsync(presentation);
                 }
 
                 return contents;
