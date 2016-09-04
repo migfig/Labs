@@ -22,6 +22,11 @@ namespace Code.Service
             );
 
             config.Routes.MapHttpRoute(
+                name: "AddCompleteApi",
+                routeTemplate: "api/{controller}/add/complete"
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "RemoveApi",
                 routeTemplate: "api/{controller}/remove/{id}",
                 defaults: new { id = string.Empty }
@@ -31,6 +36,22 @@ namespace Code.Service
                 name: "RemoveGenericApi",
                 routeTemplate: "api/{controller}/remove/{propertyName}/{id}",
                 defaults: new { propertyName = string.Empty, id = string.Empty }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "UpdateGenericApi",
+                routeTemplate: "api/{controller}/update/{id}",
+                defaults: new { id = string.Empty }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "AuthenticateApi",
+                routeTemplate: "api/{controller}/authenticate"
+            );
+            config.Routes.MapHttpRoute(
+                name: "TokenAuthenticateApi",
+                routeTemplate: "api/{controller}/token/{code}",
+                defaults: new { code = string.Empty }
             );
 
             builder.UseWebApi(config);

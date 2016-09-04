@@ -36,6 +36,8 @@ Also using **ReSharper** add-in.
 Icons from **SyncFusion** Metro studio.
 
 Other tools or nuget packages being used are:
+> Template 10 (Universal Windows Platform)
+>
 > Newtonsoft.Json
 > 
 > Serilog
@@ -55,17 +57,18 @@ Other tools or nuget packages being used are:
 > Dependency Injection (DI) with Windsor Castle
 > 
 > OWIN Self Hosting
-> 
-> Template 10 (Universal Windows Platform)
+>
+> Markdown support
+
 
 ## Trainer Assistant Universal Windows Platform Project ##
 The **Trainer Assistant** project is a **Template 10**  based Universal Windows Platform (**UWP**) application, which integrates with **Web API** back-end services running on top of **TopShelf**, using DI with **Windsor Castle**; also integrated with **Visual Studio** thru MEF Extensibility and VSIX packages. This application intends to be an assistant for a Programming trainer, where he/she can render **xml** based presentations to be used on any specific topic and switching back and forth with Visual Studio via appBar Commands to view or insert code components. 
-![relatedrecords](trainer-main-slide.png)
+![relatedrecords](trainer.png)
 
 This application can also display slides containing code components, being rendered thru **RichTextBlock** controls with some sort for sintax coloring for C# via its own simple C# parser class.
 ![relatedrecords](trainer-component.png)
 
-**What's missing**: Some sort of designer to quickly create/edit presentation slides or code components. Might also render MS Office PowerPoint presentations instead of xml ones. Add Web API authentication support. **Azure** and **AWS** implementations for Web Api endpoints. Removal of xml content files from projects into data folder.
+**What's missing**: Full editing capability for the presentation slides or code components. Might also render MS Office PowerPoint presentations instead of xml ones. Add Web API authentication support. Support for **Azure** and **AWS** as content providers has been added, although AWS support with *DynamoDB* needs further development on *JSON* serialization with DynamoDB decoration attributes. Also Markdown parser has been provided for editing, but needs further improvement on translating Slides and converting to Slides when updating Markdown text.
 
 ## Fluent Testing Project ##
 

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using System.Linq;
+using System;
 
 namespace Trainer.Domain
 {
@@ -39,6 +41,18 @@ namespace Trainer.Domain
         Remove
     }
 
+    public enum Language
+    {
+        All,
+        csharp,
+        xml,
+        Html,
+        JScript,
+        json,
+        Java,
+        Sql
+    }
+
     /// <remarks/>
     [System.Xml.Serialization.XmlType(AnonymousType = true)]
     public partial class Component
@@ -48,22 +62,17 @@ namespace Trainer.Domain
         private Code codeField;
 
         private string idField;
-
         private string nameField;
-
         private string imageField;
-
         private string targetFileField;
-
         private string sourcePathField;
-
         private byte lineField;
-
         private bool lineFieldSpecified;
         private bool isBrowsableField;
         private string targetProjectField;
         private ComponentAction actionField;
         private bool isDirtyField;
+        private Language languageField;
 
         public Component()
         {
@@ -71,7 +80,57 @@ namespace Trainer.Domain
             dependencyField = new ObservableCollection<Dependency>();
             parameterField = new ObservableCollection<Parameter>();
             actionField = ComponentAction.None;
+            languageField = Language.csharp;
         }
+
+        #region should serialize
+
+        public bool ShouldSerializeDependency()
+        {
+            return Dependency != null && Dependency.Any(); 
+        }
+
+        public bool ShouldSerializeParameter()
+        {
+            return Parameter != null && Parameter.Any(); 
+        }
+
+        public bool ShouldSerializeId()
+        {
+            return !string.IsNullOrEmpty(Id); 
+        }
+
+        public bool ShouldSerializeName()
+        {
+            return !string.IsNullOrEmpty(Name); 
+        }
+
+        public bool ShouldSerializeImage()
+        {
+            return !string.IsNullOrEmpty(Image); 
+        }
+
+        public bool ShouldSerializeTargetFile()
+        {
+            return !string.IsNullOrEmpty(TargetFile); 
+        }
+
+        public bool ShouldSerializeSourcePath()
+        {
+            return !string.IsNullOrEmpty(SourcePath); 
+        }
+
+        public bool ShouldSerializeLine()
+        {
+            return Line > 0; 
+        }
+
+        public bool ShouldSerializeTargetProject()
+        {
+            return !string.IsNullOrEmpty(TargetProject); 
+        }
+
+        #endregion
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElement("Dependency", Order=0)]
@@ -102,6 +161,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
+        [JsonConverter(typeof(CodeConverter))]
         [System.Xml.Serialization.XmlElement("Code", Order = 2)]
         public Code Code
         {
@@ -257,6 +317,7 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
+        [JsonIgnore]
         [System.Xml.Serialization.XmlIgnore()]
         public bool IsDirty
         {
@@ -267,6 +328,20 @@ namespace Trainer.Domain
             set
             {
                 this.isDirtyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttribute()]
+        public Language Language
+        {
+            get
+            {
+                return this.languageField;
+            }
+            set
+            {
+                this.languageField = value;
             }
         }
     }
@@ -351,6 +426,7 @@ namespace Trainer.Domain
             }
         }
 
+        [JsonIgnore]
         [System.Xml.Serialization.XmlIgnore]
         public bool IsValid
         {
@@ -404,8 +480,8 @@ namespace Trainer.Domain
             }
         }
 
-        [System.Xml.Serialization.XmlIgnore]
         [JsonIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public Component Component
         {
             get { return this.componentField; }
@@ -422,7 +498,6 @@ namespace Trainer.Domain
     {
 
         private string sourceFileField;
-
         private string valueField;
         private string composedValueField;
 
@@ -455,8 +530,8 @@ namespace Trainer.Domain
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnore()]
         [JsonIgnore]
+        [System.Xml.Serialization.XmlIgnore()]
         public string ComposedValue
         {
             get
@@ -469,6 +544,67 @@ namespace Trainer.Domain
             {
                 this.composedValueField = value;
             }
+        }
+
+        #region should serialize
+
+        public bool ShouldSerializeSourceFile()
+        {
+            return !string.IsNullOrEmpty(SourceFile); 
+        }
+
+        public bool ShouldSerializeValue()
+        {
+            return !string.IsNullOrEmpty(Value); 
+        }
+
+        public bool ShouldSerializeComposedValue()
+        {
+            return false; 
+        }
+
+        #endregion
+    }
+
+    public class CodeConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType.Equals(typeof(Code));
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            var code = serializer.Deserialize<Code>(reader);
+            if (!string.IsNullOrEmpty(code.Value))
+            {
+                code.Value = code.Value
+                    .Replace(@"\u007b", "{")
+                    .Replace(@"\u007d", "}")
+                    .Replace(@"\u005b", "[")
+                    .Replace(@"\u005d", "]");
+            }
+            return code;
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var code = value as Code;
+            //writer.StringEscapeHandling = StringEscapeHandling.EscapeHtml;
+
+            writer.WriteStartObject(); //{"Code":
+            if (!string.IsNullOrEmpty(code.SourceFile))
+            {
+                writer.WritePropertyName("SourceFile");
+                writer.WriteValue(code.SourceFile);
+            }
+            writer.WritePropertyName("Value");
+            writer.WriteValue(code.Value
+                .Replace("{",@"\u007b")
+                .Replace("}", @"\u007d")
+                .Replace("[", @"\u005b")
+                .Replace("]", @"\u005d"));            
+            writer.WriteEndObject(); //}
         }
     }
 }

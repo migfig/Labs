@@ -1,6 +1,8 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using Code.Service.ContentProviders;
+using Common.Controllers;
 using Common.Generics;
 using System.Web.Http;
 using domain = Trainer.Domain;
@@ -15,6 +17,10 @@ namespace Code.Service
                 Component.For<IGenericServices<domain.Presentation>>()
                     .ImplementedBy<GenericServices<domain.Presentation>>()
                     .DependsOn(Dependency.OnAppSettingsValue("maxItems"), Dependency.OnAppSettingsValue("path"), Dependency.OnAppSettingsValue("pattern"))
+                    .LifestyleSingleton(),
+
+                Component.For<IContentProvider<domain.Presentation>>()
+                    .ImplementedBy<FileSystemContentProvider>()
                     .LifestyleSingleton(),
 
                 Component.For<ICodeServices>()
@@ -34,6 +40,8 @@ namespace Code.Service
                     .BasedOn<ApiController>()
                     .LifestyleScoped()
                 );
+
+            new ControllersInstaller().Install(container, store);
         }
     }
 }

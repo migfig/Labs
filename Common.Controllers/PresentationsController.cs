@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Trainer.Domain;
 
-namespace Code.Service
+namespace Common.Controllers
 {
+    [IgnoreReflection]
     public class PresentationsController: ApiController
     {
         private readonly IGenericServices<Presentation> _codeServices;  

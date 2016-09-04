@@ -40,7 +40,9 @@ namespace Trainer.ViewModels
             private set
             {
                 Set(ref _presentations, value);
-                Presentation = _presentations.FirstOrDefault();
+                Presentation = string.IsNullOrEmpty(MainViewModel.ViewModel.SelectedPresentationTitle)
+                    ? _presentations.FirstOrDefault()
+                    : _presentations.FirstOrDefault(x => x.Title.Equals(MainViewModel.ViewModel.SelectedPresentationTitle));
             }
         }
 
@@ -75,7 +77,15 @@ namespace Trainer.ViewModels
         {
             if(null != parameter)
             {
-                CurrentSlide = _presentation.Slide.First(x => x.Title.Equals(parameter.ToString()));
+                if (parameter is string)
+                {
+                    CurrentSlide = _presentation.Slide.First(x => x.Title.Equals(parameter.ToString()));
+                }
+                else //is dynamic object
+                {
+                    Presentation = _presentations
+                        .FirstOrDefault(x => x.Title.Equals(((dynamic)parameter).Title));
+                }
             }
 
             await Task.CompletedTask;

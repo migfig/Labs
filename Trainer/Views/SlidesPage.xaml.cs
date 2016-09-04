@@ -1,12 +1,11 @@
-using Trainer.ViewModels;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Controls;
 
 namespace Trainer.Views
 {
-    public sealed partial class DetailPage : Page
+    public sealed partial class SlidesPage : Page
     {
-        public DetailPage()
+        public SlidesPage()
         {
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Disabled;

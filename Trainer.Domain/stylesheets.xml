@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Presentation Title="Stylesheet Transformations" Image="ms-appx:///Images/modern.png">
+  <Slide Title="Stylesheet Transformations a Practical approach">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold" LineHeight="40">
+      <Paragraph>
+        <Bold>Universal Windows Platform Apps with T10</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Portable Libraries</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Dependency Injection with Windsor Castle</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Windows Services with TopShelf</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Web API Integration with OWIN Self-Host</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Integration with Visual Studio - VSIX Packages</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Composition with MEF</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Composition Sample within a Visual Studio ToolWindowPane</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Plugable Control Sample</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>References</Bold>
+      </Paragraph>
+      <Paragraph>
+        <Bold>Q &amp; A</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Namespaces &amp; Directives" Margin="-50,0,0,0">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Xml Namespaces</Bold>
+		<LIneBreak />
+		Stylesheet Transformations are just standard Xml files, and because of that, they require the usage of Xml Namespaces. This declaration of Namespaces will define how Xsl instructions will be handled and expressed.
+      </Paragraph>
+    </RichTextBlock>
+	<Component Id="" Name="Xml Namespaces" IsBrowsable="false" Action="None" TargetFile="" TargetProject="">
+      <Code>
+        <![CDATA[
+		xmlns:xsl="http://www.w3.org/1999/XSL/Transform" //xsl transformations schema
+		xmlns:msxsl="urn:schemas-microsoft-com:xslt" 	 //
+		xmlns:utils="urn:schemas-reflector-com:xslt" 	 //custom urn's
+		exclude-result-prefixes="msxsl"
+		]]>
+      </Code>
+    </Component>
+	<Component Id="" Name="Xsl Directives" IsBrowsable="false" Action="None" TargetFile="" TargetProject="">
+      <Code>
+        <![CDATA[
+		<xsl:output method="xml" indent="yes"/> //output is xml and indented
+		]]>
+      </Code>
+    </Component>
+  </Slide>
+  <Slide Title="Program Flow">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Program Flow &amp; Execution</Bold>
+      </Paragraph>
+      <Paragraph>Think Stylesheet Transformations are like a standard console program, which has an entry point. They will have an input (as the args[] parameter) but in this case is xml content and will produce an output (html, sql query, text, program, script, etc.), that's why they are called 'Transformations'.
+	  <LineBreak/>
+	  As Xml content is the input, then to process those Xml elements, XPath expressions for node processing are used.
+	  </Paragraph>
+	  <LineBreak />
+	  <Paragraph>
+        <Bold>Running Transformations</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- Use Visual Studio</Paragraph>
+      <Paragraph TextIndent="4">- Use Custom Console</Paragraph>
+      <Paragraph TextIndent="4">- Use another Tool (XmlSpy/etc.)</Paragraph>
+	  <Paragraph>
+        <Bold>Entry Point</Bold>
+      </Paragraph>
+    </RichTextBlock>
+	<Component Id="" Name="Xsl Entry Point" IsBrowsable="false" Action="None" TargetFile="" TargetProject="">
+      <Code Language="xml">
+        <![CDATA[
+	<xsl:template match="/type">
+		<xsl:call-template name="renderSetup"/>
+	</xsl:template>
+		]]>
+      </Code>
+    </Component>
+	<Component Id="" Name="Xml Sample" IsBrowsable="false" Action="None" TargetFile="" TargetProject="">
+      <Code Language="xml">
+        <![CDATA[
+	<?xml version="1.0" encoding="utf-8"?>
+	<type name="Common.Controllers.CustomersController" source="C:\Code\RelatedRecords.Tests\Binaries\Common.Controllers.dll">
+	  <attributes>
+		<attribute type="System.Web.Http.RoutePrefixAttribute">
+		  <properties>
+			<property name="Prefix" type="System.String" value="api/customers" />
+		  </properties>
+		</attribute>
+	  </attributes>
+	  <properties />
+	</type>
+  ]]>
+      </Code>
+    </Component>
+  </Slide> 
+  <Slide Title="Elements &amp; Rendering">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Basic Xsl Elements</Bold>
+      </Paragraph>
+    </RichTextBlock>
+    <Component Id="" Name="Xsl Elements" IsBrowsable="false" Action="None" TargetFile="" TargetProject="">
+      <Code>
+        <![CDATA[
+		<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"> <!-- stylesheet root element -->		
+		
+		<xsl:template match="/type"> <!-- template -->
+		
+		<xsl:variable name="urlPrefix" select="concat('/', attributes/attribute[@type='System.Web.Http.RoutePrefixAttribute']/properties/property[@name='Prefix']/@value, '/')"/> <!-- variable -->
+		
+		<xsl:value-of select="concat('http://localhost:1010/',utils:ToLower(utils:TypeName(@name)),'-swagger')"/> <!-- value rendering -->
+				
+		<xsl:attribute name="name"> <!-- attribute -->
+		]]>
+      </Code>
+    </Component>
+  </Slide>
+  <Slide Title="Conditionals &amp; Iterators">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Xsl Conditionals</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- If</Paragraph>
+      <Paragraph TextIndent="4">- Switch</Paragraph>
+      <Paragraph>
+        <Bold>Xsl Iteration</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- For Each</Paragraph>
+    </RichTextBlock>
+	<Component Id="" Name="Xsl Conditionals" IsBrowsable="false" Action="None" TargetFile="" TargetProject="">
+      <Code>
+        <![CDATA[
+		<xsl:if test ="attributes/attribute/@type='System.Web.Http.FromBodyAttribute'"> <!-- if -->
+		
+		<xsl:choose> <!-- switch -->
+		  <xsl:when test="@isArray = 'true'" />
+		  <xsl:otherwise />
+		</xsl:choose>
+
+		<xsl:for-each select="properties/property" /> <!-- for each -->
+		]]>
+      </Code>
+    </Component>
+  </Slide>  
+  <Slide Title="Procedures &amp; Parameters">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Reusing Xsl code through Templates (procedures)</Bold>
+		<LIneBreak />
+		As with ordinary programs, Xsl code can be reused by using Xsl templates which act as procedures in standard programming.
+      </Paragraph>
+    </RichTextBlock>
+    <Component Id="" Name="Procedures">
+      <Code>
+        <![CDATA[
+	<xsl:template name="renderPropertyAsJsonObject" match="property">
+		<xsl:param name="isLast"/>
+		"<xsl:value-of select="@name"/>":
+		{
+		<xsl:for-each select="properties/property">
+		  <xsl:call-template name="renderProperty">
+			<xsl:with-param name="isLast" select="position() = last()"/>
+		  </xsl:call-template>
+		</xsl:for-each>
+		}
+		<xsl:if test="not($isLast)">
+		  <xsl:value-of select="string(',')"/>
+		</xsl:if>
+  </xsl:template>
+		]]>
+      </Code>      
+    </Component>    
+  </Slide>
+  <Slide Title="Custom Objects">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Host MEF Controls in a Tab Control</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">- LogViewerControl</Paragraph>
+      <Paragraph TextIndent="4">- AppAccelerator</Paragraph>
+      <Paragraph TextIndent="4"></Paragraph>
+    </RichTextBlock>
+    <Component Id="A32BD709-B3EA-428C-AC55-5385DA41AC51" Name="MEF HostControl" IsBrowsable="true" Action="View" TargetFile="PlugableWindow.cs" TargetProject="Visor.VStudio">
+      <Code>
+        <![CDATA[ public interface IChildWindow
+  {
+      UserControl Content { get; }
+      void SetParentWindow(IPlugableWindow window);
+  }
+
+  public interface ITitledWindow
+  {
+      string Title { get; }
+  }
+
+  public interface IPlugableWindow
+  {
+      string ProgId { get; }
+      void Attach();
+      DTE2 Dte { get; set; }
+      void Log(string format, params string[] message);
+      bool AddCode(Component component);
+      string ViewCode(ViewCodeArgs e);
+  }]]>
+      </Code>
+    </Component>
+  </Slide>
+  <Slide Title="Samples &amp; more Samples...">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Common uses of Stylesheet Transformations</Bold>
+      </Paragraph>
+	  <Paragraph TextIndent="4">- Html Rendering</Paragraph>
+      <Paragraph TextIndent="4">- Plain Text Dumping</Paragraph>
+	  <Paragraph TextIndent="4">- SQL Scripts</Paragraph>
+      <Paragraph TextIndent="4">- Code Scaffolding</Paragraph>
+	  <Paragraph TextIndent="4">- Scripts</Paragraph>
+      <Paragraph TextIndent="4">- etc.</Paragraph>
+    </RichTextBlock>
+    <Component Id="" Name="" IsBrowsable="true" TargetProject="Html Rendering" Action="None">
+      <Code>
+        <![CDATA[]]>
+      </Code>
+    </Component>
+	<Component Id="" Name="" IsBrowsable="true" TargetProject="JSon Rendering" Action="None">
+      <Code>
+        <![CDATA[]]>
+      </Code>
+    </Component>
+	<Component Id="" Name="" IsBrowsable="true" TargetProject="SQL Scripts" Action="None">
+      <Code>
+        <![CDATA[]]>
+      </Code>
+    </Component>
+	<Component Id="" Name="" IsBrowsable="true" TargetProject="Unit Testing Code" Action="None">
+      <Code>
+        <![CDATA[]]>
+      </Code>
+    </Component>
+    <Component Id="" Name="" IsBrowsable="true" TargetProject="Rendering Samples" Action="Copy">
+      <Code>
+        <![CDATA[]]>
+      </Code>
+    </Component>
+  </Slide>
+  <Slide Title="References">
+    <RichTextBlock FontSize="20" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Stylesheet Transformations</Bold>
+      </Paragraph>
+      <Paragraph TextIndent="4">
+        <Hyperlink NavigateUri="https://www..com"></Hyperlink>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+  <Slide Title="Q &amp; A">
+    <RichTextBlock FontSize="40" FontWeight="DemiBold">
+      <Paragraph>
+        <Bold>Questions &amp; Answers!</Bold>
+      </Paragraph>
+    </RichTextBlock>
+  </Slide>
+</Presentation>

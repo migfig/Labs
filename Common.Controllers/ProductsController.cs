@@ -1,29 +1,20 @@
 ﻿using Common.Data;
 using Common.Data.Models;
-using Common.Data.Repositories;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Linq;
 using Common.Data.Models.Requests;
 
-namespace WebApi.Example.Controllers
+namespace Common.Controllers
 {
     /// <summary>
     /// Products services
     /// </summary>
-    [RoutePrefix("products")]
+    [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {
         private readonly IRepository<Product> _repository;
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public ProductsController()
-            :this(new ProductRepository())
-        {
-        }
 
         /// <summary>
         /// Constructor for IOC
@@ -106,7 +97,7 @@ namespace WebApi.Example.Controllers
         /// </summary>
         /// <param name="id">Product id</param>
         /// <returns>deleted Product</returns>
-        [Route("delete/{id:int}"), HttpDelete]
+        [Route("remove/{id:int}"), HttpDelete]
         [ResponseType(typeof(Product))]
         public IHttpActionResult DeleteProduct(int id)
         {

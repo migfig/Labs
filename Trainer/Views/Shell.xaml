@@ -41,6 +41,18 @@
                                Text="Slides" />
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
+            <Controls:HamburgerButtonInfo x:Name="EditSlidesButton"
+                                          PageType="views:SlidesPage">
+                <Controls:HamburgerButtonInfo.NavigationTransitionInfo>
+                    <SuppressNavigationTransitionInfo />
+                </Controls:HamburgerButtonInfo.NavigationTransitionInfo>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="Edit" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Edit" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
             <!--  settingspage button  -->
             <Controls:HamburgerButtonInfo x:Name="SettingsButton" PageParameter="1"
                                           PageType="views:SettingsPage">

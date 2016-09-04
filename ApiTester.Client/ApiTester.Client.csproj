@@ -47,6 +47,10 @@
     <Reference Include="Serilog.FullNetFx">
       <HintPath>..\packages\Serilog.1.5.7\lib\net45\Serilog.FullNetFx.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Miscelaneous\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -71,9 +75,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\ApiTester.Wpf\Converters\IntToVisibilityConverter.cs">
+      <Link>Converters\IntToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\ApiTester.Wpf\Views\LoadAssembly.xaml.cs">
+      <Link>Views\LoadAssembly.xaml.cs</Link>
+      <DependentUpon>LoadAssembly.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TaskControl.xaml.cs">
       <DependentUpon>TaskControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\StringToBrushColorConverter.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="..\ApiTester.Wpf\ConfigTemplate.xaml">
       <Link>ConfigTemplate.xaml</Link>
@@ -82,6 +94,11 @@
     </Page>
     <Page Include="..\ApiTester.Wpf\Themes\Generic.xaml">
       <Link>Themes\Generic.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\ApiTester.Wpf\Views\LoadAssembly.xaml">
+      <Link>Views\LoadAssembly.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -322,7 +339,15 @@
   <ItemGroup>
     <Resource Include="Images\workflow.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Samples\Categories-apitester-workflow.xml" />
+    <None Include="Samples\Categories-apitester-workflow1.xml" />
+    <None Include="Samples\Categories-apitester.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y $(ProjectDir)Samples\*.* C:\Code\RelatedRecords.Tests\Binaries\output</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

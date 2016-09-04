@@ -5,8 +5,6 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace ApiTester.Client.Controls
@@ -24,7 +22,7 @@ namespace ApiTester.Client.Controls
         private void expanderTasks_Collapsed(object sender, RoutedEventArgs e)
         {
             this.Width = 200;
-            this.Height = 100;
+            this.Height = 132;
 
             var task = (sender as Expander).Tag as Task;
             if (MainViewModel.ViewModel.SaveTask.CanExecute(null))
@@ -32,6 +30,12 @@ namespace ApiTester.Client.Controls
                 try
                 {
                     var taskObj = XmlHelper<Task>.Load(XElement.Load(new StringReader(task.xml)));
+                    taskObj.Passed = task.Passed;
+                    taskObj.ResultsObject = task.ResultsObject;
+                    taskObj.SelectedCondition = task.SelectedCondition;
+                    taskObj.SelectedOperator = task.SelectedOperator;
+                    taskObj.SelectedProperty = task.SelectedProperty;
+
                     MainViewModel.ViewModel.SaveTask.Execute(taskObj);
                 }
                 catch (Exception ex)
@@ -47,12 +51,21 @@ namespace ApiTester.Client.Controls
             this.Height = 500;
         }
 
-        private void Image_MouseUp(object sender, MouseButtonEventArgs e)
+        private void btnRemoveTask_Click(object sender, RoutedEventArgs e)
         {
-            var task = (sender as Image).Tag as Task;
+            var task = (sender as Button).Tag as Task;
             if (MainViewModel.ViewModel.RemoveTask.CanExecute(null))
             {
                 MainViewModel.ViewModel.RemoveTask.Execute(task);
+            }
+        }
+
+        private void btnAddSubtask_Click(object sender, RoutedEventArgs e)
+        {
+            var task = (sender as Button).Tag as Task;
+            if (task.AddSubtask.CanExecute(MainViewModel.ViewModel.SelectedMethod != null))
+            {
+                task.AddSubtask.Execute(MainViewModel.ViewModel.SelectedMethod);
             }
         }
     }

@@ -15,6 +15,10 @@
     using System.Reflection;
     using FluentTesting;
     using System.Windows;
+    using Common.Commands;
+    using System.Windows.Input;
+    using System.Collections.Generic;
+
     [XmlTypeAttribute(AnonymousType = true)]
     [XmlRootAttribute(Namespace = "", IsNullable = false)]
     public partial class apiConfiguration: BaseModel
@@ -96,7 +100,6 @@
     public partial class Setup: BaseModel
     {
         private ObservableCollection<Header> headerField;
-        private ObservableCollection<BuildHeader> buildHeaderField;
         private ObservableCollection<Host> hostField;
         private ObservableCollection<workflow> workflowField;
 
@@ -107,7 +110,6 @@
         public Setup()
         {
             headerField = new ObservableCollection<Header>();
-            buildHeaderField = new ObservableCollection<BuildHeader>();
             hostField = new ObservableCollection<Host>();
             workflowField = new ObservableCollection<workflow>();
         }
@@ -123,21 +125,8 @@
             {
                 this.headerField = value;
             }
-        }
+        }        
         
-        [XmlElementAttribute("buildHeader", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public ObservableCollection<BuildHeader> buildHeader
-        {
-            get
-            {
-                return this.buildHeaderField;
-            }
-            set
-            {
-                this.buildHeaderField = value;
-            }
-        }
-
         [XmlElementAttribute("host", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public ObservableCollection<Host> host
         {
@@ -254,6 +243,11 @@
                 this.headerField = value;
             }
         }
+
+        public override string ToString()
+        {
+            return this.name;
+        }
     }
 
     [XmlTypeAttribute(AnonymousType = true)]
@@ -261,10 +255,15 @@
     {
 
         private string nameField;
-
         private string valueField;
+        private string propertyNameField;
+        private ObservableCollection<BuildHeader> buildHeaderField;
 
-        
+        public Header()
+        {
+            buildHeaderField = new ObservableCollection<BuildHeader>();
+        }
+
         [XmlAttributeAttribute()]
         public string name
         {
@@ -277,7 +276,6 @@
                 this.nameField = value;
             }
         }
-
         
         [XmlAttributeAttribute()]
         public string value
@@ -291,8 +289,35 @@
                 this.valueField = value;
             }
         }
+
+        [XmlElementAttribute("buildHeader", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ObservableCollection<BuildHeader> buildHeader
+        {
+            get
+            {
+                return this.buildHeaderField;
+            }
+            set
+            {
+                this.buildHeaderField = value;
+            }
+        }
+
+        [XmlAttributeAttribute()]
+        public string propertyName
+        {
+            get
+            {
+                return this.propertyNameField;
+            }
+            set
+            {
+                this.propertyNameField = value;
+            }
+        }
+
     }
-    
+
     [XmlTypeAttribute(AnonymousType = true)]
     public partial class BuildHeader: BaseModel
     {
@@ -405,6 +430,7 @@
         private Task parentTaskField;
         private bool isDisabledField;
         private bool hasPassedField;
+        private bool isHeaderBuilderField;
         private string xmlField;
 
         public Task()
@@ -423,7 +449,20 @@
             {
                 hasPassedField = value;
                 OnPropertyChanged("IsVisible");
+                OnPropertyChanged("bodyBackground");
+                OnPropertyChanged("Results");
+                OnPropertyChanged("ResultsTable");
+                OnPropertyChanged("Properties");
+                OnPropertyChanged("SelectedCondition");
+                OnPropertyChanged("SelectedOperator");
+                OnPropertyChanged("SelectedProperty");
             }
+        }
+
+        private Instance _instance;
+        public Instance GetInstance()
+        {
+            return _instance;
         }
 
         [ColumnIgnore]
@@ -438,10 +477,10 @@
 
                 if (resultValue.Any())
                 {
-                    var instance = new Instance("Verifying results for Task [" + this.name + "] ", ResultsObject);
+                    _instance = new Instance("Verifying results for Task [" + this.name + "] ", ResultsObject);
                     foreach (var val in resultValue)
                     {
-                        var item = instance.VerifyProperty(val.propertyName);
+                        var item = _instance.VerifyProperty(val.propertyName);
                         switch (val.@operator)
                         {
                             case eOperator.isEqualTo:
@@ -465,7 +504,7 @@
                         }
                     }
 
-                    Passed = instance.GetResults().ResultsPassed;
+                    Passed = _instance.GetResults().ResultsPassed;
                     return hasPassedField;
                 }
 
@@ -577,6 +616,76 @@
             }
         }
 
+        [XmlIgnore]
+        public DataTable ResultsTable
+        {
+            get
+            {
+                var table = new DataTable("Results");
+
+                if(resultsObjectField != null)
+                {
+                    Type itemType = null;
+                    MethodInfo getMethod = null;
+                    var type = resultsObjectField.GetType();
+                    var size = 0;
+                    itemType = type;
+                    if (type.IsArray)
+                    {
+                        foreach (var p in type.GetProperties().Where(x => x.Name.Equals("Length")))
+                        {
+                            if (!_properties.ContainsKey(p.Name)) _properties.Add(p.Name, p.PropertyType.ToString());
+                        }
+                        size = (int)type.GetProperty("Length").GetValue(resultsObjectField);
+                        getMethod = type.GetMethod("Get");
+                        itemType = getMethod.Invoke(resultsObjectField, new object[] {0}).GetType();
+                    }
+                    var props = from p in itemType.GetProperties()
+                                select p;
+                    foreach (var prop in props)
+                    {
+                        table.Columns.Add(prop.Name, prop.PropertyType);
+                        if(!type.IsArray && !_properties.ContainsKey(prop.Name))
+                        {
+                            _properties.Add(prop.Name, prop.PropertyType.ToString());
+                        }
+                    }
+
+                    if (size > 0)
+                    {
+                        for (var i = 0; i < size; i++)
+                        {
+                            var item = getMethod.Invoke(resultsObjectField, new object[] {i});
+
+                            var row = table.NewRow();
+                            foreach (var prop in props)
+                            {
+                                row[prop.Name] = prop.GetValue(item);
+                            }
+                            table.Rows.Add(row);
+                        }
+                    }
+                    else //sigle item type
+                    {
+                        var row = table.NewRow();
+                        foreach (var prop in props)
+                        {
+                            row[prop.Name] = prop.GetValue(resultsObjectField);
+                        }
+                        table.Rows.Add(row);
+                    }
+                }
+
+                if(string.IsNullOrEmpty(SelectedProperty.Key) && _properties.Any())
+                {
+                    SelectedProperty = _properties.First();
+                    ((RelayCommand)AddCondition).RaiseCanExecuteChanged();
+                }
+
+                return table;
+            }
+        }
+
         [ColumnIgnore]
         [EditColumnIgnore]
         [XmlIgnore]
@@ -600,6 +709,23 @@
             set
             {
                 this.isDisabledField = value;
+                OnPropertyChanged("bodyBackground");
+                xml = string.Empty;
+                OnPropertyChanged("xml");
+            }
+        }
+
+        [ColumnIgnore]
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public bool isHeaderBuilder
+        {
+            get
+            {
+                return this.isHeaderBuilderField;
+            }
+            set
+            {
+                this.isHeaderBuilderField = value;
             }
         }
 
@@ -628,6 +754,192 @@
                 xmlField = value;
             }
         }
+
+        [XmlIgnore]
+        public string bodyBackground
+        {
+            get
+            {
+                return isDisabledField 
+                    ? "#FFCDD1CC" //gray tone
+                    : ResultsObject == null
+                        ? "#FFFCE48A" //yellow tone
+                        : hasPassedField 
+                            ? "#FFBCEDB9" //green tone
+                            : "#FFECAA6A"; //orange tone
+            }
+        }
+
+        #region commands and helpers
+
+        private ObservableCollection<eCondition> _conditions = new ObservableCollection<eCondition>();
+        [XmlIgnore]
+        public ObservableCollection<eCondition> Conditions
+        {
+            get
+            {
+                if(!_conditions.Any())
+                {
+                    foreach(var c in Enum.GetValues(typeof(eCondition)))
+                    {
+                        _conditions.Add((eCondition)c);
+                    }
+                }
+
+                return _conditions;
+            }
+        }
+
+        private eCondition _selectedCondition = eCondition.And;
+        [XmlIgnore]
+        public eCondition SelectedCondition
+        {
+            get { return _selectedCondition; }
+            set
+            {
+                _selectedCondition = (eCondition)Enum.Parse(typeof(eCondition), value.ToString());
+            }
+        }
+
+        private ObservableCollection<eOperator> _operators = new ObservableCollection<eOperator>();
+        [XmlIgnore]
+        public ObservableCollection<eOperator> Operators
+        {
+            get
+            {
+                if (!_operators.Any())
+                {
+                    foreach (var c in Enum.GetValues(typeof(eOperator)))
+                    {
+                        _operators.Add((eOperator)c);
+                    }
+                }
+
+                return _operators;
+            }
+        }
+
+        private eOperator _selectedOperator = eOperator.isEqualTo;
+        [XmlIgnore]
+        public eOperator SelectedOperator
+        {
+            get { return _selectedOperator; }
+            set
+            {
+                _selectedOperator = (eOperator)Enum.Parse(typeof(eOperator), value.ToString());
+            }
+        }
+
+        private Dictionary<string, string> _properties = new Dictionary<string, string>();
+        [XmlIgnore]
+        public Dictionary<string, string> Properties
+        {
+            get { return _properties; } 
+        }
+
+        private KeyValuePair<string, string> _selectedProperty;
+        [XmlIgnore]
+        public KeyValuePair<string, string> SelectedProperty
+        {
+            get { return _selectedProperty; }
+            set
+            {
+                _selectedProperty = value;
+            }
+        }
+
+        RelayCommand _addCondition;
+        [XmlIgnore]
+        public ICommand AddCondition
+        {
+            get
+            {
+                _addCondition = _addCondition ?? new RelayCommand(
+                    (parameter) => {
+                        this.resultValue.Add(new ResultValue
+                        {
+                            condition = SelectedCondition,
+                            propertyName = SelectedProperty.Key,
+                            @operator = _selectedOperator,
+                            value = SelectedProperty.Value.ToLower().Contains("int") ? "0" : ""
+                        });
+                        xml = string.Empty;
+                        OnPropertyChanged("xml");
+                    },
+                    x => _properties.Any());
+                return _addCondition;
+            }
+        }
+
+        RelayCommand _removeCondition;
+        [XmlIgnore]
+        public ICommand RemoveCondition
+        {
+            get
+            {
+                _removeCondition = _removeCondition ?? new RelayCommand(
+                    (parameter) => {
+                        resultValue.RemoveAt(resultValue.Count-1);
+                        xml = string.Empty;
+                        OnPropertyChanged("xml");
+                    },
+                    x => resultValue.Any());
+                return _removeCondition;
+            }
+        }
+
+        RelayCommand _addSubtask;
+        [XmlIgnore]
+        public ICommand AddSubtask
+        {
+            get
+            {
+                _addSubtask = _addSubtask ?? new RelayCommand(
+                    (parameter) => {
+                        var SelectedMethod = parameter as Method;
+                        taskField.Add(new Task
+                        {
+                            name = SelectedMethod.name,
+                            parameter = new ObservableCollection<Parameter>(SelectedMethod.parameter.ToArray()),
+                            resultValue = new ObservableCollection<ResultValue>
+                            {
+                               new ResultValue
+                               {
+                                   condition = eCondition.And,
+                                   propertyName = "Length",
+                                   @operator = eOperator.isGreaterThan,
+                                   value = "0"
+                               }
+                            }
+                        });
+                        xml = string.Empty;
+                        OnPropertyChanged("xml");
+                        ((RelayCommand)RemoveSubtask).RaiseCanExecuteChanged();
+                    },
+                    x => (bool)x.Equals(true));
+                return _addSubtask;
+            }
+        }
+
+        RelayCommand _removeSubtask;
+        [XmlIgnore]
+        public ICommand RemoveSubtask
+        {
+            get
+            {
+                _removeSubtask = _removeSubtask ?? new RelayCommand(
+                    (parameter) => {
+                        task.RemoveAt(task.Count - 1);
+                        xml = string.Empty;
+                        OnPropertyChanged("xml");
+                        ((RelayCommand)RemoveSubtask).RaiseCanExecuteChanged();
+                    },
+                    x => task.Any());
+                return _removeSubtask;
+            }
+        }
+
+        #endregion
     }
 
     [XmlTypeAttribute(AnonymousType = true)]
@@ -637,19 +949,6 @@
         private eCondition conditionField;
         private eOperator operatorField;
         private string valueField;
-
-        [XmlAttributeAttribute()]
-        public string propertyName
-        {
-            get
-            {
-                return this.propertyNameField;
-            }
-            set
-            {
-                this.propertyNameField = value;
-            }
-        }
 
         [XmlAttributeAttribute()]
         public eCondition condition
@@ -663,6 +962,19 @@
                 this.conditionField = value;
             }
         }
+
+        [XmlAttributeAttribute()]
+        public string propertyName
+        {
+            get
+            {
+                return this.propertyNameField;
+            }
+            set
+            {
+                this.propertyNameField = value;
+            }
+        }        
 
         [XmlAttributeAttribute()]
         public eOperator @operator
@@ -860,6 +1172,8 @@
         public static DataTable ToTable(this apiConfiguration configuration)
         {
             var table = new DataTable("Configuration");
+            if (configuration == null) return table;
+
             foreach (var p in configuration.method.First().GetType().GetProperties()
                 .Where(x => x.GetCustomAttributes(typeof(ColumnIgnoreAttribute), false).Count() == 0))
             {
@@ -995,7 +1309,7 @@
 
         public static string ToArgs(this Method method, Task task)
         {
-            return string.Format("-X {0} {1} -o {2} {3} {4}",
+            return string.Format("-X {0} {1} -o output\\{2} {3} {4}",
                 method.httpMethod.ToUpper(),
                 string.Format("{0}{1}", "{0}", task.QueryUrl(method.url)), //for baseAddress
                 method.name + ".json",
@@ -1006,16 +1320,29 @@
         }
 
         public static string Json(this Task task)
-        {
+        {            
             var parameter = task.parameter.FirstOrDefault(p => p.location.ToLower() == "body");
-            if(null != parameter && !string.IsNullOrEmpty(parameter.jsonObject))
-                    return parameter.jsonObject
-                        .Replace(Environment.NewLine, string.Empty)
-                        .Replace("\n", string.Empty)
-                        .Replace("{", "{{")
-                        .Replace("}", "}}")
-                        .Replace("\"", "\\\"")
-                        .Trim();
+            if (null != parameter && !string.IsNullOrEmpty(parameter.jsonObject))
+            {
+                var value = string.Empty;
+                if (!string.IsNullOrEmpty(parameter.valueFromProperty) && task.ParentTask != null)
+                {
+                    value = getDefaultValue(parameter, task.ParentTask);
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        parameter.jsonObject = parameter.jsonObject
+                            .Replace("$"+parameter.valueFromProperty+"$", value);
+                    }
+                }
+
+                return parameter.jsonObject
+                    .Replace(Environment.NewLine, string.Empty)
+                    .Replace("\n", string.Empty)
+                    .Replace("{", "{{")
+                    .Replace("}", "}}")
+                    .Replace("\"", "\\\"")
+                    .Trim();
+            }
 
             return string.Empty;
         }
@@ -1060,7 +1387,7 @@
         public static string ToHeaders(this Setup setup)
         {
             var headers = new StringBuilder();
-            foreach (var h in setup.header)
+            foreach (var h in setup.header.Where(x => !x.buildHeader.Any() || !string.IsNullOrEmpty(x.value)))
             {
                 headers.AppendFormat("-H \"{0}:{1}\" ", h.name, h.value);
             }
@@ -1071,7 +1398,7 @@
         public static string ToHeaders(this Host host)
         {
             var headers = new StringBuilder();
-            foreach (var h in host.header)
+            foreach (var h in host.header.Where(x => !x.buildHeader.Any() || !string.IsNullOrEmpty(x.value)))
             {
                 headers.AppendFormat("-H \"{0}:{1}\" ", h.name, h.value);
             }

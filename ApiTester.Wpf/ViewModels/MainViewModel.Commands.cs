@@ -4,6 +4,7 @@ using Common.Commands;
 using FluentTesting;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
@@ -43,7 +44,18 @@ namespace ApiTester.Wpf.ViewModels
                 _runWorkflowTests = _runWorkflowTests ?? new RelayCommand(
                     (parameter) => {
                         ToggleSelection.Execute(true);
-                        runWorkflowForSelectedMethods(SelectedWorkflowDef);
+
+                        var requiresBuildingHeaders = BuildHeaders.CanExecute(null);
+                        if (requiresBuildingHeaders)
+                        {
+                            buildHeaders(() => {
+                                runWorkflowForSelectedMethods(SelectedWorkflowDef);
+                            });
+                        }
+                        else
+                        {
+                            runWorkflowForSelectedMethods(SelectedWorkflowDef);
+                        }
                     },
                     x => SelectedConfiguration != null
                         && SelectedWorkflowDef != null
@@ -112,7 +124,17 @@ namespace ApiTester.Wpf.ViewModels
                         SelectedWorkflowDef.task.Add(new Task
                         {
                             name = SelectedMethod.name,
-                            parameter = new ObservableCollection<Parameter>( SelectedMethod.parameter.ToArray())
+                            parameter = new ObservableCollection<Parameter>( SelectedMethod.parameter.ToArray()),
+                            resultValue = new ObservableCollection<ResultValue>
+                            {
+                               new ResultValue
+                               {
+                                   condition = eCondition.And,
+                                   propertyName = "Length",
+                                   @operator = eOperator.isGreaterThan,
+                                   value = "0"
+                               }
+                            }
                         });
                     },
                     x => SelectedConfiguration != null
@@ -220,21 +242,13 @@ namespace ApiTester.Wpf.ViewModels
         {
             get
             {
-#if API_REFLECTOR
                 _loadConfiguration = _loadConfiguration ?? new RelayCommand(
                     (parameter) => {
                         new LoadAssembly().ShowDialog();
                         OnPropertyChanged("Configurations");
                     },
                     x => true);
-#else
-                _loadConfiguration = _loadConfiguration ?? new RelayCommand(
-                    (parameter) => {
-                        //new LoadAssembly().ShowDialog();
-                        //OnPropertyChanged("Configurations");
-                    },
-                    x => true);
-#endif
+
                 return _loadConfiguration;
             }
         }
@@ -283,8 +297,11 @@ namespace ApiTester.Wpf.ViewModels
             {
                 _buildHeaders = _buildHeaders ?? new RelayCommand(
                     (parameter) => {
+                        buildHeaders();
                     },
-                    x => true);
+                    x => SelectedConfiguration != null 
+                        && SelectedConfiguration.setup.header.Any()
+                        && SelectedConfiguration.setup.header.Any(y => y.buildHeader.Any() && string.IsNullOrEmpty(y.value)));
 
                 return _buildHeaders;
             }
@@ -406,6 +423,18 @@ namespace ApiTester.Wpf.ViewModels
 
 #region run workflow
 
+        private void buildHeaders(Action whenDone = null)
+        {
+            var headers = from h in SelectedConfiguration.setup.header
+                          from bh in h.buildHeader
+                          where bh != null && string.IsNullOrEmpty(h.value)
+                          select h;
+            foreach (var header in headers)
+            {
+                runWorkflowForSelectedMethods(header.buildHeader.First().workflow, whenDone);
+            }
+        }
+
         private void runWorkflowForSelectedMethods()
         {
             var workflow = XmlHelper<workflow>.Load(
@@ -414,7 +443,7 @@ namespace ApiTester.Wpf.ViewModels
             runWorkflowForSelectedMethods(workflow);
         }
 
-        private void runWorkflowForSelectedMethods(workflow workflow)
+        public void runWorkflowForSelectedMethods(workflow workflow)
         {
             Common.Extensions.TraceLog.Information("Running workflow {name}", SelectedWorkflow.name);
 
@@ -449,6 +478,44 @@ namespace ApiTester.Wpf.ViewModels
             worker.RunWorkerAsync();
         }
 
+        public void runWorkflowForSelectedMethods(IEnumerable<Task> tasks, Action whenDone = null)
+        {
+            Common.Extensions.TraceLog.Information("Running {Count} tasks", tasks.Count());
+
+            var worker = new BackgroundWorker();
+            worker.DoWork += (o, s) =>
+            {
+                IsBusy = true;
+
+                try
+                {
+                    foreach (var task in tasks.Where(x => !x.isDisabled))
+                    {
+                        runTask(task);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Common.Extensions.ErrorLog.Error(e, "@ runWorkflowForSelectedMethods");
+                }
+            };
+            worker.RunWorkerCompleted += (o, s) =>
+            {
+                if (SelectedConfiguration.method
+                    .Any(m => m.isValidTest == eValidTest.Passed || m.isValidTest == eValidTest.Failed))
+                {
+                    OnPropertyChanged("MethodsTable");
+                }
+                IsBusy = false;
+
+                if(null != whenDone)
+                {
+                    whenDone.Invoke();
+                }
+            };
+            worker.RunWorkerAsync();
+        }
+
         private void runTask(Models.Task task)
         {
             try
@@ -473,7 +540,7 @@ namespace ApiTester.Wpf.ViewModels
 
         private void executeMethod(Method method, Models.Task task)
         {
-            var outFile = method.name + ".json";
+            var outFile = "output\\" + method.name + ".json";
             if (File.Exists(outFile)) File.Delete(outFile);
 
             var exitCode = Common.Extensions.runProcess(SelectedConfiguration.setup.commandLine,
@@ -488,7 +555,38 @@ namespace ApiTester.Wpf.ViewModels
 
                 task.ResultsObject = loadResults(type, outFile);
                 method.isValidTest = task.IsValidTest ? eValidTest.Passed : eValidTest.Failed;
+
+                if(method.isValidTest.Equals(eValidTest.Passed) && task.isHeaderBuilder)
+                {
+                    var headers = from h in SelectedConfiguration.setup.header
+                                 from hb in h.buildHeader
+                                 where h.buildHeader.Any()
+                                 select h;
+                    var header = (from h in headers
+                                 from bh in h.buildHeader
+                                 from t in bh.workflow
+                                 where t != null && headerFound(t, task.name)
+                                 select h).FirstOrDefault();
+                    if(null != header)
+                    {
+                        header.value = task.GetInstance()
+                            .GetPropertyValue(header.propertyName).ToString();
+                    }
+                }
             }
+        }
+
+        private bool headerFound(Task task, string taskName)
+        {
+            if (task.name.Equals(taskName)) return true;
+
+            foreach(var t in task.task)
+            {
+                var found = headerFound(t, taskName);
+                if (found) return true;
+            }
+
+            return false;
         }
 
         private object loadResults(Type type, string fileName)

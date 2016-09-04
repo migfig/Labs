@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="28c0fafc-1e3f-41fc-948e-29fefa57860e" Publisher="CN=migfig" Version="1.0.0.0" />
+  <Identity Name="65221MegaPanezote.TrainerAssistant" Publisher="CN=9A3DEC7C-68FD-4019-9756-7DDD0A6B11B1" Version="1.1.0.0" />
   <mp:PhoneIdentity PhoneProductId="28c0fafc-1e3f-41fc-948e-29fefa57860e" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Trainer Assistant</DisplayName>
-    <PublisherDisplayName>migfig</PublisherDisplayName>
+    <PublisherDisplayName>MegaPanezote</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>

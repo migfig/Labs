@@ -12,13 +12,12 @@ namespace ApiTester.Providers
         string BuildHeader(BuildHeader builder);
     }
 
-    public class @Default : IHeaderBuilder
+    public class DefaultProvider : IHeaderBuilder
     {
         public string BuildHeader(BuildHeader builder)
         {
-            foreach(var task in builder.workflow)
+            foreach (var task in builder.workflow)
             {
-                
             }
 
             return "?";

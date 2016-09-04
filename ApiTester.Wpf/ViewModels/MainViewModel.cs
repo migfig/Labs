@@ -25,7 +25,7 @@ namespace ApiTester.Wpf.ViewModels
 
         public MainViewModel()
         {
-            OnPropertyChanged("Configurations");
+            //OnPropertyChanged("Configurations");
         }
 
         private Dictionary<string, Assembly> _assemblies = new Dictionary<string, Assembly>();
@@ -145,29 +145,33 @@ namespace ApiTester.Wpf.ViewModels
                             } catch(Exception) {; }
                         }
                     }
+                    OnPropertyChanged();
+                    OnPropertyChanged("HeadersTable");
+                    OnPropertyChanged("MethodsTable");
+                    RunTests.AsRelay().RaiseCanExecuteChanged();
+                    RunWorkflowTests.AsRelay().RaiseCanExecuteChanged();
                 }
-                OnPropertyChanged();
-                OnPropertyChanged("HeadersTable");
-                OnPropertyChanged("MethodsTable");
-                RunTests.AsRelay().RaiseCanExecuteChanged();
-                RunWorkflowTests.AsRelay().RaiseCanExecuteChanged();
             }
         }
 
         private void loadAssembly(string source)
         {
-            var asm = getAssembly(source);
+            if (!_assemblies.ContainsKey(source))
+            {
+                var asm = getAssembly(source);
 
-            if(null != asm)
-                _assemblies.Add(source, asm);
+                if (null != asm)
+                    _assemblies.Add(source, asm);
+            }
         }
 
         private Assembly getAssembly(string source)
         {
             try {
                 return Assembly.LoadFrom(source);
-            } catch(Exception)
+            } catch(Exception e)
             {
+                Common.Extensions.ErrorLog.Error(e, "@ getAssembly {source}", source);
                 return null;
             }
         }
@@ -179,6 +183,9 @@ namespace ApiTester.Wpf.ViewModels
                 var table = new DataTable("Headers");
                 table.Columns.Add(new DataColumn("Name", typeof(string)));
                 table.Columns.Add(new DataColumn("Value", typeof(string)));
+
+                if (SelectedConfiguration == null) return table;
+
                 foreach(var h in SelectedConfiguration.setup.header)
                 {
                     var row = table.NewRow();
@@ -195,9 +202,17 @@ namespace ApiTester.Wpf.ViewModels
                     table.Rows.Add(row);
                 }
 
-                foreach (var h in SelectedConfiguration.setup.buildHeader)
+
+                var headers = from h in SelectedConfiguration.setup.header
+                              from bh in h.buildHeader
+                              where bh != null && string.IsNullOrEmpty(h.value)
+                              select h;
+                foreach (var h in headers)
                 {
-                    table.Rows.Add(buildHeaderRow(h, table));
+                    foreach (var bh in h.buildHeader)
+                    {
+                        table.Rows.Add(buildHeaderRow(bh, table));
+                    }
                 }
 
                 return table;
@@ -489,8 +504,12 @@ namespace ApiTester.Wpf.ViewModels
                     }
 
                     foreach (var file in Directory.GetFiles(BinariesPath, "*.dll"))
-                    {                        
-                        _availableAssemblies.Add(getAssembly(file));
+                    {
+                        var asm = getAssembly(file);
+                        if (null != asm)
+                        {
+                            _availableAssemblies.Add(asm);
+                        }
                     }
 
                     list = _availableAssemblies;

@@ -49,7 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Requests\TokenRequest.cs" />
+    <Compile Include="Models\Requests\AuthenticationRequest.cs" />
     <Compile Include="Models\Requests\CustomerRequest.cs" />
+    <Compile Include="Models\Responses\TokenResponse.cs" />
+    <Compile Include="Models\Responses\AuthenticationResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />

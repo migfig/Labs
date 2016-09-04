@@ -15,7 +15,7 @@ using Trainer.Wpf.VStudio.Tools.Views;
 
 namespace Trainer.Wpf.VStudio.Tools.ViewModels
 {
-    public class ComponentsViewModel: BaseModel
+    public class ComponentsViewModel: Common.BaseModel
     {
         private static ComponentsViewModel _viewModel = new ComponentsViewModel();
         public static ComponentsViewModel ViewModel { get { return _viewModel; } }

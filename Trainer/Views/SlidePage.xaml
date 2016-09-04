@@ -61,7 +61,7 @@
                              Text="{x:Bind ViewModel.CurrentSlide.Title, Mode=OneWay}" />
 
         <!--  content  -->
-        <ScrollViewer x:Name="slidesContent" Padding="12,8,0,0" 
+        <ScrollViewer x:Name="slideContent" Padding="12,8,0,0" 
                       RelativePanel.AlignBottomWithPanel="True"
                       RelativePanel.AlignLeftWithPanel="True"
                       RelativePanel.AlignRightWithPanel="True"                      
@@ -93,10 +93,10 @@
             </StackPanel>
         </ScrollViewer>
 
-        <Border RelativePanel.Below="slidesContent" 
+        <Border RelativePanel.Below="slideContent" 
                     RelativePanel.AlignLeftWithPanel="True"
                     RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.AlignBottomWith="slidesContent"
+                    RelativePanel.AlignBottomWith="slideContent"
                     BorderThickness="0"
                     Background="#FFE6E6E6"
                     Margin="0,-50,0,0">
@@ -108,10 +108,10 @@
                     VerticalAlignment="Center"/>
         </Border>
 
-        <CommandBar RelativePanel.Below="slidesContent" 
+        <CommandBar RelativePanel.Below="slideContent" 
                     RelativePanel.AlignLeftWithPanel="True"
                     RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.AlignBottomWith="slidesContent"
+                    RelativePanel.AlignBottomWith="slideContent"
                     Margin="100,-50,0,0">
 
             <AppBarButton Icon="Copy" Label="Copy Code" 

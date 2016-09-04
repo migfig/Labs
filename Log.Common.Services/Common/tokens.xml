@@ -1,0 +1,30 @@
+﻿<tokens>
+  <token type="H1" value=" First Slide " rawValue="# First Slide #" start="0" end="0" />
+  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
+  <token type="Blockquotes" value="&gt; This is a bolded " rawValue="&gt; This is a bolded " start="0" end="0" />
+  <token type="Bold" value="Quote" rawValue="**Quote**" start="0" end="0" />
+  <token type="Regular" value=" inside the slide" rawValue=" inside the slide" start="0" end="0" />
+  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
+  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
+  <token type="Regular" value="This is some sample text on " rawValue="This is some sample text on " start="0" end="0" />
+  <token type="Italics" value="Italics" rawValue="*Italics*" start="0" end="0" />
+  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
+  <token type="Regular" value="Yet another text " rawValue="Yet another text " start="0" end="0" />
+  <token type="Bold" value="Bolded" rawValue="**Bolded**" start="0" end="0" />
+  <token type="Regular" value=" going through" rawValue=" going through" start="0" end="0" />
+  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
+  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
+  <token type="Regular" value="And some Strikethrough " rawValue="And some Strikethrough " start="0" end="0" />
+  <token type="Strikethrough" value="Text" rawValue="~~Text~~" start="0" end="0" />
+  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
+  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
+  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
+  <token type="Indented" value="... And what about this " rawValue="... And what about this " start="0" end="0" />
+  <token type="Italics" value="Indented" rawValue="*Indented*" start="0" end="0" />
+  <token type="Regular" value=" text" rawValue=" text" start="0" end="0" />
+  <token type="NewLine" value="&#xD;&#xA;" rawValue="&#xD;&#xA;" start="0" end="0" />
+  <code language="xml">
+    <![CDATA[<code>this is inline code</code>
+]]>
+  </code>
+</tokens>

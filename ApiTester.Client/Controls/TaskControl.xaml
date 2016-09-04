@@ -4,10 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ApiTester.Client.Controls"
+             xmlns:converters="clr-namespace:ApiTester.Client.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <DockPanel LastChildFill="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">       
+    <UserControl.Resources>
+        <converters:StringToBrushColorConverter x:Key="stringToBrushColorConverter"/>
+    </UserControl.Resources>
+
+    <DockPanel LastChildFill="True">       
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20*"/>
@@ -31,11 +36,12 @@
 
         <Border DockPanel.Dock="Bottom" 
                 BorderBrush="#FF606064" 
-                BorderThickness="0"                
-                Background="#FFFCE48A">
-
+                BorderThickness="0"
+                Padding="4"
+                Background="{Binding bodyBackground, Converter={StaticResource stringToBrushColorConverter}}">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -71,37 +77,104 @@
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Right"/>
 
+                <TextBlock Grid.Row="2"
+                    Text="Conditions" Foreground="Black" 
+                       FontSize="12" 
+                       Margin="4"
+                       VerticalAlignment="Center"/>
+                <TextBlock Grid.Row="2" Grid.Column="1"
+                           Text="{Binding resultValue.Count}" FontWeight="DemiBold" 
+                           Foreground="#FF1B1A1A" 
+                       FontSize="12" 
+                       Margin="4"
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Right"/>
+
                 <Expander x:Name="expanderTasks" Header="Edit"
                           Collapsed="expanderTasks_Collapsed"
                           Expanded="expanderTasks_Expanded"
                           Tag="{Binding}"
-                          Grid.Row="2"
+                          Grid.Row="3"
                           Grid.ColumnSpan="2">
-                    <TextBox Text="{Binding Mode=TwoWay, Path=xml}" 
+                    <DockPanel LastChildFill="True">
+                        <Expander DockPanel.Dock="Top" x:Name="expanderTaskResults" Header="Task Results" Visibility="{Binding IsVisible}">
+                            <StackPanel>
+                                <TextBox Text="{Binding Mode=OneWay, Path=Results}" 
+                                   FontSize="14" 
+                                   Foreground="#FF1B1A1A"
+                                   TextWrapping="WrapWithOverflow"
+                                   IsReadOnly="True"
+                                   MaxLines="50"/>
+                            </StackPanel>
+                        </Expander>
+                        <Expander DockPanel.Dock="Top" x:Name="expanderTaskResultsTable" Header="Task Results Table" Visibility="{Binding IsVisible}">
+                            <StackPanel>
+                                <DataGrid ItemsSource="{Binding ResultsTable}"
+                                      CanUserResizeRows="False" 
+                                      SelectionMode="Extended" 
+                                      AlternatingRowBackground="LemonChiffon" 
+                                      ClipboardCopyMode="IncludeHeader" 
+                                      IsReadOnly="True" 
+                                      IsTextSearchEnabled="True"
+                                      AutoGenerateColumns="True"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch">
+                                </DataGrid>
+                            </StackPanel>
+                        </Expander>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Visibility="{Binding IsVisible}">
+                            <ComboBox ItemsSource="{Binding Conditions}" SelectedItem="{Binding Mode=TwoWay, Path=SelectedCondition}" Height="25" ToolTip="Conditions"/>
+
+                            <ComboBox ItemsSource="{Binding Properties}" SelectedItem="{Binding Mode=TwoWay, Path=SelectedProperty}" Height="25" Margin="4,0,0,0" ToolTip="Properties">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Key}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <ComboBox ItemsSource="{Binding Operators}" SelectedItem="{Binding Mode=TwoWay, Path=SelectedOperator}" Height="25" Margin="4,0,0,0" ToolTip="Operators"/>
+
+                            <Button Command="{Binding AddCondition}"
+                                 Margin="4,0,0,0"    
+                                ToolTip="Add Condition"
+                                Style="{DynamicResource ResourceKey=AddButton}">
+                            </Button>
+
+                            <Button Command="{Binding RemoveCondition}"
+                                ToolTip="Remove Condition"
+                                Style="{DynamicResource ResourceKey=RemoveButton}">
+                            </Button>
+
+                            <Rectangle Fill="LightGray" Width="2" Height="20"/>
+                            <CheckBox Content="Is Disabled" IsChecked="{Binding Mode=TwoWay, Path=isDisabled}"
+                                      VerticalAlignment="Center"/>
+
+                            <Rectangle Fill="LightGray" Width="2" Height="20"/>
+                            <Button x:Name="btnAddSubtask" Tag="{Binding}"
+                                Click="btnAddSubtask_Click" 
+                                ToolTip="Add SubTask"
+                                Style="{DynamicResource ResourceKey=AddButton}">
+                            </Button>
+
+                            <Button Command="{Binding RemoveSubtask}"
+                                ToolTip="Remove SubTask"
+                                Style="{DynamicResource ResourceKey=RemoveButton}">
+                            </Button>
+                        </StackPanel>
+                        <TextBox DockPanel.Dock="Bottom" Text="{Binding Mode=TwoWay, Path=xml}" 
                                FontSize="14" 
                                Foreground="#FF1B1A1A"
                                TextWrapping="WrapWithOverflow"
                              MaxLines="50"/>
+                    </DockPanel>
                 </Expander>
 
-                <Image Source="..\Images\passed.png" 
-                       Width="16" Height="16" 
-                       Opacity="0.99"
-                       Visibility="{Binding IsVisible}"
-                       Margin="0,0,16,0"
-                       Grid.Row="2" Grid.Column="1"
+                <Button x:Name="btnRemoveTask" Grid.Row="3" Grid.Column="1" Tag="{Binding}" Click="btnRemoveTask_Click" ToolTip="Remove Task"
+                       Style="{DynamicResource ResourceKey=RemoveButton}"
                        HorizontalAlignment="Right"
-                       VerticalAlignment="Top"/>
-
-                <Image Source="..\Images\clear.png" 
-                       Width="16" Height="16" 
-                       Opacity="0.4"
-                       Tag="{Binding}"
-                       Grid.Row="2" Grid.Column="1"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
-                       Cursor="Hand"
-                       MouseUp="Image_MouseUp"/>
+                       VerticalAlignment="Top">
+                </Button>
             </Grid>
         </Border>
     </DockPanel>

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Common;
 
 namespace Reflector
 {
@@ -73,10 +74,16 @@ namespace Reflector
                     }
 
                     var files = new StringBuilder();
-                    foreach (var t in types)
+                    foreach (var t in types.Where(x => !x.GetCustomAttributes<IgnoreReflectionAttribute>().Any()))
                     {
-                        files.AppendFormat("{0}{1}", files.Length > 0 ? ";" : string.Empty,
-                            render(t, null, onlyMethods));
+                        try
+                        {
+                            files.AppendFormat("{0}{1}", files.Length > 0 ? ";" : string.Empty,
+                                render(t, null, onlyMethods));
+                        } catch(Exception e)
+                        {
+                            Common.Extensions.ErrorLog.Error(e, "@ render {fileName} type {FullName}", fileName, t.FullName);
+                        }
                     }
 
                     return files.ToString();

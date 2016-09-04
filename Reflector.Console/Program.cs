@@ -10,10 +10,10 @@ namespace Reflector.Console
         static void Main(string[] args)
         {
 #if _DEBUG
-            //args = "WebApi.Example.dll -t Controller".Split(' ');
+            args = "Common.Controllers.dll -t Controller".Split(' ');
             //args = "WebApi.Example.Controllers.ProductsController.xml -r xslt -x iodocuments.xslt -o json".Split(' ');
             //args = "WebApi.Example.Controllers.ProductsController.xml -r xslt -x apitester.xslt -o xml".Split(' ');
-            args = "WebApi.Example.dll -r ctorxml -t Controller".Split(' ');
+            //args = "Common.Controllers.dll -r ctorxml -t Controller".Split(' ');
 #endif
             if (null == args || !args.Any())
             {

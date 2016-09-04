@@ -1,18 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Common.Controllers;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Trainer.Domain;
-using System.Reflection;
 
 namespace Code.Service
-{    
-    public interface ICodeServices
-    {
-        Task<IEnumerable<Component>> GetItems();
-        Task<bool> AddItems(IEnumerable<Component> items);
-        Task<bool> RemoveItem(string id);
-    }
-
+{
     public class CodeServices: ICodeServices
     {
         private int _maxItems;

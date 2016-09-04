@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<apiConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" documentationUrl="http://localhost:1010/categories-swagger">
+  <setup commandLine="C:\Program Files\Git\usr\bin\curl.exe" source="C:\Code\RelatedRecords.Tests\Binaries\Common.Controllers.dll" name="Common.Controllers.CategoriesController">
+    <header name="Content-Type" value="application/json" />
+    <header name="Authorization" propertyName="Token">
+      <buildHeader name="buildHeader">
+        <workflow name="buildHeader">
+          <task name="Authenticate">
+            <parameter name="request" type="Common.Data.Models.Requests.AuthenticationRequest" location="body">
+              <jsonObject>
+                <![CDATA[
+						  {
+					"User": "somebody",
+					"Password": "wellknownpwd",
+					"ApiKey": "",
+					"TargetUrl": "http://localhost:3033"
+						  }
+						  ]]>
+              </jsonObject>
+            </parameter>
+            <resultValue condition="And" propertyName="Code" operator="isNotEqualTo" value="" />
+            <task name="GetToken" isHeaderBuilder="true">
+              <parameter name="request" type="Common.Data.Models.Requests.TokenRequest" location="body" valueFromProperty="Code">
+                <jsonObject>
+                  <![CDATA[
+					  {
+				"Code": "$Code$",
+				"TargetUrl": "http://localhost:3033"
+					  }
+					  ]]>
+                </jsonObject>
+              </parameter>
+              <resultValue condition="And" propertyName="Token" operator="isNotEqualTo" value="" />
+            </task>
+          </task>
+        </workflow>
+      </buildHeader>
+    </header>
+    <host name="localhost" baseAddress="http://localhost:3033">
+      <header name="X-Header" value="0" />
+    </host>
+    <host name="remotehost" baseAddress="http://remote:3033">
+      <header name="X-Header" value="1" />
+    </host>
+    <workflow name="Categories-apitester-workflow.xml" />
+    <workflow name="Categories-apitester-workflow1.xml" />
+  </setup>
+  <method name="Authenticate" httpMethod="POST" url="/api/authentication/authenticate" type="Common.Data.Models.Responses.AuthenticationResponse" description="Authenticate">
+    <parameter name="request" type="Common.Data.Models.Requests.AuthenticationRequest" location="body">
+      <jsonObject>
+        <![CDATA[
+          {
+    "User": "",
+    "Password": "",
+    "ApiKey": "",
+    "TargetUrl": ""
+          }
+          ]]>
+      </jsonObject>
+    </parameter>
+  </method>
+  <method name="GetToken" httpMethod="POST" url="/api/authentication/token/code" type="Common.Data.Models.Responses.TokenResponse" description="Get Token">
+    <parameter name="request" type="Common.Data.Models.Requests.TokenRequest" location="body">
+      <jsonObject>
+        <![CDATA[
+          {
+    "Code": "",
+    "TargetUrl": ""
+          }
+          ]]>
+      </jsonObject>
+    </parameter>
+  </method>
+  <method name="GetCategories" httpMethod="GET" url="/api/categories/" type="Common.Data.Models.Category[]" description="Get Categories" />
+  <method name="GetCategory" httpMethod="GET" url="/api/categories/{id:int}" type="Common.Data.Models.Category" description="Get Category">
+    <parameter name="id" type="System.Int32" location="query" />
+  </method>
+  <method name="AddCategory" httpMethod="POST" url="/api/categories/add" type="Common.Data.Models.Category" description="Add Category">
+    <parameter name="request" type="Common.Data.Models.Requests.CategoryRequest" location="body">
+      <jsonObject>
+        {
+        "Name": "Name"
+        }
+      </jsonObject>
+    </parameter>
+  </method>
+  <method name="UpdateCategory" httpMethod="PUT" url="/api/categories/update/{id:int}" type="Common.Data.Models.Category" description="Update Category">
+    <parameter name="id" type="System.Int32" location="query" />
+    <parameter name="request" type="Common.Data.Models.Requests.CategoryRequest" location="body">
+      <jsonObject>
+        {
+        "Name": "Name"
+        }
+      </jsonObject>
+    </parameter>
+  </method>
+  <method name="DeleteCategory" httpMethod="DELETE" url="/api/categories/remove/{id:int}" type="Common.Data.Models.Category" description="Delete Category">
+    <parameter name="id" type="System.Int32" location="query" />
+  </method>
+  <assembly name="C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorlib.dll" />
+  <assembly name="C:\Code\RelatedRecords.Tests\Binaries\Common.Data.dll" />
+</apiConfiguration>

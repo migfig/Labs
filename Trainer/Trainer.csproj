@@ -17,7 +17,11 @@
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>Trainer_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Trainer_StoreKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>61A81FE3BCE173157572759F6E6E12E60D4BC15F</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -93,6 +97,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Trainer_StoreKey.pfx" />
     <None Include="Trainer_TemporaryKey.pfx" />
     <None Include="project.json" />
   </ItemGroup>
@@ -100,27 +105,33 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SlideControl.xaml.cs">
+      <DependentUpon>SlideControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PresentationControl.xaml.cs">
       <DependentUpon>PresentationControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\DomainToModelsConverter.cs" />
+    <Compile Include="DialogService\DialogHelper.cs" />
+    <Compile Include="DialogService\DialogService.cs" />
+    <Compile Include="DialogService\IDialogService.cs" />
     <Compile Include="Models\RichContent.Controls.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SettingsServices\SettingsService.cs" />
     <Compile Include="Services\CodeServices.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\SlidesPageViewModel.cs" />
     <Compile Include="ViewModels\SlidePageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
-    <Compile Include="ViewModels\DetailPageViewModel.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
     <Compile Include="Views\Busy.xaml.cs">
       <DependentUpon>Busy.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SlidesPage.xaml.cs">
+      <DependentUpon>SlidesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SlidePage.xaml.cs">
       <DependentUpon>SlidePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DetailPage.xaml.cs">
-      <DependentUpon>DetailPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -141,7 +152,6 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Help.htm" />
     <Content Include="Images\blue-stripes.png" />
     <Resource Include="Images\component.png" />
     <Content Include="Images\cyan-clothes.png" />
@@ -150,7 +160,12 @@
     <Content Include="Images\green-frame.png" />
     <Content Include="Images\green-stripes.png" />
     <Content Include="Images\herbs.png" />
+    <Content Include="Images\modern-services.png" />
+    <Content Include="Images\modern-viewer.png" />
+    <Content Include="Images\modern.png" />
     <Content Include="Images\orange-stripes.png" />
+    <None Include="Package.StoreAssociation.xml" />
+    <Content Include="Presentations\default.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -167,6 +182,10 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\SlideControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\PresentationControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -180,13 +199,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SlidePage.xaml">
+    <Page Include="Views\SlidesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DetailPage.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\SlidePage.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>

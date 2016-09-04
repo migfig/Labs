@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Text;
 using Common;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace Log.Common.Services
 {
@@ -16,6 +17,7 @@ namespace Log.Common.Services
         Task<bool> AddItems(IEnumerable<T> items);
         Task<bool> AddItem(T item);
         Task<bool> RemoveItem(T item, string propertyName);
+        Task<string> TransformXml(XElement xml, string styleSheet);
     }
 
     public interface IApiService: IDisposable
@@ -130,10 +132,31 @@ namespace Log.Common.Services
             return new List<T>();
         }
 
+        public async Task<string> TransformXml(XElement xml, string styleSheet)
+        {
+            try
+            {
+                string value = xml.ToString();
+                using (var content = new ByteArrayContent(Encoding.UTF8.GetBytes(value)))
+                {
+                    content.Headers.Add("Content-Type", _contentType);
+                    content.Headers.Add("Content-Length", value.Length.ToString());
+                    var response = await _client.PostAsync(_baseUrl + "xslt/transform?stylesheet=" + styleSheet, content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return await response.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+            catch (Exception) {; }
+
+            return string.Empty;
+        }
+
         public void Dispose()
         {
             _client.Dispose();
-        }
+        }        
     }
 
     public class ApiHttpClient: IApiService, IDisposable

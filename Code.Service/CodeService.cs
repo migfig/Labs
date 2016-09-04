@@ -1,11 +1,9 @@
 ﻿using Castle.Windsor;
 using Common.Generics;
-using Common;
 using System;
-using System.IO;
 using Topshelf;
 using Trainer.Domain;
-using System.Linq;
+using Common.Controllers;
 
 namespace Code.Service
 {
@@ -15,12 +13,14 @@ namespace Code.Service
         private readonly ICodeServices _codeServices;
         private readonly IGenericServices<Presentation> _presentationServices;
         private readonly IServiceable _webApp;
+        private readonly IContentProvider<Presentation> _contentProvider;
 
-        public CodeService(ICodeServices codeServices, IGenericServices<Presentation> presentationServices, IServiceable webApp)
+        public CodeService(ICodeServices codeServices, IGenericServices<Presentation> presentationServices, IServiceable webApp, IContentProvider<Presentation> contentProvider)
         {
             _codeServices = codeServices;
             _presentationServices = presentationServices;
             _webApp = webApp;
+            _contentProvider = contentProvider;
         }
 
         public bool Start(HostControl host)
@@ -38,18 +38,15 @@ namespace Code.Service
         {
             try
             {
-                var files = Directory.GetFiles(_presentationServices.Path, _presentationServices.Pattern);
-                foreach (var file in files)
+                var presentations = await _contentProvider.GetAllContent(_presentationServices.Path, _presentationServices.Pattern);
+                foreach (var presentation in presentations)
                 {
-                    var p = XmlHelper<Presentation>.Load(file);
-                    if (p != null && p.Slide.Any())
-                    {
-                        await _presentationServices.AddItem(p);
-                    }
+                    await _presentationServices.AddItem(presentation);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                System.Console.WriteLine(e.Message);
             }
         }
     }
