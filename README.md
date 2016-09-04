@@ -68,7 +68,7 @@ The **Trainer Assistant** project is a **Template 10**  based Universal Windows 
 This application can also display slides containing code components, being rendered thru **RichTextBlock** controls with some sort for sintax coloring for C# via its own simple C# parser class.
 ![relatedrecords](trainer-component.png)
 
-**What's missing**: Full editing capability for the presentation slides or code components. Might also render MS Office PowerPoint presentations instead of xml ones. Add Web API authentication support. Support for **Azure** and **AWS** as content providers has been added, although AWS support with *DynamoDB* needs further development on *JSON* serialization. Also Markdown parser has been provided for editing, but needs further improvent on translating Slides and converting to Slides when updating Markdown text.
+**What's missing**: Full editing capability for the presentation slides or code components. Might also render MS Office PowerPoint presentations instead of xml ones. Add Web API authentication support. Support for **Azure** and **AWS** as content providers has been added, although AWS support with *DynamoDB* needs further development on *JSON* serialization with DynamoDB decoration attributes. Also Markdown parser has been provided for editing, but needs further improvement on translating Slides and converting to Slides when updating Markdown text.
 
 ## Fluent Testing Project ##
 
