@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Reflector.Draw.io
 {
 
@@ -15,35 +10,37 @@ namespace Reflector.Draw.io
 
         private mxGraphModelMxCell[] rootField;
 
-        private ushort dxField;
-
-        private ushort dyField;
-
         private byte gridField;
 
-        private byte gridSizeField;
-
-        private byte guidesField;
-
-        private byte tooltipsField;
-
-        private byte connectField;
-
-        private byte arrowsField;
-
-        private byte foldField;
-
-        private byte pageField;
-
-        private decimal pageScaleField;
-
-        private ushort pageWidthField;
-
-        private ushort pageHeightField;
+        private byte mathField;
 
         private string backgroundField;
 
-        private byte mathField;
+        private ushort pageHeightField;
+
+        private ushort pageWidthField;
+
+        private decimal pageScaleField;
+
+        private byte pageField;
+
+        private byte foldField;
+
+        private byte arrowsField;
+
+        private byte connectField;
+
+        private byte tooltipsField;
+
+        private byte guidesField;
+
+        private byte gridSizeField;
+
+        private ushort dyField;
+
+        private ushort dxField;
+
+        private byte shadowField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("mxCell", IsNullable = false)]
@@ -56,34 +53,6 @@ namespace Reflector.Draw.io
             set
             {
                 this.rootField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort dx
-        {
-            get
-            {
-                return this.dxField;
-            }
-            set
-            {
-                this.dxField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort dy
-        {
-            get
-            {
-                return this.dyField;
-            }
-            set
-            {
-                this.dyField = value;
             }
         }
 
@@ -103,141 +72,15 @@ namespace Reflector.Draw.io
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte gridSize
+        public byte math
         {
             get
             {
-                return this.gridSizeField;
+                return this.mathField;
             }
             set
             {
-                this.gridSizeField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte guides
-        {
-            get
-            {
-                return this.guidesField;
-            }
-            set
-            {
-                this.guidesField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte tooltips
-        {
-            get
-            {
-                return this.tooltipsField;
-            }
-            set
-            {
-                this.tooltipsField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte connect
-        {
-            get
-            {
-                return this.connectField;
-            }
-            set
-            {
-                this.connectField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte arrows
-        {
-            get
-            {
-                return this.arrowsField;
-            }
-            set
-            {
-                this.arrowsField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte fold
-        {
-            get
-            {
-                return this.foldField;
-            }
-            set
-            {
-                this.foldField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte page
-        {
-            get
-            {
-                return this.pageField;
-            }
-            set
-            {
-                this.pageField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal pageScale
-        {
-            get
-            {
-                return this.pageScaleField;
-            }
-            set
-            {
-                this.pageScaleField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort pageWidth
-        {
-            get
-            {
-                return this.pageWidthField;
-            }
-            set
-            {
-                this.pageWidthField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort pageHeight
-        {
-            get
-            {
-                return this.pageHeightField;
-            }
-            set
-            {
-                this.pageHeightField = value;
+                this.mathField = value;
             }
         }
 
@@ -257,15 +100,183 @@ namespace Reflector.Draw.io
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte math
+        public ushort pageHeight
         {
             get
             {
-                return this.mathField;
+                return this.pageHeightField;
             }
             set
             {
-                this.mathField = value;
+                this.pageHeightField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public ushort pageWidth
+        {
+            get
+            {
+                return this.pageWidthField;
+            }
+            set
+            {
+                this.pageWidthField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public decimal pageScale
+        {
+            get
+            {
+                return this.pageScaleField;
+            }
+            set
+            {
+                this.pageScaleField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public byte page
+        {
+            get
+            {
+                return this.pageField;
+            }
+            set
+            {
+                this.pageField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public byte fold
+        {
+            get
+            {
+                return this.foldField;
+            }
+            set
+            {
+                this.foldField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public byte arrows
+        {
+            get
+            {
+                return this.arrowsField;
+            }
+            set
+            {
+                this.arrowsField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public byte connect
+        {
+            get
+            {
+                return this.connectField;
+            }
+            set
+            {
+                this.connectField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public byte tooltips
+        {
+            get
+            {
+                return this.tooltipsField;
+            }
+            set
+            {
+                this.tooltipsField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public byte guides
+        {
+            get
+            {
+                return this.guidesField;
+            }
+            set
+            {
+                this.guidesField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public byte gridSize
+        {
+            get
+            {
+                return this.gridSizeField;
+            }
+            set
+            {
+                this.gridSizeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public ushort dy
+        {
+            get
+            {
+                return this.dyField;
+            }
+            set
+            {
+                this.dyField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public ushort dx
+        {
+            get
+            {
+                return this.dxField;
+            }
+            set
+            {
+                this.dxField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public byte shadow
+        {
+            get
+            {
+                return this.shadowField;
+            }
+            set
+            {
+                this.shadowField = value;
             }
         }
     }
@@ -295,13 +306,13 @@ namespace Reflector.Draw.io
 
         private bool edgeFieldSpecified;
 
-        private byte sourceField;
-
-        private bool sourceFieldSpecified;
-
         private byte targetField;
 
         private bool targetFieldSpecified;
+
+        private byte sourceField;
+
+        private bool sourceFieldSpecified;
 
         /// <remarks/>
         public mxGraphModelMxCellMxGeometry mxGeometry
@@ -444,34 +455,6 @@ namespace Reflector.Draw.io
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte source
-        {
-            get
-            {
-                return this.sourceField;
-            }
-            set
-            {
-                this.sourceField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool sourceSpecified
-        {
-            get
-            {
-                return this.sourceFieldSpecified;
-            }
-            set
-            {
-                this.sourceFieldSpecified = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte target
         {
             get
@@ -497,6 +480,34 @@ namespace Reflector.Draw.io
                 this.targetFieldSpecified = value;
             }
         }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public byte source
+        {
+            get
+            {
+                return this.sourceField;
+            }
+            set
+            {
+                this.sourceField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool sourceSpecified
+        {
+            get
+            {
+                return this.sourceFieldSpecified;
+            }
+            set
+            {
+                this.sourceFieldSpecified = value;
+            }
+        }
     }
 
     /// <remarks/>
@@ -510,17 +521,17 @@ namespace Reflector.Draw.io
 
         private string asField;
 
-        private decimal xField;
+        private decimal heightField;
 
-        private bool xFieldSpecified;
+        private decimal widthField;
 
         private decimal yField;
 
         private bool yFieldSpecified;
 
-        private decimal widthField;
+        private decimal xField;
 
-        private decimal heightField;
+        private bool xFieldSpecified;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("mxPoint")]
@@ -565,29 +576,29 @@ namespace Reflector.Draw.io
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal x
+        public decimal height
         {
             get
             {
-                return this.xField;
+                return this.heightField;
             }
             set
             {
-                this.xField = value;
+                this.heightField = value;
             }
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool xSpecified
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public decimal width
         {
             get
             {
-                return this.xFieldSpecified;
+                return this.widthField;
             }
             set
             {
-                this.xFieldSpecified = value;
+                this.widthField = value;
             }
         }
 
@@ -621,29 +632,29 @@ namespace Reflector.Draw.io
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal width
+        public decimal x
         {
             get
             {
-                return this.widthField;
+                return this.xField;
             }
             set
             {
-                this.widthField = value;
+                this.xField = value;
             }
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal height
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool xSpecified
         {
             get
             {
-                return this.heightField;
+                return this.xFieldSpecified;
             }
             set
             {
-                this.heightField = value;
+                this.xFieldSpecified = value;
             }
         }
     }
@@ -655,9 +666,9 @@ namespace Reflector.Draw.io
 
         private string asField;
 
-        private decimal xField;
-
         private decimal yField;
+
+        private decimal xField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -675,20 +686,6 @@ namespace Reflector.Draw.io
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal x
-        {
-            get
-            {
-                return this.xField;
-            }
-            set
-            {
-                this.xField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
         public decimal y
         {
             get
@@ -698,6 +695,20 @@ namespace Reflector.Draw.io
             set
             {
                 this.yField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public decimal x
+        {
+            get
+            {
+                return this.xField;
+            }
+            set
+            {
+                this.xField = value;
             }
         }
     }
@@ -744,23 +755,9 @@ namespace Reflector.Draw.io
     public partial class mxGraphModelMxCellMxGeometryArrayMxPoint
     {
 
-        private decimal xField;
-
         private ushort yField;
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public decimal x
-        {
-            get
-            {
-                return this.xField;
-            }
-            set
-            {
-                this.xField = value;
-            }
-        }
+        private decimal xField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -775,5 +772,21 @@ namespace Reflector.Draw.io
                 this.yField = value;
             }
         }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public decimal x
+        {
+            get
+            {
+                return this.xField;
+            }
+            set
+            {
+                this.xField = value;
+            }
+        }
     }
+
+
 }

@@ -41,6 +41,8 @@ namespace Log.Common.Services.Common
             {
                 case "markdown":
                     return new MarkdownParser(language);
+                case "plaintext":
+                    return new PlainTextParser(language);
                 default:
                     return new CSharpParser(language);
             }
@@ -322,6 +324,116 @@ namespace Log.Common.Services.Common
                     }
                 }
             }            
+
+            return tokens.ToArray();
+        }
+    }
+
+    #endregion
+
+    #region Plain text parser
+
+    public sealed class PlainTextParser : LanguageParser
+    {
+        public PlainTextParser(string language)
+            : base(language)
+        {
+            var openText = @"([\s]*\w+[\s]*)+";
+            var headerFmt = @"(?<H{0}>{1}" + openText + "{1})";
+            var charReplFmt = @"(?<{0}>{1}" + openText + "{1})";
+
+            _regExps = new string[] {
+                @"(?<Indented>\.\.\." + openText + ")",
+                @"(?<Xml>(\<\w+(\s+\w+='\w+')*[/]?\>(\s*\w+\s*)*)(\</\w+\>)?|(\</\w+\>))",
+                @"(?<NewLine>[\r])",
+                @"(?<Json>([\{\}':\[\],\w\s\-])*)",
+                @"(?<Csharp>([\{\}':\[\]\<\>,;\w\s\-\.\(\)!@#\$%\^\*_\+=\|\\\?])*)",
+                @"(?<Blockquotes>\>" + openText + ")",
+                @"(?<InlineCode>```(csharp|javascript|xml|html|java|sql|json|))",
+                Normalize(headerFmt, '#', 6),
+                Normalize(headerFmt, '#', 5),
+                Normalize(headerFmt, '#', 4),
+                Normalize(headerFmt, '#', 3),
+                Normalize(headerFmt, '#', 2),
+                Normalize(headerFmt, '#'),
+                @"(?<Regular>[\sa-zA-Z_\-]*)",
+                NormalizeChars(charReplFmt, "Bold", @"\*", 2),
+                NormalizeChars(charReplFmt, "Italics", @"\*"),
+                NormalizeChars(charReplFmt, "Strikethrough", "~", 2)
+            };
+        }
+
+        #region text helpers 
+
+        private string Normalize(string fmt, char c, int times = 1)
+        {
+            return string.Format(fmt, times, new string(c, times));
+        }
+
+        private string NormalizeChars(string fmt, string groupName, string chars, int times = 1)
+        {
+            var repl = string.Empty;
+            for (var i = 1; i <= times; i++) repl += chars;
+
+            return string.Format(fmt, groupName, repl);
+        }
+
+        #endregion
+
+        public override string[] Tokenize(string code)
+        {
+            var tokens = new List<string>();
+            var exps = NonCodeRegExps();
+
+            var lines = code.Split(new char[] { '\n' }, StringSplitOptions.None);
+            for (var i = 0; i < lines.Length; i++)
+            {
+                var line = lines[i];
+
+                if (line.Length == 1 && line[0] == '\r')
+                {
+                    tokens.Add(Environment.NewLine);
+                    continue;
+                }
+
+                var retRemoved = false;
+                if (line[line.Length - 1] == '\r')
+                {
+                    line = line.Substring(0, line.Length - 1);
+                    retRemoved = true;
+                }
+
+                while (line.Length > 0)
+                {
+                    foreach (var exp in exps)
+                    {
+                        var regEx = new Regex(exp);
+                        var match = regEx.Match(line);
+                        if (match != null && match.Success && match.Value.Length > 0)
+                        {
+                            var token = match.Value;
+                            if (exp.Contains("InlineCode"))
+                            {
+                                if (token.Length > 3)
+                                    exps = OnlyCodeRegExps(token);
+                                else
+                                    exps = NonCodeRegExps();
+                            }
+
+                            tokens.Add(match.Value);
+                            if (match.Value.Length.Equals(line.Length))
+                            {
+                                line = string.Empty;
+                                if (retRemoved) tokens.Add(Environment.NewLine);
+
+                                break;
+                            }
+
+                            line = line.Substring(match.Value.Length);
+                        }
+                    }
+                }
+            }
 
             return tokens.ToArray();
         }
