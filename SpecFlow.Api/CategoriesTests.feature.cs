@@ -237,12 +237,12 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Delete an specific category", new string[] {
-                "DeleteCategory"}, SourceLine=50)]
-        public virtual void DeleteAnSpecificCategory()
+        [TechTalk.SpecRun.ScenarioAttribute("Update a category", new string[] {
+                "UpdateCategory"}, SourceLine=50)]
+        public virtual void UpdateACategory()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete an specific category", new string[] {
-                        "DeleteCategory"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a category", new string[] {
+                        "UpdateCategory"});
 #line 51
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -254,12 +254,14 @@ this.FeatureBackground();
                         "Url",
                         "Method",
                         "Headers",
-                        "Property"});
+                        "Property",
+                        "Payload"});
             table10.AddRow(new string[] {
-                        "http://localhost:3033/api/categories/3",
-                        "DELETE",
+                        "http://localhost:3033/api/categories/update/3",
+                        "PUT",
                         "Content-Type:application/json;Authorization:$token$",
-                        "DeleteCategory(Id,Name)"});
+                        "UpdateCategory(Id,Name)",
+                        "{\"Name\":\"Gourmet Kitchen\"}"});
 #line 53
  testRunner.When("I call the endpoint with values", ((string)(null)), table10, "When ");
 #line hidden
@@ -268,10 +270,67 @@ this.FeatureBackground();
                         "Name"});
             table11.AddRow(new string[] {
                         "3",
-                        "Kitchen"});
+                        "Gourmet Kitchen"});
 #line 56
- testRunner.Then("result items count should be 1 and values match the table for property \'DeleteCat" +
+ testRunner.Then("result items count should be 1 and values match the table for property \'UpdateCat" +
                     "egory\'", ((string)(null)), table11, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Delete an specific category", new string[] {
+                "DeleteCategory"}, SourceLine=60)]
+        public virtual void DeleteAnSpecificCategory()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete an specific category", new string[] {
+                        "DeleteCategory"});
+#line 61
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 62
+ testRunner.Given("I have been granted with a valid access token \'Token\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Url",
+                        "Method",
+                        "Headers",
+                        "Property"});
+            table12.AddRow(new string[] {
+                        "http://localhost:3033/api/categories/3",
+                        "DELETE",
+                        "Content-Type:application/json;Authorization:$token$",
+                        "DeleteCategory(Id,Name)"});
+#line 63
+ testRunner.When("I call the endpoint with values", ((string)(null)), table12, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "Name"});
+            table13.AddRow(new string[] {
+                        "3",
+                        "Gourmet Kitchen"});
+#line 66
+ testRunner.Then("result items count should be 1 and values match the table for property \'DeleteCat" +
+                    "egory\'", ((string)(null)), table13, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Save test results", new string[] {
+                "SaveResults"}, SourceLine=70)]
+        public virtual void SaveTestResults()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Save test results", new string[] {
+                        "SaveResults"});
+#line 71
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 72
+ testRunner.Given("all tests have successfuly run and the results file \'results.json\' is generated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 73
+ testRunner.Then("I can take a look at the results file", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -8,11 +8,19 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Microsoft.CSharp;
 using System.CodeDom.Compiler;
+using System.Reflection;
 
 namespace SpecFlow.Api.Context
 {
     public class EndpointContext
     {
+        public EndpointContext()
+        {
+            _suite = new RunSuite();
+        }
+
+        private readonly RunSuite _suite;
+        public string SuiteTitle { set { _suite.Name = value; } }
         private Table _settings;
         public Table Settings
         {
@@ -42,13 +50,17 @@ namespace SpecFlow.Api.Context
             return _sessionVars.ContainsKey(tokenVar) && !string.IsNullOrEmpty(_sessionVars[tokenVar].ToString());
         } 
 
-        public bool Call(Table pars)
+        public bool Call(Table pars, StepInfo info)
         {
             var outputFile = pars.Rows[0].Output();
             if (File.Exists(outputFile)) File.Delete(outputFile);
 
-            var exitCode = Extensions.runProcess(_sessionVars["$program$"].ToString(), pars.Args(_sessionVars));
+            _suite.Scenarios.Add(pars.Scenario(info.Text));
+            _suite.Program = _sessionVars["$program$"].ToString();
+
+            var exitCode = Extensions.runProcess(_suite.Program, pars.Args(_sessionVars));
             if (exitCode != 0) return false;
+            _suite.Scenarios.Last().SetRunTime();
 
             var properties = pars.Property().Split(';');
             if (!File.Exists(outputFile)) return false;
@@ -91,9 +103,11 @@ namespace SpecFlow.Api.Context
                     code += Environment.NewLine + "public class ResultsArray: List<Results> {}";
                 var classType = BuildRuntimeType(code);
 
-                var json = JsonConvert.DeserializeObject(stream.ReadToEnd(), classType);
+                var content = stream.ReadToEnd();
+                _suite.Scenarios.Last().Results = content;
+                var json = JsonConvert.DeserializeObject(content, classType);
 
-                if(json != null)
+                if (json != null)
                 {
                     if (!isArray && !isObject)
                     {
@@ -136,23 +150,93 @@ namespace SpecFlow.Api.Context
 
             return result.CompiledAssembly.GetTypes().Last();
         }
+
+        public string ResultsFile { get; private set; }
+        public bool SaveResults(string file)
+        {
+            _suite.FileName = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase), DateTime.UtcNow.ToString("yyyy-MM-dd-HHmmss") + "_" + file).Replace("file:\\", "");
+            ResultsFile = _suite.FileName;
+
+            using (var stream = File.CreateText(_suite.FileName))
+            {
+                var content = JsonConvert.SerializeObject(_suite);
+                stream.Write(content);
+            }
+
+            return File.Exists(_suite.FileName);
+        }
+
+        public void RunProcess(string program, string args)
+        {
+            Extensions.runProcess(program, args);
+        }
     }
 
     public static class ContextExtensions
     {
+        public static RunScenario Scenario(this Table pars, string name)
+        {
+            var scenario = new RunScenario
+            {
+                Name = name,
+                Endpoint = pars.Url(),
+                Method = pars.Method(),
+                Output = pars.Output(),
+                Payload = pars.Json(),
+                Headers = pars.Headers()                
+            };
+
+            return scenario;
+        }
+
         public static string Args(this Table pars, Dictionary<string, object> vars)
         {
             var args = string.Format("-X {0} {1} -o {2} {3} {4}",
-                pars.Rows[0]["Method"],
-                pars.Rows[0]["Url"],
-                pars.Rows[0].Output(),
+                pars.Method(),
+                pars.Url(),
+                pars.Output(),
                 pars.Rows[0]["Headers"].Headers(),
-                pars.Rows[0].Json()).Trim();
+                pars.Json()).Trim();
 
             foreach (var key in vars.Keys)
                 args = args.Replace(key, vars[key].ToString());
 
             return args;
+        }
+
+        public static string Method(this Table pars)
+        {
+            return pars.Property("Method");
+        }
+
+        public static string Url(this Table pars)
+        {
+            return pars.Property("Url");
+        }
+
+        public static string Output(this Table pars)
+        {
+            return pars.Rows[0].Output();
+        }
+
+        public static string Json(this Table pars)
+        {
+            return pars.Rows[0].Json();
+        }
+
+        public static IList<KeyValuePair<string, string>> Headers(this Table pars)
+        {
+            var list = new List<KeyValuePair<string, string>>();            
+            var hdrs = pars.Property("Headers").Split(';').Where(x => !string.IsNullOrEmpty(x));
+            foreach (var h in hdrs)
+                list.Add(new KeyValuePair<string, string>(h.Split(':')[0].Trim(), h.Split(':')[1].Trim()));
+
+            return list;
+        }
+
+        private static string Property(this Table pars, string name)
+        {
+            return pars.Rows[0][name];
         }
 
         public static string Output(this TableRow row)

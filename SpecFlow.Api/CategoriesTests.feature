@@ -47,6 +47,16 @@ Scenario: Get an specific category
 	| Id | Name    |
 	| 3  | Kitchen |
 
+@UpdateCategory
+Scenario: Update a category
+	Given I have been granted with a valid access token 'Token'
+	When I call the endpoint with values
+	| Url                                      | Method | Headers                                             | Property | Payload |
+	| http://localhost:3033/api/categories/update/3 | PUT   | Content-Type:application/json;Authorization:$token$ | UpdateCategory(Id,Name)  | {"Name":"Gourmet Kitchen"} |
+	Then result items count should be 1 and values match the table for property 'UpdateCategory'
+	| Id | Name            |
+	| 3  | Gourmet Kitchen |
+
 @DeleteCategory
 Scenario: Delete an specific category
 	Given I have been granted with a valid access token 'Token'
@@ -54,5 +64,10 @@ Scenario: Delete an specific category
 	| Url                                    | Method | Headers                                             | Property             |
 	| http://localhost:3033/api/categories/3 | DELETE    | Content-Type:application/json;Authorization:$token$ | DeleteCategory(Id,Name) |
 	Then result items count should be 1 and values match the table for property 'DeleteCategory'
-	| Id | Name    |
-	| 3  | Kitchen |
+	| Id | Name            |
+	| 3  | Gourmet Kitchen |
+
+@SaveResults
+Scenario: Save test results
+	Given all tests have successfuly run and the results file 'results.json' is generated
+	Then I can take a look at the results file

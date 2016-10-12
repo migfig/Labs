@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpecFlow.Api.Context;
+using System.IO;
+using System.Reflection;
 using TechTalk.SpecFlow;
 
 namespace SpecFlow.Api
@@ -16,20 +18,21 @@ namespace SpecFlow.Api
         [Given(@"I provide run settings as table")]
         public void GivenIProvideRunSettingsAsTable(Table table)
         {
+            _context.SuiteTitle = FeatureContext.Current.FeatureInfo.Title;
             _context.Settings = table;
         }
 
         [Given(@"I call the authentication endpoint with values")]
         public void GivenICallTheAuthenticationEndpointWithValues(Table table)
         {
-            var result = _context.Call(table);
+            var result = _context.Call(table, ScenarioContext.Current.StepContext.StepInfo);
             Assert.IsTrue(result);
         }
 
         [Given(@"then call the token endpoint with values")]
         public void GivenThenCallTheTokenEndpointWithValues(Table table)
         {
-            var result = _context.Call(table);
+            var result = _context.Call(table, ScenarioContext.Current.StepContext.StepInfo);
             Assert.IsTrue(result);
         }
 
@@ -42,8 +45,8 @@ namespace SpecFlow.Api
 
         [When(@"I call the endpoint with values")]
         public void WhenICallTheEndpointWithValues(Table table)
-        {
-            var result = _context.Call(table);
+        {            
+            var result = _context.Call(table, ScenarioContext.Current.StepContext.StepInfo);
             Assert.IsTrue(result);
         }
 
@@ -97,6 +100,18 @@ namespace SpecFlow.Api
                     Assert.AreEqual(value, itemPropertyValue.ToString());
                 }
             }
+        }
+
+        [Given(@"all tests have successfuly run and the results file '(.*)' is generated")]
+        public void GivenAllTestsHaveSuccessfulyRunThenTheResultsFileIsGenerated(string file)
+        {
+            Assert.IsTrue(_context.SaveResults(file));
+        }
+
+        [Then(@"I can take a look at the results file")]
+        public void ThenICanTakeALookAtTheResultsFile()
+        {
+            _context.RunProcess(@"C:\Windows\explorer.exe", _context.ResultsFile);
         }
     }
 }

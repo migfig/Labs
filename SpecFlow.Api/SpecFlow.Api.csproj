@@ -70,6 +70,7 @@
       <DependentUpon>CategoriesTests.feature</DependentUpon>
     </Compile>
     <Compile Include="Context\EndpointContext.cs" />
+    <Compile Include="Context\RunScenario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
