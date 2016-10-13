@@ -14,13 +14,8 @@ namespace SpecFlow.Api.Context
 {
     public class EndpointContext
     {
-        public EndpointContext()
-        {
-            _suite = new RunSuite();
-        }
+        public RunScenario Scenario { get; private set; }
 
-        private readonly RunSuite _suite;
-        public string SuiteTitle { set { _suite.Name = value; } }
         private Table _settings;
         public Table Settings
         {
@@ -39,6 +34,7 @@ namespace SpecFlow.Api.Context
         }
 
         private Dictionary<string, object> _sessionVars = new Dictionary<string, object>();
+
         public object GetResult(string property)
         {
             return _sessionVars[property.Var()];
@@ -55,12 +51,13 @@ namespace SpecFlow.Api.Context
             var outputFile = pars.Rows[0].Output();
             if (File.Exists(outputFile)) File.Delete(outputFile);
 
-            _suite.Scenarios.Add(pars.Scenario(info.Text));
-            _suite.Program = _sessionVars["$program$"].ToString();
+            Scenario = pars.Scenario(info.Text, _sessionVars);
+            Scenario.Program = _sessionVars["$program$"].ToString();
+            Scenario.Args = pars.Args(_sessionVars);
 
-            var exitCode = Extensions.runProcess(_suite.Program, pars.Args(_sessionVars));
+            var exitCode = Extensions.runProcess(Scenario.Program, Scenario.Args);
             if (exitCode != 0) return false;
-            _suite.Scenarios.Last().SetRunTime();
+            Scenario.SetRunTime();
 
             var properties = pars.Property().Split(';');
             if (!File.Exists(outputFile)) return false;
@@ -104,7 +101,7 @@ namespace SpecFlow.Api.Context
                 var classType = BuildRuntimeType(code);
 
                 var content = stream.ReadToEnd();
-                _suite.Scenarios.Last().Results = content;
+                Scenario.Results = content;
                 var json = JsonConvert.DeserializeObject(content, classType);
 
                 if (json != null)
@@ -136,6 +133,17 @@ namespace SpecFlow.Api.Context
             return true;
         }
 
+        public bool HasAuthenticationToken(string tokenProperty, string content, string code)
+        {
+            if (string.IsNullOrEmpty(content)) return false;
+
+            var classType = BuildRuntimeType(code);
+            var json = JsonConvert.DeserializeObject(content, classType);
+
+            if (json == null) return false;
+            return !string.IsNullOrEmpty(classType.GetProperty(tokenProperty).GetValue(json).ToString());
+        }
+
         private Type BuildRuntimeType(string code)
         {
             var csProv = new CSharpCodeProvider();
@@ -151,19 +159,18 @@ namespace SpecFlow.Api.Context
             return result.CompiledAssembly.GetTypes().Last();
         }
 
-        public string ResultsFile { get; private set; }
-        public bool SaveResults(string file)
+        public bool SaveResults(RunSuite suite)
         {
-            _suite.FileName = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase), DateTime.UtcNow.ToString("yyyy-MM-dd-HHmmss") + "_" + file).Replace("file:\\", "");
-            ResultsFile = _suite.FileName;
+            var file = "results.json";
+            suite.FileName = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase), DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm-ss") + "_" + file).Replace("file:\\", "");
 
-            using (var stream = File.CreateText(_suite.FileName))
+            using (var stream = File.CreateText(suite.FileName))
             {
-                var content = JsonConvert.SerializeObject(_suite);
+                var content = JsonConvert.SerializeObject(suite, Formatting.Indented);
                 stream.Write(content);
             }
 
-            return File.Exists(_suite.FileName);
+            return File.Exists(suite.FileName);
         }
 
         public void RunProcess(string program, string args)
@@ -174,7 +181,7 @@ namespace SpecFlow.Api.Context
 
     public static class ContextExtensions
     {
-        public static RunScenario Scenario(this Table pars, string name)
+        public static RunScenario Scenario(this Table pars, string name, Dictionary<string, object> vars)
         {
             var scenario = new RunScenario
             {
@@ -182,8 +189,8 @@ namespace SpecFlow.Api.Context
                 Endpoint = pars.Url(),
                 Method = pars.Method(),
                 Output = pars.Output(),
-                Payload = pars.Json(),
-                Headers = pars.Headers()                
+                Payload = pars.Json(vars),
+                Headers = pars.Headers(vars)                
             };
 
             return scenario;
@@ -196,7 +203,7 @@ namespace SpecFlow.Api.Context
                 pars.Url(),
                 pars.Output(),
                 pars.Rows[0]["Headers"].Headers(),
-                pars.Json()).Trim();
+                pars.Rows[0].JsonArgs()).Trim();
 
             foreach (var key in vars.Keys)
                 args = args.Replace(key, vars[key].ToString());
@@ -219,17 +226,30 @@ namespace SpecFlow.Api.Context
             return pars.Rows[0].Output();
         }
 
-        public static string Json(this Table pars)
+        public static string Json(this Table pars, Dictionary<string, object> vars)
         {
-            return pars.Rows[0].Json();
+            var json = pars.Rows[0].Json();
+            if(!string.IsNullOrEmpty(json))
+                foreach (var key in vars.Keys)
+                    json = json.Replace(key, vars[key].ToString());
+
+            return json;
         }
 
-        public static IList<KeyValuePair<string, string>> Headers(this Table pars)
+        public static IList<KeyValuePair<string, string>> Headers(this Table pars, Dictionary<string, object> vars)
         {
             var list = new List<KeyValuePair<string, string>>();            
             var hdrs = pars.Property("Headers").Split(';').Where(x => !string.IsNullOrEmpty(x));
+
             foreach (var h in hdrs)
-                list.Add(new KeyValuePair<string, string>(h.Split(':')[0].Trim(), h.Split(':')[1].Trim()));
+            {
+                var split = h.Split(':');
+                var value = split[1];
+                foreach (var v in vars.Keys)
+                    value = value.Replace(v, vars[v].ToString());
+
+                list.Add(new KeyValuePair<string, string>(split[0].Trim(), value.Trim()));
+            }
 
             return list;
         }
@@ -256,10 +276,15 @@ namespace SpecFlow.Api.Context
             return builder.ToString().Trim();
         }
 
-        public static string Json(this TableRow row)
+        public static string JsonArgs(this TableRow row)
         {
             var payload = row.Keys.Contains("Payload") ? row["Payload"] : string.Empty;
             return string.IsNullOrEmpty(payload) ? string.Empty : "-d \"" + payload.Replace("\"", "\\\"") + "\"";
+        }
+
+        public static string Json(this TableRow row)
+        {
+            return row.Keys.Contains("Payload") ? row["Payload"] : string.Empty;
         }
 
         public static string Property(this Table pars)

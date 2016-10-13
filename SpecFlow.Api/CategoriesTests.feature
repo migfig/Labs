@@ -66,8 +66,3 @@ Scenario: Delete an specific category
 	Then result items count should be 1 and values match the table for property 'DeleteCategory'
 	| Id | Name            |
 	| 3  | Gourmet Kitchen |
-
-@SaveResults
-Scenario: Save test results
-	Given all tests have successfuly run and the results file 'results.json' is generated
-	Then I can take a look at the results file

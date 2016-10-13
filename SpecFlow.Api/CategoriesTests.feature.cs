@@ -317,24 +317,6 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Save test results", new string[] {
-                "SaveResults"}, SourceLine=70)]
-        public virtual void SaveTestResults()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Save test results", new string[] {
-                        "SaveResults"});
-#line 71
-this.ScenarioSetup(scenarioInfo);
-#line 8
-this.FeatureBackground();
-#line 72
- testRunner.Given("all tests have successfuly run and the results file \'results.json\' is generated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 73
- testRunner.Then("I can take a look at the results file", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
         [TechTalk.SpecRun.TestRunCleanup()]
         public virtual void TestRunCleanup()
         {

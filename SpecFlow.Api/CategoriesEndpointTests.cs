@@ -1,15 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpecFlow.Api.Context;
-using System.IO;
-using System.Reflection;
 using TechTalk.SpecFlow;
+using System.Linq;
 
 namespace SpecFlow.Api
 {
     [Binding]
     public class CategoriesEndpointTests
     {
-        private readonly EndpointContext _context;
+        private static EndpointContext _context;
         public CategoriesEndpointTests(EndpointContext context)
         {
             _context = context;
@@ -18,30 +17,49 @@ namespace SpecFlow.Api
         [Given(@"I provide run settings as table")]
         public void GivenIProvideRunSettingsAsTable(Table table)
         {
-            _context.SuiteTitle = FeatureContext.Current.FeatureInfo.Title;
             _context.Settings = table;
+        }
+
+        private bool IsAuthenticated()
+        {
+            var suite = FeatureContext.Current.Get<RunSuite>("suite");
+            if (suite == null || !suite.Scenarios.Any()) return false;
+
+            var scenario = suite.Scenarios.FirstOrDefault(x => x.Results.Contains("Token"));
+            if (scenario == null) return false;
+
+            return  _context.HasAuthenticationToken("Token", 
+                scenario.Results,
+                "using System; public class Results {public string Token {get;set;} public DateTime ExpirationDate {get;set;} public string TargetUrl {get;set;}}");
         }
 
         [Given(@"I call the authentication endpoint with values")]
         public void GivenICallTheAuthenticationEndpointWithValues(Table table)
         {
-            var result = _context.Call(table, ScenarioContext.Current.StepContext.StepInfo);
-            Assert.IsTrue(result);
+            if (!IsAuthenticated())
+            {
+                var result = _context.Call(table, ScenarioContext.Current.StepContext.StepInfo);
+                Assert.IsTrue(result);
+                UpdateSuiteAfterScenario();
+            }
         }
 
         [Given(@"then call the token endpoint with values")]
         public void GivenThenCallTheTokenEndpointWithValues(Table table)
         {
-            var result = _context.Call(table, ScenarioContext.Current.StepContext.StepInfo);
-            Assert.IsTrue(result);
+            if (!IsAuthenticated())
+            {
+                var result = _context.Call(table, ScenarioContext.Current.StepContext.StepInfo);
+                Assert.IsTrue(result);
+                UpdateSuiteAfterScenario();
+            }
         }
 
         [Given(@"I have been granted with a valid access token '(.*)'")]
         public void GivenIHaveBeenGrantedWithAValidAccessToken(string token)
         {
-            Assert.IsTrue(_context.IsTokenValid(token));
+            Assert.IsTrue(_context.IsTokenValid(token) || IsAuthenticated());
         }
-
 
         [When(@"I call the endpoint with values")]
         public void WhenICallTheEndpointWithValues(Table table)
@@ -102,16 +120,27 @@ namespace SpecFlow.Api
             }
         }
 
-        [Given(@"all tests have successfuly run and the results file '(.*)' is generated")]
-        public void GivenAllTestsHaveSuccessfulyRunThenTheResultsFileIsGenerated(string file)
+        [BeforeFeature]
+        public static void InitializeResultsFile()
         {
-            Assert.IsTrue(_context.SaveResults(file));
+            var suite = new RunSuite();
+            FeatureContext.Current.Add("suite", new RunSuite());
         }
 
-        [Then(@"I can take a look at the results file")]
-        public void ThenICanTakeALookAtTheResultsFile()
+        [AfterFeature]
+        public static void SaveSuiteResultsAfterFeature()
         {
-            _context.RunProcess(@"C:\Windows\explorer.exe", _context.ResultsFile);
+            var suite = FeatureContext.Current.Get<RunSuite>("suite");
+            Assert.IsTrue(_context.SaveResults(suite));
+            _context.RunProcess(@"C:\Windows\explorer.exe", suite.FileName);
+        }
+
+        [AfterScenario]
+        public static void UpdateSuiteAfterScenario()
+        {
+            var suite = FeatureContext.Current.Get<RunSuite>("suite");
+            suite.Name = FeatureContext.Current.FeatureInfo.Title;
+            suite.Scenarios.Add(_context.Scenario);
         }
     }
 }
