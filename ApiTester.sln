@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlow.Api", "SpecFlow.Api\SpecFlow.Api.csproj", "{E7026A50-946C-49B1-BC5C-68F9E64BA3F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlow.Api.Common", "SpecFlow.Api.Common\SpecFlow.Api.Common.csproj", "{8BFAFF0A-653E-4A99-BD74-54215B222E79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,10 @@ Global
 		{E7026A50-946C-49B1-BC5C-68F9E64BA3F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7026A50-946C-49B1-BC5C-68F9E64BA3F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7026A50-946C-49B1-BC5C-68F9E64BA3F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BFAFF0A-653E-4A99-BD74-54215B222E79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BFAFF0A-653E-4A99-BD74-54215B222E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BFAFF0A-653E-4A99-BD74-54215B222E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BFAFF0A-653E-4A99-BD74-54215B222E79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

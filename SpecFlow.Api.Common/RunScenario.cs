@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SpecFlow.Api.Context
+namespace SpecFlow.Api.Common
 {
     public class RunSuite
     {

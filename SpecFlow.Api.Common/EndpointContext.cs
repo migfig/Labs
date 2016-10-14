@@ -10,7 +10,7 @@ using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 using System.Reflection;
 
-namespace SpecFlow.Api.Context
+namespace SpecFlow.Api.Common
 {
     public class EndpointContext
     {

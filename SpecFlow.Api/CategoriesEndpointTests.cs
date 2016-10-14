@@ -1,36 +1,20 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SpecFlow.Api.Context;
 using TechTalk.SpecFlow;
-using System.Linq;
+using SpecFlow.Api.Common;
 
 namespace SpecFlow.Api
 {
     [Binding]
-    public class CategoriesEndpointTests
+    public class CategoriesEndpointTests: ContextBase
     {
-        private static EndpointContext _context;
-        public CategoriesEndpointTests(EndpointContext context)
+        public CategoriesEndpointTests(EndpointContext context) : base(context)
         {
-            _context = context;
         }
 
         [Given(@"I provide run settings as table")]
         public void GivenIProvideRunSettingsAsTable(Table table)
         {
             _context.Settings = table;
-        }
-
-        private bool IsAuthenticated()
-        {
-            var suite = FeatureContext.Current.Get<RunSuite>("suite");
-            if (suite == null || !suite.Scenarios.Any()) return false;
-
-            var scenario = suite.Scenarios.FirstOrDefault(x => x.Results.Contains("Token"));
-            if (scenario == null) return false;
-
-            return  _context.HasAuthenticationToken("Token", 
-                scenario.Results,
-                "using System; public class Results {public string Token {get;set;} public DateTime ExpirationDate {get;set;} public string TargetUrl {get;set;}}");
         }
 
         [Given(@"I call the authentication endpoint with values")]
@@ -40,7 +24,7 @@ namespace SpecFlow.Api
             {
                 var result = _context.Call(table, ScenarioContext.Current.StepContext.StepInfo);
                 Assert.IsTrue(result);
-                UpdateSuiteAfterScenario();
+                RegisterScenarioHook();
             }
         }
 
@@ -51,7 +35,7 @@ namespace SpecFlow.Api
             {
                 var result = _context.Call(table, ScenarioContext.Current.StepContext.StepInfo);
                 Assert.IsTrue(result);
-                UpdateSuiteAfterScenario();
+                RegisterScenarioHook();
             }
         }
 
@@ -120,27 +104,26 @@ namespace SpecFlow.Api
             }
         }
 
+        #region hooks
+
         [BeforeFeature]
-        public static void InitializeResultsFile()
+        public static void RegisterSuiteHook()
         {
-            var suite = new RunSuite();
-            FeatureContext.Current.Add("suite", new RunSuite());
+            RegisterSuite();
         }
 
         [AfterFeature]
-        public static void SaveSuiteResultsAfterFeature()
+        public static void SaveSuiteResultsHook()
         {
-            var suite = FeatureContext.Current.Get<RunSuite>("suite");
-            Assert.IsTrue(_context.SaveResults(suite));
-            _context.RunProcess(@"C:\Windows\explorer.exe", suite.FileName);
+            SaveSuiteResults();
         }
 
         [AfterScenario]
-        public static void UpdateSuiteAfterScenario()
+        public static void RegisterScenarioHook()
         {
-            var suite = FeatureContext.Current.Get<RunSuite>("suite");
-            suite.Name = FeatureContext.Current.FeatureInfo.Title;
-            suite.Scenarios.Add(_context.Scenario);
+            RegisterScenario();
         }
+
+        #endregion
     }
 }
