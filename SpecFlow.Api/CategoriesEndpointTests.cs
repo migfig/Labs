@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TechTalk.SpecFlow;
 using SpecFlow.Api.Common;
+using TechTalk.SpecFlow;
 
 namespace SpecFlow.Api
 {

@@ -13,8 +13,8 @@
 namespace SpecFlow.Api
 {
     using TechTalk.SpecFlow;
-    
-    
+
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [TechTalk.SpecRun.FeatureAttribute("CategoriesEndpointTests", Description="\tIn order to ensure the coding quality of the Categories endpoint \r\n\tAs a endpoin" +
