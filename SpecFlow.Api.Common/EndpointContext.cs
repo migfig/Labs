@@ -236,9 +236,9 @@ namespace SpecFlow.Api.Common
             return json;
         }
 
-        public static IList<KeyValuePair<string, string>> Headers(this Table pars, Dictionary<string, object> vars)
+        public static IList<KeyValuePair<string, object>> Headers(this Table pars, Dictionary<string, object> vars)
         {
-            var list = new List<KeyValuePair<string, string>>();            
+            var list = new List<KeyValuePair<string, object>>();            
             var hdrs = pars.Property("Headers").Split(';').Where(x => !string.IsNullOrEmpty(x));
 
             foreach (var h in hdrs)
@@ -248,7 +248,7 @@ namespace SpecFlow.Api.Common
                 foreach (var v in vars.Keys)
                     value = value.Replace(v, vars[v].ToString());
 
-                list.Add(new KeyValuePair<string, string>(split[0].Trim(), value.Trim()));
+                list.Add(new KeyValuePair<string, object>(split[0].Trim(), value.Trim()));
             }
 
             return list;

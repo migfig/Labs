@@ -15,11 +15,12 @@ namespace SpecFlow.Api.Common
             Scenarios = new List<RunScenario>();
         }
 
-        public IEnumerable<KeyValuePair<string, string>> GetSummary()
+        public IEnumerable<KeyValuePair<string, object>> GetSummary()
         {
-            return new List<KeyValuePair<string, string>>{
-                    new KeyValuePair<string, string>("Total Scenarios:", Scenarios.Count.ToString()),
-                    new KeyValuePair<string, string>("Total Run time:", Scenarios.Sum(x => x.RunTime).ToString("###,##0.0#") + " Sec")
+            return new List<KeyValuePair<string, object>>{
+                    new KeyValuePair<string, object>("Total Scenarios:", Scenarios.Count.ToString()),
+                    new KeyValuePair<string, object>("Total Run time:", Scenarios.Sum(x => x.RunTime).ToString("###,##0.0#") + " Sec"),
+                    new KeyValuePair<string, object>("Run date:", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
                 };
         }
     }
@@ -34,13 +35,13 @@ namespace SpecFlow.Api.Common
         public DateTime StartTime { get; set; }
         public float RunTime { get; set; }
         public string Output { get; set; }
-        public IList<KeyValuePair<string, string>> Headers { get; set; } 
+        public IList<KeyValuePair<string, object>> Headers { get; set; } 
         public string Payload { get; set; }
         public string Results { get; set; }
 
         public RunScenario()
         {
-            Headers = new List<KeyValuePair<string, string>>();
+            Headers = new List<KeyValuePair<string, object>>();
             StartTime = DateTime.UtcNow;
         }
 
