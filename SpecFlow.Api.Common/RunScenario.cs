@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace SpecFlow.Api.Common
@@ -12,6 +13,14 @@ namespace SpecFlow.Api.Common
         public RunSuite()
         {
             Scenarios = new List<RunScenario>();
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> GetSummary()
+        {
+            return new List<KeyValuePair<string, string>>{
+                    new KeyValuePair<string, string>("Total Scenarios:", Scenarios.Count.ToString()),
+                    new KeyValuePair<string, string>("Total Run time:", Scenarios.Sum(x => x.RunTime).ToString("###,##0.0#") + " Sec")
+                };
         }
     }
 
@@ -38,6 +47,12 @@ namespace SpecFlow.Api.Common
         public void SetRunTime()
         {
             RunTime = DateTime.UtcNow.Subtract(StartTime).Milliseconds / 60.0f;
+        }
+
+        public IEnumerable<KeyValuePair<string, object>> GetBodyProperties()
+        {
+            foreach (var p in GetType().GetProperties())
+                yield return new KeyValuePair<string, object>(p.Name, p.GetValue(this));
         }
     }
 }

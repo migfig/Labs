@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SpecFlow.Api.Common.Utils;
 using System.Linq;
 using TechTalk.SpecFlow;
 
@@ -36,7 +37,8 @@ namespace SpecFlow.Api.Common
         {
             var suite = Suite;
             Assert.IsTrue(_context.SaveResults(suite));
-            _context.RunProcess(@"C:\Windows\explorer.exe", suite.FileName);
+            
+            _context.RunProcess(@"C:\Windows\explorer.exe", PdfReport.CreateReport(suite));
         }
 
         protected static void RegisterScenario()

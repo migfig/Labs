@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="itext-hyph-xml">
+      <HintPath>..\packages\iTextSharp\itext-hyph-xml.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\packages\iTextSharp\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,6 +59,7 @@
     <Compile Include="EndpointContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RunScenario.cs" />
+    <Compile Include="Utils\PdfReport.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
