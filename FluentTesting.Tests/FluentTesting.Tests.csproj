@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentTesting\FluentTesting.csproj">
-      <Project>{3813CDFF-94EF-4A71-BD83-C69F43B029B0}</Project>
+      <Project>{3813cdff-94ef-4a71-bd83-c69f43b029b0}</Project>
       <Name>FluentTesting</Name>
     </ProjectReference>
   </ItemGroup>

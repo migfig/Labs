@@ -63,10 +63,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ApiTester\ApiTester.csproj">
-      <Project>{80bc2f72-3596-4f15-970c-f1012ee074d2}</Project>
-      <Name>ApiTester</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{4d5eca11-0727-485d-985a-7fcadcfb25c7}</Project>
       <Name>Common</Name>
