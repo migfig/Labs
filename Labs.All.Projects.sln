@@ -138,6 +138,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Controllers", "Commo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainer.Web", "Trainer.Web\Trainer.Web.csproj", "{65D56EDD-5BCA-4FC1-9502-320FF100BBD6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoT", "IoT", "{37B1D1D0-BEB7-4815-85F9-FE5A2C5BEC47}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		InterviewerHubApp\InterviewerHubApp.Shared\InterviewerHubApp.Shared.projitems*{52ba175e-59e6-4f86-a5f5-a2bd2b9c7839}*SharedItemsImports = 4

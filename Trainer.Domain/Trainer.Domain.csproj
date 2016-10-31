@@ -51,6 +51,7 @@
     <Content Include="presentation.xml" />
     <Content Include="richcontent.xml" />
     <Content Include="styles.xml" />
+    <None Include="packages.config" />
     <None Include="trainer.xml" />
   </ItemGroup>
   <ItemGroup>
