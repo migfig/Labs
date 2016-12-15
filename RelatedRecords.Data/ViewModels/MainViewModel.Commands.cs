@@ -7,6 +7,7 @@ using com.calitha.goldparser;
 using static Common.Extensions;
 using System.ComponentModel;
 using System.Windows.Threading;
+using System.Threading.Tasks;
 #endregion usings
 
 namespace RelatedRecords.Data.ViewModels
@@ -88,6 +89,18 @@ namespace RelatedRecords.Data.ViewModels
                         IsBusy = false;
                         Command = string.Empty;
                     }, DispatcherPriority.ApplicationIdle);
+                    //Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+                    //{
+                    //    IsBusy = true;
+                    //    var task = new Task(() =>
+                    //    {
+                    //        method.Invoke(this, new object[] { results.Tokens });
+                    //    });
+                    //    task.Start();
+                    //    Task.WaitAll(task);
+                    //    IsBusy = false;
+                    //    Command = string.Empty;
+                    //}, DispatcherPriority.ApplicationIdle);
                 }
                 catch (Exception e)
                 {
