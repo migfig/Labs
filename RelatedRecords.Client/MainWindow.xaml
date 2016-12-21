@@ -47,23 +47,23 @@
 
                     <TextBlock Text="Command" Foreground="Gray" VerticalAlignment="Center"/>
                     <!--SelectedItem="{Binding Mode=TwoWay, Path=SelectedCommand}"-->
+                    <!-- IsDropDownOpen="{Binding Mode=TwoWay, Path=IsDropDownOpen}"-->
                     <ComboBox
-                            ItemsSource="{Binding Commands}"
-                            IsDropDownOpen="{Binding Mode=TwoWay, Path=IsDropDownOpen}"
-                            IsEditable="True"                       
-                            IsTextSearchEnabled="True"
-                            IsTextSearchCaseSensitive="False"
-                            StaysOpenOnEdit="True"
-                            Text="{Binding Mode=TwoWay, Path=Command, UpdateSourceTrigger=PropertyChanged}"
-                            FontSize="14"
-                            FontWeight="DemiBold"                            
-                            KeyboardNavigation.AcceptsReturn="True"
-                            TextOptions.TextHintingMode="Animated"
-                            Keyboard.KeyUp="ComboBox_KeyUp"
-                            Foreground="{Binding ForegroundColor}"
-                            Margin="8,0,0,0"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Stretch" Background="OrangeRed">
+                        ItemsSource="{Binding Commands}"                            
+                        IsEditable="True"                       
+                        IsTextSearchEnabled="True"
+                        IsTextSearchCaseSensitive="False"
+                        StaysOpenOnEdit="True"
+                        Text="{Binding Mode=TwoWay, Path=Command, UpdateSourceTrigger=PropertyChanged}"
+                        FontSize="14"
+                        FontWeight="DemiBold"                            
+                        KeyboardNavigation.AcceptsReturn="True"
+                        TextOptions.TextHintingMode="Animated"
+                        Keyboard.KeyUp="ComboBox_KeyUp"
+                        Foreground="{Binding ForegroundColor}"
+                        Margin="8,0,0,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch" Background="OrangeRed">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding}" Foreground="Black" VerticalAlignment="Center"/>
