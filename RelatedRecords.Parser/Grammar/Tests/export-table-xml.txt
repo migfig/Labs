@@ -1,1 +1,1 @@
-export ThisTable as xml
+export [ThisTable] as xml

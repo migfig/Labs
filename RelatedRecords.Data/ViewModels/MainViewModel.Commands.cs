@@ -117,31 +117,31 @@ namespace RelatedRecords.Data.ViewModels
 
         [Command(SymbolConstants.SYMBOL_CLONE
         , SymbolConstants.SYMBOL_AS
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void CloneAsId(IEnumerable<TerminalToken> tokens)
         {
-            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoCloneAsId(catalog);
         }
 
         [Command(SymbolConstants.SYMBOL_CLONE
         , SymbolConstants.SYMBOL_CATALOG
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_AS
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void CloneCatalogIdAsId(IEnumerable<TerminalToken> tokens)
         {
-            var srcCatalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var tgtCatalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var srcCatalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var tgtCatalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             DoCloneCatalogIdAsId(srcCatalog, tgtCatalog);
         }
 
         [Command(SymbolConstants.SYMBOL_CLONE
         , SymbolConstants.SYMBOL_CATALOG
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void CloneCatalogId(IEnumerable<TerminalToken> tokens)
         {
-            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoCloneCatalogId(catalog);
         }
 
@@ -217,87 +217,87 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_HTML)]
         public void ExportIdAsHtml(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoExportIdAsHtml(table);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_HTML
         , SymbolConstants.SYMBOL_NOCHILD)]
         public void ExportIdAsHtmlNoChild(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoExportIdAsHtml(table, false);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_JSON)]
         public void ExportIdAsJson(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoExportIdAsJson(table);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_JSON
         , SymbolConstants.SYMBOL_NOCHILD)]
         public void ExportIdAsJsonNoChild(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoExportIdAsJson(table, false);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_SQL)]
         public void ExportIdAsSql(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoExportIdAsSql(table);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_SQL
         , SymbolConstants.SYMBOL_NOCHILD)]
         public void ExportIdAsSqlNochild(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoExportIdAsSql(table, false);
         }
 
 
         [Command(SymbolConstants.SYMBOL_EXPORT
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_XML)]
         public void ExportIdAsXml(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoExportIdAsXml(table);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_XML
         , SymbolConstants.SYMBOL_NOCHILD)]
         public void ExportIdAsXmlNoChild(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoExportIdAsXml(table);
         }
 
@@ -320,62 +320,62 @@ namespace RelatedRecords.Data.ViewModels
 
         [Command(SymbolConstants.SYMBOL_IMPORT
         , SymbolConstants.SYMBOL_CATALOG
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_SERVER
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_USER
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_PASSWORD
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void ImportCatalogIdSvrIdUserIdPwdId(IEnumerable<TerminalToken> tokens)
         {
-            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var server = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var user = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
-            var password = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var server = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
+            var user = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
+            var password = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             DoImportCatalogIdSvrIdUserIdPwdId(catalog, server, user, password);
         }
 
         [Command(SymbolConstants.SYMBOL_IMPORT
         , SymbolConstants.SYMBOL_CATALOG
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_USER
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_PASSWORD
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void ImportCatalogIdUserIdPwdId(IEnumerable<TerminalToken> tokens)
         {
-            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var user = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var password = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var user = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
+            var password = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             DoImportCatalogIdUserIdPwdId(catalog, user, password);
         }
 
         [Command(SymbolConstants.SYMBOL_IMPORT
         , SymbolConstants.SYMBOL_CATALOG
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void ImportCatalogId(IEnumerable<TerminalToken> tokens)
         {
-            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoImportCatalogId(catalog);
         }
 
         [Command(SymbolConstants.SYMBOL_LOAD
         , SymbolConstants.SYMBOL_CATALOG
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_DEFAULT)]
         public void LoadCatalogIdDefault(IEnumerable<TerminalToken> tokens)
         {
-            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoLoadCatalogId(catalog, true);
         }
         
         [Command(SymbolConstants.SYMBOL_LOAD
         , SymbolConstants.SYMBOL_CATALOG
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void LoadCatalogId(IEnumerable<TerminalToken> tokens)
         {
-            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoLoadCatalogId(catalog);
         }
 
@@ -386,43 +386,43 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RELATE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_TO
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_ON
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RelateIdToIdOnIdEqId(IEnumerable<TerminalToken> tokens)
         {
-            var srcTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var srcCol = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
-            var tgtCol = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var srcTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
+            var srcCol = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
+            var tgtCol = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             DoRelateIdToIdOnIdEqId(srcTbl, tgtTbl, srcCol, tgtCol);
         }
 
         [Command(SymbolConstants.SYMBOL_RELATE
         , SymbolConstants.SYMBOL_TO
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_ON
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RelateToIdOnIdEqId(IEnumerable<TerminalToken> tokens)
         {
-            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var srcCol = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var tgtCol = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var srcCol = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
+            var tgtCol = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             DoRelateToIdOnIdEqId(tgtTbl, srcCol, tgtCol);
         }
 
         [Command(SymbolConstants.SYMBOL_REMOVE
         , SymbolConstants.SYMBOL_CATALOG
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RemoveCatalogId(IEnumerable<TerminalToken> tokens)
         {
-            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoRemoveCatalogId(catalog);
         }
 
@@ -440,10 +440,10 @@ namespace RelatedRecords.Data.ViewModels
 
         [Command(SymbolConstants.SYMBOL_REFRESH
         , SymbolConstants.SYMBOL_CATALOG
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RefreshCatalogId(IEnumerable<TerminalToken> tokens)
         {
-            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoRefreshCatalogId(catalog);
         }
 
@@ -456,7 +456,7 @@ namespace RelatedRecords.Data.ViewModels
         #region table commands
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_DEFAULT
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
@@ -464,42 +464,42 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void TableIdDefaultWhereIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             DoTableIdDefaultWhereIdOperatorStrLit(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void TableIdWhereIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(string));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LIKE
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void TableIdWhereIdLikeStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(string), "like");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_DEFAULT
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
@@ -507,23 +507,23 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void TableIdDefaultWhereIdLikeStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
-            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             DoTableIdDefaultWhereIdOperatorStrLit(table, column, value, "like");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_DEFAULT)]
         public void TableIdDefault(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoTableIdDefault(table);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_BETWEEN
@@ -532,15 +532,15 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdBetweenIntAndInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
             DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_NOT
@@ -550,15 +550,15 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdNotBetweenIntAndInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
             DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_BETWEEN
@@ -567,15 +567,15 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdBetweenDecAndDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
             DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue, typeof(double));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_NOT
@@ -585,15 +585,15 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdNotBetweenDecAndDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
             DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue, typeof(double));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GTEQ
@@ -601,14 +601,14 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdGtEqMinusInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, "-" + value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GTEQ
@@ -616,42 +616,42 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdGtEqMinusDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), ">=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GTEQ
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdGtEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), ">=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GTEQ
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdGtEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), ">=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GT
@@ -659,14 +659,14 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdGtMinusInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GT
@@ -674,42 +674,42 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdGtMinusDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GT
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdGtInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GT
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdGtDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTEQ
@@ -717,14 +717,14 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdLtEqMinusInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTEQ
@@ -732,70 +732,70 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdLtEqMinusDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTEQ
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdLtEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTEQ
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdLtEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTGT
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdLtGtInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTGT
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdLtGtDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTGT
@@ -803,14 +803,14 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdLtGtMinusInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTGT
@@ -818,14 +818,14 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdLtGtMinusDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_EQ
@@ -833,14 +833,14 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdEqMinusInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_EQ
@@ -848,42 +848,42 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdEqMinusDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER)]
         public void TableIdWhereIdEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(long));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void TableIdWhereIdEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(double));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_IS
@@ -891,31 +891,31 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_NULL)]
         public void TableIdWhereIdIsNotNull(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(string), "is not");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WHERE
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_IS
         , SymbolConstants.SYMBOL_NULL)]
         public void TableIdWhereIdIsNull(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
             DoTableIdWhereIdOperatorValue(table, column, value, typeof(string), "is");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void TableId(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoTableId(table);
         }
 
@@ -958,22 +958,22 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_UNRELATE
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_TO
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void UnrelateIdToId(IEnumerable<TerminalToken> tokens)
         {
-            var srcTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var srcTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             DoUnrelateIdToId(srcTbl, tgtTbl);
         }
 
         [Command(SymbolConstants.SYMBOL_UNRELATE
         , SymbolConstants.SYMBOL_TO
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void UnrelateToId(IEnumerable<TerminalToken> tokens)
         {
-            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var tgtTbl = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoUnrelateToId(tgtTbl);
         }
 
@@ -992,10 +992,10 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_CHILD
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void ChildId(IEnumerable<TerminalToken> tokens)
         {
-            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoChildId(table);
         }
 
@@ -1006,20 +1006,20 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_QUERY
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void QueryId(IEnumerable<TerminalToken> tokens)
         {
-            var columnName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var columnName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoQueryIdRowInt(columnName);
         }
 
         [Command(SymbolConstants.SYMBOL_QUERY
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_ROW
         , SymbolConstants.SYMBOL_INTEGER)]
         public void QueryIdRowInt(IEnumerable<TerminalToken> tokens)
         {
-            var columnName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var columnName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var row = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoQueryIdRowInt(columnName, int.Parse(row));
         }
@@ -1032,72 +1032,72 @@ namespace RelatedRecords.Data.ViewModels
 
         [Command(SymbolConstants.SYMBOL_TRANSFORM
         , SymbolConstants.SYMBOL_TEMPLATE
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void TransformTemplateId(IEnumerable<TerminalToken> tokens)
         {
-            var template = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var template = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             DoTransformIdTemplateId(string.Empty, template);
         }
 
         [Command(SymbolConstants.SYMBOL_TRANSFORM
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void TransformId(IEnumerable<TerminalToken> tokens)
         {
-            var sqlObject = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var sqlObject = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoTransformIdTemplateId(sqlObject);
         }
 
         [Command(SymbolConstants.SYMBOL_TRANSFORM
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_TEMPLATE
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void TransformIdTemplateId(IEnumerable<TerminalToken> tokens)
         {
-            var sqlObject = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var template = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var sqlObject = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var template = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             DoTransformIdTemplateId(sqlObject, template);
         }
 
         #region run commands
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER)]
+        , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RunId(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoRunIdWithParams(queryName);
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER)]
         public void RunIdWithIdEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoRunIdWithParams(queryName, new QueryParam(paramName, value));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void RunIdWithIdEqIntCommaIdEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoRunIdWithParams(queryName, 
                 new QueryParam(paramName, value), 
@@ -1105,27 +1105,27 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RunIdWithIdEqIntCommaIdEqDecCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var paranName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paranName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoRunIdWithParams(queryName, 
                 new QueryParam(paramName, value), 
@@ -1134,33 +1134,33 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL)]
         public void RunIdWithIdEqIntCommaIdEqDecCommaIdEqStrLitCommaIdEqNull(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
             DoRunIdWithParams(queryName, 
                 new QueryParam(paramName, value), 
@@ -1170,21 +1170,21 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER)]
         public void RunIdWithIdEqIntCommaIdEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
             DoRunIdWithParams(queryName, 
                 new QueryParam(paramName, value), 
@@ -1192,27 +1192,27 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER)]
         public void RunIdWithIdEqIntCommaIdEqIntCommaIdEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 2).Text;
             DoRunIdWithParams(queryName, 
                 new QueryParam(paramName, value), 
@@ -1221,33 +1221,33 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER)]
         public void RunIdWithIdEqIntCommaIdEqIntCommaIdEqIntCommaIdEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 2).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 3).Text;
             DoRunIdWithParams(queryName, 
                 new QueryParam(paramName, value),
@@ -1257,39 +1257,39 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER)]
         public void RunIdWithIdEqIntCommaIdEqIntCommaIdEqIntCommaIdEqIntCommaIdEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 2).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 3).Text;
-            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 5).Text;
+            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 5).Text;
             var value5 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 4).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value),
@@ -1300,35 +1300,35 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void RunIdWithIdEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoRunIdWithParams(queryName, new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER)]
         public void RunIdWithIdEqDecCommaIdEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
@@ -1336,27 +1336,27 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RunIdWithIdEqDecCommaIdEqIntCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
@@ -1365,33 +1365,33 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL)]
         public void RunIdWithIdEqDecCommaIdEqIntCommaIdEqStrLitCommaIdEqNull(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
@@ -1401,21 +1401,21 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void RunIdWithIdEqDecCommaIdEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
@@ -1423,27 +1423,27 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void RunIdWithIdEqDecCommaIdEqDecCommaIdEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 2).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
@@ -1452,33 +1452,33 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void RunIdWithIdEqDecCommaIdEqDecCommaIdEqDecCommaIdEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 2).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 3).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
@@ -1488,39 +1488,39 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void RunIdWithIdEqDecCommaIdEqDecCommaIdEqDecCommaIdEqDecCommaIdEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 2).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 3).Text;
-            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 5).Text;
+            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 5).Text;
             var value5 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 4).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_DECIMAL),
@@ -1531,35 +1531,35 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RunIdWithIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoRunIdWithParams(queryName, new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER)]
         public void RunIdWithIdEqStrLitCommaIdEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
@@ -1567,27 +1567,27 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void RunIdWithIdEqStrLitCommaIdEqIntCommaIdEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
@@ -1596,33 +1596,33 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL)]
         public void RunIdWithIdEqStrLitCommaIdEqIntCommaIdEqDecCommaIdEqNull(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
@@ -1632,21 +1632,21 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RunIdWithIdEqStrLitCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
@@ -1654,27 +1654,27 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RunIdWithIdEqStrLitCommaIdEqStrLitCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
@@ -1683,33 +1683,33 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RunIdWithIdEqStrLitCommaIdEqStrLitCommaIdEqStrLitCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
@@ -1719,39 +1719,39 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RunIdWithIdEqStrLitCommaIdEqStrLitCommaIdEqStrLitCommaIdEqStrLitCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
-            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 5).Text;
+            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 5).Text;
             var value5 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_STRINGLITERAL),
@@ -1762,35 +1762,35 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL)]
         public void RunIdWithIdEqNull(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
             DoRunIdWithParams(queryName, new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL));
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER)]
         public void RunIdWithIdEqNullCommaIdEqInt(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
@@ -1798,27 +1798,27 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL)]
         public void RunIdWithIdEqNullCommaIdEqIntCommaIdEqDec(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
@@ -1827,33 +1827,33 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
         public void RunIdWithIdEqNullCommaIdEqIntCommaIdEqDecCommaIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
@@ -1863,21 +1863,21 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL)]
         public void RunIdWithIdEqNullCommaIdEqNull(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 1).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
@@ -1885,27 +1885,27 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL)]
         public void RunIdWithIdEqNullCommaIdEqNullCommaIdEqNull(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 2).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
@@ -1914,33 +1914,33 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL)]
         public void RunIdWithIdEqNullCommaIdEqNullCommaIdEqNullCommaIdEqNull(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 2).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 3).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
@@ -1950,39 +1950,39 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_RUN
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_WITH
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL
         , SymbolConstants.SYMBOL_COMMA
-        , SymbolConstants.SYMBOL_IDENTIFIER
+        , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_NULL)]
         public void RunIdWithIdEqNullCommaIdEqNullCommaIdEqNullCommaIdEqNullCommaIdEqNull(IEnumerable<TerminalToken> tokens)
         {
-            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
-            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 1).Text;
+            var queryName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
+            var paramName = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 2).Text;
+            var paramName2 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 2).Text;
             var value2 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 1).Text;
-            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 3).Text;
+            var paramName3 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 3).Text;
             var value3 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 2).Text;
-            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 4).Text;
+            var paramName4 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 4).Text;
             var value4 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 3).Text;
-            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 5).Text;
+            var paramName5 = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 5).Text;
             var value5 = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 4).Text;
             DoRunIdWithParams(queryName,
                 new QueryParam(paramName, value, SymbolConstants.SYMBOL_NULL),
@@ -2147,13 +2147,13 @@ namespace RelatedRecords.Data.ViewModels
 
         internal class Worker
         {
-            private readonly BackgroundWorker _worker;
+            //private readonly BackgroundWorker _worker;
             private readonly MainViewModel _model;
 
             public Worker(MainViewModel model)
             {
                 _model = model;
-                _worker = new BackgroundWorker();
+                //_worker = new BackgroundWorker();
             }
 
             public delegate void SetBusyDelegate();
@@ -2169,6 +2169,7 @@ namespace RelatedRecords.Data.ViewModels
                     Dispatcher.CurrentDispatcher
                         .BeginInvoke(DispatcherPriority.Send, new SetBusyDelegate(SetBusy));
 
+                    var _worker = new BackgroundWorker();
                     _worker.DoWork += (s, o) =>
                     {
                         if (null != workBlock)

@@ -1,1 +1,1 @@
-load catalog _Catalog-Name default
+load catalog [_Catalog-Name] default

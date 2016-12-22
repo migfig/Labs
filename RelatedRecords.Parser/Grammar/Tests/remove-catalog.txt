@@ -1,1 +1,1 @@
-remove catalog CatalogName
+remove catalog [CatalogName]

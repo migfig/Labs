@@ -1,1 +1,1 @@
-table Test21 where col1 >= 121.340
+table [Test21] where col1 >= 121.340

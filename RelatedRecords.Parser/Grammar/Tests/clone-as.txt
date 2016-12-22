@@ -1,1 +1,1 @@
-clone as SomeOtherName
+clone as [SomeOtherName]

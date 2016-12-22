@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Grammar\Tests\back.txt" />
+    <Content Include="Grammar\Tests\catalogs-n.txt" />
+    <Content Include="Grammar\Tests\catalogs.txt" />
     <Content Include="Grammar\Tests\child-id.txt" />
     <Content Include="Grammar\Tests\child-n.txt" />
     <Content Include="Grammar\Tests\child.txt" />
@@ -60,20 +62,31 @@
     <Content Include="Grammar\Tests\clone.txt" />
     <Content Include="Grammar\Tests\columns-n.txt" />
     <Content Include="Grammar\Tests\columns.txt" />
+    <Content Include="Grammar\Tests\export-html-nochild.txt" />
     <Content Include="Grammar\Tests\export-html.txt" />
+    <Content Include="Grammar\Tests\export-json-nochild.txt" />
     <Content Include="Grammar\Tests\export-json.txt" />
+    <Content Include="Grammar\Tests\export-sql-nochild.txt" />
     <Content Include="Grammar\Tests\export-sql.txt" />
+    <Content Include="Grammar\Tests\export-table-html-nochild.txt" />
     <Content Include="Grammar\Tests\export-table-html.txt" />
+    <Content Include="Grammar\Tests\export-table-json-nochild.txt" />
     <Content Include="Grammar\Tests\export-table-json.txt" />
+    <Content Include="Grammar\Tests\export-table-sql-nochild.txt" />
     <Content Include="Grammar\Tests\export-table-sql.txt" />
+    <Content Include="Grammar\Tests\export-table-xml-nochild.txt" />
     <Content Include="Grammar\Tests\export-table-xml.txt" />
+    <Content Include="Grammar\Tests\export-xml-nochild.txt" />
     <Content Include="Grammar\Tests\export-xml.txt" />
     <Content Include="Grammar\Tests\help.txt" />
     <Content Include="Grammar\Tests\import-svr-usr-pwd.txt" />
     <Content Include="Grammar\Tests\import-usr-pwd.txt" />
     <Content Include="Grammar\Tests\import.txt" />
+    <Content Include="Grammar\Tests\load-catalog-default.txt" />
     <Content Include="Grammar\Tests\load-catalog.txt" />
     <Content Include="Grammar\Tests\load.txt" />
+    <Content Include="Grammar\Tests\query-rown.txt" />
+    <Content Include="Grammar\Tests\query.txt" />
     <Content Include="Grammar\Tests\refresh-catalog.txt" />
     <Content Include="Grammar\Tests\refresh.txt" />
     <Content Include="Grammar\Tests\relate-table.txt" />
@@ -81,16 +94,22 @@
     <Content Include="Grammar\Tests\remove-catalog.txt" />
     <Content Include="Grammar\Tests\remove.txt" />
     <Content Include="Grammar\Tests\root.txt" />
+    <Content Include="Grammar\Tests\run-params.txt" />
     <Content Include="Grammar\Tests\table-default-where-eq-char.txt" />
     <Content Include="Grammar\Tests\table-default.txt" />
     <Content Include="Grammar\Tests\table-where-between.txt" />
     <Content Include="Grammar\Tests\table-where-gt-decimal.txt" />
     <Content Include="Grammar\Tests\table-where-is-not-null.txt" />
     <Content Include="Grammar\Tests\table-where-is-null.txt" />
+    <Content Include="Grammar\Tests\table-where-not-between.txt" />
     <Content Include="Grammar\Tests\table.txt" />
     <Content Include="Grammar\Tests\tables-n.txt" />
     <Content Include="Grammar\Tests\tables.txt" />
     <Content Include="Grammar\Tests\top-n.txt" />
+    <Content Include="Grammar\Tests\transform-id-tmpl.txt" />
+    <Content Include="Grammar\Tests\transform-id.txt" />
+    <Content Include="Grammar\Tests\transform-tmpl.txt" />
+    <Content Include="Grammar\Tests\transform.txt" />
     <Content Include="Grammar\Tests\unrelate-table.txt" />
     <Content Include="Grammar\Tests\unrelate.txt" />
   </ItemGroup>

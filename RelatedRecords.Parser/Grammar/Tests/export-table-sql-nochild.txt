@@ -1,1 +1,1 @@
-export _Table_Name_12 as sql nochild
+export [_Table_Name_12] as sql nochild

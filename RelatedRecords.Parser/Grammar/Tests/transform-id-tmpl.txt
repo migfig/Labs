@@ -1,1 +1,1 @@
-transform Tickets template Controller
+transform [Tickets] template [Controller]

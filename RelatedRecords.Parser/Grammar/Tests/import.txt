@@ -1,1 +1,1 @@
-import catalog SampleX
+import catalog [SampleX]

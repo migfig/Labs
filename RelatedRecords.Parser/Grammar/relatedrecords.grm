@@ -19,10 +19,10 @@
 ! -------------------------------------------------
 Whitespace    = {WS}+
 NewLine       = {CR}{LF} | {CR} | {LF}
-Identifier    = {ID Head}{ID Tail}*
 StringLiteral = '"' {String Chars}* '"'
               | '''' {Quoted String Chars}* ''''
               | '[' {Bracket String Chars}* ']'
+Identifier    = {ID Head}{ID Tail}*
 Integer       = {Digit} + {Digit}*
 Decimal       = {Digit} + {Digit}* [.] {Digit}* 
 ! -------------------------------------------------
@@ -85,36 +85,36 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
 
 ! table <tablename> [default] [where <column> ((<operator> <value>) | (is [not] NULL) | (between <value1> and <value2>)]
 <TableExp>    ::= table !default table
-               | table Identifier
-               | table Identifier default
-               | table Identifier default where <Expression> 
-               | table Identifier where <Expression> 
+               | table StringLiteral
+               | table StringLiteral default
+               | table StringLiteral default where <Expression> 
+               | table StringLiteral where <Expression> 
 
 ! relate [<source-tablename>] to <target-tablename> on <source-columnname> = <target-columnname>
-<RelateExp>   ::= relate to Identifier on Identifier '=' Identifier 
-               | relate Identifier to Identifier on Identifier '=' Identifier
+<RelateExp>   ::= relate to StringLiteral on StringLiteral '=' StringLiteral 
+               | relate StringLiteral to StringLiteral on StringLiteral '=' StringLiteral
                
 ! unrelate [<source-tablename>] to <target-tablename>
-<UnrelateExp> ::= unrelate to Identifier
-               | unrelate Identifier to Identifier
+<UnrelateExp> ::= unrelate to StringLiteral
+               | unrelate StringLiteral to StringLiteral
                
 ! export [<tablename>] as (sql | html | json | xml)
 <ExportExp>   ::= export as sql
                | export as html
                | export as json
                | export as xml
-               | export Identifier as sql
-               | export Identifier as html
-               | export Identifier as json
-               | export Identifier as xml
+               | export StringLiteral as sql
+               | export StringLiteral as html
+               | export StringLiteral as json
+               | export StringLiteral as xml
                | export as sql nochild
                | export as html nochild
                | export as json nochild
                | export as xml nochild
-               | export Identifier as sql nochild
-               | export Identifier as html nochild
-               | export Identifier as json nochild
-               | export Identifier as xml nochild
+               | export StringLiteral as sql nochild
+               | export StringLiteral as html nochild
+               | export StringLiteral as json nochild
+               | export StringLiteral as xml nochild
 
 ! back
 <BackExp>    ::= back
@@ -139,29 +139,29 @@ Decimal       = {Digit} + {Digit}* [.] {Digit}*
 !child 
 <ChildExp>    ::= child
                | child Integer
-               | child Identifier
+               | child StringLiteral
 
-<CatalogExp>  ::= catalog Identifier
-<UserExp>     ::= user Identifier
-<PasswordExp> ::= password Identifier
-<ServerExp>   ::= server Identifier
-<AsExp>       ::= as Identifier
+<CatalogExp>  ::= catalog StringLiteral
+<UserExp>     ::= user StringLiteral
+<PasswordExp> ::= password StringLiteral
+<ServerExp>   ::= server StringLiteral
+<AsExp>       ::= as StringLiteral
 <HelpExp>     ::= help
 
-<QueryExp>    ::= query Identifier
-               | query Identifier row Integer
+<QueryExp>    ::= query StringLiteral
+               | query StringLiteral row Integer
 
 <TransformExp> ::= transform
-                | transform template Identifier
-                | transform Identifier
-                | transform Identifier template Identifier
+                | transform template StringLiteral
+                | transform StringLiteral
+                | transform StringLiteral template StringLiteral
 
-<RunQueryExp> ::= run Identifier
-               | run Identifier with <ParamExpression>
-               | run Identifier with <ParamExpression> ',' <ParamExpression2>
-               | run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3>
-               | run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4>
-               | run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4> ',' <ParamExpression5>
+<RunQueryExp> ::= run StringLiteral
+               | run StringLiteral with <ParamExpression>
+               | run StringLiteral with <ParamExpression> ',' <ParamExpression2>
+               | run StringLiteral with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3>
+               | run StringLiteral with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4>
+               | run StringLiteral with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4> ',' <ParamExpression5>
 
 <ParamExpression> ::= <ParamExpression> '=' <ParamValue>
                | <ParamValue>

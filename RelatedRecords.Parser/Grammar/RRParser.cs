@@ -240,30 +240,30 @@ namespace RelatedRecords.Parser
         RULE_LOADEXP_LOAD2 = 37, // <LoadExp> ::= load <CatalogExp>
         RULE_LOADEXP_LOAD_DEFAULT = 38, // <LoadExp> ::= load <CatalogExp> default
         RULE_TABLEEXP_TABLE = 39, // <TableExp> ::= table
-        RULE_TABLEEXP_TABLE_IDENTIFIER = 40, // <TableExp> ::= table Identifier
-        RULE_TABLEEXP_TABLE_IDENTIFIER_DEFAULT = 41, // <TableExp> ::= table Identifier default
-        RULE_TABLEEXP_TABLE_IDENTIFIER_DEFAULT_WHERE = 42, // <TableExp> ::= table Identifier default where <Expression>
-        RULE_TABLEEXP_TABLE_IDENTIFIER_WHERE = 43, // <TableExp> ::= table Identifier where <Expression>
-        RULE_RELATEEXP_RELATE_TO_IDENTIFIER_ON_IDENTIFIER_EQ_IDENTIFIER = 44, // <RelateExp> ::= relate to Identifier on Identifier '=' Identifier
-        RULE_RELATEEXP_RELATE_IDENTIFIER_TO_IDENTIFIER_ON_IDENTIFIER_EQ_IDENTIFIER = 45, // <RelateExp> ::= relate Identifier to Identifier on Identifier '=' Identifier
-        RULE_UNRELATEEXP_UNRELATE_TO_IDENTIFIER = 46, // <UnrelateExp> ::= unrelate to Identifier
-        RULE_UNRELATEEXP_UNRELATE_IDENTIFIER_TO_IDENTIFIER = 47, // <UnrelateExp> ::= unrelate Identifier to Identifier
+        RULE_TABLEEXP_TABLE_STRINGLITERAL = 40, // <TableExp> ::= table Identifier
+        RULE_TABLEEXP_TABLE_STRINGLITERAL_DEFAULT = 41, // <TableExp> ::= table Identifier default
+        RULE_TABLEEXP_TABLE_STRINGLITERAL_DEFAULT_WHERE = 42, // <TableExp> ::= table Identifier default where <Expression>
+        RULE_TABLEEXP_TABLE_STRINGLITERAL_WHERE = 43, // <TableExp> ::= table Identifier where <Expression>
+        RULE_RELATEEXP_RELATE_TO_STRINGLITERAL_ON_STRINGLITERAL_EQ_STRINGLITERAL = 44, // <RelateExp> ::= relate to Identifier on Identifier '=' Identifier
+        RULE_RELATEEXP_RELATE_STRINGLITERAL_TO_STRINGLITERAL_ON_STRINGLITERAL_EQ_STRINGLITERAL = 45, // <RelateExp> ::= relate Identifier to Identifier on Identifier '=' Identifier
+        RULE_UNRELATEEXP_UNRELATE_TO_STRINGLITERAL = 46, // <UnrelateExp> ::= unrelate to Identifier
+        RULE_UNRELATEEXP_UNRELATE_STRINGLITERAL_TO_STRINGLITERAL = 47, // <UnrelateExp> ::= unrelate Identifier to Identifier
         RULE_EXPORTEXP_EXPORT_AS_SQL = 48, // <ExportExp> ::= export as sql
         RULE_EXPORTEXP_EXPORT_AS_HTML = 49, // <ExportExp> ::= export as html
         RULE_EXPORTEXP_EXPORT_AS_JSON = 50, // <ExportExp> ::= export as json
         RULE_EXPORTEXP_EXPORT_AS_XML = 51, // <ExportExp> ::= export as xml
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_SQL = 52, // <ExportExp> ::= export Identifier as sql
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_HTML = 53, // <ExportExp> ::= export Identifier as html
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_JSON = 54, // <ExportExp> ::= export Identifier as json
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_XML = 55, // <ExportExp> ::= export Identifier as xml
+        RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_SQL = 52, // <ExportExp> ::= export Identifier as sql
+        RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_HTML = 53, // <ExportExp> ::= export Identifier as html
+        RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_JSON = 54, // <ExportExp> ::= export Identifier as json
+        RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_XML = 55, // <ExportExp> ::= export Identifier as xml
         RULE_EXPORTEXP_EXPORT_AS_SQL_NOCHILD = 56, // <ExportExp> ::= export as sql nochild
         RULE_EXPORTEXP_EXPORT_AS_HTML_NOCHILD = 57, // <ExportExp> ::= export as html nochild
         RULE_EXPORTEXP_EXPORT_AS_JSON_NOCHILD = 58, // <ExportExp> ::= export as json nochild
         RULE_EXPORTEXP_EXPORT_AS_XML_NOCHILD = 59, // <ExportExp> ::= export as xml nochild
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_SQL_NOCHILD = 60, // <ExportExp> ::= export Identifier as sql nochild
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_HTML_NOCHILD = 61, // <ExportExp> ::= export Identifier as html nochild
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_JSON_NOCHILD = 62, // <ExportExp> ::= export Identifier as json nochild
-        RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_XML_NOCHILD = 63, // <ExportExp> ::= export Identifier as xml nochild
+        RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_SQL_NOCHILD = 60, // <ExportExp> ::= export Identifier as sql nochild
+        RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_HTML_NOCHILD = 61, // <ExportExp> ::= export Identifier as html nochild
+        RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_JSON_NOCHILD = 62, // <ExportExp> ::= export Identifier as json nochild
+        RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_XML_NOCHILD = 63, // <ExportExp> ::= export Identifier as xml nochild
         RULE_BACKEXP_BACK = 64, // <BackExp> ::= back
         RULE_ROOTEXP_HOME = 65, // <RootExp> ::= home
         RULE_TABLESEXP_TABLES = 66, // <TablesExp> ::= tables
@@ -275,25 +275,25 @@ namespace RelatedRecords.Parser
         RULE_TOPNEXP_TOP_INTEGER = 72, // <TopnExp> ::= top Integer
         RULE_CHILDEXP_CHILD = 73, // <ChildExp> ::= child
         RULE_CHILDEXP_CHILD_INTEGER = 74, // <ChildExp> ::= child Integer
-        RULE_CHILDEXP_CHILD_IDENTIFIER = 75, // <ChildExp> ::= child Identifier
-        RULE_CATALOGEXP_CATALOG_IDENTIFIER = 76, // <CatalogExp> ::= catalog Identifier
-        RULE_USEREXP_USER_IDENTIFIER = 77, // <UserExp> ::= user Identifier
-        RULE_PASSWORDEXP_PASSWORD_IDENTIFIER = 78, // <PasswordExp> ::= password Identifier
-        RULE_SERVEREXP_SERVER_IDENTIFIER = 79, // <ServerExp> ::= server Identifier
-        RULE_ASEXP_AS_IDENTIFIER = 80, // <AsExp> ::= as Identifier
+        RULE_CHILDEXP_CHILD_STRINGLITERAL = 75, // <ChildExp> ::= child Identifier
+        RULE_CATALOGEXP_CATALOG_STRINGLITERAL = 76, // <CatalogExp> ::= catalog Identifier
+        RULE_USEREXP_USER_STRINGLITERAL = 77, // <UserExp> ::= user Identifier
+        RULE_PASSWORDEXP_PASSWORD_STRINGLITERAL = 78, // <PasswordExp> ::= password Identifier
+        RULE_SERVEREXP_SERVER_STRINGLITERAL = 79, // <ServerExp> ::= server Identifier
+        RULE_ASEXP_AS_STRINGLITERAL = 80, // <AsExp> ::= as Identifier
         RULE_HELPEXP_HELP = 81, // <HelpExp> ::= help
-        RULE_QUERYEXP_QUERY_IDENTIFIER = 82, // <QueryExp> ::= query Identifier
-        RULE_QUERYEXP_QUERY_IDENTIFIER_ROW_INTEGER = 83, // <QueryExp> ::= query Identifier row Integer
+        RULE_QUERYEXP_QUERY_STRINGLITERAL = 82, // <QueryExp> ::= query Identifier
+        RULE_QUERYEXP_QUERY_STRINGLITERAL_ROW_INTEGER = 83, // <QueryExp> ::= query Identifier row Integer
         RULE_TRANSFORMEXP_TRANSFORM = 84, // <TransformExp> ::= transform
-        RULE_TRANSFORMEXP_TRANSFORM_TEMPLATE_IDENTIFIER = 85, // <TransformExp> ::= transform template Identifier
-        RULE_TRANSFORMEXP_TRANSFORM_IDENTIFIER = 86, // <TransformExp> ::= transform Identifier
-        RULE_TRANSFORMEXP_TRANSFORM_IDENTIFIER_TEMPLATE_IDENTIFIER = 87, // <TransformExp> ::= transform Identifier template Identifier
-        RULE_RUNQUERYEXP_RUN_IDENTIFIER = 88, // <RunQueryExp> ::= run Identifier
-        RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH = 89, // <RunQueryExp> ::= run Identifier with <ParamExpression>
-        RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA = 90, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2>
-        RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA = 91, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3>
-        RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA_COMMA = 92, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4>
-        RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA_COMMA_COMMA = 93, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4> ',' <ParamExpression5>
+        RULE_TRANSFORMEXP_TRANSFORM_TEMPLATE_STRINGLITERAL = 85, // <TransformExp> ::= transform template Identifier
+        RULE_TRANSFORMEXP_TRANSFORM_STRINGLITERAL = 86, // <TransformExp> ::= transform Identifier
+        RULE_TRANSFORMEXP_TRANSFORM_STRINGLITERAL_TEMPLATE_STRINGLITERAL = 87, // <TransformExp> ::= transform Identifier template Identifier
+        RULE_RUNQUERYEXP_RUN_STRINGLITERAL = 88, // <RunQueryExp> ::= run Identifier
+        RULE_RUNQUERYEXP_RUN_STRINGLITERAL_WITH = 89, // <RunQueryExp> ::= run Identifier with <ParamExpression>
+        RULE_RUNQUERYEXP_RUN_STRINGLITERAL_WITH_COMMA = 90, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2>
+        RULE_RUNQUERYEXP_RUN_STRINGLITERAL_WITH_COMMA_COMMA = 91, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3>
+        RULE_RUNQUERYEXP_RUN_STRINGLITERAL_WITH_COMMA_COMMA_COMMA = 92, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4>
+        RULE_RUNQUERYEXP_RUN_STRINGLITERAL_WITH_COMMA_COMMA_COMMA_COMMA = 93, // <RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4> ',' <ParamExpression5>
         RULE_PARAMEXPRESSION_EQ = 94, // <ParamExpression> ::= <ParamExpression> '=' <ParamValue>
         RULE_PARAMEXPRESSION = 95, // <ParamExpression> ::= <ParamValue>
         RULE_PARAMEXPRESSION2_EQ = 96, // <ParamExpression2> ::= <ParamExpression2> '=' <ParamValue>
@@ -1151,42 +1151,42 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_TABLEEXP_TABLE_IDENTIFIER:
+                case (int)RuleConstants.RULE_TABLEEXP_TABLE_STRINGLITERAL:
                     //<TableExp> ::= table Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_TABLEEXP_TABLE_IDENTIFIER_DEFAULT:
+                case (int)RuleConstants.RULE_TABLEEXP_TABLE_STRINGLITERAL_DEFAULT:
                     //<TableExp> ::= table Identifier default
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_TABLEEXP_TABLE_IDENTIFIER_DEFAULT_WHERE:
+                case (int)RuleConstants.RULE_TABLEEXP_TABLE_STRINGLITERAL_DEFAULT_WHERE:
                     //<TableExp> ::= table Identifier default where <Expression>
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_TABLEEXP_TABLE_IDENTIFIER_WHERE:
+                case (int)RuleConstants.RULE_TABLEEXP_TABLE_STRINGLITERAL_WHERE:
                     //<TableExp> ::= table Identifier where <Expression>
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_RELATEEXP_RELATE_TO_IDENTIFIER_ON_IDENTIFIER_EQ_IDENTIFIER:
+                case (int)RuleConstants.RULE_RELATEEXP_RELATE_TO_STRINGLITERAL_ON_STRINGLITERAL_EQ_STRINGLITERAL:
                     //<RelateExp> ::= relate to Identifier on Identifier '=' Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_RELATEEXP_RELATE_IDENTIFIER_TO_IDENTIFIER_ON_IDENTIFIER_EQ_IDENTIFIER:
+                case (int)RuleConstants.RULE_RELATEEXP_RELATE_STRINGLITERAL_TO_STRINGLITERAL_ON_STRINGLITERAL_EQ_STRINGLITERAL:
                     //<RelateExp> ::= relate Identifier to Identifier on Identifier '=' Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_UNRELATEEXP_UNRELATE_TO_IDENTIFIER:
+                case (int)RuleConstants.RULE_UNRELATEEXP_UNRELATE_TO_STRINGLITERAL:
                     //<UnrelateExp> ::= unrelate to Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_UNRELATEEXP_UNRELATE_IDENTIFIER_TO_IDENTIFIER:
+                case (int)RuleConstants.RULE_UNRELATEEXP_UNRELATE_STRINGLITERAL_TO_STRINGLITERAL:
                     //<UnrelateExp> ::= unrelate Identifier to Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
@@ -1211,22 +1211,22 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_SQL:
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_SQL:
                     //<ExportExp> ::= export Identifier as sql
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_HTML:
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_HTML:
                     //<ExportExp> ::= export Identifier as html
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_JSON:
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_JSON:
                     //<ExportExp> ::= export Identifier as json
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_XML:
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_XML:
                     //<ExportExp> ::= export Identifier as xml
                     //todo: Create a new object using the stored user objects.
                     return null;
@@ -1251,22 +1251,22 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_SQL_NOCHILD:
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_SQL_NOCHILD:
                     //<ExportExp> ::= export Identifier as sql nochild
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_HTML_NOCHILD:
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_HTML_NOCHILD:
                     //<ExportExp> ::= export Identifier as html nochild
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_JSON_NOCHILD:
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_JSON_NOCHILD:
                     //<ExportExp> ::= export Identifier as json nochild
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_IDENTIFIER_AS_XML_NOCHILD:
+                case (int)RuleConstants.RULE_EXPORTEXP_EXPORT_STRINGLITERAL_AS_XML_NOCHILD:
                     //<ExportExp> ::= export Identifier as xml nochild
                     //todo: Create a new object using the stored user objects.
                     return null;
@@ -1326,32 +1326,32 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_CHILDEXP_CHILD_IDENTIFIER:
+                case (int)RuleConstants.RULE_CHILDEXP_CHILD_STRINGLITERAL:
                     //<ChildExp> ::= child Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_CATALOGEXP_CATALOG_IDENTIFIER:
+                case (int)RuleConstants.RULE_CATALOGEXP_CATALOG_STRINGLITERAL:
                     //<CatalogExp> ::= catalog Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_USEREXP_USER_IDENTIFIER:
+                case (int)RuleConstants.RULE_USEREXP_USER_STRINGLITERAL:
                     //<UserExp> ::= user Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_PASSWORDEXP_PASSWORD_IDENTIFIER:
+                case (int)RuleConstants.RULE_PASSWORDEXP_PASSWORD_STRINGLITERAL:
                     //<PasswordExp> ::= password Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_SERVEREXP_SERVER_IDENTIFIER:
+                case (int)RuleConstants.RULE_SERVEREXP_SERVER_STRINGLITERAL:
                     //<ServerExp> ::= server Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_ASEXP_AS_IDENTIFIER:
+                case (int)RuleConstants.RULE_ASEXP_AS_STRINGLITERAL:
                     //<AsExp> ::= as Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
@@ -1361,12 +1361,12 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_QUERYEXP_QUERY_IDENTIFIER:
+                case (int)RuleConstants.RULE_QUERYEXP_QUERY_STRINGLITERAL:
                     //<QueryExp> ::= query Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_QUERYEXP_QUERY_IDENTIFIER_ROW_INTEGER:
+                case (int)RuleConstants.RULE_QUERYEXP_QUERY_STRINGLITERAL_ROW_INTEGER:
                     //<QueryExp> ::= query Identifier row Integer
                     //todo: Create a new object using the stored user objects.
                     return null;
@@ -1376,47 +1376,47 @@ namespace RelatedRecords.Parser
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_TRANSFORMEXP_TRANSFORM_TEMPLATE_IDENTIFIER:
+                case (int)RuleConstants.RULE_TRANSFORMEXP_TRANSFORM_TEMPLATE_STRINGLITERAL:
                     //<TransformExp> ::= transform template Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_TRANSFORMEXP_TRANSFORM_IDENTIFIER:
+                case (int)RuleConstants.RULE_TRANSFORMEXP_TRANSFORM_STRINGLITERAL:
                     //<TransformExp> ::= transform Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_TRANSFORMEXP_TRANSFORM_IDENTIFIER_TEMPLATE_IDENTIFIER:
+                case (int)RuleConstants.RULE_TRANSFORMEXP_TRANSFORM_STRINGLITERAL_TEMPLATE_STRINGLITERAL:
                     //<TransformExp> ::= transform Identifier template Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER:
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_STRINGLITERAL:
                     //<RunQueryExp> ::= run Identifier
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH:
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_STRINGLITERAL_WITH:
                     //<RunQueryExp> ::= run Identifier with <ParamExpression>
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA:
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_STRINGLITERAL_WITH_COMMA:
                     //<RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2>
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA:
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_STRINGLITERAL_WITH_COMMA_COMMA:
                     //<RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3>
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA_COMMA:
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_STRINGLITERAL_WITH_COMMA_COMMA_COMMA:
                     //<RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4>
                     //todo: Create a new object using the stored user objects.
                     return null;
 
-                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_IDENTIFIER_WITH_COMMA_COMMA_COMMA_COMMA:
+                case (int)RuleConstants.RULE_RUNQUERYEXP_RUN_STRINGLITERAL_WITH_COMMA_COMMA_COMMA_COMMA:
                     //<RunQueryExp> ::= run Identifier with <ParamExpression> ',' <ParamExpression2> ',' <ParamExpression3> ',' <ParamExpression4> ',' <ParamExpression5>
                     //todo: Create a new object using the stored user objects.
                     return null;

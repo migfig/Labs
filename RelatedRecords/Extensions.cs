@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Configuration;
 using System.Collections.Generic;
+using System.Windows.Threading;
 
 namespace RelatedRecords
 {
@@ -454,7 +455,12 @@ namespace RelatedRecords
                         }
 
                         if (appendChild && !parent.Children.Any(x => x.Root.Table.TableName == child.Root.Table.TableName))
-                            parent.Children.Add(child);
+                        {
+                            //Dispatcher.CurrentDispatcher.Invoke(() =>
+                            //{
+                                parent.Children.Add(child);
+                            //}, DispatcherPriority.SystemIdle);
+                        }
                     }
                 }
             }

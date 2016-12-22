@@ -1,1 +1,1 @@
-clone catalog SampleCat
+clone catalog [SampleCat]

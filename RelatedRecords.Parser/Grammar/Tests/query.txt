@@ -1,1 +1,1 @@
-query column2
+query [column2]

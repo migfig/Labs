@@ -1,1 +1,1 @@
-table Test21
+table [Test21]

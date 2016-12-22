@@ -1,1 +1,1 @@
-relate to OtherTable12 on Column1 = column_2
+relate to [OtherTable12] on [Column1] = [column_2]

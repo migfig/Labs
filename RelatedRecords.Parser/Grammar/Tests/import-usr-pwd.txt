@@ -1,1 +1,1 @@
-import catalog SampleY user devy password pwdy
+import catalog [SampleY] user [devy] password [pwdy]

@@ -1,1 +1,1 @@
-import catalog SampleZ server localhostz user devz password pwdz
+import catalog [SampleZ] server [localhostz] user [devz] password [pwdz]

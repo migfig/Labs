@@ -1,1 +1,1 @@
-unrelate This_Table12 to OtherTable12
+unrelate [This_Table12] to [OtherTable12]

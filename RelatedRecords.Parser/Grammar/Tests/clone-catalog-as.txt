@@ -1,1 +1,1 @@
-clone catalog MyCatalog as SomeOther12_catName
+clone catalog [MyCatalog] as [SomeOther12_catName]

@@ -1,1 +1,1 @@
-load catalog CatalogName
+load catalog [CatalogName]

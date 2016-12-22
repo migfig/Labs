@@ -1,1 +1,1 @@
-run qry_Name2Test
+run [qry_Name2Test]

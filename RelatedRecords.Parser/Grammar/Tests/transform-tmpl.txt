@@ -1,1 +1,1 @@
-transform template Controller
+transform template [Controller]

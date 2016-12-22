@@ -1,1 +1,1 @@
-export ThisTable as xml nochild
+export [ThisTable] as xml nochild
