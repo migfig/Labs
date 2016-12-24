@@ -8,6 +8,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -380,14 +381,14 @@ namespace RelatedRecords.Data.ViewModels
             {
                 if(null == _commands || _commands.Count() == 0)
                 {
-                    _worker.Run(() =>
+                    _worker.Run(async () =>
                     {
-                        return ExpandCommands();
+                        return await Task.FromResult(ExpandCommands());
                     }, (o) =>
                     {
                         _commands = o as IEnumerable<string>;
                         OnPropertyChanged("Commands");
-                    });
+                    }).GetAwaiter().GetResult();
                 }
 
                 //if(false && !string.IsNullOrWhiteSpace(Command))
@@ -433,10 +434,13 @@ namespace RelatedRecords.Data.ViewModels
                 return _goBack ?? (_goBack = 
                     new RelayCommand(
                             x => {
-                                Command = "back";
-                                ExecuteCommand();
+                                //if (_tableNavigation.Any())
+                                //{
+                                    Command = "back";
+                                    ExecuteCommand();
+                                //}
                             },
-                            x => _tableNavigation.Any() 
+                            x => true //_tableNavigation.Any() 
                         ));
             }
         }

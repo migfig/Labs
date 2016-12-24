@@ -78,29 +78,24 @@ namespace RelatedRecords.Data.ViewModels
             {
                 try
                 {
-                    Dispatcher.CurrentDispatcher.InvokeAsync(() =>
-                    {
-                        IsBusy = true;
-                    }, DispatcherPriority.Send);
-
-                    Dispatcher.CurrentDispatcher.InvokeAsync(() =>
-                    {
-                        method.Invoke(this, new object[] { results.Tokens });
-                        IsBusy = false;
-                        Command = string.Empty;
-                    }, DispatcherPriority.ApplicationIdle);
                     //Dispatcher.CurrentDispatcher.InvokeAsync(() =>
                     //{
-                    //    IsBusy = true;
-                    //    var task = new Task(() =>
-                    //    {
-                    //        method.Invoke(this, new object[] { results.Tokens });
-                    //    });
-                    //    task.Start();
-                    //    Task.WaitAll(task);
-                    //    IsBusy = false;
-                    //    Command = string.Empty;
-                    //}, DispatcherPriority.ApplicationIdle);
+                        IsBusy = true;
+                    //}, DispatcherPriority.Send);
+
+                    var task = new Task(() =>
+                    {
+                        if (method.ReturnType != null && method.ReturnType == typeof(Task))
+                            Task.FromResult(method.Invoke(this, new object[] { results.Tokens }))
+                                .GetAwaiter()
+                                .GetResult();
+                        else
+                            method.Invoke(this, new object[] { results.Tokens });
+                    });
+                    task.Start();
+                    Task.WaitAll(task);
+                    //IsBusy = false;
+                    Command = string.Empty;
                 }
                 catch (Exception e)
                 {
@@ -153,16 +148,16 @@ namespace RelatedRecords.Data.ViewModels
 
         [Command(SymbolConstants.SYMBOL_COLUMNS
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void ColumnsInt(IEnumerable<TerminalToken> tokens)
+        public async Task ColumnsInt(IEnumerable<TerminalToken> tokens)
         {
             var topN = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoColumnsInt(topN);
+            await DoColumnsInt(topN);
         }
 
         [Command(SymbolConstants.SYMBOL_COLUMNS)]
-        public void Columns(IEnumerable<TerminalToken> tokens)
+        public async Task Columns(IEnumerable<TerminalToken> tokens)
         {
-            DoColumns();
+            await DoColumns();
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
@@ -220,10 +215,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_HTML)]
-        public void ExportIdAsHtml(IEnumerable<TerminalToken> tokens)
+        public async Task ExportIdAsHtml(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            DoExportIdAsHtml(table);
+            await DoExportIdAsHtml(table);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
@@ -231,10 +226,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_HTML
         , SymbolConstants.SYMBOL_NOCHILD)]
-        public void ExportIdAsHtmlNoChild(IEnumerable<TerminalToken> tokens)
+        public async Task ExportIdAsHtmlNoChild(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            DoExportIdAsHtml(table, false);
+            await DoExportIdAsHtml(table, false);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
@@ -262,10 +257,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_SQL)]
-        public void ExportIdAsSql(IEnumerable<TerminalToken> tokens)
+        public async Task ExportIdAsSql(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            DoExportIdAsSql(table);
+            await DoExportIdAsSql(table);
         }
 
         [Command(SymbolConstants.SYMBOL_EXPORT
@@ -273,10 +268,10 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_AS
         , SymbolConstants.SYMBOL_SQL
         , SymbolConstants.SYMBOL_NOCHILD)]
-        public void ExportIdAsSqlNochild(IEnumerable<TerminalToken> tokens)
+        public async Task ExportIdAsSqlNochild(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            DoExportIdAsSql(table, false);
+            await DoExportIdAsSql(table, false);
         }
 
 
@@ -364,25 +359,25 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_CATALOG
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_DEFAULT)]
-        public void LoadCatalogIdDefault(IEnumerable<TerminalToken> tokens)
+        public async Task LoadCatalogIdDefault(IEnumerable<TerminalToken> tokens)
         {
             var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            DoLoadCatalogId(catalog, true);
+            await DoLoadCatalogId(catalog, true);
         }
         
         [Command(SymbolConstants.SYMBOL_LOAD
         , SymbolConstants.SYMBOL_CATALOG
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
-        public void LoadCatalogId(IEnumerable<TerminalToken> tokens)
+        public async Task LoadCatalogId(IEnumerable<TerminalToken> tokens)
         {
             var catalog = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            DoLoadCatalogId(catalog);
+            await DoLoadCatalogId(catalog);
         }
 
         [Command(SymbolConstants.SYMBOL_LOAD)]
-        public void Load(IEnumerable<TerminalToken> tokens)
+        public async Task Load(IEnumerable<TerminalToken> tokens)
         {
-            DoLoad();
+            await DoLoad();
         }
 
         [Command(SymbolConstants.SYMBOL_RELATE
@@ -448,9 +443,9 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_HOME)]
-        public void Root(IEnumerable<TerminalToken> tokens)
+        public async Task Root(IEnumerable<TerminalToken> tokens)
         {
-            DoRoot();
+            await DoRoot();
         }
 
         #region table commands
@@ -462,12 +457,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
-        public void TableIdDefaultWhereIdEqStrLit(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdDefaultWhereIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
-            DoTableIdDefaultWhereIdOperatorStrLit(table, column, value);
+            await DoTableIdDefaultWhereIdOperatorStrLit(table, column, value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -476,12 +471,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
-        public void TableIdWhereIdEqStrLit(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdEqStrLit(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(string));
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(string));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -490,12 +485,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LIKE
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
-        public void TableIdWhereIdLikeStrLit(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdLikeStrLit(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(string), "like");
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(string), "like");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -505,21 +500,21 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LIKE
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
-        public void TableIdDefaultWhereIdLikeStrLit(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdDefaultWhereIdLikeStrLit(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 1).Text;
-            DoTableIdDefaultWhereIdOperatorStrLit(table, column, value, "like");
+            await DoTableIdDefaultWhereIdOperatorStrLit(table, column, value, "like");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
         , SymbolConstants.SYMBOL_STRINGLITERAL
         , SymbolConstants.SYMBOL_DEFAULT)]
-        public void TableIdDefault(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdDefault(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            DoTableIdDefault(table);
+            await DoTableIdDefault(table);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -530,13 +525,13 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_AND
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdBetweenIntAndInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdBetweenIntAndInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
-            DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue);
+            await DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -548,13 +543,13 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_INTEGER
         , SymbolConstants.SYMBOL_AND
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdNotBetweenIntAndInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdNotBetweenIntAndInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
             var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 1).Text;
-            DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue);
+            await DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -565,13 +560,13 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_AND
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdBetweenDecAndDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdBetweenDecAndDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
-            DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue, typeof(double));
+            await DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue, typeof(double));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -583,13 +578,13 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_DECIMAL
         , SymbolConstants.SYMBOL_AND
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdNotBetweenDecAndDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdNotBetweenDecAndDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var minValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
             var maxValue = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 1).Text;
-            DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue, typeof(double));
+            await DoTableIdWhereIdBetweenValueAndValue(table, column, minValue, maxValue, typeof(double));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -599,12 +594,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_GTEQ
         , SymbolConstants.SYMBOL_MINUS
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdGtEqMinusInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdGtEqMinusInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, "-" + value);
+            await DoTableIdWhereIdOperatorValue(table, column, "-" + value);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -614,12 +609,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_GTEQ
         , SymbolConstants.SYMBOL_MINUS
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdGtEqMinusDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdGtEqMinusDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), ">=");
+            await DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), ">=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -628,12 +623,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GTEQ
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdGtEqInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdGtEqInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), ">=");
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), ">=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -642,12 +637,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GTEQ
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdGtEqDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdGtEqDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), ">=");
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), ">=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -657,12 +652,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_GT
         , SymbolConstants.SYMBOL_MINUS
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdGtMinusInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdGtMinusInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), ">");
+            await DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -672,12 +667,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_GT
         , SymbolConstants.SYMBOL_MINUS
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdGtMinusDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdGtMinusDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), ">");
+            await DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -686,12 +681,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GT
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdGtInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdGtInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), ">");
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -700,12 +695,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_GT
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdGtDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdGtDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), ">");
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), ">");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -715,12 +710,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_LTEQ
         , SymbolConstants.SYMBOL_MINUS
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdLtEqMinusInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdLtEqMinusInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), "<=");
+            await DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -730,12 +725,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_LTEQ
         , SymbolConstants.SYMBOL_MINUS
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdLtEqMinusDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdLtEqMinusDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), "<=");
+            await DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -744,12 +739,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTEQ
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdLtEqInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdLtEqInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), "<=");
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -758,12 +753,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTEQ
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdLtEqDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdLtEqDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), "<=");
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), "<=");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -772,12 +767,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTGT
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdLtGtInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdLtGtInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), "<>");
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(long), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -786,12 +781,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_LTGT
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdLtGtDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdLtGtDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), "<>");
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(double), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -801,12 +796,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_LTGT
         , SymbolConstants.SYMBOL_MINUS
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdLtGtMinusInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdLtGtMinusInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), "<>");
+            await DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -816,12 +811,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_LTGT
         , SymbolConstants.SYMBOL_MINUS
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdLtGtMinusDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdLtGtMinusDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), "<>");
+            await DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double), "<>");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -831,12 +826,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_MINUS
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdEqMinusInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdEqMinusInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long));
+            await DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(long));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -846,12 +841,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_MINUS
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdEqMinusDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdEqMinusDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double));
+            await DoTableIdWhereIdOperatorValue(table, column, "-" + value, typeof(double));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -860,12 +855,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TableIdWhereIdEqInt(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdEqInt(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(long));
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(long));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -874,12 +869,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_EQ
         , SymbolConstants.SYMBOL_DECIMAL)]
-        public void TableIdWhereIdEqDec(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdEqDec(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_DECIMAL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(double));
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(double));
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -889,12 +884,12 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IS
         , SymbolConstants.SYMBOL_NOT
         , SymbolConstants.SYMBOL_NULL)]
-        public void TableIdWhereIdIsNotNull(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdIsNotNull(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(string), "is not");
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(string), "is not");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
@@ -903,58 +898,58 @@ namespace RelatedRecords.Data.ViewModels
         , SymbolConstants.SYMBOL_IDENTIFIER
         , SymbolConstants.SYMBOL_IS
         , SymbolConstants.SYMBOL_NULL)]
-        public void TableIdWhereIdIsNull(IEnumerable<TerminalToken> tokens)
+        public async Task TableIdWhereIdIsNull(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
             var column = tokens.TerminalToken(SymbolConstants.SYMBOL_IDENTIFIER, 0).Text;
             var value = tokens.TerminalToken(SymbolConstants.SYMBOL_NULL, 0).Text;
-            DoTableIdWhereIdOperatorValue(table, column, value, typeof(string), "is");
+            await DoTableIdWhereIdOperatorValue(table, column, value, typeof(string), "is");
         }
 
         [Command(SymbolConstants.SYMBOL_TABLE
         , SymbolConstants.SYMBOL_STRINGLITERAL)]
-        public void TableId(IEnumerable<TerminalToken> tokens)
+        public async Task TableId(IEnumerable<TerminalToken> tokens)
         {
             var table = tokens.TerminalToken(SymbolConstants.SYMBOL_STRINGLITERAL, 0).Text;
-            DoTableId(table);
+            await DoTableId(table);
         }
 
         #endregion table commands
 
         [Command(SymbolConstants.SYMBOL_TABLES
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TablesInt(IEnumerable<TerminalToken> tokens)
+        public async Task TablesInt(IEnumerable<TerminalToken> tokens)
         {
             var topN = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTablesInt(topN);
+            await DoTablesInt(topN);
         }
 
         [Command(SymbolConstants.SYMBOL_TABLES)]
-        public void Tables(IEnumerable<TerminalToken> tokens)
+        public async Task Tables(IEnumerable<TerminalToken> tokens)
         {
-            DoTables();
+            await DoTables();
         }
 
         [Command(SymbolConstants.SYMBOL_CATALOGS)]
-        public void Catalogs(IEnumerable<TerminalToken> tokens)
+        public async Task Catalogs(IEnumerable<TerminalToken> tokens)
         {
-            DoCatalogsInt();
+            await DoCatalogsInt();
         }
 
         [Command(SymbolConstants.SYMBOL_CATALOGS
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void CatalogsInt(IEnumerable<TerminalToken> tokens)
+        public async Task CatalogsInt(IEnumerable<TerminalToken> tokens)
         {
             var topN = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoCatalogsInt(int.Parse(topN));
+            await DoCatalogsInt(int.Parse(topN));
         }
 
         [Command(SymbolConstants.SYMBOL_TOP
         , SymbolConstants.SYMBOL_INTEGER)]
-        public void TopInt(IEnumerable<TerminalToken> tokens)
+        public async Task TopInt(IEnumerable<TerminalToken> tokens)
         {
             var topN = tokens.TerminalToken(SymbolConstants.SYMBOL_INTEGER, 0).Text;
-            DoTopInt(topN);
+            await DoTopInt(topN);
         }
 
         [Command(SymbolConstants.SYMBOL_UNRELATE
@@ -1000,9 +995,9 @@ namespace RelatedRecords.Data.ViewModels
         }
 
         [Command(SymbolConstants.SYMBOL_HELP)]
-        public void Help(IEnumerable<TerminalToken> tokens)
+        public async Task Help(IEnumerable<TerminalToken> tokens)
         {
-            DoHelp();
+            await DoHelp();
         }
 
         [Command(SymbolConstants.SYMBOL_QUERY
@@ -2057,12 +2052,19 @@ namespace RelatedRecords.Data.ViewModels
             return tableName.ToLower() == SelectedDataset.defaultTable.ToLower();
         }
 
+        public delegate void GoBackChangedDelegate();
+        public void GoBackChanged()
+        {
+            _goBack.RaiseCanExecuteChanged();
+        }
+
         private void PushCurrentTable(DatatableEx table)
         {
             if(null != CurrentTable)
                 _tableNavigation.Push(CurrentTable);
-            _goBack.RaiseCanExecuteChanged();
-           
+
+            Dispatcher.CurrentDispatcher.BeginInvoke(new GoBackChangedDelegate(GoBackChanged), DispatcherPriority.Normal);
+
             CurrentTable = table;
         }
 
@@ -2147,13 +2149,11 @@ namespace RelatedRecords.Data.ViewModels
 
         internal class Worker
         {
-            //private readonly BackgroundWorker _worker;
             private readonly MainViewModel _model;
 
             public Worker(MainViewModel model)
             {
                 _model = model;
-                //_worker = new BackgroundWorker();
             }
 
             public delegate void SetBusyDelegate();
@@ -2162,34 +2162,27 @@ namespace RelatedRecords.Data.ViewModels
                 _model.IsBusy = true;
             }
 
-            public void Run(Func<object> workBlock, Action<object> completedBlock = null)
+            public async Task Run(Func<Task<object>> workBlock, Action<object> completedBlock = null)
             {
                 try
                 {
-                    Dispatcher.CurrentDispatcher
-                        .BeginInvoke(DispatcherPriority.Send, new SetBusyDelegate(SetBusy));
-
-                    var _worker = new BackgroundWorker();
-                    _worker.DoWork += (s, o) =>
+                    //Dispatcher.CurrentDispatcher
+                    //  .BeginInvoke(DispatcherPriority.Send, new SetBusyDelegate(SetBusy));
+                    _model.IsBusy = true;
+                    object Result = null;
+                    if (null != workBlock)
                     {
-                        if (null != workBlock)
-                        {
-                            o.Result = workBlock.Invoke();
-                        }
-                    };
-                    _worker.RunWorkerCompleted += (s, o) =>
+                        Result = await workBlock.Invoke();
+                    }
+                    if (null != completedBlock)
                     {
-                        if (null != completedBlock)
-                        {
-                            completedBlock.Invoke(o.Result);
-                        }
-                        else if(o.Result is DatatableEx)
-                        {
-                            _model.PushCurrentTable(o.Result as DatatableEx);
-                        }
-                        _model.IsBusy = false;
-                    };
-                    _worker.RunWorkerAsync(this);
+                        completedBlock.Invoke(Result);
+                    }
+                    else if (Result is DatatableEx)
+                    {
+                        _model.PushCurrentTable(Result as DatatableEx);
+                    }
+                    _model.IsBusy = false;
                 }
                 catch (Exception e)
                 {

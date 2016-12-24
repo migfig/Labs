@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RelatedRecords.Data.ViewModels;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace RelatedRecords.Data.Tests
 {
@@ -52,17 +53,13 @@ namespace RelatedRecords.Data.Tests
         }
 
         [TestMethod, Ignore]
-        public void DataProvider_Test()
+        public async Task DataProvider_Test()
         {
-            var table = DataSourceProvider.Data.Source.Load("sample", "Select * from Tickets")
-                .GetAwaiter()
-                .GetResult();
+            var table = await DataSourceProvider.Data.Source.Load("sample", "Select * from Tickets");
             Assert.IsNotNull(table);
             Assert.IsTrue(table.Rows.Count > 0);
 
-            table = DataSourceProvider.Data.Source.Load("sample-remote", "Select * from TicketsStatusCodes")
-                .GetAwaiter()
-                .GetResult();
+            table = await DataSourceProvider.Data.Source.Load("sample-remote", "Select * from TicketsStatusCodes");
             Assert.IsNotNull(table);
             Assert.IsTrue(table.Rows.Count > 0);
         }
