@@ -69,6 +69,8 @@ namespace RelatedRecords.Data.ViewModels
 
         public void HandleCommand(ParseResults results)
         {
+            Tooltip = string.Empty;
+
             var method = _commandMethods.FirstOrDefault(m =>
                 m.GetCustomAttributes(typeof(CommandAttribute), false)
                     .Cast<CommandAttribute>()
@@ -80,7 +82,7 @@ namespace RelatedRecords.Data.ViewModels
                 {
                     //Dispatcher.CurrentDispatcher.InvokeAsync(() =>
                     //{
-                        IsBusy = true;
+                    IsBusy = true;
                     //}, DispatcherPriority.Send);
 
                     var task = new Task(() =>
@@ -102,6 +104,8 @@ namespace RelatedRecords.Data.ViewModels
                     ErrorLog.Error(e, "When running method {method} with {Tokens}", method, results.Tokens);
                 }
             }
+            else
+                Tooltip = "Method not found: " + results.ToString();
         }
 
         [Command(SymbolConstants.SYMBOL_BACK)]

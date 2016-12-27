@@ -403,6 +403,17 @@ namespace RelatedRecords.Data.ViewModels
             }
         }
 
+        private string _tooltip;
+        public string Tooltip
+        {
+            get { return _tooltip; }
+            set
+            {
+                _tooltip = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _selectedCommand;
         public string SelectedCommand
         {

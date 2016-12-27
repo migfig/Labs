@@ -61,6 +61,7 @@
                         TextOptions.TextHintingMode="Animated"
                         Keyboard.KeyUp="ComboBox_KeyUp"
                         Foreground="{Binding ForegroundColor}"
+                        ToolTipService.ToolTip="{Binding Tooltip}"
                         Margin="8,0,0,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Stretch" Background="OrangeRed">
