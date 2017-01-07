@@ -59,7 +59,9 @@
     <Compile Include="EndpointContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RunScenario.cs" />
+    <Compile Include="Utils\ApiHttpClient.cs" />
     <Compile Include="Utils\PdfReport.cs" />
+    <Compile Include="Utils\XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

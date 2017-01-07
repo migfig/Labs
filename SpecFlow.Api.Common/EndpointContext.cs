@@ -9,11 +9,14 @@ using Newtonsoft.Json;
 using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 using System.Reflection;
+using SpecFlow.Api.Common.Utils;
 
 namespace SpecFlow.Api.Common
 {
     public class EndpointContext
     {
+        private bool _useHttpClient = true;
+
         public RunScenario Scenario { get; private set; }
 
         private Table _settings;
@@ -55,14 +58,50 @@ namespace SpecFlow.Api.Common
             Scenario.Program = _sessionVars["$program$"].ToString();
             Scenario.Args = pars.Args(_sessionVars);
 
-            var exitCode = Extensions.runProcess(Scenario.Program, Scenario.Args);
-            if (exitCode != 0) return false;
+            if (_useHttpClient)
+            {
+                if(!CallEndpoint()) return false;
+            }
+            else 
+            {
+                var exitCode = Extensions.runProcess(Scenario.Program, Scenario.Args);
+                if (exitCode != 0) return false;
+            }
             Scenario.SetRunTime();
 
             var properties = pars.Property().Split(';');
             if (!File.Exists(outputFile)) return false;
 
             return LoadJsonProps(outputFile, properties);
+        }
+
+        private bool CallEndpoint()
+        {
+            object results = null;
+            using (var endpoint = ApiServiceFactory.CreateService<object>(Scenario.Endpoint, Scenario.Headers))
+            {
+                switch (Scenario.Method)
+                {
+                    case "GET":
+                        results = endpoint.Get().GetAwaiter().GetResult();
+                        break;
+                    case "POST":
+                        results = endpoint.Post(Scenario.Payload).GetAwaiter().GetResult();
+                        break;
+                    case "PUT":
+                        results = endpoint.Put(Scenario.Payload).GetAwaiter().GetResult();
+                        break;
+                    case "DELETE":
+                        results = endpoint.Delete().GetAwaiter().GetResult();
+                        break;
+                }
+            }
+
+            if (results == null) return false;
+
+            File.WriteAllText(Scenario.Output, results.ToString());
+
+            return File.Exists(Scenario.Output);
         }
 
         private bool LoadJsonProps(string fileName, params string[] property)

@@ -7,6 +7,7 @@ namespace SpecFlow.Api
     [Binding]
     public class CategoriesEndpointTests: ContextBase
     {
+        private const string keySuffix = "categories";
         public CategoriesEndpointTests(EndpointContext context) : base(context)
         {
         }
@@ -20,7 +21,7 @@ namespace SpecFlow.Api
         [Given(@"I call the authentication endpoint with values")]
         public void GivenICallTheAuthenticationEndpointWithValues(Table table)
         {
-            if (!IsAuthenticated())
+            if (!IsAuthenticated(keySuffix))
             {
                 var result = _context.Call(table, ScenarioContext.Current.StepContext.StepInfo);
                 Assert.IsTrue(result);
@@ -31,7 +32,7 @@ namespace SpecFlow.Api
         [Given(@"then call the token endpoint with values")]
         public void GivenThenCallTheTokenEndpointWithValues(Table table)
         {
-            if (!IsAuthenticated())
+            if (!IsAuthenticated(keySuffix))
             {
                 var result = _context.Call(table, ScenarioContext.Current.StepContext.StepInfo);
                 Assert.IsTrue(result);
@@ -42,7 +43,7 @@ namespace SpecFlow.Api
         [Given(@"I have been granted with a valid access token '(.*)'")]
         public void GivenIHaveBeenGrantedWithAValidAccessToken(string token)
         {
-            Assert.IsTrue(_context.IsTokenValid(token) || IsAuthenticated());
+            Assert.IsTrue(_context.IsTokenValid(token) || IsAuthenticated(keySuffix));
         }
 
         [When(@"I call the endpoint with values")]
@@ -109,19 +110,19 @@ namespace SpecFlow.Api
         [BeforeFeature]
         public static void RegisterSuiteHook()
         {
-            RegisterSuite();
+            RegisterSuite(keySuffix);
         }
 
         [AfterFeature]
         public static void SaveSuiteResultsHook()
         {
-            SaveSuiteResults();
+            SaveSuiteResults(keySuffix);
         }
 
         [AfterScenario]
         public static void RegisterScenarioHook()
         {
-            RegisterScenario();
+            RegisterScenario(keySuffix);
         }
 
         #endregion
