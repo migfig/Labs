@@ -1,0 +1,313 @@
+﻿<UserControl x:Class="VStudio.Extensions.Path2Improve.Controls.StoryControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:VStudio.Extensions.Path2Improve.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <DockPanel LastChildFill="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Border DockPanel.Dock="Bottom" 
+            BorderBrush="#FF606064" 
+            BorderThickness="0"                
+            Background="#FFFCE48A">
+            <Expander x:Name="expanderStory"
+                    Collapsed="OnExpanderDetailsCollapsed"
+                    Expanded="OnExpanderDetailsExpanded"
+                    Tag="{Binding}">
+                <Expander.Header>
+                    <Grid>
+                        <Rectangle Fill="#FFD3BA99" Stroke="#FF606064" StrokeThickness="0" HorizontalAlignment="Stretch"/>
+                        <TextBlock 
+                Text="{Binding Title}" FontWeight="DemiBold" Foreground="#FF1B1A1A" 
+                FontSize="14" 
+                Margin="4"
+                VerticalAlignment="Center"/>
+                    </Grid>
+                </Expander.Header>
+                <TabControl Background="Transparent">
+                    <TabItem Header="Story">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*"/>
+                                <ColumnDefinition Width="50*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Name"/>
+                            <TextBox Text="{Binding Mode=TwoWay, Path=Name}" Grid.Row="1" Grid.ColumnSpan="2"/>
+                            <TextBlock Text="Title" Grid.Row="2"/>
+                            <TextBox Text="{Binding Mode=TwoWay, Path=Title}" Grid.Row="3" Grid.ColumnSpan="2"/>
+                            <TextBlock Text="Url" Grid.Row="4"/>
+                            <TextBox Text="{Binding Mode=TwoWay, Path=Url}" Grid.Row="5" Grid.ColumnSpan="2"/>
+                            <TextBlock Text="Parent Url" Grid.Row="6"/>
+                            <TextBox Text="{Binding Mode=TwoWay, Path=ParentStoryUrl}" Grid.Row="7" Grid.ColumnSpan="2"/>
+                            <TextBlock Text="Date Ended" Grid.Row="8"/>
+                            <DatePicker Text="{Binding Mode=TwoWay, Path=DateEnded}" Grid.Row="8" Grid.Column="1"/>
+                            <TextBlock Text="Status" Grid.Row="9"/>
+                            <ComboBox ItemsSource="{Binding Mode=TwoWay, Path=StoryStatuses}" 
+                                SelectedItem="{Binding Mode=TwoWay, Path=SelectedStory.Status}" 
+                                Grid.Row="9" Grid.Column="1">
+                                <!--<ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>-->
+                            </ComboBox>
+                            <TextBlock Text="Description" Grid.Row="10"/>
+                            <TextBox Text="{Binding Mode=TwoWay, Path=Description}"
+                            Grid.Row="11"
+                            Grid.ColumnSpan="2"
+                            FontSize="14" 
+                            Foreground="#FF1B1A1A"
+                            TextWrapping="WrapWithOverflow"
+                            MaxLines="50"/>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Test Cases">
+                        <DockPanel LastChildFill="True">
+                            <Button DockPanel.Dock="Top" Click="Button_Click" Tag="Testcase" ToolTip="Add Test Case" HorizontalAlignment="Left">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                        <Setter Property="Height" Value="32"/>
+                                        <Setter Property="Width" Value="32"/>
+                                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                        <Setter Property="BorderBrush">
+                                            <Setter.Value>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Grid>
+                                                        <VisualStateManager.VisualStateGroups>
+                                                            <VisualStateGroup x:Name="CommonStates">
+                                                                <VisualState x:Name="Normal"/>
+                                                                <VisualState x:Name="MouseOver">
+                                                                    <Storyboard>
+                                                                        <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                                <VisualState x:Name="Pressed"/>
+                                                                <VisualState x:Name="Disabled"/>
+                                                            </VisualStateGroup>
+                                                            <VisualStateGroup x:Name="FocusStates">
+                                                                <VisualState x:Name="Focused"/>
+                                                                <VisualState x:Name="Unfocused"/>
+                                                            </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>
+                                                        <Path x:Name="path" Data="M19.087009,21.455994L19.087009,24.719971 15.822024,24.719971 15.822024,26.349976 19.087009,26.349976 19.087009,29.613953 20.716006,29.613953 20.716006,26.349976 23.981021,26.349976 23.981021,24.719971 20.716006,24.719971 20.716006,21.455994z M19.746005,18.561951C23.457004,18.561951 26.464999,21.570984 26.464999,25.279968 26.464999,28.991943 23.457004,32 19.746005,32 16.035005,32 13.027009,28.991943 13.027009,25.279968 13.027009,21.570984 16.035005,18.561951 19.746005,18.561951z M2.876007,16.389954L2.876007,17.750977 12.431001,17.750977 12.431001,16.389954z M2.876007,10.48999L2.876007,11.850952 16.567018,11.850952 16.567018,10.48999z M14.221009,0.96398926L18.527009,5.5459595 15.129,5.5459595C14.628022,5.5459595,14.221009,5.1389771,14.221009,4.6389771z M1.9670106,0L12.910005,0 12.910005,4.8919678C12.910005,5.9779663,13.791017,6.8579712,14.877015,6.8579712L19.466006,6.8579712 19.466006,16.725952C14.871003,16.875977 11.17801,20.651978 11.17801,25.280945 11.17801,26.133972 11.308015,26.95697 11.541017,27.735962L1.9670106,27.735962C0.88201898,27.735962,-1.7346792E-07,26.85498,0,25.768982L0,1.96698C-1.7346792E-07,0.87994385,0.88201898,0,1.9670106,0z" Stretch="Uniform" Fill="#FF599737" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                                            <Path.RenderTransform>
+                                                                <TransformGroup>
+                                                                    <TransformGroup.Children>
+                                                                        <RotateTransform Angle="0" />
+                                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                                    </TransformGroup.Children>
+                                                                </TransformGroup>
+                                                            </Path.RenderTransform>
+                                                        </Path>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <ListView DockPanel.Dock="Bottom" ItemsSource="{Binding TestCases}" FontSize="14">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Description" Width="415">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <controls:TestCaseControl DataContext="{Binding}" HorizontalAlignment="Stretch" Height="25"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Applied" Width="55" DisplayMemberBinding="{Binding Applied}"/>                                        
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </DockPanel>
+                    </TabItem>
+                    <TabItem Header="Checkups">
+                        <DockPanel LastChildFill="True">
+                            <Button DockPanel.Dock="Top" Click="Button_Click" Tag="Checkup" ToolTip="Add Check up" HorizontalAlignment="Left">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                        <Setter Property="Height" Value="32"/>
+                                        <Setter Property="Width" Value="32"/>
+                                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                        <Setter Property="BorderBrush">
+                                            <Setter.Value>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Grid>
+                                                        <VisualStateManager.VisualStateGroups>
+                                                            <VisualStateGroup x:Name="CommonStates">
+                                                                <VisualState x:Name="Normal"/>
+                                                                <VisualState x:Name="MouseOver">
+                                                                    <Storyboard>
+                                                                        <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                                <VisualState x:Name="Pressed"/>
+                                                                <VisualState x:Name="Disabled"/>
+                                                            </VisualStateGroup>
+                                                            <VisualStateGroup x:Name="FocusStates">
+                                                                <VisualState x:Name="Focused"/>
+                                                                <VisualState x:Name="Unfocused"/>
+                                                            </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>
+                                                        <Path x:Name="path" Data="M19.087009,21.455994L19.087009,24.719971 15.822024,24.719971 15.822024,26.349976 19.087009,26.349976 19.087009,29.613953 20.716006,29.613953 20.716006,26.349976 23.981021,26.349976 23.981021,24.719971 20.716006,24.719971 20.716006,21.455994z M19.746005,18.561951C23.457004,18.561951 26.464999,21.570984 26.464999,25.279968 26.464999,28.991943 23.457004,32 19.746005,32 16.035005,32 13.027009,28.991943 13.027009,25.279968 13.027009,21.570984 16.035005,18.561951 19.746005,18.561951z M2.876007,16.389954L2.876007,17.750977 12.431001,17.750977 12.431001,16.389954z M2.876007,10.48999L2.876007,11.850952 16.567018,11.850952 16.567018,10.48999z M14.221009,0.96398926L18.527009,5.5459595 15.129,5.5459595C14.628022,5.5459595,14.221009,5.1389771,14.221009,4.6389771z M1.9670106,0L12.910005,0 12.910005,4.8919678C12.910005,5.9779663,13.791017,6.8579712,14.877015,6.8579712L19.466006,6.8579712 19.466006,16.725952C14.871003,16.875977 11.17801,20.651978 11.17801,25.280945 11.17801,26.133972 11.308015,26.95697 11.541017,27.735962L1.9670106,27.735962C0.88201898,27.735962,-1.7346792E-07,26.85498,0,25.768982L0,1.96698C-1.7346792E-07,0.87994385,0.88201898,0,1.9670106,0z" Stretch="Uniform" Fill="#FF599737" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                                            <Path.RenderTransform>
+                                                                <TransformGroup>
+                                                                    <TransformGroup.Children>
+                                                                        <RotateTransform Angle="0" />
+                                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                                    </TransformGroup.Children>
+                                                                </TransformGroup>
+                                                            </Path.RenderTransform>
+                                                        </Path>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <ListView DockPanel.Dock="Bottom" ItemsSource="{Binding Checkups}" FontSize="14">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Description" Width="415">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <controls:CheckupControl DataContext="{Binding}" HorizontalAlignment="Stretch" Height="25"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Applied" Width="55" DisplayMemberBinding="{Binding Applied}"/>
+                                        
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </DockPanel>
+                    </TabItem>
+                    <TabItem Header="Key Identifiers">
+                        <DockPanel LastChildFill="True">
+                            <Button DockPanel.Dock="Top" Click="Button_Click" Tag="KeyIdentifier" ToolTip="Add Key Identifier" HorizontalAlignment="Left">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                        <Setter Property="Height" Value="32"/>
+                                        <Setter Property="Width" Value="32"/>
+                                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                        <Setter Property="BorderBrush">
+                                            <Setter.Value>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                                                    <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                                    <GradientStop Color="#FF718597" Offset="0.375"/>
+                                                    <GradientStop Color="#FF617584" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Grid>
+                                                        <VisualStateManager.VisualStateGroups>
+                                                            <VisualStateGroup x:Name="CommonStates">
+                                                                <VisualState x:Name="Normal"/>
+                                                                <VisualState x:Name="MouseOver">
+                                                                    <Storyboard>
+                                                                        <ColorAnimation Duration="0" To="#FF87BDDD" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path" />
+                                                                    </Storyboard>
+                                                                </VisualState>
+                                                                <VisualState x:Name="Pressed"/>
+                                                                <VisualState x:Name="Disabled"/>
+                                                            </VisualStateGroup>
+                                                            <VisualStateGroup x:Name="FocusStates">
+                                                                <VisualState x:Name="Focused"/>
+                                                                <VisualState x:Name="Unfocused"/>
+                                                            </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>
+                                                        <Path x:Name="path" Data="M19.087009,21.455994L19.087009,24.719971 15.822024,24.719971 15.822024,26.349976 19.087009,26.349976 19.087009,29.613953 20.716006,29.613953 20.716006,26.349976 23.981021,26.349976 23.981021,24.719971 20.716006,24.719971 20.716006,21.455994z M19.746005,18.561951C23.457004,18.561951 26.464999,21.570984 26.464999,25.279968 26.464999,28.991943 23.457004,32 19.746005,32 16.035005,32 13.027009,28.991943 13.027009,25.279968 13.027009,21.570984 16.035005,18.561951 19.746005,18.561951z M2.876007,16.389954L2.876007,17.750977 12.431001,17.750977 12.431001,16.389954z M2.876007,10.48999L2.876007,11.850952 16.567018,11.850952 16.567018,10.48999z M14.221009,0.96398926L18.527009,5.5459595 15.129,5.5459595C14.628022,5.5459595,14.221009,5.1389771,14.221009,4.6389771z M1.9670106,0L12.910005,0 12.910005,4.8919678C12.910005,5.9779663,13.791017,6.8579712,14.877015,6.8579712L19.466006,6.8579712 19.466006,16.725952C14.871003,16.875977 11.17801,20.651978 11.17801,25.280945 11.17801,26.133972 11.308015,26.95697 11.541017,27.735962L1.9670106,27.735962C0.88201898,27.735962,-1.7346792E-07,26.85498,0,25.768982L0,1.96698C-1.7346792E-07,0.87994385,0.88201898,0,1.9670106,0z" Stretch="Uniform" Fill="#FF599737" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                                            <Path.RenderTransform>
+                                                                <TransformGroup>
+                                                                    <TransformGroup.Children>
+                                                                        <RotateTransform Angle="0" />
+                                                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                                                    </TransformGroup.Children>
+                                                                </TransformGroup>
+                                                            </Path.RenderTransform>
+                                                        </Path>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <ListView DockPanel.Dock="Bottom" ItemsSource="{Binding KeyIdentifiers}" SelectedItem="{Binding SelectedKeyidentifier}" FontSize="14">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Id" Width="35" DisplayMemberBinding="{Binding Id}"/>
+                                        <GridViewColumn Header="Description" Width="380">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <controls:KeyIdentifierControl DataContext="{Binding}" MinWidth="350" MaxWidth="380" HorizontalAlignment="Stretch" Height="25"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Category" Width="75" DisplayMemberBinding="{Binding Category}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </DockPanel>
+                    </TabItem>
+                    <TabItem Header="Attachments">                        
+                    </TabItem>
+                    <TabItem Header="Queries">
+                    </TabItem>
+                    <TabItem Header="Scripts">
+                    </TabItem>
+                </TabControl>
+            </Expander>
+        </Border>
+    </DockPanel>
+</UserControl>

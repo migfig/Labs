@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="VStudio.Extensions.Path2Improve.Controls.TestCaseControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:VStudio.Extensions.Path2Improve.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <DockPanel LastChildFill="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Border DockPanel.Dock="Bottom" 
+            BorderBrush="#FF606064" 
+            BorderThickness="0"                
+            Background="#FFFCE48A">
+            <Expander x:Name="expanderStory"
+                    Collapsed="OnExpanderDetailsCollapsed"
+                    Expanded="OnExpanderDetailsExpanded"
+                    Tag="{Binding}">
+                <Expander.Header>
+                    <Grid>
+                        <Rectangle Fill="#FFD3BA99" Stroke="#FF606064" StrokeThickness="0" HorizontalAlignment="Stretch"/>
+                        <TextBlock 
+                Text="{Binding Description}" FontWeight="DemiBold" Foreground="#FF1B1A1A" 
+                FontSize="14" 
+                Margin="4"
+                VerticalAlignment="Center"/>
+                    </Grid>
+                </Expander.Header>
+                <TabControl Background="Transparent">
+                    <TabItem Header="Test Case">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*"/>
+                                <ColumnDefinition Width="50*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Description"/>
+                            <TextBox Text="{Binding Mode=TwoWay, Path=Description}" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10" Height="100"/>
+                            <!--Checked="{Binding Mode=TwoWay, Path=Applied}"-->
+                            <CheckBox Content="Applied" Grid.Row="2"/>
+                            <TextBlock Text="Date Applied" Grid.Row="3"/>
+                            <DatePicker Text="{Binding Mode=TwoWay, Path=DateApplied}" Grid.Row="3" Grid.Column="1"/>
+                            <TextBlock Text="Status" Grid.Row="4"/>
+                            <ComboBox ItemsSource="{Binding Mode=TwoWay, Path=StoryStatuses}" 
+                                SelectedItem="{Binding Mode=TwoWay, Path=SelectedStory.Status}" 
+                                Grid.Row="4" Grid.Column="1" Height="25" VerticalAlignment="Top">
+                                <!--<ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>-->
+                            </ComboBox>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Steps">                        
+                    </TabItem>
+                    <TabItem Header="Key Identifiers">
+                    </TabItem>
+                </TabControl>                
+            </Expander>
+        </Border>
+    </DockPanel>
+</UserControl>

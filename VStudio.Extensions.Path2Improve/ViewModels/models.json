@@ -1,0 +1,54 @@
+﻿{
+  "Stories": [
+    {
+      "Name": "ID-1001",
+      "Title": "Create cloud items",
+      "Description": "",
+      "Url": "http://www.url.com",
+      "ParentStoryUrl": "http://www.url.com",
+      "DateStarted": "2017-03-28",
+      "DateEnded": null,
+      "Status": "NotStarted",
+      "KeyIdentifiers": [
+        {
+          "Id": "001",
+          "Description": "From available db item create cloud item",
+          "Category": "Deliverable",
+          "Questions": [
+            {
+              "Ask": "What API should i use",
+              "Answer": "Use VCloud API",
+              "Urls": [
+                "https://www.api.url.com",
+                "https://www.api.v2.url.com"
+              ]
+            }
+          ]
+        }
+      ],
+      "TestCases": [
+        {
+          "Description": "Create item and rollback",
+          "Steps": [
+            "1.0 Start task",
+            "2.0 Apply rollback"
+          ],
+          "Applied": true,
+          "DateApplied": "2017-03-28",
+          "Status": "Succeded",
+          "KeyIdentifierIds": [ "001" ]
+        }
+      ],
+      "Checkups": [
+        {
+          "Description": "Is Code clear/clean/object oriented",
+          "Applied": false,
+          "DateApplied": null
+        }
+      ],
+      "Attachments": [ "https://www.url.com/attachment1" ],
+      "Queries": [ "C:\\test.sql" ],
+      "Scripts": [ "C:\\test.cs" ]
+    }
+  ]
+}
