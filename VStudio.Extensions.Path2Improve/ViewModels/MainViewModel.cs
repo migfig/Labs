@@ -248,6 +248,17 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
             }
         }
 
+        private Testcase _selectedTestcase;
+        public Testcase SelectedTestcase
+        {
+            get { return _selectedTestcase; }
+            set
+            {
+                _selectedTestcase = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _selectedFilter;
         public string SelectedFilter
         {
@@ -396,12 +407,37 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     {
                         if (null != SelectedStory)
                         {
-                            SelectedStory.KeyIdentifiers.Add(new Keyidentifier());
+                            SelectedStory.KeyIdentifiers.Add(new Keyidentifier {
+                                Id = Guid.NewGuid(),
+                                Description = "",
+                                Questions = new ObservableCollection<Question>(),
+                                Category = IdentifierCategory.Deliverable
+                            });
                         }
                     },
                     (tag) =>
                     {
                         return null != SelectedStory;
+                    }));
+            }
+        }
+
+        private RelayCommand _addKeyIdentifierIdCommand;
+        public ICommand AddKeyIdentifierIdCommand
+        {
+            get
+            {
+                return _addKeyIdentifierIdCommand ?? (_addKeyIdentifierIdCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        if (null != SelectedTestcase)
+                        {
+                            SelectedTestcase.KeyIdentifierIds.Add(SelectedStory.KeyIdentifiers.FirstOrDefault().Id);
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return null != SelectedTestcase;
                     }));
             }
         }
@@ -416,7 +452,14 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     {
                         if (null != SelectedStory)
                         {
-                            SelectedStory.TestCases.Add(new Testcase());
+                            SelectedStory.TestCases.Add(new Testcase
+                            {
+                                DateApplied = DateTime.MinValue,
+                                Description = "",
+                                KeyIdentifierIds = new ObservableCollection<Guid>(SelectedStory.KeyIdentifiers.Select(i => i.Id)),
+                                Steps = new ObservableCollection<string>(),
+                                Status = TestcaseStatus.Pending
+                            });
                         }
                     },
                     (tag) =>
@@ -436,7 +479,10 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     {
                         if (null != SelectedStory)
                         {
-                            SelectedStory.Checkups.Add(new Checkup());
+                            SelectedStory.Checkups.Add(new Checkup {
+                                DateApplied = DateTime.MinValue,
+                                Description = ""
+                            });
                         }
                     },
                     (tag) =>
@@ -466,6 +512,86 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
             }
         }
 
+        private RelayCommand _addStepCommand;
+        public ICommand AddStepCommand
+        {
+            get
+            {
+                return _addStepCommand ?? (_addStepCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        if (null != SelectedTestcase)
+                        {
+                            SelectedTestcase.Steps.Add("");
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return null != SelectedTestcase;
+                    }));
+            }
+        }
+
+        private RelayCommand _addAttachmentCommand;
+        public ICommand AddAttachmentCommand
+        {
+            get
+            {
+                return _addAttachmentCommand ?? (_addAttachmentCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        if (null != SelectedStory)
+                        {
+                            SelectedStory.Attachments.Add(new Uri("http://localhost"));
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return null != SelectedStory;
+                    }));
+            }
+        }
+
+        private RelayCommand _addScriptCommand;
+        public ICommand AddScriptCommand
+        {
+            get
+            {
+                return _addScriptCommand ?? (_addScriptCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        if (null != SelectedStory)
+                        {
+                            SelectedStory.Scripts.Add(new Uri("file://"));
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return null != SelectedStory;
+                    }));
+            }
+        }
+
+        private RelayCommand _addQueryCommand;
+        public ICommand AddQueryCommand
+        {
+            get
+            {
+                return _addQueryCommand ?? (_addQueryCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        if (null != SelectedStory)
+                        {
+                            SelectedStory.Queries.Add(new Uri("file://"));
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return null != SelectedStory;
+                    }));
+            }
+        }
+
         private RelayCommand _addActionCommand;
         public ICommand AddActionCommand
         {
@@ -489,6 +615,21 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                                     break;
                                 case "KeyIdentifier":
                                     AddKeyIdentifierCommand.Execute(tag);
+                                    break;
+                                case "Step":
+                                    AddStepCommand.Execute(tag);
+                                    break;
+                                case "KeyIdentifierId":
+                                    AddKeyIdentifierIdCommand.Execute(tag);
+                                    break;
+                                case "Attachment":
+                                    AddAttachmentCommand.Execute(tag);
+                                    break;
+                                case "Query":
+                                    AddQueryCommand.Execute(tag);
+                                    break;
+                                case "Script":
+                                    AddScriptCommand.Execute(tag);
                                     break;
                             }
                         }

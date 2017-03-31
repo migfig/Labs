@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using Trainer.Domain;
 using VStudio.Extensions.Path2Improve.ViewModels;
 
@@ -15,19 +14,10 @@ namespace VStudio.Extensions.Path2Improve.Controls
         {
             InitializeComponent();
         }
-
-        private void Image_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            var component = (sender as System.Windows.Controls.Image).Tag as Component;
-            if (MainViewModel.ViewModel.AddKeyIdentifierCommand.CanExecute(component))
-            {
-                MainViewModel.ViewModel.AddKeyIdentifierCommand.Execute(component);
-            }
-        }
-
+        
         private void OnExpanderDetailsCollapsed(object sender, RoutedEventArgs e)
         {
-            if (((Control)sender).Name.Equals(expanderStory.Name))
+            if (((Control)sender).Name.Equals(expanderKeyIdentifier.Name))
             {
                 this.Height = 25;
             }
@@ -36,19 +26,23 @@ namespace VStudio.Extensions.Path2Improve.Controls
 
         private void OnExpanderDetailsExpanded(object sender, RoutedEventArgs e)
         {
-            if (((Control)sender).Name.Equals(expanderStory.Name))
+            var expander = sender as Expander;
+            if (expander.Name.Equals(expanderKeyIdentifier.Name))
             {
                 this.Height = 500;
             }
+            if (MainViewModel.ViewModel.SelectedKeyidentifier == null)
+                MainViewModel.ViewModel.SelectedKeyidentifier = expander.DataContext as Keyidentifier;
+
             e.Handled = true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var component = (sender as Button).Tag as Component;
-            if (MainViewModel.ViewModel.AddCheckupCommand.CanExecute(component))
+            var item = (sender as Button).Tag;
+            if (MainViewModel.ViewModel.AddActionCommand.CanExecute(item))
             {
-                MainViewModel.ViewModel.AddCheckupCommand.Execute(component);
+                MainViewModel.ViewModel.AddActionCommand.Execute(item);
             }
         }
     }

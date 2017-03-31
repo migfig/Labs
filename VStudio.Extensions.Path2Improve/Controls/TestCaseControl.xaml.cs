@@ -1,7 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using Trainer.Domain;
 using VStudio.Extensions.Path2Improve.ViewModels;
 
 namespace VStudio.Extensions.Path2Improve.Controls
@@ -14,20 +12,11 @@ namespace VStudio.Extensions.Path2Improve.Controls
         public TestCaseControl()
         {
             InitializeComponent();
-        }
-
-        private void Image_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            var component = (sender as System.Windows.Controls.Image).Tag as Component;
-            if (MainViewModel.ViewModel.AddKeyIdentifierCommand.CanExecute(component))
-            {
-                MainViewModel.ViewModel.AddKeyIdentifierCommand.Execute(component);
-            }
-        }
+        }       
 
         private void OnExpanderDetailsCollapsed(object sender, RoutedEventArgs e)
         {
-            if (((Control)sender).Name.Equals(expanderStory.Name))
+            if (((Control)sender).Name.Equals(expanderTestcase.Name))
             {
                 this.Height = 25;
             }
@@ -36,11 +25,24 @@ namespace VStudio.Extensions.Path2Improve.Controls
 
         private void OnExpanderDetailsExpanded(object sender, RoutedEventArgs e)
         {
-            if (((Control)sender).Name.Equals(expanderStory.Name))
+            var expander = sender as Expander;
+            if (expander.Name.Equals(expanderTestcase.Name))
             {
                 this.Height = 500;
             }
+            if (MainViewModel.ViewModel.SelectedTestcase == null)
+                MainViewModel.ViewModel.SelectedTestcase = expander.DataContext as Testcase;
+
             e.Handled = true;
-        }        
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (sender as Button).Tag;
+            if (MainViewModel.ViewModel.AddActionCommand.CanExecute(item))
+            {
+                MainViewModel.ViewModel.AddActionCommand.Execute(item);
+            }
+        }
     }
 }

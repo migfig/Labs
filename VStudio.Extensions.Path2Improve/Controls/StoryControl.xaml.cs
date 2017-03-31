@@ -57,5 +57,10 @@ namespace VStudio.Extensions.Path2Improve.Controls
                 MainViewModel.ViewModel.AddActionCommand.Execute(item);
             }
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Common.Extensions.runProcess(@"C:\Program Files\Internet Explorer\iexplore.exe", (sender as Button).Tag.ToString());
+        }
     }
 }
