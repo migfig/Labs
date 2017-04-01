@@ -81,7 +81,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
     public class Testcase: IValidable
     {
         public string Description { get; set; }
-        public ObservableCollection<string> Steps { get; set; }
+        public ObservableCollection<StringValue> Steps { get; set; }
         public bool Applied { get; set; }
         public DateTime? DateApplied { get; set; }
         public TestcaseStatus Status { get; set; }
@@ -91,7 +91,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         {
             return !string.IsNullOrEmpty(Description)
                 && Steps != null
-                && Steps.Any() ? Steps.All(s => !string.IsNullOrEmpty(s)) : true
+                && Steps.Any() ? Steps.All(s => !string.IsNullOrEmpty(s.ToString())) : true
                 && KeyIdentifierIds != null
                 && KeyIdentifierIds.Any() ? KeyIdentifierIds.All(s => s != Guid.Empty) : true;
         }
@@ -107,6 +107,15 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         {
             return !string.IsNullOrEmpty(Description);
         }
+    }
+
+    public class StringValue 
+    {
+        public StringValue(string value)
+        {
+            Value = value;
+        }
+        public string Value { get; set; }
     }
 
     public enum StoryStatus

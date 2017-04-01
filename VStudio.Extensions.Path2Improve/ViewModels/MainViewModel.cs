@@ -143,9 +143,9 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                                     Applied = false,
                                     DateApplied = DateTime.MinValue,
                                     Status = TestcaseStatus.Pending,
-                                    Steps = new ObservableCollection<string>
+                                    Steps = new ObservableCollection<StringValue>
                                     {
-                                        "Provide cloud item payload with incomplete properties"
+                                        new StringValue("Provide cloud item payload with incomplete properties")
                                     },
                                     KeyIdentifierIds = new ObservableCollection<Guid>()
                                 }
@@ -164,6 +164,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         private void SetStories()
         {
             File.WriteAllText(_fileName, JsonConvert.SerializeObject(_stories));
+            IsDirty = false;
         }
 
         private Story GetDefaultStory()
@@ -371,8 +372,21 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                         _stories.Add(newStory);
                         SelectedStory = newStory;
                         OnPropertyChanged("Stories");
+                        IsDirty = true;
                     },
                     (tag) => true));
+            }
+        }
+
+        private bool _isDirty = false;
+        public bool IsDirty
+        {
+            get { return _isDirty; }
+            set
+            {
+                _isDirty = value;
+                OnPropertyChanged();
+                _saveStoryCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -384,7 +398,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 return _saveStoryCommand ?? (_saveStoryCommand = new RelayCommand(
                     (tag) =>
                     {
-                        if (null != SelectedStory)
+                        if (Stories != null && Stories.Any())
                         {
                             SetStories();
                             RefreshCommand.Execute(null);
@@ -392,7 +406,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     },
                     (tag) =>
                     {
-                        return null != SelectedStory && SelectedStory.IsValid();
+                        return IsDirty && Stories != null && Stories.Any();
                     }));
             }
         }
@@ -457,7 +471,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                                 DateApplied = DateTime.MinValue,
                                 Description = "",
                                 KeyIdentifierIds = new ObservableCollection<Guid>(SelectedStory.KeyIdentifiers.Select(i => i.Id)),
-                                Steps = new ObservableCollection<string>(),
+                                Steps = new ObservableCollection<StringValue>(),
                                 Status = TestcaseStatus.Pending
                             });
                         }
@@ -522,7 +536,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     {
                         if (null != SelectedTestcase)
                         {
-                            SelectedTestcase.Steps.Add("");
+                            SelectedTestcase.Steps.Add(new StringValue(""));
                         }
                     },
                     (tag) =>
@@ -632,6 +646,8 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                                     AddScriptCommand.Execute(tag);
                                     break;
                             }
+
+                            IsDirty = true;
                         }
                     },
                     (tag) =>
