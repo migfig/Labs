@@ -195,7 +195,7 @@
                                         <GridViewColumn Header="Description" Width="415">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding}" HorizontalAlignment="Stretch" Height="25"/>
+                                                    <controls:StringControl DataContext="{Binding}" HorizontalAlignment="Stretch" Height="25"/>
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>

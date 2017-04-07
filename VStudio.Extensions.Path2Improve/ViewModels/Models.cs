@@ -22,9 +22,12 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         public ObservableCollection<Keyidentifier> KeyIdentifiers { get; set; }
         public ObservableCollection<Testcase> TestCases { get; set; }
         public ObservableCollection<Checkup> Checkups { get; set; }
-        public ObservableCollection<Uri> Attachments { get; set; }
-        public ObservableCollection<Uri> Queries { get; set; }
-        public ObservableCollection<Uri> Scripts { get; set; }
+        public ObservableCollection<StringValue> Attachments { get; set; }
+        public ObservableCollection<StringValue> Queries { get; set; }
+        public ObservableCollection<StringValue> Scripts { get; set; }
+        public ObservableCollection<StringValue> AcceptanceCriteria { get; set; }
+        public ObservableCollection<StringValue> DeveloperCriteria { get; set; }
+        public ObservableCollection<Issue> Issues { get; set; }
 
         public bool IsValid()
         {
@@ -40,11 +43,11 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 && Checkups != null
                 && Checkups.Any() ? Checkups.All(s => s.IsValid()) : true
                 && Attachments != null
-                && Attachments.Any() ? Attachments.All(s => Uri.IsWellFormedUriString(s.ToString(), UriKind.RelativeOrAbsolute)) : true
+                && Attachments.Any() ? Attachments.All(s => Uri.IsWellFormedUriString(s.Value, UriKind.RelativeOrAbsolute)) : true
                 && Queries != null
-                && Queries.Any() ? Queries.All(s => Uri.IsWellFormedUriString(s.ToString(), UriKind.RelativeOrAbsolute)) : true
+                && Queries.Any() ? Queries.All(s => Uri.IsWellFormedUriString(s.Value, UriKind.RelativeOrAbsolute)) : true
                 && Scripts != null
-                && Scripts.Any() ? Scripts.All(s => Uri.IsWellFormedUriString(s.ToString(), UriKind.RelativeOrAbsolute)) : true;
+                && Scripts.Any() ? Scripts.All(s => Uri.IsWellFormedUriString(s.Value, UriKind.RelativeOrAbsolute)) : true;
         }
     }
 
@@ -68,13 +71,25 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
     {
         public string Ask { get; set; }
         public string Answer { get; set; }
-        public ObservableCollection<Uri> Urls { get; set; }
+        public ObservableCollection<StringValue> Urls { get; set; }
 
         public bool IsValid()
         {
             return !string.IsNullOrEmpty(Ask)
                 && Urls != null
-                && Urls.Any() ? Urls.All(s => Uri.IsWellFormedUriString(s.ToString(), UriKind.RelativeOrAbsolute)) : true;
+                && Urls.Any() ? Urls.All(s => Uri.IsWellFormedUriString(s.Value, UriKind.RelativeOrAbsolute)) : true;
+        }
+    }
+
+    public class Issue : IValidable
+    {
+        public string Description { get; set; }
+        public bool IsOpen { get; set; }
+        public DateTime? DateClosed { get; set; }
+
+        public bool IsValid()
+        {
+            return !string.IsNullOrEmpty(Description);
         }
     }
 
@@ -85,7 +100,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         public bool Applied { get; set; }
         public DateTime? DateApplied { get; set; }
         public TestcaseStatus Status { get; set; }
-        public ObservableCollection<Guid> KeyIdentifierIds { get; set; }
+        public ObservableCollection<StringValue> KeyIdentifierIds { get; set; }
 
         public bool IsValid()
         {
@@ -93,7 +108,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 && Steps != null
                 && Steps.Any() ? Steps.All(s => !string.IsNullOrEmpty(s.ToString())) : true
                 && KeyIdentifierIds != null
-                && KeyIdentifierIds.Any() ? KeyIdentifierIds.All(s => s != Guid.Empty) : true;
+                && KeyIdentifierIds.Any() ? KeyIdentifierIds.All(s => Guid.Parse(s.Value) != Guid.Empty) : true;
         }
     }
 

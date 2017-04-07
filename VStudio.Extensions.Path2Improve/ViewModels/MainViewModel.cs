@@ -87,9 +87,9 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                             Status = StoryStatus.NotStarted,
                             Url = new Uri("http://localhost:3033/jira/story/1001", UriKind.Absolute),
                             ParentStoryUrl = new Uri("http://localhost:3033/jira/story/1000", UriKind.Absolute),
-                            Attachments = new ObservableCollection<Uri>
+                            Attachments = new ObservableCollection<StringValue>
                             {
-                                new Uri("http://localhost:3033/jira/story/1001/attachment/1", UriKind.Absolute)
+                                new StringValue(new Uri("http://localhost:3033/jira/story/1001/attachment/1", UriKind.Absolute).ToString())
                             },
                             KeyIdentifiers = new ObservableCollection<Keyidentifier>
                             {
@@ -104,9 +104,9 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                                         {
                                             Ask = "What's the exact url route where created item will be placed",
                                             Answer = "Goes on the cloud items endpoint",
-                                            Urls = new ObservableCollection<Uri>
+                                            Urls = new ObservableCollection<StringValue>
                                             {
-                                                new Uri("http://localhost:3033/cloud/items", UriKind.Absolute)
+                                                new StringValue(new Uri("http://localhost:3033/cloud/items", UriKind.Absolute).ToString())
                                             }
                                         }
                                     }
@@ -127,13 +127,13 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                                     DateApplied = DateTime.MinValue
                                 }
                             },
-                            Queries = new ObservableCollection<Uri>
+                            Queries = new ObservableCollection<StringValue>
                             {
-                                new Uri("file://C:/code/data/test.sql", UriKind.Absolute)
+                                new StringValue(new Uri("file://C:/code/data/test.sql", UriKind.Absolute).ToString())
                             },
-                            Scripts = new ObservableCollection<Uri>
+                            Scripts = new ObservableCollection<StringValue>
                             {
-                                new Uri("file://C:/code/scripts/test.cs", UriKind.Absolute)
+                                new StringValue(new Uri("file://C:/code/scripts/test.cs", UriKind.Absolute).ToString())
                             },
                             TestCases = new ObservableCollection<Testcase>
                             {
@@ -147,13 +147,16 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                                     {
                                         new StringValue("Provide cloud item payload with incomplete properties")
                                     },
-                                    KeyIdentifierIds = new ObservableCollection<Guid>()
+                                    KeyIdentifierIds = new ObservableCollection<StringValue>()
                                 }
-                            }
+                            },
+                            Issues = new ObservableCollection<Issue>(),
+                            AcceptanceCriteria = new ObservableCollection<StringValue>(),
+                            DeveloperCriteria = new ObservableCollection<StringValue>()
                         },
                     };
 
-                _stories.First().TestCases.First().KeyIdentifierIds.Add(_stories.First().KeyIdentifiers.First().Id);
+                _stories.First().TestCases.First().KeyIdentifierIds.Add(new StringValue(_stories.First().KeyIdentifiers.First().Id.ToString()));
                 #endregion
 
                 SetStories();
@@ -179,7 +182,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 Status = StoryStatus.NotStarted,
                 Url = new Uri("http://localhost:8080/story/0001", UriKind.Absolute),
                 ParentStoryUrl = new Uri("http://localhost:8080/story/0000", UriKind.Absolute),
-                Attachments = new ObservableCollection<Uri>(),
+                Attachments = new ObservableCollection<StringValue>(),
                 KeyIdentifiers = new ObservableCollection<Keyidentifier>(),
                 Checkups = new ObservableCollection<Checkup>
                     {
@@ -196,9 +199,12 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                             DateApplied = DateTime.MinValue
                         }
                     },
-                Queries = new ObservableCollection<Uri>(),
-                Scripts = new ObservableCollection<Uri>(),
-                TestCases = new ObservableCollection<Testcase>()
+                Queries = new ObservableCollection<StringValue>(),
+                Scripts = new ObservableCollection<StringValue>(),
+                TestCases = new ObservableCollection<Testcase>(),
+                Issues = new ObservableCollection<Issue>(),
+                AcceptanceCriteria = new ObservableCollection<StringValue>(),
+                DeveloperCriteria = new ObservableCollection<StringValue>()
             };
         }
 
@@ -446,7 +452,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     {
                         if (null != SelectedTestcase)
                         {
-                            SelectedTestcase.KeyIdentifierIds.Add(SelectedStory.KeyIdentifiers.FirstOrDefault().Id);
+                            SelectedTestcase.KeyIdentifierIds.Add(new StringValue(SelectedStory.KeyIdentifiers.FirstOrDefault().Id.ToString()));
                         }
                     },
                     (tag) =>
@@ -470,7 +476,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                             {
                                 DateApplied = DateTime.MinValue,
                                 Description = "",
-                                KeyIdentifierIds = new ObservableCollection<Guid>(SelectedStory.KeyIdentifiers.Select(i => i.Id)),
+                                KeyIdentifierIds = new ObservableCollection<StringValue>(SelectedStory.KeyIdentifiers.Select(i => new StringValue(i.Id.ToString()))),
                                 Steps = new ObservableCollection<StringValue>(),
                                 Status = TestcaseStatus.Pending
                             });
@@ -556,7 +562,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     {
                         if (null != SelectedStory)
                         {
-                            SelectedStory.Attachments.Add(new Uri("http://localhost"));
+                            SelectedStory.Attachments.Add(new StringValue(new Uri("http://localhost").ToString()));
                         }
                     },
                     (tag) =>
@@ -576,7 +582,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     {
                         if (null != SelectedStory)
                         {
-                            SelectedStory.Scripts.Add(new Uri("file://"));
+                            SelectedStory.Scripts.Add(new StringValue(new Uri("file://").ToString()));
                         }
                     },
                     (tag) =>
@@ -596,7 +602,71 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     {
                         if (null != SelectedStory)
                         {
-                            SelectedStory.Queries.Add(new Uri("file://"));
+                            SelectedStory.Queries.Add(new StringValue(new Uri("file://").ToString()));
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return null != SelectedStory;
+                    }));
+            }
+        }
+
+        private RelayCommand _addIssueCommand;
+        public ICommand AddIssueCommand
+        {
+            get
+            {
+                return _addIssueCommand ?? (_addIssueCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        if (null != SelectedStory)
+                        {
+                            SelectedStory.Issues.Add(new Issue
+                            {
+                                IsOpen = true,
+                                DateClosed = DateTime.MinValue
+                            });
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return null != SelectedStory;
+                    }));
+            }
+        }
+
+        private RelayCommand _addAcceptanceCommand;
+        public ICommand AddAcceptanceCommand
+        {
+            get
+            {
+                return _addAcceptanceCommand ?? (_addAcceptanceCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        if (null != SelectedStory)
+                        {
+                            SelectedStory.AcceptanceCriteria.Add(new StringValue(""));
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return null != SelectedStory;
+                    }));
+            }
+        }
+
+        private RelayCommand _addDeveloperCommand;
+        public ICommand AddDeveloperCommand
+        {
+            get
+            {
+                return _addDeveloperCommand ?? (_addDeveloperCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        if (null != SelectedStory)
+                        {
+                            SelectedStory.DeveloperCriteria.Add(new StringValue(""));
                         }
                     },
                     (tag) =>
@@ -644,6 +714,15 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                                     break;
                                 case "Script":
                                     AddScriptCommand.Execute(tag);
+                                    break;
+                                case "Issue":
+                                    AddIssueCommand.Execute(tag);
+                                    break;
+                                case "Acceptance":
+                                    AddAcceptanceCommand.Execute(tag);
+                                    break;
+                                case "Developer":
+                                    AddDeveloperCommand.Execute(tag);
                                     break;
                             }
 
