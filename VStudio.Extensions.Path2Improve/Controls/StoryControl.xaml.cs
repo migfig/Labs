@@ -62,5 +62,11 @@ namespace VStudio.Extensions.Path2Improve.Controls
         {
             Common.Extensions.runProcess(@"C:\Program Files\Internet Explorer\iexplore.exe", (sender as Button).Tag.ToString());
         }
+
+        private void RtbSummary_Loaded(object sender, RoutedEventArgs e)
+        {
+            var rtb = sender as RichTextBox;
+            rtb.Document = (rtb.Tag as Story).Document;
+        }
     }
 }

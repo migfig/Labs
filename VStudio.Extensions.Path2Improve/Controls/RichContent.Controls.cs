@@ -1,0 +1,290 @@
+﻿using Log.Common.Services.Common;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Windows.Media;
+using Xaml = Windows.UI.Xaml.Documents;
+
+namespace VStudio.Extensions.Path2Improve.Controls
+{
+    public static class ConverterHelpers
+    {
+        public const int ThumbnailFontSize = 13;
+
+        public static Xaml.Run Control(this Trainer.Domain.Run item, bool isThumbnail = false)
+        {
+            var control = new Xaml.Run
+            {
+                Text = item.Value
+            };
+
+            if (isThumbnail) control.FontSize = ThumbnailFontSize;
+
+            if (item.CharacterSpacing > 0) control.CharacterSpacing = item.CharacterSpacing;
+            if (item.FontSize > 0 && !isThumbnail) control.FontSize = item.FontSize;
+            if (!string.IsNullOrEmpty(item.FontStretch)) control.FontStretch = Helpers.ParseEnum<Windows.UI.Text.FontStretch>(item.FontStretch);
+            if (!string.IsNullOrEmpty(item.FontStyle)) control.FontStyle = Helpers.ParseEnum<Windows.UI.Text.FontStyle>(item.FontStyle);
+            if (!string.IsNullOrEmpty(item.FontWeight)) control.FontWeight = Helpers.ParseEnum<Windows.UI.Text.FontWeight>(item.FontWeight);
+            //if (!string.IsNullOrEmpty(item.Foreground)) control.Foreground = new SolidColorBrush(item.Foreground.GetColor());
+
+            return control;
+        }
+
+        public static Xaml.Hyperlink Control(this Trainer.Domain.HyperLink item, bool isThumbnail = false)
+        {
+            var control = new Xaml.Hyperlink
+            {
+                NavigateUri = new Uri(item.NavigateUri)
+            };
+            var run = new Xaml.Run
+            {
+                Text = item.Value
+            };
+            if (isThumbnail) run.FontSize = ThumbnailFontSize;
+
+            control.Inlines.Add(run);
+
+            return control;
+        }
+
+        public static Xaml.Bold Control(this Trainer.Domain.Bold item, bool isThumbnail = false)
+        {
+            var control = new Xaml.Bold();
+
+            if (isThumbnail) control.FontSize = ThumbnailFontSize;
+
+            if (item.CharacterSpacing > 0) control.CharacterSpacing = item.CharacterSpacing;
+            if (item.FontSize > 0 && !isThumbnail) control.FontSize = item.FontSize;
+            if (!string.IsNullOrEmpty(item.FontStretch)) control.FontStretch = Helpers.ParseEnum<Windows.UI.Text.FontStretch>(item.FontStretch);
+            if (!string.IsNullOrEmpty(item.FontStyle)) control.FontStyle = Helpers.ParseEnum<Windows.UI.Text.FontStyle>(item.FontStyle);
+            if (!string.IsNullOrEmpty(item.FontWeight)) control.FontWeight = Helpers.ParseEnum<Windows.UI.Text.FontWeight>(item.FontWeight);
+            //if (!string.IsNullOrEmpty(item.Foreground)) control.Foreground = new SolidColorBrush(item.Foreground.GetColor());
+            var run = new Xaml.Run { Text = item.Value };
+            if (isThumbnail) run.FontSize = ThumbnailFontSize;
+
+            control.Inlines.Add(run);
+
+            return control;
+        }
+
+        public static Windows.UI.Xaml.Controls.Image Control(this Trainer.Domain.Image item)
+        {
+            var control = new Windows.UI.Xaml.Controls.Image
+            {
+                Width = item.Width,
+                Height = item.Height
+            };
+
+            if (!string.IsNullOrEmpty(item.Stretch)) control.Stretch = Helpers.ParseEnum<Windows.UI.Xaml.Media.Stretch>(item.Stretch);
+
+            return control;
+        }
+
+        public static Xaml.Paragraph Control(this Trainer.Domain.Paragraph item, bool isThumbnail = false)
+        {
+            var control = new Xaml.Paragraph();
+
+            if (isThumbnail) control.FontSize = ThumbnailFontSize;
+
+            if (item.CharacterSpacing > 0) control.CharacterSpacing = item.CharacterSpacing;
+            if (item.FontSize > 0 && !isThumbnail) control.FontSize = item.FontSize;
+            if (!string.IsNullOrEmpty(item.FontStretch)) control.FontStretch = Helpers.ParseEnum<Windows.UI.Text.FontStretch>(item.FontStretch);
+            if (!string.IsNullOrEmpty(item.FontStyle)) control.FontStyle = Helpers.ParseEnum<Windows.UI.Text.FontStyle>(item.FontStyle);
+            if (!string.IsNullOrEmpty(item.FontWeight)) control.FontWeight = Helpers.ParseEnum<Windows.UI.Text.FontWeight>(item.FontWeight);
+            //if (!string.IsNullOrEmpty(item.Foreground)) control.Foreground = new SolidColorBrush(item.Foreground.GetColor());
+
+            if (item.LineHeight > 0) control.LineHeight = item.LineHeight;
+            if (!string.IsNullOrEmpty(item.LineStackingStrategy)) control.LineStackingStrategy = Helpers.ParseEnum<Windows.UI.Xaml.LineStackingStrategy>(item.LineStackingStrategy);
+            //if (!string.IsNullOrEmpty(item.Margin)) control.Margin = Helpers.GetThickness(item.Margin);
+            if (!string.IsNullOrEmpty(item.TextAlignment)) control.TextAlignment = Helpers.ParseEnum<Windows.UI.Xaml.TextAlignment>(item.TextAlignment);
+            if (item.TextIndent > 0) control.TextIndent = item.TextIndent;
+            if (item.Text != null && item.Text.Any())
+            {
+                var run = new Xaml.Run { Text = string.Join(Environment.NewLine, item.Text) };
+                if (isThumbnail) run.FontSize = ThumbnailFontSize;
+
+                control.Inlines.Add(run);
+            }
+
+            if (item.Bold != null && item.Bold.Any())
+            {
+                foreach (var bold in item.Bold)
+                {
+                    control.Inlines.Add(bold.Control(isThumbnail));
+                }
+            }
+
+            if (item.Hyperlink != null)
+            {
+                control.Inlines.Add(item.Hyperlink.Control(isThumbnail));
+            }
+
+            if (item.Run != null && item.Run.Any())
+            {
+                foreach (var run in item.Run)
+                {
+                    control.Inlines.Add(run.Control(isThumbnail));
+                }
+            }
+
+            if (item.InlineUIContainer != null)
+            {
+                control.Inlines.Add(item.InlineUIContainer.Control());
+            }
+
+            return control;
+        }
+
+        public static Xaml.InlineUIContainer Control(this Trainer.Domain.InlineUIContainer item)
+        {
+            return new Xaml.InlineUIContainer
+            {
+                Child = item.Image.Control()
+            };
+        }
+
+        public static Windows.UI.Xaml.Controls.RichTextBlock Control(this Trainer.Domain.RichTextBlock item, bool isThumbnail = false)
+        {
+            var control = new Windows.UI.Xaml.Controls.RichTextBlock
+            {
+                IsTextSelectionEnabled = true,
+                MinHeight = 40,
+                MinWidth = 400
+            };
+
+            if (isThumbnail) control.FontSize = ThumbnailFontSize;
+
+            if (item.CharacterSpacing > 0) control.CharacterSpacing = item.CharacterSpacing;
+            if (item.FontSize > 0 && !isThumbnail) control.FontSize = item.FontSize;
+            if (!string.IsNullOrEmpty(item.FontStretch)) control.FontStretch = Helpers.ParseEnum<Windows.UI.Text.FontStretch>(item.FontStretch);
+            if (!string.IsNullOrEmpty(item.FontStyle)) control.FontStyle = Helpers.ParseEnum<Windows.UI.Text.FontStyle>(item.FontStyle);
+            if (!string.IsNullOrEmpty(item.FontWeight)) control.FontWeight = Helpers.ParseEnum<Windows.UI.Text.FontWeight>(item.FontWeight);
+            //if (!string.IsNullOrEmpty(item.Foreground)) control.Foreground = new SolidColorBrush(item.Foreground.GetColor());
+
+            if (item.LineHeight > 0) control.LineHeight = item.LineHeight;
+            if (!string.IsNullOrEmpty(item.LineStackingStrategy)) control.LineStackingStrategy = Helpers.ParseEnum<Windows.UI.Xaml.LineStackingStrategy>(item.LineStackingStrategy);
+            //if (!string.IsNullOrEmpty(item.Margin)) control.Margin = Helpers.GetThickness(item.Margin);
+            if (!string.IsNullOrEmpty(item.TextAlignment)) control.TextAlignment = Helpers.ParseEnum<Windows.UI.Xaml.TextAlignment>(item.TextAlignment);
+            if (item.TextIndent > 0) control.TextIndent = item.TextIndent;
+
+            if (!string.IsNullOrEmpty(item.HorizontalAlignment)) control.HorizontalAlignment = Helpers.ParseEnum<Windows.UI.Xaml.HorizontalAlignment>(item.HorizontalAlignment);
+            if (!string.IsNullOrEmpty(item.VerticalAlignment)) control.VerticalAlignment = Helpers.ParseEnum<Windows.UI.Xaml.VerticalAlignment>(item.VerticalAlignment);
+            if (item.MaxLines > 0) control.MaxLines = item.MaxLines;
+            if (item.Opacity > 0.0M) control.Opacity = (double)item.Opacity;
+            if (!string.IsNullOrEmpty(item.LineStackingStrategy)) control.TextWrapping = Helpers.ParseEnum<Windows.UI.Xaml.TextWrapping>(item.TextWrapping);
+
+            foreach (var p in item.Paragraph)
+            {
+                control.Blocks.Add(p.Control(isThumbnail));
+            }
+
+            return control;
+        }
+
+        private static List<Xaml.Run> GetInlines(string line, bool isThumbnail= false)
+        {
+            var tokens = ParserFactory.CreateParser().Parse(line);
+            var dict = new Dictionary<TokenType, string>
+            {
+                {TokenType.Keyword, "#FF569CD6"},
+                {TokenType.Comment, "#FF82C65B"},
+                {TokenType.String , "#FFD69D85"},
+                {TokenType.Number , "#FF00C68B"},
+                {TokenType.Operator,"#FF000000"},
+                {TokenType.Symbol , "#FF1E1E1E"},
+                {TokenType.Regular, "#FF1E1E1E"}
+            };
+            var list = new List<Xaml.Run>();
+            foreach(var token in tokens)
+            {
+                var run = new Xaml.Run
+                {
+                    Text = token.Value,
+                    //Foreground = new Windows.UI.Xaml.Media.SolidColorBrush(Helpers.GetColor(dict[token.Type]))
+                };
+                if (isThumbnail) run.FontSize = ThumbnailFontSize;
+
+                list.Add(run);
+            }
+            return list;
+        }
+
+        public static Windows.UI.Xaml.Controls.RichTextBlock Control(this Trainer.Domain.Component item, bool isThumbnail = false)
+        {
+            var control = new Windows.UI.Xaml.Controls.RichTextBlock
+            {
+                IsTextSelectionEnabled = true,
+                MinHeight = 40,
+                MinWidth = 400
+            };
+
+            if (isThumbnail) control.FontSize = ThumbnailFontSize;
+
+            foreach(var line in item.Code.Value.Split(Environment.NewLine.ToArray()))
+            {
+                var par = new Xaml.Paragraph
+                {
+                    FontStyle = Windows.UI.Text.FontStyle.Italic,
+                    TextIndent = 4
+                };
+                if (isThumbnail) par.FontSize = ThumbnailFontSize;
+
+                foreach (var inline in GetInlines(line, isThumbnail)) {
+                    par.Inlines.Add(inline);
+                }
+                control.Blocks.Add(par);
+            }
+
+            return control;
+        }
+    }
+
+    public static class Helpers
+    {
+        public static T ParseEnum<T>(string value)
+        {
+            try
+            {
+                return (T)Enum.Parse(typeof(T), value);
+            } catch(Exception)
+            {
+                return default(T);
+            }
+        }
+
+        //public static Thickness GetThickness(this string value)
+        //{
+        //    if(!string.IsNullOrWhiteSpace(value))
+        //    {
+        //        var parts = value.Split(',');
+        //        switch (parts.Length)
+        //        {
+        //            case 1:
+        //                return new Windows.UI.Xaml.Thickness(double.Parse(value));
+        //            case 2:
+        //                return new Windows.UI.Xaml.Thickness(double.Parse(parts[0]),
+        //                    double.Parse(parts[1]),
+        //                    double.Parse(parts[0]),
+        //                    double.Parse(parts[1]));
+        //            case 4:
+        //                return new Windows.UI.Xaml.Thickness(double.Parse(parts[0]), 
+        //                    double.Parse(parts[1]),
+        //                    double.Parse(parts[2]), 
+        //                    double.Parse(parts[3]));
+        //        }
+        //    }
+
+        //    return default(Windows.UI.Xaml.Thickness);
+        //}
+
+        public static Color GetColor(this string color)
+        {
+            return Color.FromArgb(
+                     Byte.Parse(color.Substring(1, 2), NumberStyles.HexNumber),
+                     Byte.Parse(color.Substring(3, 2), NumberStyles.HexNumber),
+                     Byte.Parse(color.Substring(5, 2), NumberStyles.HexNumber),
+                     Byte.Parse(color.Substring(7, 2), NumberStyles.HexNumber));
+        }
+    }
+}

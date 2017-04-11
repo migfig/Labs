@@ -75,6 +75,7 @@
     <Compile Include="Controls\IssueControl.xaml.cs">
       <DependentUpon>IssueControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\RichContent.Controls.cs" />
     <Compile Include="Controls\StringControl.xaml.cs">
       <DependentUpon>StringControl.xaml</DependentUpon>
     </Compile>

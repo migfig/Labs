@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Documents;
 
 namespace VStudio.Extensions.Path2Improve.ViewModels
 {
@@ -28,6 +29,170 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         public ObservableCollection<StringValue> AcceptanceCriteria { get; set; }
         public ObservableCollection<StringValue> DeveloperCriteria { get; set; }
         public ObservableCollection<Issue> Issues { get; set; }
+
+        public FlowDocument Document
+        {
+            get
+            {
+                return BuildDocument();
+            }
+        }
+
+        private FlowDocument BuildDocument()
+        {
+            var doc = new FlowDocument();
+            doc.LineStackingStrategy = System.Windows.LineStackingStrategy.BlockLineHeight;
+            doc.LineHeight = 12;
+            doc.Blocks.Add(new Paragraph(new Bold(new Run("Summary"))));
+            doc.Blocks.Add(new Paragraph(new Run(" "+Title)));
+            doc.Blocks.Add(new Paragraph(new Bold(new Run("Description"))));
+            doc.Blocks.Add(new Paragraph(new Run(" " + Description)));
+
+            doc.Blocks.Add(new Paragraph(new Bold(new Run("Url"))));
+            var url = new Hyperlink(new Run(Url.ToString()));
+            url.NavigateUri = Url;
+            doc.Blocks.Add(new Paragraph(url));
+            doc.Blocks.Add(new Paragraph(new Bold(new Run("Parent Story"))));
+            var parentUrl = new Hyperlink(new Run(ParentStoryUrl.ToString()));
+            parentUrl.NavigateUri = ParentStoryUrl;
+            doc.Blocks.Add(new Paragraph(parentUrl));
+
+            doc.Blocks.Add(new Paragraph(new Italic(new Run("Status: " + Status.ToString()))));
+
+            doc.Blocks.Add(new Paragraph(new Italic(new Run("Date Started: " + DateStarted.Value.ToString("yyyy-MM-dd hh:mm:ss")))));
+            if(DateEnded.HasValue && DateEnded.Value != DateTime.MinValue)
+                doc.Blocks.Add(new Paragraph(new Italic(new Run("Date Ended: " + DateEnded.Value.ToString("yyyy-MM-dd hh:mm:ss")))));
+
+            if (Attachments.Any())
+            {
+                doc.Blocks.Add(new Paragraph(new Bold(new Run("Attachments"))));
+                foreach (var item in Attachments)
+                {
+                    var itemUri = new Uri(item.Value);
+                    var itemUrl = new Hyperlink(new Run(item.Value));
+                    itemUrl.NavigateUri = itemUri;
+                    doc.Blocks.Add(new Paragraph(itemUrl));
+                }
+            }
+
+            if (AcceptanceCriteria.Any())
+            {
+                doc.Blocks.Add(new Paragraph(new Bold(new Run("Acceptance Criteria"))));
+                foreach (var item in AcceptanceCriteria)
+                {
+                    doc.Blocks.Add(new Paragraph(new Run(" + " + item.Value)));
+                }
+            }
+
+            if (DeveloperCriteria.Any())
+            {
+                doc.Blocks.Add(new Paragraph(new Bold(new Run("Development Criteria"))));
+                foreach (var item in DeveloperCriteria)
+                {
+                    doc.Blocks.Add(new Paragraph(new Run(" + " + item.Value)));
+                }
+            }
+
+            var i = 0;
+            var j = 0;
+            if (KeyIdentifiers.Any())
+            {
+                doc.Blocks.Add(new Paragraph(new Bold(new Run("Key Identifiers"))));
+                foreach (var item in KeyIdentifiers)
+                {
+                    doc.Blocks.Add(new Paragraph(new Run(" " + (++i).ToString() + ". " + item.Description)));
+
+                    if (item.Questions.Any())
+                    {
+                        j = 0;
+                        doc.Blocks.Add(new Paragraph(new Italic(new Run(" Questions"))));
+                        foreach(var q in item.Questions)
+                        {
+                            doc.Blocks.Add(new Paragraph(new Run("   " + (++j).ToString() + ".Q. " + q.Ask)));
+                            doc.Blocks.Add(new Paragraph(new Run("     A. " + q.Answer)));
+                        }
+                    }
+                }
+            }
+
+            if (Issues.Any())
+            {
+                i = 0;
+                doc.Blocks.Add(new Paragraph(new Bold(new Run("Issues"))));
+                foreach (var item in Issues)
+                {
+                    doc.Blocks.Add(new Paragraph(new Run(" " + (++i).ToString() + ". " + item.Description)));
+                    doc.Blocks.Add(new Paragraph(new Italic(new Run("  Is Open: " + item.IsOpen.ToString()))));
+                }
+            }
+
+            if (Queries.Any())
+            {
+                doc.Blocks.Add(new Paragraph(new Bold(new Run("Queries"))));
+                foreach (var item in Queries)
+                {
+                    var itemUri = new Uri(item.Value);
+                    var itemUrl = new Hyperlink(new Run(item.Value));
+                    itemUrl.NavigateUri = itemUri;
+                    doc.Blocks.Add(new Paragraph(itemUrl));
+                }
+            }
+
+            if (Scripts.Any())
+            {
+                doc.Blocks.Add(new Paragraph(new Bold(new Run("Scripts"))));
+                foreach (var item in Scripts)
+                {
+                    var itemUri = new Uri(item.Value);
+                    var itemUrl = new Hyperlink(new Run(item.Value));
+                    itemUrl.NavigateUri = itemUri;
+                    itemUrl.Tag = itemUri;
+                    itemUrl.IsEnabled = true;
+                    itemUrl.Click += ItemUrl_Click; 
+                    doc.Blocks.Add(new Paragraph(itemUrl));
+                }
+            }
+
+            if (TestCases.Any())
+            {
+                i = 0;
+                doc.Blocks.Add(new Paragraph(new Bold(new Run("Test Cases"))));
+                foreach (var item in TestCases)
+                {
+                    doc.Blocks.Add(new Paragraph(new Run(" " + (++i).ToString() + ". " + item.Description)));
+                    doc.Blocks.Add(new Paragraph(new Italic(new Run("  Status: " + item.Status.ToString()))));
+
+                    if (item.Steps.Any())
+                    {
+                        j = 0;
+                        doc.Blocks.Add(new Paragraph(new Italic(new Run(" Steps"))));
+                        foreach (var q in item.Steps)
+                        {
+                            doc.Blocks.Add(new Paragraph(new Run("   " + (++j).ToString() + ". " + q.Value)));
+                        }
+                    }
+                }
+            }
+
+            if (Checkups.Any())
+            {
+                i = 0;
+                doc.Blocks.Add(new Paragraph(new Bold(new Run("Checkups"))));
+                foreach (var item in Checkups)
+                {
+                    doc.Blocks.Add(new Paragraph(new Run(" " + (++i).ToString() + ". " + item.Description)));
+                    doc.Blocks.Add(new Paragraph(new Italic(new Run("  Applied: " + item.Applied.ToString()))));
+                }
+            }
+
+            return doc;
+        }
+
+        private void ItemUrl_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var file = ((Uri)((Hyperlink)sender).Tag).ToString();
+            Common.Extensions.runProcess(@"C:\Windows\explorer.exe", file, -1);
+        }
 
         public bool IsValid()
         {

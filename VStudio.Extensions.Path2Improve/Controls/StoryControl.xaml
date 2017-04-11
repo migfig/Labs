@@ -27,6 +27,16 @@
                     </Grid>
                 </Expander.Header>
                 <TabControl Background="Transparent">
+                    <TabItem Header="Summary">
+                        <RichTextBox x:Name="rtbSummary" 
+                                     IsReadOnly="True"
+                                     Tag="{Binding}"
+                                     Background="Transparent"
+                                     AutoWordSelection="True"
+                                     Loaded="RtbSummary_Loaded"                                     
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"/>
+                    </TabItem>
                     <TabItem Header="Story">
                         <Grid>
                             <Grid.ColumnDefinitions>
