@@ -68,5 +68,17 @@ namespace VStudio.Extensions.Path2Improve.Controls
             var rtb = sender as RichTextBox;
             rtb.Document = (rtb.Tag as Story).Document;
         }
+
+        private void Button_RemoveItemClick(object sender, RoutedEventArgs e)
+        {
+            var item = (sender as Button).Tag;
+            if (MessageBox.Show("Are you sure you want to remove this " + item.GetType().Name +"?", "Remove Item", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            {
+                if (MainViewModel.ViewModel.RemoveActionCommand.CanExecute(item))
+                {
+                    MainViewModel.ViewModel.RemoveActionCommand.Execute(item);
+                }
+            }
+        }
     }
 }

@@ -172,6 +172,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
 
         private Story GetDefaultStory()
         {
+            var id = Guid.NewGuid();
             return new Story
             {
                 Name = "",
@@ -182,29 +183,62 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 Status = StoryStatus.NotStarted,
                 Url = new Uri("http://localhost:8080/story/0001", UriKind.Absolute),
                 ParentStoryUrl = new Uri("http://localhost:8080/story/0000", UriKind.Absolute),
-                Attachments = new ObservableCollection<StringValue>(),
-                KeyIdentifiers = new ObservableCollection<Keyidentifier>(),
+                Attachments = new ObservableCollection<StringValue> { new StringValue("http://localhost") },
+                KeyIdentifiers = new ObservableCollection<Keyidentifier>
+                {
+                    new Keyidentifier
+                    {
+                        Category = IdentifierCategory.Deliverable,
+                        Description = "",
+                        Id = id,
+                        Questions = new ObservableCollection<Question>
+                        {
+                            new Question
+                            {
+                                Ask = "",
+                                Answer = "",
+                                Urls = new ObservableCollection<StringValue>{new StringValue("http://localhost")}
+                            }
+                        }
+                    }
+                },
                 Checkups = new ObservableCollection<Checkup>
                     {
                         new Checkup
                         {
                             Description = "Is delivered code clear/clean/object oriented",
-                            Applied = false,
                             DateApplied = DateTime.MinValue
                         },
                         new Checkup
                         {
                             Description = "Has delivered code being tested against production data variations/volume",
-                            Applied = false,
                             DateApplied = DateTime.MinValue
                         }
                     },
-                Queries = new ObservableCollection<StringValue>(),
-                Scripts = new ObservableCollection<StringValue>(),
-                TestCases = new ObservableCollection<Testcase>(),
-                Issues = new ObservableCollection<Issue>(),
-                AcceptanceCriteria = new ObservableCollection<StringValue>(),
-                DeveloperCriteria = new ObservableCollection<StringValue>()
+                Queries = new ObservableCollection<StringValue> { new StringValue("file://c:\\") },
+                Scripts = new ObservableCollection<StringValue> { new StringValue("file://c:\\") },
+                TestCases = new ObservableCollection<Testcase>
+                {
+                    new Testcase
+                    {
+                        Description = "",
+                        DateApplied = DateTime.MinValue,
+                        Status = TestcaseStatus.Pending,
+                        Steps = new ObservableCollection<StringValue>{ new StringValue("") },
+                        KeyIdentifierIds = new ObservableCollection<StringValue>{new StringValue(id.ToString())}
+                    }
+                },
+                Issues = new ObservableCollection<Issue>
+                {
+                    new Issue
+                    {
+                        Description = "",
+                        DateClosed = DateTime.MinValue,
+                        IsOpen = true
+                    }
+                },
+                AcceptanceCriteria = new ObservableCollection<StringValue> { new StringValue("") },
+                DeveloperCriteria = new ObservableCollection<StringValue>{ new StringValue("") }
             };
         }
 
@@ -687,6 +721,66 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                         if (null != SelectedStory)
                         {
                             switch(tag.ToString())
+                            {
+                                case "Testcase":
+                                    AddTestcaseCommand.Execute(tag);
+                                    break;
+                                case "Question":
+                                    AddQuestionCommand.Execute(tag);
+                                    break;
+                                case "Checkup":
+                                    AddCheckupCommand.Execute(tag);
+                                    break;
+                                case "KeyIdentifier":
+                                    AddKeyIdentifierCommand.Execute(tag);
+                                    break;
+                                case "Step":
+                                    AddStepCommand.Execute(tag);
+                                    break;
+                                case "KeyIdentifierId":
+                                    AddKeyIdentifierIdCommand.Execute(tag);
+                                    break;
+                                case "Attachment":
+                                    AddAttachmentCommand.Execute(tag);
+                                    break;
+                                case "Query":
+                                    AddQueryCommand.Execute(tag);
+                                    break;
+                                case "Script":
+                                    AddScriptCommand.Execute(tag);
+                                    break;
+                                case "Issue":
+                                    AddIssueCommand.Execute(tag);
+                                    break;
+                                case "Acceptance":
+                                    AddAcceptanceCommand.Execute(tag);
+                                    break;
+                                case "Developer":
+                                    AddDeveloperCommand.Execute(tag);
+                                    break;
+                            }
+
+                            IsDirty = true;
+                        }
+                    },
+                    (tag) =>
+                    {
+                        return null != SelectedStory;
+                    }));
+            }
+        }
+
+        private RelayCommand _removeActionCommand;
+        public ICommand RemoveActionCommand
+        {
+            get
+            {
+                return _removeActionCommand ?? (_removeActionCommand = new RelayCommand(
+                    (tag) =>
+                    {
+                        if (null != SelectedStory)
+                        {
+                            switch (tag.ToString())
                             {
                                 case "Testcase":
                                     AddTestcaseCommand.Execute(tag);

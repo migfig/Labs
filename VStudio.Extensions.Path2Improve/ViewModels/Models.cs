@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Documents;
@@ -30,6 +31,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         public ObservableCollection<StringValue> DeveloperCriteria { get; set; }
         public ObservableCollection<Issue> Issues { get; set; }
 
+        [JsonIgnore]
         public FlowDocument Document
         {
             get
