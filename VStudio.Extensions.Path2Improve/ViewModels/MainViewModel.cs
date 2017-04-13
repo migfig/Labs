@@ -60,7 +60,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     return _stories;
                 } catch(Exception)
                 {
-                    return new ObservableCollection<Story>();
+                    return new ObservableCollection<Story> { Story.New() };
                 }
             }
         }
@@ -85,78 +85,21 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                             DateStarted = DateTime.UtcNow,
                             DateEnded = DateTime.MinValue,
                             Status = StoryStatus.NotStarted,
-                            Url = new Uri("http://localhost:3033/jira/story/1001", UriKind.Absolute),
-                            ParentStoryUrl = new Uri("http://localhost:3033/jira/story/1000", UriKind.Absolute),
-                            Attachments = new ObservableCollection<StringValue>
-                            {
-                                new StringValue(new Uri("http://localhost:3033/jira/story/1001/attachment/1", UriKind.Absolute).ToString())
-                            },
-                            KeyIdentifiers = new ObservableCollection<Keyidentifier>
-                            {
-                                new Keyidentifier
-                                {
-                                    Id = Guid.NewGuid(),
-                                    Description = "Create cloud item",
-                                    Category = IdentifierCategory.Deliverable,
-                                    Questions = new ObservableCollection<Question>
-                                    {
-                                        new Question
-                                        {
-                                            Ask = "What's the exact url route where created item will be placed",
-                                            Answer = "Goes on the cloud items endpoint",
-                                            Urls = new ObservableCollection<StringValue>
-                                            {
-                                                new StringValue(new Uri("http://localhost:3033/cloud/items", UriKind.Absolute).ToString())
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            Checkups = new ObservableCollection<Checkup>
-                            {
-                                new Checkup
-                                {
-                                    Description = "Is delivered code clear/clean/object oriented",
-                                    Applied = false,
-                                    DateApplied = DateTime.MinValue
-                                },
-                                new Checkup
-                                {
-                                    Description = "Has delivered code being tested against production data variations/volume",
-                                    Applied = false,
-                                    DateApplied = DateTime.MinValue
-                                }
-                            },
-                            Queries = new ObservableCollection<StringValue>
-                            {
-                                new StringValue(new Uri("file://C:/code/data/test.sql", UriKind.Absolute).ToString())
-                            },
-                            Scripts = new ObservableCollection<StringValue>
-                            {
-                                new StringValue(new Uri("file://C:/code/scripts/test.cs", UriKind.Absolute).ToString())
-                            },
-                            TestCases = new ObservableCollection<Testcase>
-                            {
-                                new Testcase
-                                {
-                                    Description = "Validate creation of cloud item with incomplete data",
-                                    Applied = false,
-                                    DateApplied = DateTime.MinValue,
-                                    Status = TestcaseStatus.Pending,
-                                    Steps = new ObservableCollection<StringValue>
-                                    {
-                                        new StringValue("Provide cloud item payload with incomplete properties")
-                                    },
-                                    KeyIdentifierIds = new ObservableCollection<StringValue>()
-                                }
-                            },
-                            Issues = new ObservableCollection<Issue>(),
-                            AcceptanceCriteria = new ObservableCollection<StringValue>(),
-                            DeveloperCriteria = new ObservableCollection<StringValue>()
+                            Url = Story.NewUri(),
+                            ParentStoryUrl = Story.NewUri(),
+                            Attachments = new ObservableCollection<StringValue> { Story.NewAttachment() },
+                            KeyIdentifiers = new ObservableCollection<Keyidentifier>{ Keyidentifier.New() },
+                            Checkups = new ObservableCollection<Checkup> { Checkup.New() },
+                            Queries = new ObservableCollection<StringValue>{ Story.NewQuery() },
+                            Scripts = new ObservableCollection<StringValue>{ Story.NewScript() },
+                            TestCases = new ObservableCollection<Testcase>{ Testcase.New() },
+                            Issues = new ObservableCollection<Issue>{ Issue.New() },
+                            AcceptanceCriteria = new ObservableCollection<StringValue>{ Story.NewAcceptanceCriteria() },
+                            DeveloperCriteria = new ObservableCollection<StringValue>{ Story.NewDeveloperCriteria() }
                         },
                     };
 
-                _stories.First().TestCases.First().KeyIdentifierIds.Add(new StringValue(_stories.First().KeyIdentifiers.First().Id.ToString()));
+                _stories.First().TestCases.First().KeyIdentifierIds.Add(new StringValue(_stories.First().KeyIdentifiers.First().Id.ToString(), "KeyIdentifierId"));
                 #endregion
 
                 SetStories();
@@ -168,79 +111,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         {
             File.WriteAllText(_fileName, JsonConvert.SerializeObject(_stories));
             IsDirty = false;
-        }
-
-        private Story GetDefaultStory()
-        {
-            var id = Guid.NewGuid();
-            return new Story
-            {
-                Name = "",
-                Title = "",
-                Description = "",
-                DateStarted = DateTime.UtcNow,
-                DateEnded = DateTime.MinValue,
-                Status = StoryStatus.NotStarted,
-                Url = new Uri("http://localhost:8080/story/0001", UriKind.Absolute),
-                ParentStoryUrl = new Uri("http://localhost:8080/story/0000", UriKind.Absolute),
-                Attachments = new ObservableCollection<StringValue> { new StringValue("http://localhost") },
-                KeyIdentifiers = new ObservableCollection<Keyidentifier>
-                {
-                    new Keyidentifier
-                    {
-                        Category = IdentifierCategory.Deliverable,
-                        Description = "",
-                        Id = id,
-                        Questions = new ObservableCollection<Question>
-                        {
-                            new Question
-                            {
-                                Ask = "",
-                                Answer = "",
-                                Urls = new ObservableCollection<StringValue>{new StringValue("http://localhost")}
-                            }
-                        }
-                    }
-                },
-                Checkups = new ObservableCollection<Checkup>
-                    {
-                        new Checkup
-                        {
-                            Description = "Is delivered code clear/clean/object oriented",
-                            DateApplied = DateTime.MinValue
-                        },
-                        new Checkup
-                        {
-                            Description = "Has delivered code being tested against production data variations/volume",
-                            DateApplied = DateTime.MinValue
-                        }
-                    },
-                Queries = new ObservableCollection<StringValue> { new StringValue("file://c:\\") },
-                Scripts = new ObservableCollection<StringValue> { new StringValue("file://c:\\") },
-                TestCases = new ObservableCollection<Testcase>
-                {
-                    new Testcase
-                    {
-                        Description = "",
-                        DateApplied = DateTime.MinValue,
-                        Status = TestcaseStatus.Pending,
-                        Steps = new ObservableCollection<StringValue>{ new StringValue("") },
-                        KeyIdentifierIds = new ObservableCollection<StringValue>{new StringValue(id.ToString())}
-                    }
-                },
-                Issues = new ObservableCollection<Issue>
-                {
-                    new Issue
-                    {
-                        Description = "",
-                        DateClosed = DateTime.MinValue,
-                        IsOpen = true
-                    }
-                },
-                AcceptanceCriteria = new ObservableCollection<StringValue> { new StringValue("") },
-                DeveloperCriteria = new ObservableCollection<StringValue>{ new StringValue("") }
-            };
-        }
+        }        
 
         private void FilterEntries()
         {
@@ -285,6 +156,17 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
             set
             {
                 _selectedKeyidentifier = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Question _selectedQuestion;
+        public Question SelectedQuestion
+        {
+            get { return _selectedQuestion; }
+            set
+            {
+                _selectedQuestion = value;
                 OnPropertyChanged();
             }
         }
@@ -408,7 +290,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 return _addStoryCommand ?? (_addStoryCommand = new RelayCommand(
                     (tag) =>
                     {
-                        var newStory = GetDefaultStory();
+                        var newStory = Story.New();
                         _stories.Add(newStory);
                         SelectedStory = newStory;
                         OnPropertyChanged("Stories");
@@ -450,266 +332,8 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     }));
             }
         }
-
-        private RelayCommand _addKeyIdentifierCommand;
-        public ICommand AddKeyIdentifierCommand
-        {
-            get
-            {
-                return _addKeyIdentifierCommand ?? (_addKeyIdentifierCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedStory)
-                        {
-                            SelectedStory.KeyIdentifiers.Add(new Keyidentifier {
-                                Id = Guid.NewGuid(),
-                                Description = "",
-                                Questions = new ObservableCollection<Question>(),
-                                Category = IdentifierCategory.Deliverable
-                            });
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedStory;
-                    }));
-            }
-        }
-
-        private RelayCommand _addKeyIdentifierIdCommand;
-        public ICommand AddKeyIdentifierIdCommand
-        {
-            get
-            {
-                return _addKeyIdentifierIdCommand ?? (_addKeyIdentifierIdCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedTestcase)
-                        {
-                            SelectedTestcase.KeyIdentifierIds.Add(new StringValue(SelectedStory.KeyIdentifiers.FirstOrDefault().Id.ToString()));
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedTestcase;
-                    }));
-            }
-        }
-
-        private RelayCommand _addTestcaseCommand;
-        public ICommand AddTestcaseCommand
-        {
-            get
-            {
-                return _addTestcaseCommand ?? (_addTestcaseCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedStory)
-                        {
-                            SelectedStory.TestCases.Add(new Testcase
-                            {
-                                DateApplied = DateTime.MinValue,
-                                Description = "",
-                                KeyIdentifierIds = new ObservableCollection<StringValue>(SelectedStory.KeyIdentifiers.Select(i => new StringValue(i.Id.ToString()))),
-                                Steps = new ObservableCollection<StringValue>(),
-                                Status = TestcaseStatus.Pending
-                            });
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedStory;
-                    }));
-            }
-        }
-
-        private RelayCommand _addCheckupCommand;
-        public ICommand AddCheckupCommand
-        {
-            get
-            {
-                return _addCheckupCommand ?? (_addCheckupCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedStory)
-                        {
-                            SelectedStory.Checkups.Add(new Checkup {
-                                DateApplied = DateTime.MinValue,
-                                Description = ""
-                            });
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedStory;
-                    }));
-            }
-        }
-
-        private RelayCommand _addQuestionCommand;
-        public ICommand AddQuestionCommand
-        {
-            get
-            {
-                return _addQuestionCommand ?? (_addQuestionCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedKeyidentifier)
-                        {
-                            SelectedKeyidentifier.Questions.Add(new Question());
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedKeyidentifier;
-                    }));
-            }
-        }
-
-        private RelayCommand _addStepCommand;
-        public ICommand AddStepCommand
-        {
-            get
-            {
-                return _addStepCommand ?? (_addStepCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedTestcase)
-                        {
-                            SelectedTestcase.Steps.Add(new StringValue(""));
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedTestcase;
-                    }));
-            }
-        }
-
-        private RelayCommand _addAttachmentCommand;
-        public ICommand AddAttachmentCommand
-        {
-            get
-            {
-                return _addAttachmentCommand ?? (_addAttachmentCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedStory)
-                        {
-                            SelectedStory.Attachments.Add(new StringValue(new Uri("http://localhost").ToString()));
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedStory;
-                    }));
-            }
-        }
-
-        private RelayCommand _addScriptCommand;
-        public ICommand AddScriptCommand
-        {
-            get
-            {
-                return _addScriptCommand ?? (_addScriptCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedStory)
-                        {
-                            SelectedStory.Scripts.Add(new StringValue(new Uri("file://").ToString()));
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedStory;
-                    }));
-            }
-        }
-
-        private RelayCommand _addQueryCommand;
-        public ICommand AddQueryCommand
-        {
-            get
-            {
-                return _addQueryCommand ?? (_addQueryCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedStory)
-                        {
-                            SelectedStory.Queries.Add(new StringValue(new Uri("file://").ToString()));
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedStory;
-                    }));
-            }
-        }
-
-        private RelayCommand _addIssueCommand;
-        public ICommand AddIssueCommand
-        {
-            get
-            {
-                return _addIssueCommand ?? (_addIssueCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedStory)
-                        {
-                            SelectedStory.Issues.Add(new Issue
-                            {
-                                IsOpen = true,
-                                DateClosed = DateTime.MinValue
-                            });
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedStory;
-                    }));
-            }
-        }
-
-        private RelayCommand _addAcceptanceCommand;
-        public ICommand AddAcceptanceCommand
-        {
-            get
-            {
-                return _addAcceptanceCommand ?? (_addAcceptanceCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedStory)
-                        {
-                            SelectedStory.AcceptanceCriteria.Add(new StringValue(""));
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedStory;
-                    }));
-            }
-        }
-
-        private RelayCommand _addDeveloperCommand;
-        public ICommand AddDeveloperCommand
-        {
-            get
-            {
-                return _addDeveloperCommand ?? (_addDeveloperCommand = new RelayCommand(
-                    (tag) =>
-                    {
-                        if (null != SelectedStory)
-                        {
-                            SelectedStory.DeveloperCriteria.Add(new StringValue(""));
-                        }
-                    },
-                    (tag) =>
-                    {
-                        return null != SelectedStory;
-                    }));
-            }
-        }
-
+        
+        
         private RelayCommand _addActionCommand;
         public ICommand AddActionCommand
         {
@@ -723,40 +347,43 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                             switch(tag.ToString())
                             {
                                 case "Testcase":
-                                    AddTestcaseCommand.Execute(tag);
+                                    SelectedStory.TestCases.Add(Testcase.New());
                                     break;
                                 case "Question":
-                                    AddQuestionCommand.Execute(tag);
+                                    SelectedKeyidentifier.Questions.Add(Question.New());
                                     break;
                                 case "Checkup":
-                                    AddCheckupCommand.Execute(tag);
+                                    SelectedStory.Checkups.Add(Checkup.New());
                                     break;
                                 case "KeyIdentifier":
-                                    AddKeyIdentifierCommand.Execute(tag);
+                                    SelectedStory.KeyIdentifiers.Add(Keyidentifier.New());
                                     break;
                                 case "Step":
-                                    AddStepCommand.Execute(tag);
+                                    SelectedTestcase.Steps.Add(Testcase.NewStep());
                                     break;
                                 case "KeyIdentifierId":
-                                    AddKeyIdentifierIdCommand.Execute(tag);
+                                    SelectedTestcase.KeyIdentifierIds.Add(Testcase.NewKeyIdentifierId(SelectedStory.KeyIdentifiers.First().Id));
                                     break;
                                 case "Attachment":
-                                    AddAttachmentCommand.Execute(tag);
+                                    SelectedStory.Attachments.Add(Story.NewAttachment());
                                     break;
                                 case "Query":
-                                    AddQueryCommand.Execute(tag);
+                                    SelectedStory.Queries.Add(Story.NewQuery());
                                     break;
                                 case "Script":
-                                    AddScriptCommand.Execute(tag);
+                                    SelectedStory.Scripts.Add(Story.NewScript());
                                     break;
                                 case "Issue":
-                                    AddIssueCommand.Execute(tag);
+                                    SelectedStory.Issues.Add(Issue.New());
                                     break;
-                                case "Acceptance":
-                                    AddAcceptanceCommand.Execute(tag);
+                                case "AcceptanceCriteria":
+                                    SelectedStory.AcceptanceCriteria.Add(Story.NewAcceptanceCriteria());
                                     break;
-                                case "Developer":
-                                    AddDeveloperCommand.Execute(tag);
+                                case "DeveloperCriteria":
+                                    SelectedStory.DeveloperCriteria.Add(Story.NewDeveloperCriteria());
+                                    break;
+                                case "Url":
+                                    SelectedQuestion.Urls.Add(Question.NewUrl());
                                     break;
                             }
 
@@ -780,44 +407,38 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     {
                         if (null != SelectedStory)
                         {
-                            switch (tag.ToString())
+                            if (tag is Story)
+                                _stories.Remove(tag as Story);
+                            else if (tag is Testcase && SelectedStory.TestCases.Count > 1)
+                                SelectedStory.TestCases.Remove(tag as Testcase);
+                            else if (tag is Keyidentifier && SelectedStory.KeyIdentifiers.Count > 1)
+                                SelectedStory.KeyIdentifiers.Remove(tag as Keyidentifier);
+                            else if (tag is Checkup && SelectedStory.Checkups.Count > 1)
+                                SelectedStory.Checkups.Remove(tag as Checkup);
+                            else if (tag is Issue && SelectedStory.Issues.Count > 1)
+                                SelectedStory.Issues.Remove(tag as Issue);
+                            else if (tag is Question && SelectedKeyidentifier.Questions.Count > 1)
+                                SelectedKeyidentifier.Questions.Remove(tag as Question);
+                            else if (tag is StringValue)
                             {
-                                case "Testcase":
-                                    AddTestcaseCommand.Execute(tag);
-                                    break;
-                                case "Question":
-                                    AddQuestionCommand.Execute(tag);
-                                    break;
-                                case "Checkup":
-                                    AddCheckupCommand.Execute(tag);
-                                    break;
-                                case "KeyIdentifier":
-                                    AddKeyIdentifierCommand.Execute(tag);
-                                    break;
-                                case "Step":
-                                    AddStepCommand.Execute(tag);
-                                    break;
-                                case "KeyIdentifierId":
-                                    AddKeyIdentifierIdCommand.Execute(tag);
-                                    break;
-                                case "Attachment":
-                                    AddAttachmentCommand.Execute(tag);
-                                    break;
-                                case "Query":
-                                    AddQueryCommand.Execute(tag);
-                                    break;
-                                case "Script":
-                                    AddScriptCommand.Execute(tag);
-                                    break;
-                                case "Issue":
-                                    AddIssueCommand.Execute(tag);
-                                    break;
-                                case "Acceptance":
-                                    AddAcceptanceCommand.Execute(tag);
-                                    break;
-                                case "Developer":
-                                    AddDeveloperCommand.Execute(tag);
-                                    break;
+                                var item = tag as StringValue;
+
+                                if (item.Type.Equals("Attachment") && SelectedStory.Attachments.Count > 1)
+                                    SelectedStory.Attachments.Remove(item);
+                                else if (item.Type.Equals("Query") && SelectedStory.Queries.Count > 1)
+                                    SelectedStory.Queries.Remove(item);
+                                else if (item.Type.Equals("Script") && SelectedStory.Scripts.Count > 1)
+                                    SelectedStory.Scripts.Remove(item);
+                                else if (item.Type.Equals("AcceptanceCriteria") && SelectedStory.AcceptanceCriteria.Count > 1)
+                                    SelectedStory.AcceptanceCriteria.Remove(item);
+                                else if (item.Type.Equals("DeveloperCriteria") && SelectedStory.DeveloperCriteria.Count > 1)
+                                    SelectedStory.DeveloperCriteria.Remove(item);
+                                else if (item.Type.Equals("Url") && SelectedQuestion.Urls.Count > 1)
+                                    SelectedQuestion.Urls.Remove(item);
+                                else if (item.Type.Equals("Step") && SelectedTestcase.Steps.Count > 1)
+                                    SelectedTestcase.Steps.Remove(item);
+                                else if (item.Type.Equals("KeyIdentifierId") && SelectedTestcase.KeyIdentifierIds.Count > 1)
+                                    SelectedTestcase.KeyIdentifierIds.Remove(item);
                             }
 
                             IsDirty = true;

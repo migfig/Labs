@@ -216,6 +216,63 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 && Scripts != null
                 && Scripts.Any() ? Scripts.All(s => Uri.IsWellFormedUriString(s.Value, UriKind.RelativeOrAbsolute)) : true;
         }
+
+        public static Story New()
+        {
+            var story = new Story
+            {
+                Name = string.Empty,
+                Title = string.Empty,
+                Description = string.Empty,
+                Url = NewUri(),
+                ParentStoryUrl = NewUri(),
+                DateStarted = DateTime.MinValue,
+                DateEnded = DateTime.MinValue,
+                Status = StoryStatus.NotStarted,
+                KeyIdentifiers = new ObservableCollection<Keyidentifier> { Keyidentifier.New() },
+                TestCases = new ObservableCollection<Testcase> { Testcase.New() },
+                Checkups = new ObservableCollection<Checkup> { Checkup.New() },
+                Attachments = new ObservableCollection<StringValue> { NewAttachment() },
+                Queries = new ObservableCollection<StringValue> { NewQuery() },
+                Scripts = new ObservableCollection<StringValue> { NewScript() },
+                AcceptanceCriteria = new ObservableCollection<StringValue> { NewAcceptanceCriteria() },
+                DeveloperCriteria = new ObservableCollection<StringValue> { NewDeveloperCriteria() },
+                Issues = new ObservableCollection<Issue> { Issue.New() }
+            };
+            story.TestCases.First().KeyIdentifierIds.First().Value = story.KeyIdentifiers.First().Id.ToString();
+
+            return story;
+        }
+
+        public static Uri NewUri()
+        {
+            return new Uri("http://localhost");
+        }
+
+        public static StringValue NewAttachment()
+        {
+            return new StringValue(NewUri().ToString(), "Attachment");
+        }
+
+        public static StringValue NewQuery()
+        {
+            return new StringValue(@"file://c:\", "Query");
+        }
+
+        public static StringValue NewScript()
+        {
+            return new StringValue(@"file://c:\", "Script");
+        }
+
+        public static StringValue NewAcceptanceCriteria()
+        {
+            return new StringValue(string.Empty, "AcceptanceCriteria");
+        }
+
+        public static StringValue NewDeveloperCriteria()
+        {
+            return new StringValue(string.Empty, "DeveloperCriteria");
+        }
     }
 
     public class Keyidentifier: IValidable
@@ -232,6 +289,17 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 && Questions != null
                 && Questions.Any() ? Questions.All(s => s.IsValid()) : true;
         }
+
+        public static Keyidentifier New()
+        {
+            return new Keyidentifier
+            {
+                Id = Guid.NewGuid(),
+                Description = string.Empty,
+                Category = IdentifierCategory.Deliverable,
+                Questions = new ObservableCollection<Question> { Question.New() }
+            };
+        }
     }
 
     public class Question: IValidable
@@ -246,6 +314,21 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 && Urls != null
                 && Urls.Any() ? Urls.All(s => Uri.IsWellFormedUriString(s.Value, UriKind.RelativeOrAbsolute)) : true;
         }
+
+        public static Question New()
+        {
+            return new Question
+            {
+                Ask = string.Empty,
+                Answer = string.Empty,
+                Urls = new ObservableCollection<StringValue> { NewUrl() }
+            };
+        }
+
+        public static StringValue NewUrl()
+        {
+            return new StringValue("http://localhost", "Url");
+        }
     }
 
     public class Issue : IValidable
@@ -257,6 +340,15 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         public bool IsValid()
         {
             return !string.IsNullOrEmpty(Description);
+        }
+
+        public static Issue New()
+        {
+            return new Issue
+            {
+                Description = string.Empty,
+                DateClosed = DateTime.MinValue
+            };
         }
     }
 
@@ -277,6 +369,28 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 && KeyIdentifierIds != null
                 && KeyIdentifierIds.Any() ? KeyIdentifierIds.All(s => Guid.Parse(s.Value) != Guid.Empty) : true;
         }
+
+        public static Testcase New()
+        {
+            return new Testcase
+            {
+                Description = string.Empty,
+                Steps = new ObservableCollection<StringValue> { new StringValue(string.Empty, "Step") },
+                DateApplied = DateTime.MinValue,
+                Status = TestcaseStatus.Pending,
+                KeyIdentifierIds = new ObservableCollection<StringValue> { new StringValue(Guid.Empty.ToString(), "KeyIdentifierId") }
+            };
+        }
+
+        public static StringValue NewStep()
+        {
+            return new StringValue(string.Empty, "Step");
+        }
+
+        public static StringValue NewKeyIdentifierId(Guid id)
+        {
+            return new StringValue(id.ToString(), "KeyIdentifierId");
+        }
     }
 
     public class Checkup: IValidable
@@ -289,15 +403,26 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         {
             return !string.IsNullOrEmpty(Description);
         }
+
+        public static Checkup New()
+        {
+            return new Checkup
+            {
+                Description = string.Empty,
+                DateApplied = DateTime.MinValue
+            };
+        }
     }
 
     public class StringValue 
     {
-        public StringValue(string value)
+        public StringValue(string value, string type)
         {
             Value = value;
+            Type = type;
         }
         public string Value { get; set; }
+        public string Type { get; set; }
     }
 
     public enum StoryStatus

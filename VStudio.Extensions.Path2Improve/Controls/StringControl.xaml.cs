@@ -28,13 +28,29 @@ namespace VStudio.Extensions.Path2Improve.Controls
             if (((Control)sender).Name.Equals(expanderString.Name))
             {
                 this.Height = 500;
+                //var item = ((Button)sender).Tag as StringValue;
+                //switch(item.Type)
+                //{
+                //    case "Url":
+                //        break;
+                //    case "Step":
+                //        break;
+                //    case "Question":
+                //        break;
+                //    case "Attachment":
+                //        break;
+                //    case "":
+                //        break;
+                //    case "":
+                //        break;
+                //}
             }
             e.Handled = true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var item = (sender as Button).Tag.GetType().Name;
+            var item = (((Button)sender).Tag as StringValue).Type;
             if (MainViewModel.ViewModel.AddActionCommand.CanExecute(item))
             {
                 MainViewModel.ViewModel.AddActionCommand.Execute(item);

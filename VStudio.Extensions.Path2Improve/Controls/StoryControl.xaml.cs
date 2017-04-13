@@ -15,16 +15,7 @@ namespace VStudio.Extensions.Path2Improve.Controls
         {
             InitializeComponent();
         }
-
-        private void Image_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            var component = (sender as System.Windows.Controls.Image).Tag as Component;
-            if (MainViewModel.ViewModel.AddKeyIdentifierCommand.CanExecute(component))
-            {
-                MainViewModel.ViewModel.AddKeyIdentifierCommand.Execute(component);
-            }
-        }
-
+       
         private void OnExpanderDetailsCollapsed(object sender, RoutedEventArgs e)
         {
             if (((Control)sender).Name.Equals(expanderStory.Name))

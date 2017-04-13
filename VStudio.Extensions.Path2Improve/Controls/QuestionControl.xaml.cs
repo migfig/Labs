@@ -25,10 +25,14 @@ namespace VStudio.Extensions.Path2Improve.Controls
 
         private void OnExpanderDetailsExpanded(object sender, RoutedEventArgs e)
         {
+            var expander = sender as Expander;
             if (((Control)sender).Name.Equals(expanderQuestion.Name))
             {
                 this.Height = 500;
             }
+            if (MainViewModel.ViewModel.SelectedQuestion == null)
+                MainViewModel.ViewModel.SelectedQuestion = expander.DataContext as Question;
+
             e.Handled = true;
         }
 
