@@ -125,23 +125,9 @@
                             <TextBlock Text="Title" Grid.Row="2"/>
                             <TextBox Text="{Binding Mode=TwoWay, Path=Title}" Grid.Row="3" Grid.ColumnSpan="2"/>
                             <TextBlock Text="Url" Grid.Row="4"/>
-                            <Grid Grid.Row="5" Grid.ColumnSpan="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding Mode=TwoWay, Path=Url}"/>
-                                <Button Content="Go" Grid.Column="1" Tag="{Binding Url}" Click="Button_Click_1"/>
-                            </Grid>
+                            <TextBox Grid.Row="5" Grid.ColumnSpan="2" Text="{Binding Mode=TwoWay, Path=Url}"/>
                             <TextBlock Text="Parent Url" Grid.Row="6"/>
-                            <Grid Grid.Row="7" Grid.ColumnSpan="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding Mode=TwoWay, Path=ParentStoryUrl}"/>
-                                <Button Content="Go" Grid.Column="1" />
-                            </Grid>
+                                <TextBox Grid.Row="7" Grid.ColumnSpan="2" Text="{Binding Mode=TwoWay, Path=ParentStoryUrl}"/>
                             <TextBlock Text="Date Ended" Grid.Row="8"/>
                             <DatePicker Text="{Binding Mode=TwoWay, Path=DateEnded}" Grid.Row="8" Grid.Column="1"/>
                             <TextBlock Text="Status" Grid.Row="9"/>

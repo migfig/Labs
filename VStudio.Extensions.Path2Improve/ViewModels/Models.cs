@@ -52,7 +52,6 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
 
             doc.Blocks.Add(new Paragraph(new Bold(new Run("Url"))));
             var url = new Hyperlink(new Run(Url.ToString()));
-            url.NavigateUri = Url;
             doc.Blocks.Add(new Paragraph(url));
             doc.Blocks.Add(new Paragraph(new Bold(new Run("Parent Story"))));
             var parentUrl = new Hyperlink(new Run(ParentStoryUrl.ToString()));
@@ -72,7 +71,6 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 {
                     var itemUri = new Uri(item.Value);
                     var itemUrl = new Hyperlink(new Run(item.Value));
-                    itemUrl.NavigateUri = itemUri;
                     doc.Blocks.Add(new Paragraph(itemUrl));
                 }
             }
@@ -135,7 +133,6 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 {
                     var itemUri = new Uri(item.Value);
                     var itemUrl = new Hyperlink(new Run(item.Value));
-                    itemUrl.NavigateUri = itemUri;
                     doc.Blocks.Add(new Paragraph(itemUrl));
                 }
             }
@@ -147,10 +144,6 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 {
                     var itemUri = new Uri(item.Value);
                     var itemUrl = new Hyperlink(new Run(item.Value));
-                    itemUrl.NavigateUri = itemUri;
-                    itemUrl.Tag = itemUri;
-                    itemUrl.IsEnabled = true;
-                    itemUrl.Click += ItemUrl_Click; 
                     doc.Blocks.Add(new Paragraph(itemUrl));
                 }
             }
@@ -188,12 +181,6 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
             }
 
             return doc;
-        }
-
-        private void ItemUrl_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var file = ((Uri)((Hyperlink)sender).Tag).ToString();
-            Common.Extensions.runProcess(@"C:\Windows\explorer.exe", file, -1);
         }
 
         public bool IsValid()

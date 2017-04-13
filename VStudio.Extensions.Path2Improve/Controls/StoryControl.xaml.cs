@@ -47,17 +47,31 @@ namespace VStudio.Extensions.Path2Improve.Controls
             {
                 MainViewModel.ViewModel.AddActionCommand.Execute(item);
             }
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Common.Extensions.runProcess(@"C:\Program Files\Internet Explorer\iexplore.exe", (sender as Button).Tag.ToString());
-        }
+        }        
 
         private void RtbSummary_Loaded(object sender, RoutedEventArgs e)
         {
             var rtb = sender as RichTextBox;
             rtb.Document = (rtb.Tag as Story).Document;
+            rtb.MouseDoubleClick += Rtb_MouseDoubleClick;
+        }
+
+        private void Rtb_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var rtb = sender as RichTextBox;
+            var ptr = rtb.GetPositionFromPoint(e.GetPosition(rtb), true);
+            if(null != ptr)
+            {
+                var url = ptr.GetTextInRun(System.Windows.Documents.LogicalDirection.Backward);
+                url += ptr.GetTextInRun(System.Windows.Documents.LogicalDirection.Forward);
+                //MessageBox.Show("[" + url + "]", "Go", MessageBoxButton.OK, MessageBoxImage.Information);
+                if(url.ToLower().Contains("http"))
+                    Common.Extensions.runProcess(@"C:\Program Files\Internet Explorer\iexplore.exe", url, -1);
+                else //if (url.ToLower().Contains("file://"))
+                    Common.Extensions.runProcess(@"C:\Windows\explorer.exe", url, -1);
+
+            }
+            e.Handled = true;
         }
 
         private void Button_RemoveItemClick(object sender, RoutedEventArgs e)
