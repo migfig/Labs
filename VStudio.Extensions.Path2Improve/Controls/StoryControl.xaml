@@ -121,7 +121,14 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Name"/>
-                            <TextBox Text="{Binding Mode=TwoWay, Path=Name}" Grid.Row="1" Grid.ColumnSpan="2"/>
+                            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Mode=TwoWay, Path=Name}"/>
+                                <Button Grid.Column="1" Content="Search" Tag="{Binding}" Click="SearchStory"/>
+                            </Grid>
                             <TextBlock Text="Title" Grid.Row="2"/>
                             <TextBox Text="{Binding Mode=TwoWay, Path=Title}" Grid.Row="3" Grid.ColumnSpan="2"/>
                             <TextBlock Text="Url" Grid.Row="4"/>

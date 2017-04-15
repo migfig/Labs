@@ -104,6 +104,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\JiraModels.cs" />
     <Compile Include="ViewModels\Models.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>

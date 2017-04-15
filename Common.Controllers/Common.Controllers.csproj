@@ -66,6 +66,7 @@
     <Compile Include="PresentationsController.cs" />
     <Compile Include="ProductsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoriesController.cs" />
     <Compile Include="XsltController.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -281,7 +281,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     }));
             }
         }
-
+        
         private RelayCommand _addStoryCommand;
         public ICommand AddStoryCommand
         {

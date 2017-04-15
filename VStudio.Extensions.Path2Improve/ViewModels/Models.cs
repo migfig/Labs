@@ -259,7 +259,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         public static StringValue NewDeveloperCriteria()
         {
             return new StringValue(string.Empty, "DeveloperCriteria");
-        }
+        }        
     }
 
     public class Keyidentifier: IValidable

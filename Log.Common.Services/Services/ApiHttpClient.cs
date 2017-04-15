@@ -14,6 +14,7 @@ namespace Log.Common.Services
     public interface IGenericApiService<T>: IDisposable where T: class 
     {
         Task<IEnumerable<T>> GetItems(string url);
+        Task<T> GetItem(string url);
         Task<bool> AddItems(IEnumerable<T> items);
         Task<bool> AddItem(T item);
         Task<bool> RemoveItem(T item, string propertyName);
@@ -130,6 +131,22 @@ namespace Log.Common.Services
             catch (Exception) {; }
 
             return new List<T>();
+        }
+
+        public async Task<T> GetItem(string url)
+        {
+            try
+            {
+                var response = await _client.GetAsync(_baseUrl + url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T>(json);
+                }
+            }
+            catch (Exception) {; }
+
+            return Activator.CreateInstance<T>();
         }
 
         public async Task<string> TransformXml(XElement xml, string styleSheet)

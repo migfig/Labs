@@ -1,7 +1,11 @@
-﻿using System.Windows;
+﻿using Log.Common.Services;
+using Newtonsoft.Json;
+using System;
+using System.Linq;
+using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Trainer.Domain;
 using VStudio.Extensions.Path2Improve.ViewModels;
 
 namespace VStudio.Extensions.Path2Improve.Controls
@@ -15,7 +19,7 @@ namespace VStudio.Extensions.Path2Improve.Controls
         {
             InitializeComponent();
         }
-       
+
         private void OnExpanderDetailsCollapsed(object sender, RoutedEventArgs e)
         {
             if (((Control)sender).Name.Equals(expanderStory.Name))
@@ -67,7 +71,7 @@ namespace VStudio.Extensions.Path2Improve.Controls
                 //MessageBox.Show("[" + url + "]", "Go", MessageBoxButton.OK, MessageBoxImage.Information);
                 if(url.ToLower().Contains("http"))
                     Common.Extensions.runProcess(@"C:\Program Files\Internet Explorer\iexplore.exe", url, -1);
-                else //if (url.ToLower().Contains("file://"))
+                else if (url.ToLower().EndsWith(".cs") || url.ToLower().EndsWith(".sql"))
                     Common.Extensions.runProcess(@"C:\Windows\explorer.exe", url, -1);
 
             }
@@ -85,5 +89,92 @@ namespace VStudio.Extensions.Path2Improve.Controls
                 }
             }
         }
+
+        private void SearchStory(object sender, RoutedEventArgs e)
+        {
+            var story = ((sender as Button).Tag as Story);
+            LoadStory(story);
+        }
+
+        private async void LoadStory(Story story)
+        {
+            if (!string.IsNullOrEmpty(story.Name))
+            {
+                try
+                {
+                    using (var client = ApiServiceFactory.CreateService<string>("http://localhost:3033/api/stories"))
+                    {
+                        var json = await client.GetItem("/" + story.Name).ConfigureAwait(false);
+                        var jiraStory = JsonConvert.DeserializeObject<JiraStory>(json);
+
+                        var description = jiraStory.fields.description;
+                        var acceptCrit = string.Empty;
+                        var developCrit = string.Empty;
+                        var descParts = description.Split(new[] { "Development Criteria", "Acceptance Criteria" },   StringSplitOptions.None);
+
+                        if (descParts.Length == 3)
+                        {
+                            story.Description = descParts[0];
+                            developCrit = descParts[1];
+                            acceptCrit = descParts[2];
+                        }
+                        else if(descParts.Length == 2)
+                        {
+                            var acceptCritIdx = -1;
+                            var developCritIdx = -1;
+                            if (description.Contains("Acceptance Criteria") && (acceptCritIdx = description.IndexOf("Acceptance Criteria")) >= 0)
+                            {
+                                story.Description = descParts[acceptCritIdx > 0 ? 0 : 1];
+                                acceptCrit = descParts[acceptCritIdx > 0 ? 1 : 0];
+                            }
+                            else if (description.Contains("Development Criteria") && (developCritIdx = description.IndexOf("Development Criteria")) >= 0)
+                            {
+                                story.Description = descParts[developCritIdx > 0 ? 0 : 1];
+                                developCrit = descParts[developCritIdx > 0 ? 1 : 0];
+                            }
+                        }
+                        else
+                        {
+                            acceptCrit = description.Contains("Acceptance Criteria") ? descParts[0]: string.Empty;
+                            developCrit = description.Contains("Development Criteria") ? descParts[0] : string.Empty;
+                            story.Description = !description.Contains("Acceptance Criteria") && !description.Contains("Development Criteria") ? descParts[0] : string.Empty;
+                        }
+
+                        if(!string.IsNullOrEmpty(acceptCrit))
+                            story.AcceptanceCriteria = new ObservableCollection<StringValue>(
+                                acceptCrit.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                                            .Select(v => new StringValue(v, "AcceptanceCriteria")));
+
+                        if (!string.IsNullOrEmpty(developCrit))
+                            story.DeveloperCriteria = new ObservableCollection<StringValue>(
+                            developCrit.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                                        .Select(v => new StringValue(v, "DevelopmentCriteria")));
+
+                        story.Title = jiraStory.fields.summary;
+                        story.Url = new Uri(jiraStory.self);
+                        story.ParentStoryUrl = new Uri(jiraStory.fields.project.self);
+
+                        try
+                        {
+                            story.Attachments.Clear();
+                        }
+                        catch (Exception) {; }
+
+                        foreach (var att in jiraStory.fields.attachment)
+                        {
+                            try
+                            {
+                                story.Attachments.Add(new StringValue(att.content, "Attachment"));
+                            }
+                            catch (Exception) {;}
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }        
     }
 }
