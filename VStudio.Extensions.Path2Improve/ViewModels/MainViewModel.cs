@@ -95,7 +95,8 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                             TestCases = new ObservableCollection<Testcase>{ Testcase.New() },
                             Issues = new ObservableCollection<Issue>{ Issue.New() },
                             AcceptanceCriteria = new ObservableCollection<StringValue>{ Story.NewAcceptanceCriteria() },
-                            DeveloperCriteria = new ObservableCollection<StringValue>{ Story.NewDeveloperCriteria() }
+                            DeveloperCriteria = new ObservableCollection<StringValue>{ Story.NewDeveloperCriteria() },
+                            SubTasks = new ObservableCollection<SubTask>{ SubTask.New() }
                         },
                     };
 

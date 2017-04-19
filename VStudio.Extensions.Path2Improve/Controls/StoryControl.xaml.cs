@@ -102,7 +102,9 @@ namespace VStudio.Extensions.Path2Improve.Controls
             {
                 try
                 {
-                    using (var client = ApiServiceFactory.CreateService<string>("http://localhost:3033/api/stories"))
+                    var baseUrl = Story.New().Url.ToString();
+
+                    using (var client = ApiServiceFactory.CreateService<string>(baseUrl))
                     {
                         var json = await client.GetItem("/" + story.Name).ConfigureAwait(false);
                         var jiraStory = JsonConvert.DeserializeObject<JiraStory>(json);
@@ -168,6 +170,38 @@ namespace VStudio.Extensions.Path2Improve.Controls
                             }
                             catch (Exception) {;}
                         }
+
+                        try
+                        {
+                            story.SubTasks.Clear();
+                        }
+                        catch (Exception) {; }
+
+                        foreach (var task in jiraStory.fields.subtasks)
+                        {
+                            try
+                            {
+                                story.SubTasks.Add(new SubTask {
+                                    Name = task.key,
+                                    Title = task.fields.summary,
+                                    Url = new Uri(task.self),
+                                    Status = task.fields.status.name
+                                });
+                            }
+                            catch (Exception) {; }
+                        }
+
+                        try
+                        {
+                            MainViewModel.ViewModel.IsDirty = true;
+                        }
+                        catch (Exception) {;}
+
+                        try
+                        {
+                            MainViewModel.ViewModel.SaveStoryCommand.Execute(null);
+                        }
+                        catch (Exception) {; }
                     }
                 }
                 catch (Exception e)

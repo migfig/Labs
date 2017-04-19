@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows.Documents;
 
@@ -30,6 +31,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         public ObservableCollection<StringValue> AcceptanceCriteria { get; set; }
         public ObservableCollection<StringValue> DeveloperCriteria { get; set; }
         public ObservableCollection<Issue> Issues { get; set; }
+        public ObservableCollection<SubTask> SubTasks { get; set; }
 
         [JsonIgnore]
         public FlowDocument Document
@@ -180,6 +182,17 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 }
             }
 
+            if (SubTasks.Any())
+            {
+                i = 0;
+                doc.Blocks.Add(new Paragraph(new Bold(new Run("SubTasks"))));
+                foreach (var item in SubTasks)
+                {
+                    doc.Blocks.Add(new Paragraph(new Run(" " + (++i).ToString() + ". " + item.Title)));
+                    doc.Blocks.Add(new Paragraph(new Italic(new Run("  Status: " + item.Status))));
+                }
+            }
+
             return doc;
         }
 
@@ -201,17 +214,24 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 && Queries != null
                 && Queries.Any() ? Queries.All(s => Uri.IsWellFormedUriString(s.Value, UriKind.RelativeOrAbsolute)) : true
                 && Scripts != null
-                && Scripts.Any() ? Scripts.All(s => Uri.IsWellFormedUriString(s.Value, UriKind.RelativeOrAbsolute)) : true;
+                && Scripts.Any() ? Scripts.All(s => Uri.IsWellFormedUriString(s.Value, UriKind.RelativeOrAbsolute)) : true
+                && SubTasks.Any() ? SubTasks.All(s => s.IsValid()) : true;
         }
 
         public static Story New()
         {
+            var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "story.json");
+            if(File.Exists(fileName))
+            {
+                return JsonConvert.DeserializeObject<Story>(File.ReadAllText(fileName));
+            }
+
             var story = new Story
             {
                 Name = string.Empty,
                 Title = string.Empty,
                 Description = string.Empty,
-                Url = NewUri(),
+                Url = new Uri("http://localhost:3033/api/stories"),
                 ParentStoryUrl = NewUri(),
                 DateStarted = DateTime.MinValue,
                 DateEnded = DateTime.MinValue,
@@ -224,9 +244,12 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 Scripts = new ObservableCollection<StringValue> { NewScript() },
                 AcceptanceCriteria = new ObservableCollection<StringValue> { NewAcceptanceCriteria() },
                 DeveloperCriteria = new ObservableCollection<StringValue> { NewDeveloperCriteria() },
-                Issues = new ObservableCollection<Issue> { Issue.New() }
+                Issues = new ObservableCollection<Issue> { Issue.New() },
+                SubTasks = new ObservableCollection<SubTask> { SubTask.New() }
             };
             story.TestCases.First().KeyIdentifierIds.First().Value = story.KeyIdentifiers.First().Id.ToString();
+
+            File.WriteAllText(fileName, JsonConvert.SerializeObject(story, Formatting.Indented));
 
             return story;
         }
@@ -397,6 +420,31 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
             {
                 Description = string.Empty,
                 DateApplied = DateTime.MinValue
+            };
+        }
+    }
+
+    public class SubTask : IValidable
+    {
+        public string Name { get; set; }
+        public string Title { get; set; }
+        public Uri Url { get; set; }
+        public string Status { get; set; }
+
+        public bool IsValid()
+        {
+            return !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Title)
+                && Uri.IsWellFormedUriString(Url.ToString(), UriKind.RelativeOrAbsolute);
+        }
+
+        public static SubTask New()
+        {
+            return new SubTask
+            {
+                Name = string.Empty,
+                Title = string.Empty,
+                Url = new Uri("http://localhost"),
+                Status = string.Empty
             };
         }
     }
