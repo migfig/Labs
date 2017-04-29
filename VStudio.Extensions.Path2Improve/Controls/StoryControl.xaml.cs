@@ -1,5 +1,4 @@
-﻿using Log.Common.Services;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Collections.ObjectModel;
@@ -7,6 +6,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using VStudio.Extensions.Path2Improve.ViewModels;
+using Common.Services;
+using System.Collections.Generic;
+using VStudio.Extensions.Path2Improve.Views;
 
 namespace VStudio.Extensions.Path2Improve.Controls
 {
@@ -103,8 +105,22 @@ namespace VStudio.Extensions.Path2Improve.Controls
                 try
                 {
                     var baseUrl = Story.New().Url.ToString();
+                    var flatter = Flatter.Get();
+                    if(string.IsNullOrEmpty(flatter.Value))
+                    {
+                        var creds = new Credentials();
+                        if(creds.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                        {
+                            flatter = Flatter.Get(creds.User, creds.Password);
+                        }
+                    }
 
-                    using (var client = ApiServiceFactory.CreateService<string>(baseUrl))
+                    var headers = new List<KeyValuePair<string, object>>
+                    {
+                        new KeyValuePair<string, object>("Authorization", "Basic " + flatter.Value)
+                    };
+
+                    using (var client = ApiServiceFactory.CreateService<string>(baseUrl, headers))
                     {
                         var json = await client.GetItem("/" + story.Name).ConfigureAwait(false);
                         var jiraStory = JsonConvert.DeserializeObject<JiraStory>(json);

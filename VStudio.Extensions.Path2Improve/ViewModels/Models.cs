@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Common.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Documents;
 
 namespace VStudio.Extensions.Path2Improve.ViewModels
@@ -10,7 +12,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
     public interface IValidable
     {
         bool IsValid();
-    }
+    }    
 
     public class Story: IValidable
     {
@@ -481,5 +483,42 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         Pending,
         Failed,
         Success
-    }   
+    }
+
+    public class Flatter
+    {
+        public string Value { get; set; }
+
+        public static Flatter Get(string key, string value)
+        {
+            var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "flatter.json");
+            if (File.Exists(fileName))
+            {
+                var flat = JsonConvert.DeserializeObject<Flatter>(File.ReadAllText(fileName));
+                flat.Value = Convert.ToBase64String(Encoding.UTF8.GetBytes(Flat.Deflate(flat.Value, typeof(Flatter).FullName + "|" + typeof(Story).FullName)));
+                return flat;
+            }
+
+            File.WriteAllText(fileName, JsonConvert.SerializeObject(
+                new Flatter
+                {
+                    Value = Flat.Inflate(key + ":" + value, typeof(Flatter).FullName + "|" + typeof(Story).FullName)
+                }));
+
+            return new Flatter { Value = Convert.ToBase64String(Encoding.UTF8.GetBytes(key + ":" + value)) };
+        }
+
+        public static Flatter Get()
+        {
+            var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "flatter.json");
+            if (File.Exists(fileName))
+            {
+                var flat = JsonConvert.DeserializeObject<Flatter>(File.ReadAllText(fileName));
+                flat.Value = Convert.ToBase64String(Encoding.UTF8.GetBytes(Flat.Deflate(flat.Value, typeof(Flatter).FullName + "|" + typeof(Story).FullName)));
+                return flat;
+            }
+
+            return new Flatter { Value = string.Empty };
+        }
+    }
 }
