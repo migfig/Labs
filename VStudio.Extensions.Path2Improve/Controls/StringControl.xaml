@@ -150,12 +150,11 @@
                     
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Value"/>
-                    <TextBox Text="{Binding Mode=TwoWay, Path=Value}" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10" Height="100"/>
+                    <TextBox Text="{Binding Mode=TwoWay, Path=Value}" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10" VerticalAlignment="Top"/>
                 </Grid>
             </Expander>
         </Border>

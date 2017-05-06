@@ -157,9 +157,8 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Description"/>
-                    <TextBox Text="{Binding Mode=TwoWay, Path=Description}" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10" Height="100"/>
-                    <!--Checked="{Binding Mode=TwoWay, Path=IsClosed}"-->
-                    <CheckBox Content="Is Closed"  Grid.Row="2"/> 
+                    <TextBox Text="{Binding Mode=TwoWay, Path=Description}" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10"/>
+                    <CheckBox Content="Is Open" Grid.Row="2" IsChecked="{Binding Mode=TwoWay, Path=IsOpen}"/> 
                     <TextBlock Text="Date Closed" Grid.Row="3"/>
                     <DatePicker Text="{Binding Mode=TwoWay, Path=DateClosed}" Grid.Row="3" Grid.Column="1"/>
                 </Grid>

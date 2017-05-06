@@ -8,7 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using Windows.ApplicationModel;
+//using Windows.ApplicationModel;
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections.ObjectModel;
@@ -67,45 +67,45 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
 
         private void GetStories()
         {
-            if (!DesignMode.DesignModeEnabled)
-            {
+            //if (!DesignMode.DesignModeEnabled)
+            //{
                 _stories = JsonConvert.DeserializeObject<ObservableCollection<Story>>(File.ReadAllText(_fileName));
-            }
-            else
-            {
-                #region dummy entries
+            //}
+            //else
+            //{
+            //    #region dummy entries
 
-                _stories = new ObservableCollection<Story>
-                    {
-                        new Story
-                        {
-                            Name = "ID-1001",
-                            Title ="Create cloud items",
-                            Description = "Create items from provided values",
-                            DateStarted = DateTime.UtcNow,
-                            DateEnded = DateTime.MinValue,
-                            Status = StoryStatus.NotStarted,
-                            Url = Story.NewUri(),
-                            ParentStoryUrl = Story.NewUri(),
-                            Attachments = new ObservableCollection<StringValue> { Story.NewAttachment() },
-                            KeyIdentifiers = new ObservableCollection<Keyidentifier>{ Keyidentifier.New() },
-                            Checkups = new ObservableCollection<Checkup> { Checkup.New() },
-                            Queries = new ObservableCollection<StringValue>{ Story.NewQuery() },
-                            Scripts = new ObservableCollection<StringValue>{ Story.NewScript() },
-                            TestCases = new ObservableCollection<Testcase>{ Testcase.New() },
-                            Issues = new ObservableCollection<Issue>{ Issue.New() },
-                            AcceptanceCriteria = new ObservableCollection<StringValue>{ Story.NewAcceptanceCriteria() },
-                            DeveloperCriteria = new ObservableCollection<StringValue>{ Story.NewDeveloperCriteria() },
-                            SubTasks = new ObservableCollection<SubTask>{ SubTask.New() }
-                        },
-                    };
+            //    _stories = new ObservableCollection<Story>
+            //        {
+            //            new Story
+            //            {
+            //                Name = "ID-1001",
+            //                Title ="Create cloud items",
+            //                Description = "Create items from provided values",
+            //                DateStarted = DateTime.UtcNow,
+            //                DateEnded = DateTime.MinValue,
+            //                Status = StoryStatus.NotStarted,
+            //                Url = Story.NewUri(),
+            //                ParentStoryUrl = Story.NewUri(),
+            //                Attachments = new ObservableCollection<StringValue> { Story.NewAttachment() },
+            //                KeyIdentifiers = new ObservableCollection<Keyidentifier>{ Keyidentifier.New() },
+            //                Checkups = new ObservableCollection<Checkup> { Checkup.New() },
+            //                Queries = new ObservableCollection<StringValue>{ Story.NewQuery() },
+            //                Scripts = new ObservableCollection<StringValue>{ Story.NewScript() },
+            //                TestCases = new ObservableCollection<Testcase>{ Testcase.New() },
+            //                Issues = new ObservableCollection<Issue>{ Issue.New() },
+            //                AcceptanceCriteria = new ObservableCollection<StringValue>{ Story.NewAcceptanceCriteria() },
+            //                DeveloperCriteria = new ObservableCollection<StringValue>{ Story.NewDeveloperCriteria() },
+            //                SubTasks = new ObservableCollection<SubTask>{ SubTask.New() }
+            //            },
+            //        };
 
-                _stories.First().TestCases.First().KeyIdentifierIds.Add(new StringValue(_stories.First().KeyIdentifiers.First().Id.ToString(), "KeyIdentifierId"));
-                #endregion
+            //    _stories.First().TestCases.First().KeyIdentifierIds.Add(new StringValue(_stories.First().KeyIdentifiers.First().Id.ToString(), "KeyIdentifierId"));
+            //    #endregion
 
-                SetStories();
-                OnPropertyChanged("Stories");
-            }
+            //    SetStories();
+            //    OnPropertyChanged("Stories");
+            //}
         }
 
         private void SetStories()
@@ -329,7 +329,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                     },
                     (tag) =>
                     {
-                        return IsDirty && Stories != null && Stories.Any();
+                        return /*IsDirty &&*/ Stories != null && Stories.Any();
                     }));
             }
         }

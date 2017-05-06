@@ -138,14 +138,14 @@
                             <TextBlock Text="Date Ended" Grid.Row="8"/>
                             <DatePicker Text="{Binding Mode=TwoWay, Path=DateEnded}" Grid.Row="8" Grid.Column="1"/>
                             <TextBlock Text="Status" Grid.Row="9"/>
-                            <ComboBox ItemsSource="{Binding Mode=TwoWay, Path=StoryStatuses}" 
-                                SelectedItem="{Binding Mode=TwoWay, Path=SelectedStory.Status}" 
+                            <ComboBox ItemsSource="{Binding StoryStatuses}" 
+                                SelectedItem="{Binding Mode=TwoWay, Path=Status}" 
                                 Grid.Row="9" Grid.Column="1">
-                                <!--<ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>-->
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
                             </ComboBox>
                             <TextBlock Text="Description" Grid.Row="10"/>
                             <TextBox Text="{Binding Mode=TwoWay, Path=Description}"

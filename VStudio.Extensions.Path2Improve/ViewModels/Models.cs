@@ -1,6 +1,7 @@
 ﻿using Common.Helpers;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -34,6 +35,21 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         public ObservableCollection<StringValue> DeveloperCriteria { get; set; }
         public ObservableCollection<Issue> Issues { get; set; }
         public ObservableCollection<SubTask> SubTasks { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<StoryStatus> StoryStatuses
+        {
+            get
+            {
+                return new List<StoryStatus> {
+                    StoryStatus.NotStarted,
+                    StoryStatus.InProgress,
+                    StoryStatus.Completed,
+                    StoryStatus.Cancelled,
+                    StoryStatus.Postponed
+                };
+            }
+        }
 
         [JsonIgnore]
         public FlowDocument Document
@@ -294,6 +310,19 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
         public IdentifierCategory Category { get; set; }
         public ObservableCollection<Question> Questions { get; set; }
 
+        [JsonIgnore]
+        public IEnumerable<IdentifierCategory> IdentifierCategories
+        {
+            get
+            {
+                return new List<IdentifierCategory> {
+                    IdentifierCategory.Deliverable,
+                    IdentifierCategory.EnvironmentSetup,
+                    IdentifierCategory.Other
+                };
+            }
+        }
+
         public bool IsValid()
         {
             return !string.IsNullOrEmpty(Description)
@@ -346,9 +375,23 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
     public class Issue : IValidable
     {
         public string Description { get; set; }
-        public bool IsOpen { get; set; }
-        public DateTime? DateClosed { get; set; }
+        private bool _applied;
+        public bool IsOpen
+        {
+            get { return _applied; }
+            set
+            {
+                _applied = value;
+                DateClosed = DateTime.UtcNow;
+            }
+        }
 
+        private DateTime? _dateApplied;
+        public DateTime? DateClosed
+        {
+            get { return _dateApplied; }
+            set { _dateApplied = value; }
+        }
         public bool IsValid()
         {
             return !string.IsNullOrEmpty(Description);
@@ -368,10 +411,38 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
     {
         public string Description { get; set; }
         public ObservableCollection<StringValue> Steps { get; set; }
-        public bool Applied { get; set; }
-        public DateTime? DateApplied { get; set; }
+        private bool _applied;
+        public bool Applied
+        {
+            get { return _applied; }
+            set
+            {
+                _applied = value;
+                DateApplied = DateTime.UtcNow;
+            }
+        }
+
+        private DateTime? _dateApplied;
+        public DateTime? DateApplied
+        {
+            get { return _dateApplied; }
+            set { _dateApplied = value; }
+        }
         public TestcaseStatus Status { get; set; }
         public ObservableCollection<StringValue> KeyIdentifierIds { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<TestcaseStatus> TestcaseStatuses
+        {
+            get
+            {
+                return new List<TestcaseStatus> {
+                    TestcaseStatus.Pending,
+                    TestcaseStatus.Success,
+                    TestcaseStatus.Failed
+                };
+            }
+        }
 
         public bool IsValid()
         {
@@ -408,9 +479,23 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
     public class Checkup: IValidable
     {
         public string Description { get; set; }
-        public bool Applied { get; set; }
-        public DateTime? DateApplied { get; set; }
+        private bool _applied;
+        public bool Applied
+        {
+            get { return _applied; }
+            set
+            {
+                _applied = value;
+                DateApplied = DateTime.UtcNow;
+            }
+        }
 
+        private DateTime? _dateApplied;
+        public DateTime? DateApplied
+        {
+            get { return _dateApplied; }
+            set { _dateApplied = value; }
+        }
         public bool IsValid()
         {
             return !string.IsNullOrEmpty(Description);
@@ -499,11 +584,11 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
                 return flat;
             }
 
-            File.WriteAllText(fileName, JsonConvert.SerializeObject(
-                new Flatter
-                {
-                    Value = Flat.Inflate(key + ":" + value, typeof(Flatter).FullName + "|" + typeof(Story).FullName)
-                }));
+            //File.WriteAllText(fileName, JsonConvert.SerializeObject(
+            //    new Flatter
+            //    {
+            //        Value = Flat.Inflate(key + ":" + value, typeof(Flatter).FullName + "|" + typeof(Story).FullName)
+            //    }));
 
             return new Flatter { Value = Convert.ToBase64String(Encoding.UTF8.GetBytes(key + ":" + value)) };
         }

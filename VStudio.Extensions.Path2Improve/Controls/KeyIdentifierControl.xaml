@@ -155,21 +155,20 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Description"/>
-                            <TextBox Text="{Binding Mode=TwoWay, Path=Description}" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10" Height="100"/>
+                            <TextBox Text="{Binding Mode=TwoWay, Path=Description}" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10"/>
                             <TextBlock Text="Category" Grid.Row="2"/>
-                            <ComboBox ItemsSource="{Binding Mode=TwoWay, Path=StoryCategories}" 
-                                SelectedItem="{Binding Mode=TwoWay, Path=SelectedCategory.Category}" 
+                            <ComboBox ItemsSource="{Binding IdentifierCategories}" 
+                                SelectedItem="{Binding Mode=TwoWay, Path=Category}" 
                                 Grid.Row="2" Grid.Column="1">
-                                <!--<ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>-->
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
                             </ComboBox>
                         </Grid>
                     </TabItem>

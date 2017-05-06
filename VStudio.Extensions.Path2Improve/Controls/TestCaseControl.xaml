@@ -160,20 +160,19 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Description"/>
-                            <TextBox Text="{Binding Mode=TwoWay, Path=Description}" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10" Height="100"/>
-                            <!--Checked="{Binding Mode=TwoWay, Path=Applied}"-->
-                            <CheckBox Content="Applied" Grid.Row="2"/>
+                            <TextBox Text="{Binding Mode=TwoWay, Path=Description}" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10"/>
+                            <CheckBox Content="Applied" Grid.Row="2" IsChecked="{Binding Mode=TwoWay, Path=Applied}"/>
                             <TextBlock Text="Date Applied" Grid.Row="3"/>
                             <DatePicker Text="{Binding Mode=TwoWay, Path=DateApplied}" Grid.Row="3" Grid.Column="1"/>
                             <TextBlock Text="Status" Grid.Row="4"/>
-                            <ComboBox ItemsSource="{Binding Mode=TwoWay, Path=StoryStatuses}" 
-                                SelectedItem="{Binding Mode=TwoWay, Path=SelectedStory.Status}" 
+                            <ComboBox ItemsSource="{Binding TestcaseStatuses}" 
+                                SelectedItem="{Binding Mode=TwoWay, Path=Status}" 
                                 Grid.Row="4" Grid.Column="1" Height="25" VerticalAlignment="Top">
-                                <!--<ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>-->
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
                             </ComboBox>
                         </Grid>
                     </TabItem>

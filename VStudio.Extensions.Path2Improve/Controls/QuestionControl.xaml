@@ -154,13 +154,14 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Ask"/>
-                            <TextBox Text="{Binding Mode=TwoWay, Path=Ask}" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10" Height="100"/>
+                            <TextBox Text="{Binding Mode=TwoWay, Path=Ask}" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10"/>
                             <TextBlock Text="Answer" Grid.Row="2"/>
-                            <TextBox Text="{Binding Mode=TwoWay, Path=Answer}" Grid.Row="3" Grid.ColumnSpan="2"/>
+                            <TextBox Text="{Binding Mode=TwoWay, Path=Answer}" Grid.Row="3" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" MaxLines="10"/>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Urls">

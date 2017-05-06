@@ -10,7 +10,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using Windows.ApplicationModel;
+//using Windows.ApplicationModel;
 
 namespace Log.Wpf.Controls.ViewModels
 {    
@@ -58,8 +58,8 @@ namespace Log.Wpf.Controls.ViewModels
 
         private async void GetEntries()
         {
-            if (!DesignMode.DesignModeEnabled)
-            {
+            //if (!DesignMode.DesignModeEnabled)
+            //{
                 using (var client = ApiServiceFactory.CreateService(_apiBaseUrl))
                 {
                     IsBusy = true;
@@ -69,45 +69,45 @@ namespace Log.Wpf.Controls.ViewModels
                     OnPropertyChanged("Entries");
                     IsBusy = false;
                 }
-            }
-            else
-            {
-                #region dummy entries
+            //}
+            //else
+            //{
+            //    #region dummy entries
 
-                _entries = new List<LogEntry>
-                            {
-                                new LogEntry
-                                {
-                                    TimeStamp = DateTime.UtcNow,
-                                    Message = "Error Can't serialize item. Error Exception at System.Xml.Serialization.XmlClass.cs line number: 170",
-                                    Computer = Environment.MachineName,
-                                    EventLevel = eEventLevel.Error,
-                                    User = Environment.UserName,
-                                    Source = "System"
-                                },
-                                new LogEntry
-                                {
-                                    TimeStamp = DateTime.UtcNow,
-                                    Message = "Item serialized.",
-                                    Computer = Environment.MachineName,
-                                    EventLevel = eEventLevel.Information,
-                                    User = Environment.UserName,
-                                    Source = "System"
-                                },
-                                new LogEntry
-                                {
-                                    TimeStamp = DateTime.UtcNow,
-                                    Message = "Item partially serialized. Some properties were not expected.",
-                                    Computer = Environment.MachineName,
-                                    EventLevel = eEventLevel.Warning,
-                                    User = Environment.UserName,
-                                    Source = "System"
-                                }
-                            };
-                #endregion
+            //    _entries = new List<LogEntry>
+            //                {
+            //                    new LogEntry
+            //                    {
+            //                        TimeStamp = DateTime.UtcNow,
+            //                        Message = "Error Can't serialize item. Error Exception at System.Xml.Serialization.XmlClass.cs line number: 170",
+            //                        Computer = Environment.MachineName,
+            //                        EventLevel = eEventLevel.Error,
+            //                        User = Environment.UserName,
+            //                        Source = "System"
+            //                    },
+            //                    new LogEntry
+            //                    {
+            //                        TimeStamp = DateTime.UtcNow,
+            //                        Message = "Item serialized.",
+            //                        Computer = Environment.MachineName,
+            //                        EventLevel = eEventLevel.Information,
+            //                        User = Environment.UserName,
+            //                        Source = "System"
+            //                    },
+            //                    new LogEntry
+            //                    {
+            //                        TimeStamp = DateTime.UtcNow,
+            //                        Message = "Item partially serialized. Some properties were not expected.",
+            //                        Computer = Environment.MachineName,
+            //                        EventLevel = eEventLevel.Warning,
+            //                        User = Environment.UserName,
+            //                        Source = "System"
+            //                    }
+            //                };
+            //    #endregion
 
-                OnPropertyChanged("Entries");
-            }
+            //    OnPropertyChanged("Entries");
+            //}
         }
 
         private void FilterEntries()
