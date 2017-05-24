@@ -39,7 +39,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
 
         public MainViewModel()
         {
-            _fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "stories.json");
+            _fileName = Path.Combine(Visor.VStudio.Controls.Properties.Settings.Default.ExtensionsDirectory, "stories.json");
         }
 
         public IEnumerable<StoryStatus> StoryStatuses => Enum.GetValues(typeof(StoryStatus)).Cast<StoryStatus>();

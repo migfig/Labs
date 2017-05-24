@@ -238,7 +238,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
 
         public static Story New()
         {
-            var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "story.json");
+            var fileName = Path.Combine(Visor.VStudio.Controls.Properties.Settings.Default.ExtensionsDirectory, "story.json");
             if(File.Exists(fileName))
             {
                 return JsonConvert.DeserializeObject<Story>(File.ReadAllText(fileName));
@@ -576,7 +576,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
 
         public static Flatter Get(string key, string value)
         {
-            var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "flatter.json");
+            var fileName = Path.Combine(Visor.VStudio.Controls.Properties.Settings.Default.ExtensionsDirectory, "flatter.json");
             if (File.Exists(fileName))
             {
                 var flat = JsonConvert.DeserializeObject<Flatter>(File.ReadAllText(fileName));
@@ -595,7 +595,7 @@ namespace VStudio.Extensions.Path2Improve.ViewModels
 
         public static Flatter Get()
         {
-            var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "flatter.json");
+            var fileName = Path.Combine(Visor.VStudio.Controls.Properties.Settings.Default.ExtensionsDirectory, "flatter.json");
             if (File.Exists(fileName))
             {
                 var flat = JsonConvert.DeserializeObject<Flatter>(File.ReadAllText(fileName));

@@ -136,6 +136,10 @@
       <Project>{8cb4a0bd-82a1-4b4c-b3a1-dd880b82dab7}</Project>
       <Name>Trainer.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Visor.VStudio.Controls\Visor.VStudio.Controls.csproj">
+      <Project>{48cd960e-ed17-4d6a-b550-1e2813505643}</Project>
+      <Name>Visor.VStudio.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Visor.VStudio\Visor.VStudio.csproj">
       <Project>{af1104dc-4938-46b3-8d7c-516df8bc7b95}</Project>
       <Name>Visor.VStudio</Name>
