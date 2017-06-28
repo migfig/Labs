@@ -56,20 +56,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{4d5eca11-0727-485d-985a-7fcadcfb25c7}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RelatedRecords.Data\RelatedRecords.Data.csproj">
-      <Project>{e40145b0-b5c3-4cd6-b1c2-185893edf425}</Project>
-      <Name>RelatedRecords.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RelatedRecords\RelatedRecords.csproj">
-      <Project>{33bfd3da-4e0d-4e39-833a-13757b645d86}</Project>
-      <Name>RelatedRecords</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\RelatedRecords.Parser\relatedrecords.cgt">
       <Link>relatedrecords.cgt</Link>
     </None>

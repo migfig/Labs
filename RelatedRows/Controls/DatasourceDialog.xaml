@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="RelatedRows.Controls.DatasourceDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:helpers="clr-namespace:RelatedRows.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Width="250" Height="340">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <wpf:ColorZone Mode="Accent" Padding="6">
+            <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource MaterialDesignToolForegroundButton}"
+                        Command="{x:Static wpf:Flipper.FlipCommand}"
+                        HorizontalAlignment="Left">
+                    <wpf:PackIcon Kind="DatabasePlus" HorizontalAlignment="Right" />
+                </Button>
+                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">NEW DATASOURCE</TextBlock>
+            </StackPanel>
+        </wpf:ColorZone>
+
+        <Grid Grid.Row="1" Margin="0 6 0 0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="182">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBox wpf:HintAssist.Hint="Server" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"                 
+                 Margin="0 12 0 0">
+                <TextBox.Text>
+                    <Binding Path="serverName" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <helpers:NotEmptyValidationRule ValidationStep="UpdatedValue" ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox wpf:HintAssist.Hint="Database" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                 Margin="0 12 0 0"
+                 Grid.Row="1">
+                <TextBox.Text>
+                    <Binding Path="databaseName" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <helpers:NotEmptyValidationRule ValidationStep="UpdatedValue" ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <CheckBox Grid.Row="2" IsChecked="{Binding Mode=TwoWay, Path=isTrustedConnection}">Is Trusted Connection</CheckBox>
+            <TextBox wpf:HintAssist.Hint="User Name" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                 Margin="0 12 0 0"
+                 Grid.Row="3"
+                 IsEnabled="{Binding notIsTrustedConnection}">
+                <TextBox.Text>
+                    <Binding Path="userName" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <helpers:NotEmptyValidationRule ValidationStep="UpdatedValue" ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <PasswordBox wpf:HintAssist.Hint="Password"
+                         PasswordChanged="OnPasswordChanged"
+                         Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                         Margin="0 12 0 0"
+                         Grid.Row="4"
+                         IsEnabled="{Binding notIsTrustedConnection}"/>
+            <StackPanel Orientation="Horizontal" 
+                    Grid.Row="5"
+                    Margin="0 16 0 0"
+                    HorizontalAlignment="Right">
+                <Button IsDefault="True" Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}"
+                    IsEnabled="{Binding IsValid}">
+                    <Button.CommandParameter>
+                        <system:Boolean>True</system:Boolean>
+                    </Button.CommandParameter>
+                    ACCEPT
+                </Button>
+                <Button IsCancel="True" Margin="8 0 0 0" Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}">
+                    <Button.CommandParameter>
+                        <system:Boolean>False</system:Boolean>
+                    </Button.CommandParameter>
+                    CANCEL
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,191 @@
+﻿<UserControl x:Class="RelatedRows.Controls.ApplicationOptionsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:domain="clr-namespace:RelatedRows.Domain"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"             
+             d:DataContext="{d:DesignInstance domain:ApplicationOptions, IsDesignTimeCreatable=False}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Slider.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="CommandParameter" Value="{Binding}" />
+                <Setter Property="VerticalAlignment" Value="Stretch" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="Foreground">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{Binding ExemplarHue.Foreground, Mode=OneTime}" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="PalettePath" TargetType="Path">
+                <Setter Property="Data" Value="M17.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,9A1.5,1.5 0 0,1 19,10.5A1.5,1.5 0 0,1 17.5,12M14.5,8A1.5,1.5 0 0,1 13,6.5A1.5,1.5 0 0,1 14.5,5A1.5,1.5 0 0,1 16,6.5A1.5,1.5 0 0,1 14.5,8M9.5,8A1.5,1.5 0 0,1 8,6.5A1.5,1.5 0 0,1 9.5,5A1.5,1.5 0 0,1 11,6.5A1.5,1.5 0 0,1 9.5,8M6.5,12A1.5,1.5 0 0,1 5,10.5A1.5,1.5 0 0,1 6.5,9A1.5,1.5 0 0,1 8,10.5A1.5,1.5 0 0,1 6.5,12M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A1.5,1.5 0 0,0 13.5,19.5C13.5,19.11 13.35,18.76 13.11,18.5C12.88,18.23 12.73,17.88 12.73,17.5A1.5,1.5 0 0,1 14.23,16H16A5,5 0 0,0 21,11C21,6.58 16.97,3 12,3Z" />
+                <Setter Property="Fill">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{Binding ExemplarHue.Foreground, Mode=OneTime}" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Look And Feel" FontSize="16" FontWeight="SemiBold"/>
+        <Grid Grid.Row="1" Margin="8">
+            <Grid.Resources>
+                <Style TargetType="{x:Type Slider}" BasedOn="{StaticResource MaterialDesignSlider}">
+                    <Setter Property="Width" Value="150"/>
+                    <Setter Property="Margin" Value="6 6 4 6"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="4 6 4 6"/>
+                </Style> 
+            </Grid.Resources>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                        Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center">Light</TextBlock>
+                <ToggleButton Margin="12 0 16 0" IsChecked="{Binding UseDarkTheme}" HorizontalAlignment="Center" />
+                <TextBlock VerticalAlignment="Center">Dark</TextBlock>
+            </StackPanel>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Zoom" />
+            <Slider Grid.Row="1"
+                    Grid.Column="1" Minimum="80" Maximum="200"
+                    SmallChange="5"
+                    LargeChange="5"
+                    Value="{Binding Mode=TwoWay, Path=Scale}" />
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Scale}" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Primary Color</TextBlock>
+            <ComboBox Grid.Row="2" Grid.Column="1"
+                      materialDesign:HintAssist.Hint="(primary color)"
+                      VerticalAlignment="Center" 
+                      IsEditable="False"                          
+                      ItemsSource="{Binding Mode=OneTime, Path=PaletteSelector.Swatches}"
+                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedPrimaryColor}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border  MinWidth="120">
+                            <Border.Background>
+                                <SolidColorBrush Color="{Binding ExemplarHue.Color, Mode=OneTime}" />
+                            </Border.Background>
+                            <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}, Path=DataContext.PaletteSelector.ApplyPrimaryCommand, Mode=OneTime}"
+                                        CommandParameter="{Binding}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" />
+                                    <Viewbox Width="16" Height="16">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Style="{StaticResource PalettePath}" />
+                                        </Canvas>
+                                    </Viewbox>
+                                </StackPanel>
+                            </Button>
+                        </Border>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Accent Color</TextBlock>
+            <ComboBox Grid.Row="3" Grid.Column="1"
+                      materialDesign:HintAssist.Hint="(accent color)"
+                      VerticalAlignment="Center" 
+                      IsEditable="False"                          
+                      ItemsSource="{Binding Mode=OneTime, Path=PaletteSelector.Swatches}"
+                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedAccentColor}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border MinWidth="120" Visibility="{Binding IsAccented, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
+                            <Border.Background>
+                                <SolidColorBrush Color="{Binding AccentExemplarHue.Color, Mode=OneTime}" />
+                            </Border.Background>
+                            <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}, Path=DataContext.PaletteSelector.ApplyAccentCommand, Mode=OneTime}"
+                                        CommandParameter="{Binding}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding}" />
+                                    <Viewbox Width="16" Height="16">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Style="{StaticResource PalettePath}" />
+                                        </Canvas>
+                                    </Viewbox>
+                                </StackPanel>
+                            </Button>
+                        </Border>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
+
+        </Grid>
+
+        <TextBlock
+            Margin="0 8 0 0"
+            Text="Miscelaneous" Grid.Row="2" FontSize="16" FontWeight="SemiBold" />
+        <Grid Grid.Row="3" Margin="8 8 8 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Text="Rows Per Page" VerticalAlignment="Center" />
+            <Slider Grid.Column="1" Minimum="5" Maximum="100" Margin="8"
+                    SmallChange="5"
+                    LargeChange="10"
+                    Value="{Binding Mode=TwoWay, Path=RowsPerPage}" />
+            <TextBlock Grid.Column="2" Text="{Binding RowsPerPage}" VerticalAlignment="Center" />
+
+            <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}"
+                        Command="{Binding ApplyCommand}"
+                        HorizontalAlignment="Left"
+                        Margin="0 -2 0 0"
+                        Padding="1 0 1 0">
+                    <materialDesign:PackIcon
+                        Width="22" Height="22"
+                        Kind="ContentSaveSettings" />
+                </Button>
+        </Grid>  
+    </Grid>
+</UserControl>

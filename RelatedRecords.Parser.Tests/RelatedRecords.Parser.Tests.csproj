@@ -62,16 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{4d5eca11-0727-485d-985a-7fcadcfb25c7}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RelatedRecords.Parser\RelatedRecords.Parser.csproj">
-      <Project>{5443780e-3f66-421f-acee-e7f6821c216e}</Project>
-      <Name>RelatedRecords.Parser</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="GoldParser.resources" />
   </ItemGroup>
   <ItemGroup>
