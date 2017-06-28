@@ -22,25 +22,25 @@ namespace RelatedRows.Domain
                 query += parent.Relationship
                     .Where(r => r.toTable.Equals(table.name))
                     .SelectMany(r => r.ColumnRelationship)
-                    .Aggregate(" WHERE ", 
-                        (seed, cr) => seed + $"{cr.toColumn} = '{row[cr.fromColumn.UnQuoteName()]}'");
+                    .Aggregate(" WHERE", 
+                        (seed, cr) => seed + $" AND {cr.toColumn} = {row.Value(cr.fromColumn.UnQuoteName())}");
             }
 
-            return query + offsetFetch;
+            return query.Replace("WHERE AND ", "WHERE ") + offsetFetch;
         }
 
         public static string GetQueryTooltip(this CTable table, string column, DataRow row)
         {
-            var query = $"SELECT * FROM {table.catalog}.{table.schemaName}.{table.name} WHERE {column.QuoteName()} = '{row[column.UnQuoteName()]}'"
+            var query = $"SELECT * FROM {table.catalog}.{table.schemaName}.{table.name} WHERE {column.QuoteName()} = {row.Value(column.UnQuoteName())}"
                     + Environment.NewLine
-                    + $"UPDATE {table.schemaName}.{table.name} SET ";
+                    + $"UPDATE {table.catalog}.{table.schemaName}.{table.name} SET ";
 
             query += table.Column
                     .Where(c => !c.name.Equals(column.QuoteName()))
                     .Aggregate("",
-                        (seed, c) => seed + $", {c.name} = '{row[c.name.UnQuoteName()]}'");
+                        (seed, c) => seed + $", {c.name} = {row.Value(c.name.UnQuoteName())}");
 
-            query += $" WHERE {column.QuoteName()} = '{row[column.UnQuoteName()]}'";
+            query += $" WHERE {column.QuoteName()} = {row.Value(column.UnQuoteName())}";
 
             return query.Replace("SET ,", "SET ");
         }

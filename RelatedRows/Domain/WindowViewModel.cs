@@ -223,28 +223,19 @@ namespace RelatedRows.Domain
             {
                 try
                 {
-                    if (SelectedTable.DataTable == null)
-                    {
-                        SelectedTable.DataTable =
-                            await _dataSourceProvider
-                                .GetData(SelectedDatasource, SelectedTable.name, SelectedTable.GetQuery(Settings.RowsPerPage));
+                    SelectedTable.DataTable =
+                        await _dataSourceProvider
+                            .GetData(SelectedDatasource, SelectedTable.name, SelectedTable.GetQuery(Settings.RowsPerPage));
 
-                        SelectedTable.Pager = new CPager(SelectedTable.DataTable.RowsCount(), Settings.RowsPerPage);
+                    SelectedTable.Pager = new CPager(SelectedTable.DataTable.RowsCount(), Settings.RowsPerPage);
 
-                        if(SelectedTable.DataTable != null && SelectedTable.DataTable.Rows.Count > 0)
-                            foreach (var child in SelectedTable.Children)
-                            {
-                                child.DataTable =
-                                    await _dataSourceProvider
-                                        .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: SelectedTable));
-                            }
-                    }
-                    else
-                    {
-                        SelectedTable.DataTable =
-                            await _dataSourceProvider
-                                .GetData(SelectedDatasource, SelectedTable.name, SelectedTable.GetQuery(Settings.RowsPerPage, skip: SelectedTable.Pager.Skip));
-                    }
+                    if (SelectedTable.DataTable != null && SelectedTable.DataTable.Rows.Count > 0)
+                        foreach (var child in SelectedTable.Children)
+                        {
+                            child.DataTable =
+                                await _dataSourceProvider
+                                    .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: SelectedTable));
+                        }
                 }
                 catch (Exception e)
                 {
@@ -291,21 +282,26 @@ namespace RelatedRows.Domain
                                     .Where(r => r.toTable.Equals(child.name))
                                     .SelectMany(r => r.ColumnRelationship)
                                     .Aggregate("",
-                                        (seed, cr) => seed + $"{cr.toColumn} = '{_selectedRow[cr.fromColumn.UnQuoteName()]}'");
+                                        (seed, cr) => seed + $" AND {cr.toColumn} = {_selectedRow.Row.Value(cr.fromColumn.UnQuoteName())}");
+                                filter = filter.Length > 5 ? filter.Substring(5) : filter;
 
-                                var rows = child.DataTable.Select(filter);
-                                if (!rows.Any())
+                                Logger.Log.Verbose("Set filter {@filter} on child table {@name}", filter, child.name);
+                                if (child.DataTable != null)
                                 {
-                                    var newData = await _dataSourceProvider
-                                                .GetData(SelectedDatasource, child.name,
-                                                    child.GetQuery(Settings.RowsPerPage, parent: SelectedTable, row: _selectedRow.Row));
+                                    var rows = child.DataTable.Select(filter);
+                                    if (!rows.Any())
+                                    {
+                                        var newData = await _dataSourceProvider
+                                                    .GetData(SelectedDatasource, child.name,
+                                                        child.GetQuery(Settings.RowsPerPage, parent: SelectedTable, row: _selectedRow.Row));
 
-                                    foreach (DataRow row in newData.Rows)
-                                        child.DataTable.Rows.Add(row.ItemArray);
+                                        foreach (DataRow row in newData.Rows)
+                                            child.DataTable.Rows.Add(row.ItemArray);
+                                    }
+
+                                    _schedulerProvider.MainThread.Schedule(() =>
+                                        child.DataTable.DefaultView.RowFilter = filter);
                                 }
-
-                                _schedulerProvider.MainThread.Schedule(() =>
-                                    child.DataTable.DefaultView.RowFilter = filter);
                             });
                         }
                         catch (Exception e)
@@ -329,7 +325,12 @@ namespace RelatedRows.Domain
             set
             {
                 SetAndRaise(ref _selectedChildRow, value);
-                SelectedChildTable = SelectedDataset.Table.FirstOrDefault(t => t.name.Equals(_selectedChildRow.Row.Table.TableName));
+                WrapBlock(() =>
+                {
+                    if(_selectedChildRow != null)
+                        SelectedChildTable = SelectedDataset.Table.FirstOrDefault(t => t.name.Equals(_selectedChildRow.Row.Table.TableName));
+                }
+                , "selecting child table from selected child row");
             }
         }
 
@@ -340,8 +341,18 @@ namespace RelatedRows.Domain
             set
             {
                 SetAndRaise(ref _selectedViewCell, value);
-                var column = SelectedViewCell.Column.Header.ToString();
-                CopyTooltip = SelectedTable.GetQueryTooltip(column, SelectedRow.Row);
+                WrapBlock(() =>
+                {
+                    if (SelectedRow != null 
+                        && SelectedViewCell != null 
+                        && SelectedViewCell.Column != null 
+                        && SelectedViewCell.Column.Header != null)
+                    {
+                        var column = SelectedViewCell.Column.Header.ToString();
+                        CopyTooltip = SelectedTable.GetQueryTooltip(column, SelectedRow.Row);
+                    }
+                }
+                , "selecting the view cell for table {@name}", SelectedTable.name);
             }
         }
 
@@ -372,8 +383,18 @@ namespace RelatedRows.Domain
             set
             {
                 SetAndRaise(ref _selectedChildViewCell, value);
-                var column = SelectedChildViewCell.Column.Header.ToString();
-                CopyChildTooltip = SelectedChildTable.GetQueryTooltip(column, SelectedChildRow.Row);
+                WrapBlock(() =>
+                {
+                    if (SelectedChildRow != null
+                        && SelectedChildViewCell != null
+                        && SelectedChildViewCell.Column != null
+                        && SelectedChildViewCell.Column.Header != null)
+                    {
+                        var column = SelectedChildViewCell.Column.Header.ToString();
+                        CopyChildTooltip = SelectedChildTable.GetQueryTooltip(column, SelectedChildRow.Row);
+                    }
+                }
+                , "selecting view cell for table {@name} ", SelectedChildTable.name);
             }
         }
 
