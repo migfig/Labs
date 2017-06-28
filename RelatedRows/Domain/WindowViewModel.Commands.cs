@@ -123,8 +123,22 @@ namespace RelatedRows.Domain
             {
                 return _copyQueryCommand ?? (_copyQueryCommand = new Command(() => {
                     Clipboard.SetText(SelectedQuery.FriendlyText, TextDataFormat.Text);
+                    PersistAndRunText(SelectedQuery.name, SelectedQuery.FriendlyText);
                 }));
             }
+        }
+
+        private void PersistAndRunText(string objName, string content, string ext = "sql")
+        {
+            if (string.IsNullOrEmpty(content)) return;
+
+            string txtFile = Path.Combine(ExportPath, $"{objName}-{DateTime.Now.ToString("yyyyMMMdd-hhmmss")}.{ext}");
+            using (var stream = new StreamWriter(txtFile))
+            {
+                stream.Write(content);
+            }
+
+            Process.Start(txtFile);
         }
 
         private ICommand _setTargetTableCommand;
@@ -145,13 +159,7 @@ namespace RelatedRows.Domain
             {
                 return _exportToSqlCommand ?? (_exportToSqlCommand = new Command<CTable>((table) =>
                 {
-                    string sqlFile = Path.Combine(ExportPath, $"{table.name}-{DateTime.Now.ToString("yyyyMMMdd-hhmmss")}.sql");
-                    using (var stream = new StreamWriter(sqlFile))
-                    {
-                        stream.Write(table.SqlInsert(true));
-                    }
-
-                    Process.Start(sqlFile);
+                    PersistAndRunText(table.name, table.SqlInsert(true));
                 }));
             }
         }
@@ -162,13 +170,7 @@ namespace RelatedRows.Domain
             get
             {
                 return _exportToCsvCommand ?? (_exportToCsvCommand = new Command<DataTable>((table) => {
-                    string sqlFile = Path.Combine(ExportPath, $"{table.TableName}-{DateTime.Now.ToString("yyyyMMMdd-hhmmss")}.csv");
-                    using (var stream = new StreamWriter(sqlFile))
-                    {
-                        stream.Write(table.CsvExport());
-                    }
-
-                    Process.Start(sqlFile);
+                    PersistAndRunText(table.TableName, table.CsvExport(), "csv");
                 }));
             }
         }
@@ -467,11 +469,9 @@ namespace RelatedRows.Domain
             {
                 return _copyRowCommand ?? (_copyRowCommand = new Command<CTable>((table) =>
                 {
-                    var isChildTable = !table.name.Equals(SelectedTable.name);
                     Clipboard
-                            .SetText(!isChildTable
-                                ? CopyTooltip
-                                : CopyChildTooltip, TextDataFormat.Text);
+                            .SetText(table.CopyTooltip, TextDataFormat.Text);
+                    PersistAndRunText(table.name, table.CopyTooltip);
                 }));
             }
         }

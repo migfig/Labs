@@ -266,6 +266,9 @@ namespace RelatedRows.Domain
             set
             {
                 SetAndRaise(ref _selectedRow, value);
+                if (SelectedTable != null)
+                    SelectedTable.SelectedRow = value;
+
                 if (_selectedRow != null
                     && _viewMode == eViewMode.Data
                     && SelectedTable != null && SelectedTable.DataTable != null && SelectedTable.DataTable.Rows.Count > 0)
@@ -316,88 +319,8 @@ namespace RelatedRows.Domain
                     });
                 }
             }
-        }
-
-        private DataRowView _selectedChildRow;
-        public DataRowView SelectedChildRow
-        {
-            get { return _selectedChildRow; }
-            set
-            {
-                SetAndRaise(ref _selectedChildRow, value);
-                WrapBlock(() =>
-                {
-                    if(_selectedChildRow != null)
-                        SelectedChildTable = SelectedDataset.Table.FirstOrDefault(t => t.name.Equals(_selectedChildRow.Row.Table.TableName));
-                }
-                , "selecting child table from selected child row");
-            }
-        }
-
-        private DataGridCellInfo _selectedViewCell;
-        public DataGridCellInfo SelectedViewCell
-        {
-            get { return _selectedViewCell; }
-            set
-            {
-                SetAndRaise(ref _selectedViewCell, value);
-                WrapBlock(() =>
-                {
-                    if (SelectedRow != null 
-                        && SelectedViewCell != null 
-                        && SelectedViewCell.Column != null 
-                        && SelectedViewCell.Column.Header != null)
-                    {
-                        var column = SelectedViewCell.Column.Header.ToString();
-                        CopyTooltip = SelectedTable.GetQueryTooltip(column, SelectedRow.Row);
-                    }
-                }
-                , "selecting the view cell for table {@name}", SelectedTable.name);
-            }
-        }
-
-        private string _copyTooltip = "Copy Row";
-        public string CopyTooltip
-        {
-            get { return _copyTooltip; }
-            set
-            {
-                SetAndRaise(ref _copyTooltip, value);
-            }
-        }
-
-        private string _copyChildTooltip = "Copy Row";
-        public string CopyChildTooltip
-        {
-            get { return _copyChildTooltip; }
-            set
-            {
-                SetAndRaise(ref _copyChildTooltip, value);
-            }
-        }
-
-        private DataGridCellInfo _selectedChildViewCell;
-        public DataGridCellInfo SelectedChildViewCell
-        {
-            get { return _selectedChildViewCell; }
-            set
-            {
-                SetAndRaise(ref _selectedChildViewCell, value);
-                WrapBlock(() =>
-                {
-                    if (SelectedChildRow != null
-                        && SelectedChildViewCell != null
-                        && SelectedChildViewCell.Column != null
-                        && SelectedChildViewCell.Column.Header != null)
-                    {
-                        var column = SelectedChildViewCell.Column.Header.ToString();
-                        CopyChildTooltip = SelectedChildTable.GetQueryTooltip(column, SelectedChildRow.Row);
-                    }
-                }
-                , "selecting view cell for table {@name} ", SelectedChildTable.name);
-            }
-        }
-
+        }    
+ 
         private CTable _selectedTargetTable;
         public CTable SelectedTargetTable
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -31,18 +32,40 @@ namespace RelatedRows.Domain
 
         public static string GetQueryTooltip(this CTable table, string column, DataRow row)
         {
-            var query = $"SELECT * FROM {table.catalog}.{table.schemaName}.{table.name} WHERE {column.QuoteName()} = {row.Value(column.UnQuoteName())}"
-                    + Environment.NewLine
-                    + $"UPDATE {table.catalog}.{table.schemaName}.{table.name} SET ";
+            var query = $"SELECT * FROM {table.catalog}.{table.schemaName}.{table.name} WHERE {column.QuoteName()} = {row.Value(column.UnQuoteName())}";
 
-            query += table.Column
-                    .Where(c => !c.name.Equals(column.QuoteName()))
-                    .Aggregate("",
-                        (seed, c) => seed + $", {c.name} = {row.Value(c.name.UnQuoteName())}");
+            query += Environment.NewLine
+                    + $"UPDATE {table.catalog}.{table.schemaName}.{table.name} SET "
+                    + table.Column
+                        .Where(c => !c.name.Equals(column.QuoteName()))
+                        .Aggregate("",
+                            (seed, c) => seed + $", {c.name} = {row.Value(c.name.UnQuoteName())}")
+                    + $" WHERE {column.QuoteName()} = {row.Value(column.UnQuoteName())}";
 
-            query += $" WHERE {column.QuoteName()} = {row.Value(column.UnQuoteName())}";
+            query += Environment.NewLine
+                + $"DELETE FROM {table.catalog}.{table.schemaName}.{table.name} WHERE {column.QuoteName()} = {row.Value(column.UnQuoteName())}";
 
-            return query.Replace("SET ,", "SET ");
+            var hasIdentity = table.Column.Any(x => x.isIdentity);
+            query += Environment.NewLine;
+
+            if (hasIdentity)
+                query += string.Format("SET IDENTITY_INSERT {0}.{1}.{2} ON{3}", table.catalog, table.schemaName, table.name, Environment.NewLine);
+            query += $"INSERT INTO {table.catalog}.{table.schemaName}.{table.name} ("
+                    + table.Column
+                        .Aggregate("",
+                            (seed, c) => seed + $", {c.name}")
+                    + ") VALUES ("
+                    + table.Column
+                        .Aggregate("",
+                            (seed, c) => seed + $", {row.Value(c.name.UnQuoteName())}")
+                    + ")";
+            if (hasIdentity)
+            {
+                query += Environment.NewLine;
+                query += string.Format("SET IDENTITY_INSERT {0}.{1}.{2} OFF{3}", table.catalog, table.schemaName, table.name, Environment.NewLine);
+            }
+
+            return query.Replace("SET ,", "SET ").Replace("(, ", "(");
         }
 
         public static string UnQuoteName(this string value)
@@ -119,8 +142,11 @@ namespace RelatedRows.Domain
             return typeof(string);
         }
 
-        public static string SqlInsert(this CTable table, bool includeChildren = true)
+        public static string SqlInsert(this CTable table, bool includeChildren = true, IList<string> tables = null)
         {
+            tables = tables ?? new List<string>();
+            if (tables.Contains(table.name)) return string.Empty;
+
             var value = new StringBuilder();
             if (null != table
                 && table.DataTable != null
@@ -134,10 +160,12 @@ namespace RelatedRows.Domain
                     value.AppendFormat("SET IDENTITY_INSERT {0}.{1}.{2} OFF{3}", table.catalog, table.schemaName, table.name, Environment.NewLine);
                 value.Append(Environment.NewLine);
 
+                tables.Add(table.name);
+
                 if (includeChildren)
                 {
                     foreach (var child in table.Children)
-                        value.Append(child.SqlInsert(includeChildren));
+                        value.Append(child.SqlInsert(includeChildren, tables));
                 }
             }
 
@@ -205,7 +233,7 @@ namespace RelatedRows.Domain
         public static string Value(this DataRow row, string columnName, string quoteChar = "'")
         {
             var value = "NULL";
-            if (!row.Table.Columns.Contains(columnName)) return value;
+            if (!row.Table.Columns.Contains(columnName) || row[columnName] is DBNull) return value;
 
             switch (row.Table.Columns[columnName].DataType.ToString())
             {
@@ -231,7 +259,7 @@ namespace RelatedRows.Domain
                 case "System.DateTimeOffset":
                 case "System.Guid":
                 case "System.Object":
-                    return string.Format("{0}{1}{0}", quoteChar, row[columnName]);
+                    return string.Format("{0}{1}{0}", quoteChar, row[columnName].ToString().Replace("'","''"));
             }
 
             return value;

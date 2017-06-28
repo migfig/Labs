@@ -87,22 +87,6 @@
                     <Button ToolTip="Home" Command="{Binding GoHomeCommand}" Visibility="{Binding GoHomeVisibility}">
                         <materialDesign:PackIcon Kind="Home" />
                     </Button>
-                    <Button ToolTip="Refresh" Command="{Binding RefreshCommand}" CommandParameter="{Binding SelectedTable}">
-                        <materialDesign:PackIcon Kind="Refresh" />
-                    </Button>
-                    <Button ToolTip="Key" Command="{Binding SetRelationsCommand}">
-                        <materialDesign:PackIcon Kind="Key" />
-                    </Button>
-                    <Button ToolTip="Export To Sql" Command="{Binding ExportToSqlCommand}" CommandParameter="{Binding SelectedTable}" IsEnabled="{Binding SelectedTable.DataTable.Rows.Count}"> 
-                        <materialDesign:PackIcon Kind="Export" />
-                    </Button>
-                    <Button ToolTip="Export To Csv" Command="{Binding ExportToCsvCommand}" CommandParameter="{Binding SelectedTable.DataTable}" IsEnabled="{Binding SelectedTable.DataTable.Rows.Count}">
-                        <materialDesign:PackIcon Kind="FileExcel" />
-                    </Button>
-                    <Button Command="{Binding CopyRowCommand}" CommandParameter="{Binding SelectedTable}" ToolTip="{Binding CopyTooltip}" ToolBar.OverflowMode="AsNeeded">
-                        <materialDesign:PackIcon Kind="ContentCopy" />
-                    </Button>
-                    <Separator />
                     <Button Command="{Binding PageCommand}" CommandParameter="first" IsEnabled="{Binding SelectedTable.Pager.CanGoFirst}" ToolTip="{Binding SelectedTable.Pager.FirstTooltip}">
                         <materialDesign:PackIcon Kind="ChevronDoubleLeft" />
                     </Button>
@@ -114,6 +98,26 @@
                     </Button>
                     <Button Command="{Binding PageCommand}" CommandParameter="last" IsEnabled="{Binding SelectedTable.Pager.CanGoLast}" ToolTip="{Binding SelectedTable.Pager.LastTooltip}">
                         <materialDesign:PackIcon Kind="ChevronDoubleRight" />
+                    </Button>
+                    <Separator/>
+                    <Button Command="{Binding CopyRowCommand}" 
+                            CommandParameter="{Binding SelectedTable}" 
+                            IsEnabled="{Binding SelectedTable.CopyTooltip.Length}"
+                            ToolTip="{Binding SelectedTable.CopyTooltipShort}" 
+                            ToolBar.OverflowMode="AsNeeded">
+                        <materialDesign:PackIcon Kind="ContentCopy" />
+                    </Button>
+                    <Button ToolTip="Refresh" Command="{Binding RefreshCommand}" CommandParameter="{Binding SelectedTable}">
+                        <materialDesign:PackIcon Kind="Refresh" />
+                    </Button>
+                    <Button ToolTip="Key" Command="{Binding SetRelationsCommand}">
+                        <materialDesign:PackIcon Kind="Key" />
+                    </Button>
+                    <Button ToolTip="Export To Sql" Command="{Binding ExportToSqlCommand}" CommandParameter="{Binding SelectedTable}" IsEnabled="{Binding SelectedTable.DataTable.Rows.Count}"> 
+                        <materialDesign:PackIcon Kind="Export" />
+                    </Button>
+                    <Button ToolTip="Export To Csv" Command="{Binding ExportToCsvCommand}" CommandParameter="{Binding SelectedTable.DataTable}" IsEnabled="{Binding SelectedTable.DataTable.Rows.Count}">
+                        <materialDesign:PackIcon Kind="FileExcel" />
                     </Button>                    
                     <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
                                  IsIndeterminate="{Binding IsBusy}"
@@ -134,7 +138,7 @@
                 CanUserAddRows="False" 
                 IsReadOnly="True"
                 SelectedItem="{Binding Mode=TwoWay, Path=SelectedRow}"
-                CurrentCell="{Binding Mode=TwoWay, Path=SelectedViewCell}"
+                CurrentCell="{Binding Mode=TwoWay, Path=SelectedTable.SelectedViewCell}"
                 AlternatingRowBackground="{Binding AlternatingRowBackground}"               
                 materialDesign:DataGridAssist.CellPadding="4 2 2 2" 
                 materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"/>
@@ -170,7 +174,11 @@
                                         <Button ToolTip="Export To Csv" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ExportToCsvCommand}" CommandParameter="{Binding DataTable}" IsEnabled="{Binding DataTable.Rows.Count}">
                                             <materialDesign:PackIcon Kind="FileExcel" />
                                         </Button>
-                                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.CopyRowCommand}" CommandParameter="{Binding}" ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.CopyChildTooltip}" ToolBar.OverflowMode="AsNeeded">
+                                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.CopyRowCommand}" 
+                                                CommandParameter="{Binding}"
+                                                IsEnabled="{Binding CopyTooltip.Length}"
+                                                ToolTip="{Binding CopyTooltipShort}"
+                                                ToolBar.OverflowMode="AsNeeded">
                                             <materialDesign:PackIcon Kind="ContentCopy" />
                                         </Button>                                       
                                     </ToolBar>
@@ -186,8 +194,8 @@
                                 CanUserSortColumns="True" 
                                 CanUserAddRows="False" 
                                 IsReadOnly="True"
-                                CurrentCell="{Binding Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SelectedChildViewCell}"
-                                SelectedItem="{Binding Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SelectedChildRow}"
+                                CurrentCell="{Binding Mode=TwoWay, Path=SelectedViewCell}"
+                                SelectedItem="{Binding Mode=TwoWay, Path=SelectedRow}"
                                 AlternatingRowBackground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AlternatingRowBackground}"
                                 HorizontalScrollBarVisibility="Auto"
                                 materialDesign:DataGridAssist.CellPadding="4 2 2 2" 

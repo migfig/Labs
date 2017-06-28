@@ -12,6 +12,7 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Linq;
+using System.Windows.Controls;
 
 namespace RelatedRows.Domain
 {
@@ -418,6 +419,67 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
         {
             return name.Replace("[", "").Replace("]", "");
         }
+
+        #region clipboard handling
+
+        private DataRowView _selectedRow;
+        [XmlIgnore]
+        public DataRowView SelectedRow
+        {
+            get { return _selectedRow; }
+            set
+            {
+                SetAndRaise(ref _selectedRow, value);                
+            }
+        }
+
+        private DataGridCellInfo _selectedViewCell;
+        [XmlIgnore]
+        public DataGridCellInfo SelectedViewCell
+        {
+            get { return _selectedViewCell; }
+            set
+            {
+                SetAndRaise(ref _selectedViewCell, value);
+
+                if (SelectedRow != null
+                    && SelectedViewCell != null
+                    && SelectedViewCell.Column != null
+                    && SelectedViewCell.Column.Header != null)
+                {                    
+                    var column = SelectedViewCell.Column.Header.ToString();
+                    SelectedRow = SelectedViewCell.Item as DataRowView;
+                    CopyTooltip = this.GetQueryTooltip(column, SelectedRow.Row);
+                }
+            }
+        }
+
+        private string _copyTooltip = string.Empty;
+        [XmlIgnore]
+        public string CopyTooltip
+        {
+            get { return _copyTooltip; }
+            set
+            {
+                SetAndRaise(ref _copyTooltip, value);
+                OnPropertyChanged("CopyTooltipShort");
+            }
+        }
+
+        [XmlIgnore]
+        public string CopyTooltipShort
+        {
+            get
+            {
+                return string.Join(Environment.NewLine,
+                    _copyTooltip.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
+                        .Select(s => s.Substring(0, Math.Min(50, s.Length)) 
+                            + (s.Length > 50 ? "..." : "")));
+            }           
+        }
+
+        #endregion
+
     }
 
     public partial class CPager: AbstractNotifyPropertyChanged
