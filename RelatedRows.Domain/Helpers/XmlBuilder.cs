@@ -10,7 +10,7 @@ namespace RelatedRows.Domain
         {
             var doc = XDocument.Load(new StringReader(schema));
             var dataSourceName = dataSource.serverName
-                .Split('.').First().Split('\\').First() + "_" + dataSource.databaseName;
+                .Split('.').First().Split('\\').First() + "-" + dataSource.databaseName;
 
             return new XElement("Configuration",
                         new XAttribute("defaultDatasource", dataSourceName),
@@ -62,7 +62,7 @@ namespace RelatedRows.Domain
         {
             var doc = XDocument.Load(new StringReader(schema));
             var dataSourceName = dataSource.serverName
-                .Split('.').First().Split('\\').First() + "_" + dataSource.databaseName;
+                .Split('.').First().Split('\\').First() + "-" + dataSource.databaseName;
 
             return new XElement("Configuration",
                         new XAttribute("defaultDatasource", dataSourceName),
