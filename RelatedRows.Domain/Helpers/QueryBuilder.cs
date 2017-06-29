@@ -11,23 +11,26 @@ namespace RelatedRows.Domain
     {
         public static string GetQuery(this CTable table, long top, long skip = 0, CTable parent = null, DataRow row = null)
         {
+            var query = $"SELECT *, COUNT(*) OVER() AS [CountOver$] FROM (";
+            var subquery = $"SELECT * FROM {table.catalog}.{table.schemaName}.{table.name}";
             var offsetFetch = $") AS Q ORDER BY 1 OFFSET {skip} ROWS FETCH NEXT {top} ROWS ONLY";
 
-            var query = $"SELECT *, COUNT(*) OVER() AS [Count] FROM (SELECT * FROM {table.catalog}.{table.schemaName}.{table.name}";
-            if(parent != null 
+            if (parent != null 
                 && parent.Relationship.Any(r => r.toTable.Equals(table.name)) 
                 && parent.DataTable != null && parent.DataTable.Rows.Count > 0)
             {
                 row = row ?? parent.DataTable.Rows[0];
 
-                query += parent.Relationship
+                subquery += parent.Relationship
                     .Where(r => r.toTable.Equals(table.name))
                     .SelectMany(r => r.ColumnRelationship)
                     .Aggregate(" WHERE", 
                         (seed, cr) => seed + $" AND {cr.toColumn} = {row.Value(cr.fromColumn.UnQuoteName())}");
+
+                return subquery.Replace("WHERE AND ", "WHERE ");
             }
 
-            return query.Replace("WHERE AND ", "WHERE ") + offsetFetch;
+            return query + subquery + offsetFetch;
         }
 
         public static string GetQueryTooltip(this CTable table, string column, DataRow row)
@@ -107,6 +110,8 @@ namespace RelatedRows.Domain
         public static long RowsCount(this DataTable table)
         {
             var rows = table != null && !string.IsNullOrEmpty(table.Namespace) ? table.Namespace : "0";
+            Logger.Log.Verbose("{@rows} rows found for table {@tableName}", rows, table.TableName);
+
             return long.Parse(rows);
         }
 

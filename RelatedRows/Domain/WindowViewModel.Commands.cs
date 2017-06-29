@@ -317,17 +317,22 @@ namespace RelatedRows.Domain
             {
                 return _setDataset ?? (_setDataset = new Command<CDataset>((o) =>
                 {
-                    SelectedDataset = o;
-                    Configuration.Dataset.ToList().ForEach((i) => i.isSelected = false);
-                    SelectedDataset.isSelected = true;
-                    SelectedTable = SelectedDataset.Table.FirstOrDefault(t => t.name.Equals(SelectedDataset.defaultTable));
-
-                    if (SelectedDataset.Query.Any())
+                    if (SelectedDataset == null || SelectedDataset.name != o.name)
                     {
-                        var config = XmlHelper<CConfiguration>.Load(DefaultStoreProcsConfigFile);
+                        Logger.Log.Verbose("SetDataset [{@name}]", o.name);
 
-                        var defaultQuery = config.Dataset.FirstOrDefault(d => d.name.Equals(SelectedDataset.name)).defaultTable;
-                        SelectedQuery = SelectedDataset.Query.FirstOrDefault(q => q.name.Equals(defaultQuery));
+                        SelectedDataset = o;
+                        Configuration.Dataset.ToList().ForEach((i) => i.isSelected = false);
+                        SelectedDataset.isSelected = true;
+                        SelectedTable = SelectedDataset.Table.FirstOrDefault(t => t.name.Equals(SelectedDataset.defaultTable));
+
+                        if (SelectedDataset.Query.Any())
+                        {
+                            var config = XmlHelper<CConfiguration>.Load(DefaultStoreProcsConfigFile);
+
+                            var defaultQuery = config.Dataset.FirstOrDefault(d => d.name.Equals(SelectedDataset.name)).defaultTable;
+                            SelectedQuery = SelectedDataset.Query.FirstOrDefault(q => q.name.Equals(defaultQuery));
+                        }
                     }
                 }));
             }
@@ -340,10 +345,15 @@ namespace RelatedRows.Domain
             {
                 return _setDefaultTable ?? (_setDefaultTable = new Command<CTable>((o) =>
                 {
-                    var config = XmlHelper<CConfiguration>.Load(DefaultConfigFile);
-                    config.Dataset.FirstOrDefault(d => d.name.Equals(SelectedDataset.name))
-                        .defaultTable = o.name;
-                    XmlHelper<CConfiguration>.Save(DefaultConfigFile, config);
+                    if (SelectedDataset.defaultTable != o.name)
+                    {
+                        Logger.Log.Verbose("SetDefaultTable [{@name}]", o.name);
+
+                        var config = XmlHelper<CConfiguration>.Load(DefaultConfigFile);
+                        config.Dataset.FirstOrDefault(d => d.name.Equals(SelectedDataset.name))
+                            .defaultTable = o.name;
+                        XmlHelper<CConfiguration>.Save(DefaultConfigFile, config);
+                    }
                 }));
             }
         }
@@ -355,6 +365,8 @@ namespace RelatedRows.Domain
             {
                 return _setDefaultStoreProc ?? (_setDefaultStoreProc = new Command<CQuery>((o) =>
                 {
+                    Logger.Log.Verbose("SetDefaultStoreProc [{@name}]", o.name);
+
                     var config = XmlHelper<CConfiguration>.Load(DefaultStoreProcsConfigFile);
                     config.Dataset.FirstOrDefault(d => d.name.Equals(SelectedDataset.name))
                         .defaultTable = o.name;
@@ -483,6 +495,8 @@ namespace RelatedRows.Domain
             {
                 return _setMainViewCommand ?? (_setMainViewCommand = new Command<CTable>((table) =>
                 {
+                    Logger.Log.Verbose("SetMainViewCommand [{@name}]", table.name);
+
                     _navigationStack.Push(_selectedTable);
                     SelectedTable = table;
                     OnPropertyChanged("GoHomeVisibility");
@@ -497,6 +511,8 @@ namespace RelatedRows.Domain
             {
                 return _goHomeCommand ?? (_goHomeCommand = new Command(() =>
                 {
+                    Logger.Log.Verbose("GoHomeCommand");
+
                     var table = _navigationStack.Pop();
                     SelectedTable = table;
                     OnPropertyChanged("GoHomeVisibility");
@@ -511,6 +527,8 @@ namespace RelatedRows.Domain
             {
                 return _pageCommand ?? (_pageCommand = new Command<string>((direction) =>
                 {
+                    Logger.Log.Verbose("PageCommand [{@direction}]", direction);
+
                     SelectedTable.Pager.Navigate(direction);
                     OnSelectedTableChange();
                 }));
@@ -524,6 +542,8 @@ namespace RelatedRows.Domain
             {
                 return _collectMemoryCommand ?? (_collectMemoryCommand = new Command(() =>
                 {
+                    Logger.Log.Verbose("CollectMemoryCommand");
+
                     //Diagnostics [useful for memory testing]
                     GC.Collect();
                     GC.WaitForPendingFinalizers();

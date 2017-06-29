@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using Serilog.Events;
 using System;
 using System.IO;
 
@@ -14,9 +15,17 @@ namespace RelatedRows.Domain
                 return _log ?? (
                     _log = new LoggerConfiguration()
                         .WriteTo.File(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "trace.log"))
-                        .MinimumLevel.Is(Serilog.Events.LogEventLevel.Verbose)
+                        .MinimumLevel.Is(LogEventLevel.Verbose)
                         .CreateLogger());
             }
+        }
+
+        public static void SetLevel(LogEventLevel level)
+        {            
+            _log = new LoggerConfiguration()
+                        .WriteTo.File(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "trace.log"))
+                        .MinimumLevel.Is(level)
+                        .CreateLogger();
         }
     }
 }

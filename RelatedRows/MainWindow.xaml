@@ -229,7 +229,7 @@
                                               VerticalAlignment="Center" 
                                               IsEditable="True"                          
                                               ItemsSource="{Binding Source={StaticResource cvsTables}}"
-                                              SelectedItem="{Binding Mode=TwoWay, Path=SelectedTable, UpdateSourceTrigger=PropertyChanged}">
+                                              SelectedItem="{Binding Mode=TwoWay, Path=SelectedTable, UpdateSourceTrigger=PropertyChanged, Delay=500}">
                                                         <ComboBox.ItemsPanel>
                                                             <ItemsPanelTemplate>
                                                                 <VirtualizingStackPanel />

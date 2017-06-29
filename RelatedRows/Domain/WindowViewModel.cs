@@ -6,6 +6,7 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using RelatedRows.Controls;
 using RelatedRows.Helpers;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +18,6 @@ using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -77,6 +77,7 @@ namespace RelatedRows.Domain
         public WindowViewModel(ISchedulerProvider schedulerProvider)
         {
             _settings = ApplicationOptions.Get();
+            Logger.SetLevel(_settings.LogLevel);
             _settings.ApplyTheme();
             _isEmpty = true;
             _dataSourceProvider = new SqlServerProvider(Logger.Log);
@@ -109,6 +110,8 @@ namespace RelatedRows.Domain
         private void OpenFile(FileInfo file)
         {
             IsBusy = true;
+            Logger.Log.Verbose("OpenFile({@FullName})", file.FullName);
+
             _schedulerProvider.MainThread.Schedule(() =>
             {
                 try
@@ -128,12 +131,15 @@ namespace RelatedRows.Domain
                                 qryConfig.Dataset.FirstOrDefault().defaultTable));
                     }
 
-                    var histConfig = XmlHelper<CConfiguration>.Load(file.FullName.Replace(".xml", "-store-procs-hist.xml"));
-                    if (histConfig.Dataset.Any())
+                    if (File.Exists(file.FullName.Replace(".xml", "-store-procs-hist.xml")))
                     {
-                        foreach (var ds in histConfig.Dataset)
-                            Configuration.Dataset.FirstOrDefault(d => d.name.Equals(ds.name))
-                                .QueryHistory.AddRange(ds.Query);
+                        var histConfig = XmlHelper<CConfiguration>.Load(file.FullName.Replace(".xml", "-store-procs-hist.xml"));
+                        if (histConfig.Dataset.Any())
+                        {
+                            foreach (var ds in histConfig.Dataset)
+                                Configuration.Dataset.FirstOrDefault(d => d.name.Equals(ds.name))
+                                    .QueryHistory.AddRange(ds.Query);
+                        }
                     }
                 }
                 catch (Exception e)
@@ -218,24 +224,45 @@ namespace RelatedRows.Domain
         private void OnSelectedTableChange()
         {
             IsBusy = true;
+            Logger.Log.Verbose("OnSelectedTableChange({@name})", SelectedTable.name);
 
             _schedulerProvider.Background.Schedule(async () =>
             {
                 try
                 {
-                    SelectedTable.DataTable =
+                    if (SelectedTable.DataTable == null)
+                    {
+                        SelectedTable.DataTable =
                         await _dataSourceProvider
                             .GetData(SelectedDatasource, SelectedTable.name, SelectedTable.GetQuery(Settings.RowsPerPage));
 
-                    SelectedTable.Pager = new CPager(SelectedTable.DataTable.RowsCount(), Settings.RowsPerPage);
+                        SelectedTable.Pager = new CPager(SelectedTable.DataTable.RowsCount(), Settings.RowsPerPage);
 
-                    if (SelectedTable.DataTable != null && SelectedTable.DataTable.Rows.Count > 0)
-                        foreach (var child in SelectedTable.Children)
-                        {
-                            child.DataTable =
-                                await _dataSourceProvider
-                                    .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: SelectedTable));
-                        }
+                        if (SelectedTable.DataTable != null && SelectedTable.DataTable.Rows.Count > 0)
+                            foreach (var child in SelectedTable.Children)
+                            {
+                                child.DataTable =
+                                    await _dataSourceProvider
+                                        .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: SelectedTable));
+                            }
+                    } else
+                    {
+                        SelectedTable.DataTable =
+                            await _dataSourceProvider
+                                .GetData(SelectedDatasource, SelectedTable.name, SelectedTable.GetQuery(Settings.RowsPerPage, skip: SelectedTable.Pager.Skip));
+
+                        var rows = SelectedTable.DataTable.RowsCount();
+                        if (SelectedTable.Pager.RowsCount != rows)
+                            SelectedTable.Pager.Reset(rows, Settings.RowsPerPage);
+
+                        if (SelectedTable.DataTable != null && SelectedTable.DataTable.Rows.Count > 0)
+                            foreach (var child in SelectedTable.Children)
+                            {
+                                child.DataTable =
+                                    await _dataSourceProvider
+                                        .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: SelectedTable));
+                            }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -268,6 +295,9 @@ namespace RelatedRows.Domain
                 SetAndRaise(ref _selectedRow, value);
                 if (SelectedTable != null)
                     SelectedTable.SelectedRow = value;
+
+                if (_selectedRow != null && _selectedRow.Row != null)
+                    Logger.Log.Verbose("SelectedRow [{@tableName}]", _selectedRow.Row.Table.TableName);
 
                 if (_selectedRow != null
                     && _viewMode == eViewMode.Data
@@ -352,6 +382,8 @@ namespace RelatedRows.Domain
                 OnPropertyChanged("SchemaVisibility");
                 OnPropertyChanged("DataVisibility");
                 OnPropertyChanged("IsDataMode");
+
+                Logger.Log.Verbose("ViewMode [{@value}]", value);
 
                 if (_viewMode == eViewMode.Data && SelectedTable != null && SelectedTable.DataTable == null)
                 {
@@ -440,6 +472,30 @@ namespace RelatedRows.Domain
         public SolidColorBrush AlternatingRowBackground
         {
             get { return new SolidColorBrush(Settings.SelectedPrimaryColor.PrimaryHues.First().Color); }
+        }
+
+        public LogEventLevel LogLevel
+        {
+            get { return Settings.LogLevel; }
+            set
+            {
+                Settings.LogLevel = value;
+                Logger.SetLevel(value);
+            }
+        }
+
+        private IEnumerable<LogEventLevel> _logLevels;
+        public IEnumerable<LogEventLevel> LogLevels
+        {
+            get
+            {
+                if(_logLevels == null)
+                {
+                    _logLevels = Enum.GetValues(typeof(LogEventLevel)).Cast<LogEventLevel>();
+                }                
+
+                return _logLevels;
+            }
         }
 
         private void AppendChildren(CTable table, CDataset dataset)

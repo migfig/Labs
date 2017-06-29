@@ -498,10 +498,24 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
 
         public CPager(long rows, long rowsPerPage)
         {
+            Reset(rows, rowsPerPage);
+        }
+
+        public void Reset(long rows, long rowsPerPage)
+        {
             RowsCount = rows;
             RowsPerPage = rowsPerPage;
             Page = 1;
             Pages = RowsCount / RowsPerPage;
+
+            OnPropertyChanged("NextTooltip");
+            OnPropertyChanged("PrevTooltip");
+            OnPropertyChanged("CanGoFirst");
+            OnPropertyChanged("CanGoNext");
+            OnPropertyChanged("CanGoPrev");
+            OnPropertyChanged("CanGoLast");
+            OnPropertyChanged("FirstTooltip");
+            OnPropertyChanged("LastTooltip");
         }
 
         public void Navigate(string direction)
@@ -521,6 +535,7 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
                     Last();
                     break;
             }
+            Logger.Log.Verbose("Navigated to page {@page} of {@pages}", Page, Pages);
         }
 
         public void First()

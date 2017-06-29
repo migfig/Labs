@@ -14,6 +14,8 @@ namespace Common
 
         public static T Load(string fileName)
         {
+            Logger.Log.Verbose("Loading file {@fileName}", fileName);
+
             try
             {
                 using(var stream = File.OpenText(fileName))
@@ -93,7 +95,9 @@ namespace Common
 
         public static bool Save(string fileName, T item)
         {
-            if(File.Exists(fileName))
+            Logger.Log.Verbose("Saving file {@fileName}", fileName);
+
+            if (File.Exists(fileName))
             {
                 File.Delete(fileName);
             }

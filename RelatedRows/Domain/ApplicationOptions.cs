@@ -3,6 +3,7 @@ using MahApps.Metro.Controls;
 using MaterialDesignColors;
 using Newtonsoft.Json;
 using RelatedRows.Helpers;
+using Serilog.Events;
 using System;
 using System.IO;
 using System.Linq;
@@ -49,6 +50,16 @@ namespace RelatedRows.Domain
             }
         }
         public bool OpenRecentOnStartup { get; set; }
+
+        private LogEventLevel _logLevel = LogEventLevel.Error;
+        public LogEventLevel LogLevel
+        {
+            get { return _logLevel; }
+            set
+            {
+                SetAndRaise(ref _logLevel, value);
+            }
+        }
 
         [JsonIgnore]
         public PaletteSelectorViewModel PaletteSelector { get; private set; }

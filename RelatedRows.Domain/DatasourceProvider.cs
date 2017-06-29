@@ -52,9 +52,12 @@ namespace RelatedRows.Domain
                 var data = new DataTable(name);
                 data.Load(rdr);
                 rdr.Close();
-                if(data.Rows.Count > 0)
-                    data.Namespace = data.Rows[0]["Count"].ToString();
-                data.Columns.Remove("Count");
+
+                if (data.Columns.IndexOf("CountOver$") >= 0) {
+                    if (data.Rows.Count > 0)
+                        data.Namespace = data.Rows[0]["CountOver$"].ToString();
+                    data.Columns.Remove("CountOver$");
+                }
 
                 return data;
             }
