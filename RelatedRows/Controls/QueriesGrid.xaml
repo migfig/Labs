@@ -11,59 +11,12 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" x:Key="panelBackgroundBrush">
-                <LinearGradientBrush.GradientStops>
-                    <GradientStop Color="#FFFFFFFF" Offset="0" />
-                    <GradientStop Color="#FFFFFFFF" Offset="1" />
-                </LinearGradientBrush.GradientStops>
-            </LinearGradientBrush>
-
-            <Style x:Key="GridSplitterPreviewStyle">
-                <Setter Property="Control.Template">
-                    <Setter.Value>
-                        <ControlTemplate>
-                            <Border BorderThickness="{TemplateBinding Border.BorderThickness}" BorderBrush="{TemplateBinding Border.BorderBrush}" Background="{TemplateBinding Panel.Background}">
-                                <Border BorderThickness="1,1,0,0" BorderBrush="{StaticResource ResourceKey=panelBackgroundBrush}">
-                                    <Canvas Width="6" Height="3">
-                                        <Rectangle Fill="{StaticResource ResourceKey=panelBackgroundBrush}" Width="2" Height="2" Canvas.Left="1" Canvas.Top="0" />
-                                        <Rectangle Fill="{StaticResource ResourceKey=panelBackgroundBrush}" Width="2" Height="2" Canvas.Left="5" Canvas.Top="0" />
-                                        <Rectangle Fill="{TemplateBinding TextElement.Foreground}" Width="2" Height="2" Canvas.Left="0" Canvas.Top="0" />
-                                        <Rectangle Fill="{TemplateBinding TextElement.Foreground}" Width="2" Height="2" Canvas.Left="4" Canvas.Top="0" />
-                                    </Canvas>
-                                </Border>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="GridSplitterStyle" TargetType="{x:Type GridSplitter}">
-                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-                <Setter Property="PreviewStyle" Value="{StaticResource GridSplitterPreviewStyle}"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type GridSplitter}">
-                            <Border BorderThickness="{TemplateBinding Border.BorderThickness}" BorderBrush="{TemplateBinding Border.BorderBrush}" Background="{TemplateBinding Panel.Background}">
-                                <Border BorderThickness="1,1,0,0" BorderBrush="{StaticResource ResourceKey=panelBackgroundBrush}">
-                                    <Canvas Width="6" Height="3">
-                                        <Rectangle Fill="{StaticResource ResourceKey=panelBackgroundBrush}" Width="2" Height="2" Canvas.Left="1" Canvas.Top="0" />
-                                        <Rectangle Fill="{StaticResource ResourceKey=panelBackgroundBrush}" Width="2" Height="2" Canvas.Left="5" Canvas.Top="0" />
-                                        <Rectangle Fill="{TemplateBinding TextElement.Foreground}" Width="2" Height="2" Canvas.Left="0" Canvas.Top="0" />
-                                        <Rectangle Fill="{TemplateBinding TextElement.Foreground}" Width="2" Height="2" Canvas.Left="4" Canvas.Top="0" />
-                                    </Canvas>
-                                </Border>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <!--<ColumnDefinition Width="4"/>-->
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
@@ -141,8 +94,6 @@
                     materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"/>
             </Grid>
         </Grid>
-
-        <!--<GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1" Style="{StaticResource GridSplitterStyle}" />-->
 
         <Expander Grid.Column="2" ExpandDirection="Right" IsExpanded="True">
             <Expander.Header>

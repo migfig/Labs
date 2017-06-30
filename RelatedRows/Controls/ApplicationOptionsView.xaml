@@ -74,13 +74,17 @@
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                         Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center">Light</TextBlock>
-                <ToggleButton Margin="12 0 16 0" IsChecked="{Binding UseDarkTheme}" HorizontalAlignment="Center" />
+                <ToggleButton Margin="12 0 16 0"
+                              Command="{Binding ApplyThemeCommand}" 
+                              CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
+                              IsChecked="{Binding UseDarkTheme}"
+                              HorizontalAlignment="Center" />
                 <TextBlock VerticalAlignment="Center">Dark</TextBlock>
             </StackPanel>
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Zoom" />
             <Slider Grid.Row="1"
-                    Grid.Column="1" Minimum="80" Maximum="200"
+                    Grid.Column="1" Minimum="50" Maximum="200"
                     SmallChange="5"
                     LargeChange="5"
                     Value="{Binding Mode=TwoWay, Path=Scale}" />

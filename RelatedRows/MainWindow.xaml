@@ -179,10 +179,6 @@
                                 Visibility="{Binding IsEmpty, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
                                 ClosingItemCallback="{Binding ClosingTabItemHandler}">
 
-                                <!--<dragablz:TabablzControl.InterTabController>
-                                    <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
-                                </dragablz:TabablzControl.InterTabController>-->
-
                                 <TabItem Header="Tables">
                                     <ScrollViewer>
                                         <StackPanel>
@@ -241,6 +237,11 @@
                                             
                                             <local:SchemaGrid Visibility="{Binding SchemaVisibility}" />
                                             <local:RowsGrid Visibility="{Binding DataVisibility}" />
+
+                                            <StackPanel.LayoutTransform>
+                                                <ScaleTransform ScaleX="{Binding Settings.ScaleRatio}"
+                                                                ScaleY="{Binding Settings.ScaleRatio}"/>
+                                            </StackPanel.LayoutTransform>
                                         </StackPanel>
                                     </ScrollViewer>
                                 </TabItem>
@@ -285,6 +286,11 @@
                                             </Grid>
 
                                             <local:QueriesGrid />
+
+                                            <StackPanel.LayoutTransform>
+                                                <ScaleTransform ScaleX="{Binding Settings.ScaleRatio}"
+                                                                ScaleY="{Binding Settings.ScaleRatio}"/>
+                                            </StackPanel.LayoutTransform>
                                         </StackPanel>
                                     </ScrollViewer>
                                 </TabItem>

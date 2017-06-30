@@ -2,6 +2,7 @@
 using Dragablz;
 using DynamicData;
 using DynamicData.Binding;
+using MahApps.Metro.Controls;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using RelatedRows.Controls;
@@ -29,7 +30,6 @@ namespace RelatedRows.Domain
         private readonly ISchedulerProvider _schedulerProvider;
         private bool _menuIsOpen;
 
-        //public IInterTabClient InterTabClient { get; }
         public string Version { get; }
 
         private ApplicationOptions _settings;
@@ -78,11 +78,11 @@ namespace RelatedRows.Domain
         {
             _settings = ApplicationOptions.Get();
             Logger.SetLevel(_settings.LogLevel);
+            _settings.ApplyThemeCommand.Execute(_settings.Theme.Equals(Theme.Dark));
             _settings.ApplyTheme();
             _isEmpty = true;
             _dataSourceProvider = new SqlServerProvider(Logger.Log);
             _schedulerProvider = schedulerProvider;
-            //InterTabClient = new InterTabClient(windowFactory);
 
             Version = $"v{Assembly.GetEntryAssembly().GetName().Version.ToString(3)}";
 

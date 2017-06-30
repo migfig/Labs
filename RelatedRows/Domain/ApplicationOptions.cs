@@ -1,6 +1,7 @@
 ﻿using DynamicData.Binding;
 using MahApps.Metro.Controls;
 using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using RelatedRows.Helpers;
 using Serilog.Events;
@@ -14,6 +15,17 @@ namespace RelatedRows.Domain
     public class  ApplicationOptions: AbstractNotifyPropertyChanged
     {
         public Theme Theme { get; set; }
+        private bool _useDarkTheme;
+        [JsonIgnore]
+        public bool UseDarkTheme
+        {
+            get { return _useDarkTheme; }
+            set
+            {
+                SetAndRaise(ref _useDarkTheme, value);
+            }
+        }
+
 
         private int _scale;
         public int Scale {
@@ -21,7 +33,13 @@ namespace RelatedRows.Domain
             set
             {
                 SetAndRaise(ref _scale, value);
+                OnPropertyChanged("ScaleRatio");
             }
+        }
+
+        public decimal ScaleRatio
+        {
+            get { return (decimal)Scale / (decimal)100; }
         }
 
         private long _rowsPerPage;
@@ -82,6 +100,7 @@ namespace RelatedRows.Domain
         {
             PaletteSelector = new PaletteSelectorViewModel();
             Theme = theme;
+            UseDarkTheme = Theme.Equals(Theme.Dark);
             Scale = scale;
             RowsPerPage = rowsPerPage;
             PrimaryColor = primaryColor;
@@ -107,6 +126,19 @@ namespace RelatedRows.Domain
         {
             PaletteSelector.ApplyPrimaryCommand.Execute(SelectedPrimaryColor);
             PaletteSelector.ApplyAccentCommand.Execute(SelectedAccentColor);
+        }
+
+        private ICommand _applyTheme;
+        [JsonIgnore]
+        public ICommand ApplyThemeCommand
+        {
+            get
+            {
+                return _applyTheme ?? (_applyTheme = new Command<bool>((isDark) => {
+                    new PaletteHelper().SetLightDark(isDark);
+                    Theme = isDark ? Theme.Dark : Theme.Light;
+                }));
+            }
         }
 
         public static ApplicationOptions Get()

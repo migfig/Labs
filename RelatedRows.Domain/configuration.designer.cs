@@ -506,7 +506,7 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
             RowsCount = rows;
             RowsPerPage = rowsPerPage;
             Page = 1;
-            Pages = RowsCount / RowsPerPage;
+            Pages = (RowsCount / RowsPerPage) + (RowsCount % RowsPerPage > 0 ? 1 : 0);
 
             OnPropertyChanged("NextTooltip");
             OnPropertyChanged("PrevTooltip");
@@ -516,6 +516,8 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
             OnPropertyChanged("CanGoLast");
             OnPropertyChanged("FirstTooltip");
             OnPropertyChanged("LastTooltip");
+            OnPropertyChanged("Visible");
+            OnPropertyChanged("EdgesVisible");
         }
 
         public void Navigate(string direction)
@@ -547,6 +549,7 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
             OnPropertyChanged("CanGoNext");
             OnPropertyChanged("CanGoPrev");
             OnPropertyChanged("CanGoLast");
+            OnPropertyChanged("Page");
         }
 
         public void Next()
@@ -558,6 +561,7 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
             OnPropertyChanged("CanGoNext");
             OnPropertyChanged("CanGoPrev");
             OnPropertyChanged("CanGoLast");
+            OnPropertyChanged("Page");
         }
 
         public void Prev()
@@ -569,6 +573,7 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
             OnPropertyChanged("CanGoNext");
             OnPropertyChanged("CanGoPrev");
             OnPropertyChanged("CanGoLast");
+            OnPropertyChanged("Page");
         }
 
         public void Last()
@@ -580,6 +585,7 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
             OnPropertyChanged("CanGoNext");
             OnPropertyChanged("CanGoPrev");
             OnPropertyChanged("CanGoLast");
+            OnPropertyChanged("Page");
         }
 
         public string FirstTooltip
@@ -600,6 +606,16 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
         public string LastTooltip
         {
             get { return $"Page {Pages} of {Pages}"; }
+        }
+
+        public Visibility Visible
+        {
+            get { return Pages > 1 ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility EdgesVisible
+        {
+            get { return Pages > 2 ? Visibility.Visible : Visibility.Collapsed; }
         }
     }
 

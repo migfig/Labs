@@ -11,59 +11,12 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" x:Key="panelBackgroundBrush">
-                <LinearGradientBrush.GradientStops>
-                    <GradientStop Color="#FFFFFFFF" Offset="0" />
-                    <GradientStop Color="#FFFFFFFF" Offset="1" />
-                </LinearGradientBrush.GradientStops>
-            </LinearGradientBrush>
-
-            <Style x:Key="GridSplitterPreviewStyle">
-                <Setter Property="Control.Template">
-                    <Setter.Value>
-                        <ControlTemplate>
-                            <Border BorderThickness="{TemplateBinding Border.BorderThickness}" BorderBrush="{TemplateBinding Border.BorderBrush}" Background="{TemplateBinding Panel.Background}">
-                                <Border BorderThickness="1,1,0,0" BorderBrush="{StaticResource ResourceKey=panelBackgroundBrush}">
-                                    <Canvas Width="6" Height="3">
-                                        <Rectangle Fill="{StaticResource ResourceKey=panelBackgroundBrush}" Width="2" Height="2" Canvas.Left="1" Canvas.Top="0" />
-                                        <Rectangle Fill="{StaticResource ResourceKey=panelBackgroundBrush}" Width="2" Height="2" Canvas.Left="5" Canvas.Top="0" />
-                                        <Rectangle Fill="{TemplateBinding TextElement.Foreground}" Width="2" Height="2" Canvas.Left="0" Canvas.Top="0" />
-                                        <Rectangle Fill="{TemplateBinding TextElement.Foreground}" Width="2" Height="2" Canvas.Left="4" Canvas.Top="0" />
-                                    </Canvas>
-                                </Border>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="GridSplitterStyle" TargetType="{x:Type GridSplitter}">
-                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-                <Setter Property="PreviewStyle" Value="{StaticResource GridSplitterPreviewStyle}"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type GridSplitter}">
-                            <Border BorderThickness="{TemplateBinding Border.BorderThickness}" BorderBrush="{TemplateBinding Border.BorderBrush}" Background="{TemplateBinding Panel.Background}">
-                                <Border BorderThickness="1,1,0,0" BorderBrush="{StaticResource ResourceKey=panelBackgroundBrush}">
-                                    <Canvas Width="6" Height="3">
-                                        <Rectangle Fill="{StaticResource ResourceKey=panelBackgroundBrush}" Width="2" Height="2" Canvas.Left="1" Canvas.Top="0" />
-                                        <Rectangle Fill="{StaticResource ResourceKey=panelBackgroundBrush}" Width="2" Height="2" Canvas.Left="5" Canvas.Top="0" />
-                                        <Rectangle Fill="{TemplateBinding TextElement.Foreground}" Width="2" Height="2" Canvas.Left="0" Canvas.Top="0" />
-                                        <Rectangle Fill="{TemplateBinding TextElement.Foreground}" Width="2" Height="2" Canvas.Left="4" Canvas.Top="0" />
-                                    </Canvas>
-                                </Border>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <!--<ColumnDefinition Width="4"/>-->
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
@@ -87,19 +40,34 @@
                     <Button ToolTip="Home" Command="{Binding GoHomeCommand}" Visibility="{Binding GoHomeVisibility}">
                         <materialDesign:PackIcon Kind="Home" />
                     </Button>
-                    <Button Command="{Binding PageCommand}" CommandParameter="first" IsEnabled="{Binding SelectedTable.Pager.CanGoFirst}" ToolTip="{Binding SelectedTable.Pager.FirstTooltip}">
+                    <Button Command="{Binding PageCommand}" CommandParameter="first" 
+                            IsEnabled="{Binding SelectedTable.Pager.CanGoFirst}" 
+                            ToolTip="{Binding SelectedTable.Pager.FirstTooltip}"
+                            Visibility="{Binding SelectedTable.Pager.EdgesVisible}">
                         <materialDesign:PackIcon Kind="ChevronDoubleLeft" />
                     </Button>
-                    <Button Command="{Binding PageCommand}" CommandParameter="prev" IsEnabled="{Binding SelectedTable.Pager.CanGoPrev}" ToolTip="{Binding SelectedTable.Pager.PrevTooltip}">
+                    <Button Command="{Binding PageCommand}" CommandParameter="prev" 
+                            IsEnabled="{Binding SelectedTable.Pager.CanGoPrev}" 
+                            ToolTip="{Binding SelectedTable.Pager.PrevTooltip}"
+                            Visibility="{Binding SelectedTable.Pager.Visible}">
                         <materialDesign:PackIcon Kind="ChevronLeft" />
                     </Button>
-                    <Button Command="{Binding PageCommand}" CommandParameter="next" IsEnabled="{Binding SelectedTable.Pager.CanGoNext}" ToolTip="{Binding SelectedTable.Pager.NextTooltip}">
+                    <TextBlock Text="{Binding SelectedTable.Pager.Page}" 
+                               VerticalAlignment="Center"
+                               Visibility="{Binding SelectedTable.Pager.Visible}"/>
+                    <Button Command="{Binding PageCommand}" CommandParameter="next" 
+                            IsEnabled="{Binding SelectedTable.Pager.CanGoNext}" 
+                            ToolTip="{Binding SelectedTable.Pager.NextTooltip}"
+                            Visibility="{Binding SelectedTable.Pager.Visible}">
                         <materialDesign:PackIcon Kind="ChevronRight" />
                     </Button>
-                    <Button Command="{Binding PageCommand}" CommandParameter="last" IsEnabled="{Binding SelectedTable.Pager.CanGoLast}" ToolTip="{Binding SelectedTable.Pager.LastTooltip}">
+                    <Button Command="{Binding PageCommand}" CommandParameter="last" 
+                            IsEnabled="{Binding SelectedTable.Pager.CanGoLast}" 
+                            ToolTip="{Binding SelectedTable.Pager.LastTooltip}"
+                            Visibility="{Binding SelectedTable.Pager.EdgesVisible}">
                         <materialDesign:PackIcon Kind="ChevronDoubleRight" />
                     </Button>
-                    <Separator/>
+                    <Separator Visibility="{Binding SelectedTable.Pager.Visible}"/>
                     <Button Command="{Binding CopyRowCommand}" 
                             CommandParameter="{Binding SelectedTable}" 
                             IsEnabled="{Binding SelectedTable.CopyTooltip.Length}"
@@ -144,8 +112,6 @@
                 materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"/>
         </DockPanel>
 
-        <!--<GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1" Style="{StaticResource GridSplitterStyle}" />-->
-
         <Expander Grid.Column="2" ExpandDirection="Right" IsExpanded="True">
             <Expander.Header>
                 <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" Padding="8">
@@ -157,7 +123,7 @@
                 </materialDesign:Card>
             </Expander.Header>
 
-            <ItemsControl ItemsSource="{Binding SelectedTable.Children}" MaxWidth="500">
+            <ItemsControl ItemsSource="{Binding SelectedTable.Children}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Expander HorizontalAlignment="Left" VerticalAlignment="Top" IsExpanded="True">
