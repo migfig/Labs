@@ -95,14 +95,38 @@
             </Grid>
         </Grid>
 
-        <Expander Grid.Column="2" ExpandDirection="Right" IsExpanded="True">
+        <Expander Grid.Column="2" ExpandDirection="Right" IsExpanded="True" MaxWidth="{Binding MaxChildSize}">
             <Expander.Header>
                 <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" Padding="8">
-                    <TextBlock Text="Query Body" FontWeight="Regular" RenderTransformOrigin=".5,.5">
-                        <TextBlock.LayoutTransform>
-                            <RotateTransform Angle="90" />
-                        </TextBlock.LayoutTransform>
-                    </TextBlock>
+                    <StackPanel>
+                        <TextBlock Text="Query Body" FontWeight="Regular" 
+                                   RenderTransformOrigin=".5,.5"
+                                   HorizontalAlignment="Center">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="90" />
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                        <Button ToolTip="Maximize" Command="{Binding MaximizeChildSizeCommand}"
+                                Style="{DynamicResource MaterialDesignFlatButton}"
+                                Visibility="{Binding MaximizeChildSizeVisibility}"
+                                Height="16" Margin="0 4 0 0"
+                                RenderTransformOrigin=".5,.5">
+                            <materialDesign:PackIcon Kind="ChevronDoubleDown" VerticalAlignment="Center" />
+                            <Button.LayoutTransform>
+                                <RotateTransform Angle="90" />
+                            </Button.LayoutTransform>
+                        </Button>
+                        <Button ToolTip="Restore" Command="{Binding RestoreChildSizeCommand}"
+                                Style="{DynamicResource MaterialDesignFlatButton}"
+                                Visibility="{Binding RestoreChildSizeVisibility}"
+                                Height="16" Margin="0 4 0 0"
+                                RenderTransformOrigin=".5,.5">
+                            <materialDesign:PackIcon Kind="ChevronDoubleDown" VerticalAlignment="Center" />
+                            <Button.LayoutTransform>
+                                <RotateTransform Angle="-90" />
+                            </Button.LayoutTransform>
+                        </Button>
+                    </StackPanel>
                 </materialDesign:Card>
             </Expander.Header>
 
@@ -115,7 +139,7 @@
 
                     <TextBox Text="{Binding SelectedQuery.FriendlyText}" 
                            Margin="16"
-                           Width="500"
+                           Width="{Binding MaxChildSize}"
                            TextWrapping="WrapWithOverflow"
                            IsReadOnly="True"
                            VerticalContentAlignment="Top"
