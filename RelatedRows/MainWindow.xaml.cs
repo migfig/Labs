@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System;
+using System.Collections.Generic;
 
 namespace RelatedRows
 {
@@ -50,9 +51,11 @@ namespace RelatedRows
             var ptr = rtb.GetPositionFromPoint(e.GetPosition(rtb), true);
             if (null != ptr)
             {
+                var dict = new Dictionary<string, string> { { "MaterialDesignInXamlToolkit", "https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/wiki/Getting-Started" }, { "TailBlazer", "https://github.com/RolandPheasant" } };
                 var url = ptr.GetTextInRun(LogicalDirection.Backward);
                 url += ptr.GetTextInRun(LogicalDirection.Forward);
-                (DataContext as WindowViewModel).ShowInGitHubCommand.Execute(new Uri(url));
+
+                (DataContext as WindowViewModel).ShowInGitHubCommand.Execute(new Uri(dict[url]));
             }
             e.Handled = true;
         }
