@@ -2,6 +2,7 @@
 using RelatedRows.Helpers;
 using System.ComponentModel;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace RelatedRows
 {
@@ -14,13 +15,20 @@ namespace RelatedRows
         {
             InitializeComponent();
             DataContext = WindowViewModel.GetViewModel(new SchedulerProvider(Dispatcher));
-            Closing += MainWindow_Closing;
+            
+            Loaded += (s, e) => {
+                (DataContext as WindowViewModel).WindowSize = RenderSize;
+            };
+            Closing += (s, e) => {
+                var windowsModel = DataContext as WindowViewModel;
+                windowsModel?.OnWindowClosing();
+            };
         }
 
-        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            var windowsModel = DataContext as WindowViewModel;
-            windowsModel?.OnWindowClosing();
+            base.OnRenderSizeChanged(sizeInfo);
+            (DataContext as WindowViewModel).WindowSize = sizeInfo.NewSize;
         }
 
         private void OnPasswordChanged(object sender, System.Windows.RoutedEventArgs e)

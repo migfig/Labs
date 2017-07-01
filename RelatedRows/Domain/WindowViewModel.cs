@@ -32,6 +32,39 @@ namespace RelatedRows.Domain
 
         public string Version { get; }
 
+        public string Title
+        {
+            get { return $"Related Rows [{WindowSize.Width}:{WindowSize.Height}]"; }
+        }
+
+        private Size _windowSize;
+        public Size WindowSize
+        {
+            get { return _windowSize; }
+            set
+            {
+                SetAndRaise(ref _windowSize, value);
+                OnPropertyChanged("Title");
+                OnPropertyChanged("MaxChildSize");
+            }
+        }
+
+        private double _defaultMaxChildSize = 0.4;
+        public double MaxChildSize
+        {
+            get { return WindowSize.Width * _defaultMaxChildSize; }
+        }
+
+        public Visibility MaximizeChildSizeVisibility
+        {
+            get { return _defaultMaxChildSize == 0.4 ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility RestoreChildSizeVisibility
+        {
+            get { return _defaultMaxChildSize == 1.0 ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
         private ApplicationOptions _settings;
         public ApplicationOptions Settings { get { return _settings; } }
 

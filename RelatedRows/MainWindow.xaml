@@ -22,7 +22,7 @@
         TextOptions.TextRenderingMode="Auto"  
         FontFamily="{StaticResource MaterialDesignFont}"        
         mc:Ignorable="d"
-        Title="Related Rows" 
+        Title="{Binding Title}" 
         Height="640" 
         Width="800"
         WindowState="Maximized">
