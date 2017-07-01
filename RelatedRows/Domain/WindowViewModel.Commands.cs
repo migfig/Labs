@@ -232,7 +232,8 @@ namespace RelatedRows.Domain
             get
             {
                 return _showInGitHubCommand ?? 
-                    (_showInGitHubCommand = new Command(() => Process.Start("https://github.com/migfig")));
+                    (_showInGitHubCommand = new Command<object>((url) => 
+                        Process.Start(url is Uri ? (url as Uri).ToString() : "https://github.com/migfig")));
             }
         }
 

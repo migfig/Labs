@@ -313,12 +313,33 @@
                                 <materialDesign:PackIcon Kind="GithubCircle" Width="160" Height="160" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 <StackPanel Grid.Column="1">
                                     <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}" Margin="16 16 16 8">Related Rows</TextBlock>
-                                    <TextBlock TextWrapping="Wrap" Margin="16 0 16 8" Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                           VerticalAlignment="Top">This project is open source and based on great open source projects [MahApps and Tail Blazer], feel free to contribute, use or modify it!</TextBlock>
+                                    
+                                    <RichTextBox IsReadOnly="True" Margin="16 0 16 8" 
+                                                 Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                                 VerticalAlignment="Top"
+                                                 BorderThickness="0"
+                                                 MouseDoubleClick="OnMouseDoubleClick">
+                                        <FlowDocument>
+                                            <Paragraph>
+                                                <Run Text="This project is open source and based on other great open source projects. Feel free to contribute, modify or use it!"/>
+                                                <LineBreak />
+                                                <Run Text="Projects"/>
+                                                <Hyperlink Foreground="{Binding ElementName=btnNewDatasource, Path=Foreground}" NavigateUri="https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/wiki/Getting-Started" 
+                                                           Click="OnNavigateUri"
+                                                           Command="{Binding ShowInGitHubCommand}" 
+                                                           CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=NavigateUri}">MaterialDesignInXamlToolkit</Hyperlink>
+                                                <Hyperlink Foreground="{Binding ElementName=btnNewDatasource, Path=Foreground}" NavigateUri="https://github.com/RolandPheasant"
+                                                           Click="OnNavigateUri"
+                                                           Command="{Binding ShowInGitHubCommand}" 
+                                                           CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=NavigateUri}">TailBlazer</Hyperlink>
+                                            </Paragraph>
+                                        </FlowDocument>
+                                    </RichTextBox>                                 
                                 </StackPanel>
                                 <Border Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource MaterialDesignDivider}" Padding="8">
                                     <DockPanel>
-                                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                                x:Name="btnNewDatasource"
                                             DockPanel.Dock="Right"
                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBooleanToBooleanConverter}}"
                                             Command="{Binding NewDatasourceCommand}">
