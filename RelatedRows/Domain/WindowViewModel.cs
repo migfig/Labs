@@ -34,7 +34,7 @@ namespace RelatedRows.Domain
 
         public string Title
         {
-            get { return $"Related Rows [{WindowSize.Width}:{WindowSize.Height}]"; }
+            get { return $"Related Rows"; } //[{WindowSize.Width}:{WindowSize.Height}]"; }
         }
 
         private Size _windowSize;

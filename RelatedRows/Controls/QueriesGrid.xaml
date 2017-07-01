@@ -133,7 +133,7 @@
             <materialDesign:Card>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="1*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
@@ -145,7 +145,7 @@
                            VerticalContentAlignment="Top"
                            MaxLines="20"/>
 
-                    <ListBox Grid.Row="1" MaxHeight="300" ItemsSource="{Binding SelectedDataset.QueryHistory}">
+                    <ListBox Grid.Row="1" ItemsSource="{Binding SelectedDataset.QueryHistory}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <DockPanel>
