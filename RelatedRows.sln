@@ -7,11 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelatedRows.Domain", "Relat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelatedRows", "RelatedRows\RelatedRows.csproj", "{9D2FD602-DA76-4909-A331-ED48BA4BEFC6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{A1768651-4543-42D0-8B49-2DCE398D9F0A}"
-	ProjectSection(SolutionItems) = preProject
-		..\MaterialDesignInXamlToolkit\LICENSE = ..\MaterialDesignInXamlToolkit\LICENSE
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
