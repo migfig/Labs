@@ -55,16 +55,6 @@ namespace RelatedRows.Domain
             get { return WindowSize.Width * _defaultMaxChildSize; }
         }
 
-        public Visibility MaximizeChildSizeVisibility
-        {
-            get { return _defaultMaxChildSize == 0.4 ? Visibility.Visible : Visibility.Collapsed; }
-        }
-
-        public Visibility RestoreChildSizeVisibility
-        {
-            get { return _defaultMaxChildSize == 1.0 ? Visibility.Visible : Visibility.Collapsed; }
-        }
-
         private ApplicationOptions _settings;
         public ApplicationOptions Settings { get { return _settings; } }
 

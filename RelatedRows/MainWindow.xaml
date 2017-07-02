@@ -323,13 +323,18 @@
                                             <Paragraph>
                                                 <Run Text="This project is open source and based on other great open source projects. Feel free to contribute, modify or use it!"/>
                                                 <LineBreak />
-                                                <Run Text="Projects"/>
-                                                <Hyperlink Foreground="{Binding ElementName=btnNewDatasource, Path=Foreground}" NavigateUri="https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/wiki/Getting-Started" 
+                                                <LineBreak />
+                                                <Run Text="Projects:"/>
+                                                <Hyperlink Foreground="{Binding ElementName=btnNewDatasource, Path=Foreground}" 
+                                                           NavigateUri="https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/wiki/Getting-Started" 
                                                            Click="OnNavigateUri"
+                                                           Cursor="Hand"
                                                            Command="{Binding ShowInGitHubCommand}" 
                                                            CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=NavigateUri}">MaterialDesignInXamlToolkit</Hyperlink>
-                                                <Hyperlink Foreground="{Binding ElementName=btnNewDatasource, Path=Foreground}" NavigateUri="https://github.com/RolandPheasant"
+                                                <Hyperlink Foreground="{Binding ElementName=btnNewDatasource, Path=Foreground}" 
+                                                           NavigateUri="https://github.com/RolandPheasant"
                                                            Click="OnNavigateUri"
+                                                           Cursor="Hand"
                                                            Command="{Binding ShowInGitHubCommand}" 
                                                            CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=NavigateUri}">TailBlazer</Hyperlink>
                                             </Paragraph>

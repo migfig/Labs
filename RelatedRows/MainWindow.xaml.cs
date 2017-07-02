@@ -1,6 +1,5 @@
 ﻿using RelatedRows.Domain;
 using RelatedRows.Helpers;
-using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Documents;
@@ -35,7 +34,7 @@ namespace RelatedRows
             (DataContext as WindowViewModel).WindowSize = sizeInfo.NewSize;
         }
 
-        private void OnPasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+        private void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
             (DataContext as CDatasource).password = (sender as PasswordBox).Password;
         }
@@ -51,11 +50,14 @@ namespace RelatedRows
             var ptr = rtb.GetPositionFromPoint(e.GetPosition(rtb), true);
             if (null != ptr)
             {
-                var dict = new Dictionary<string, string> { { "MaterialDesignInXamlToolkit", "https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/wiki/Getting-Started" }, { "TailBlazer", "https://github.com/RolandPheasant" } };
+                var dict = new Dictionary<string, string> {
+                    { "MaterialDesignInXamlToolkit", "https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/wiki/Getting-Started" },
+                    { "TailBlazer", "https://github.com/RolandPheasant" } };
                 var url = ptr.GetTextInRun(LogicalDirection.Backward);
                 url += ptr.GetTextInRun(LogicalDirection.Forward);
 
-                (DataContext as WindowViewModel).ShowInGitHubCommand.Execute(new Uri(dict[url]));
+                if (dict.ContainsKey(url))
+                    (DataContext as WindowViewModel).ShowInGitHubCommand.Execute(new Uri(dict[url]));
             }
             e.Handled = true;
         }

@@ -553,32 +553,15 @@ namespace RelatedRows.Domain
             }
         }
 
-        private ICommand _maximizeChildSizeCommand;
-        public ICommand MaximizeChildSizeCommand
+        private ICommand _maximizeRestoreChildSizeCommand;
+        public ICommand MaximizeRestoreChildSizeCommand
         {
             get
             {
-                return _maximizeChildSizeCommand ?? (_maximizeChildSizeCommand = new Command(() =>
+                return _maximizeRestoreChildSizeCommand ?? (_maximizeRestoreChildSizeCommand = new Command<bool>((isChecked) =>
                 {
-                    _defaultMaxChildSize = 1.0;
+                    _defaultMaxChildSize = isChecked ? 1.0: 0.4;
                     OnPropertyChanged("MaxChildSize");
-                    OnPropertyChanged("MaximizeChildSizeVisibility");
-                    OnPropertyChanged("RestoreChildSizeVisibility");
-                }));
-            }
-        }
-
-        private ICommand _restoreChildSizeCommand;
-        public ICommand RestoreChildSizeCommand
-        {
-            get
-            {
-                return _restoreChildSizeCommand ?? (_restoreChildSizeCommand = new Command(() =>
-                {
-                    _defaultMaxChildSize = 0.4;
-                    OnPropertyChanged("MaxChildSize");
-                    OnPropertyChanged("MaximizeChildSizeVisibility");
-                    OnPropertyChanged("RestoreChildSizeVisibility");
                 }));
             }
         }

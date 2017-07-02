@@ -75,26 +75,21 @@
                                 <RotateTransform Angle="90" />
                             </TextBlock.LayoutTransform>
                         </TextBlock>
-                        <Button ToolTip="Maximize" Command="{Binding MaximizeChildSizeCommand}"
-                                Style="{DynamicResource MaterialDesignFlatButton}"
-                                Visibility="{Binding MaximizeChildSizeVisibility}"
-                                Height="16" Margin="0 4 0 0"
-                                RenderTransformOrigin=".5,.5">
-                            <materialDesign:PackIcon Kind="ChevronDoubleDown" VerticalAlignment="Center" />
-                            <Button.LayoutTransform>
+                        <ToggleButton Style="{StaticResource MaterialDesignActionToggleButton}"
+                                      Command="{Binding MaximizeRestoreChildSizeCommand}"
+                                      CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
+                                      Height="16" Width="16" Margin="0 4 0 0"
+                                      RenderTransformOrigin=".5,.5">
+                            <ToggleButton.Content>
+                                <materialDesign:PackIcon Kind="ChevronDoubleDown" Height="16" Width="16" VerticalAlignment="Center" />
+                            </ToggleButton.Content>
+                            <materialDesign:ToggleButtonAssist.OnContent>
+                                <materialDesign:PackIcon Kind="ChevronDoubleUp" Height="16" Width="16" VerticalAlignment="Center" />
+                            </materialDesign:ToggleButtonAssist.OnContent>
+                            <ToggleButton.LayoutTransform>
                                 <RotateTransform Angle="90" />
-                            </Button.LayoutTransform>
-                        </Button>
-                        <Button ToolTip="Restore" Command="{Binding RestoreChildSizeCommand}"
-                                Style="{DynamicResource MaterialDesignFlatButton}"
-                                Visibility="{Binding RestoreChildSizeVisibility}"
-                                Height="16" Margin="0 4 0 0"
-                                RenderTransformOrigin=".5,.5">
-                            <materialDesign:PackIcon Kind="ChevronDoubleDown" VerticalAlignment="Center" />
-                            <Button.LayoutTransform>
-                                <RotateTransform Angle="-90" />
-                            </Button.LayoutTransform>
-                        </Button>
+                            </ToggleButton.LayoutTransform>
+                        </ToggleButton>
                     </StackPanel>
                 </materialDesign:Card>
             </Expander.Header>
