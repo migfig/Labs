@@ -204,6 +204,18 @@
                                                 </ItemsControl>                                             
                                                 
                                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                                            Visibility="{Binding SchemaVisibility}"
+                                                            Command="{Binding RefreshSchemaCommand}"
+                                                            CommandParameter="{Binding SelectedDataset}"
+                                                            IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBooleanToBooleanConverter}}"
+                                                            Height="24" Width="24"
+                                                            Margin="0 0 4 0" 
+                                                            HorizontalAlignment="Left"
+                                                            ToolTip="Refresh current data set schema">
+                                                        <materialDesign:PackIcon Kind="Refresh" Height="16" Width="16" />
+                                                    </Button>
+
                                                     <ToggleButton IsThreeState="False"
                                                               IsChecked="{Binding IsDataMode}"
                                                               Style="{StaticResource MaterialDesignSwitchToggleButton}"

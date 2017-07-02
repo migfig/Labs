@@ -116,6 +116,28 @@ namespace RelatedRows.Domain
             }
         }
 
+        private ICommand _refreshSchemaCommand;
+        public ICommand RefreshSchemaCommand
+        {
+            get
+            {
+                return _refreshSchemaCommand ?? (_refreshSchemaCommand = new Command<CDataset>((dataSet) => {
+                    ReLoadAndSaveConfiguration(dataSet);
+                }));
+            }
+        }
+
+        private ICommand _refreshTableSchemaCommand;
+        public ICommand RefreshTableSchemaCommand
+        {
+            get
+            {
+                return _refreshTableSchemaCommand ?? (_refreshTableSchemaCommand = new Command<CTable>((table) => {
+                    ReLoadAndSaveTableConfiguration(SelectedDataset, table);
+                }));
+            }
+        }
+
         private ICommand _copyQueryCommand;
         public ICommand CopyQueryCommand
         {
@@ -564,6 +586,6 @@ namespace RelatedRows.Domain
                     OnPropertyChanged("MaxChildSize");
                 }));
             }
-        }
+        }       
     }
 }

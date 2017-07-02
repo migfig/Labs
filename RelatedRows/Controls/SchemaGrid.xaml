@@ -28,7 +28,7 @@
                     <Button ToolTip="Home" Command="{Binding GoHomeCommand}" Visibility="{Binding GoHomeVisibility}">
                         <materialDesign:PackIcon Kind="Home" />
                     </Button>
-                    <Button ToolTip="Refresh" Command="{Binding RefreshCommand}" CommandParameter="{Binding SelectedTable}">
+                    <Button ToolTip="Refresh table schema" Command="{Binding RefreshTableSchemaCommand}" CommandParameter="{Binding SelectedTable}">
                         <materialDesign:PackIcon Kind="Refresh" />
                     </Button>
                     <Button ToolTip="Key" Command="{Binding SetRelationsCommand}">

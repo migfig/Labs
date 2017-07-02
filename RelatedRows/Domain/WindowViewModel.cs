@@ -696,6 +696,160 @@ namespace RelatedRows.Domain
             return new CConfiguration();
         }
 
+        private void ReLoadAndSaveConfiguration(CDataset dataSet)
+        {
+            IsBusy = true;
+            _schedulerProvider.Background.Schedule(async () =>
+            {
+                try
+                {
+                    var ds = Configuration.Datasource.FirstOrDefault(dsrc => dsrc.name.Equals(dataSet.dataSourceName));
+
+                    var schema = await _dataSourceProvider.GetSchema(ds);
+                    if (!string.IsNullOrEmpty(schema))
+                    {
+                        var builder = XmlBuilder.BuildElements(ds, schema);
+                        if (null != builder)
+                        {
+                            var config = InitConfiguration(XmlHelper<CConfiguration>.LoadFromString(builder.ToString()));
+                            _schedulerProvider.MainThread.Schedule(() =>
+                            {
+                                dataSet.Table.Clear();
+                                dataSet.Table.AddRange(config.Dataset.FirstOrDefault().Table);
+
+                                //fix relationship names
+                                foreach (var dset in config.Dataset)
+                                    foreach (var rel in dset.Relationship)
+                                        rel.name = rel.GetName();
+
+                                var tables = dataSet.Table.Select(tbl => tbl.name);
+                                var invalidRels = from r in dataSet.Relationship
+                                                  where !tables.Contains(r.fromTable)
+                                                    || !tables.Contains(r.toTable)
+                                                  select r;
+
+                                foreach (var invRel in invalidRels)
+                                {
+                                    var relToRem = dataSet.Relationship.FirstOrDefault(r => r.name.Equals(invRel.name));
+                                    dataSet.Relationship.Remove(relToRem);
+                                }
+
+                                foreach (var dset in Configuration.Dataset)
+                                    dset.Query.Clear();
+
+                                XmlHelper<CConfiguration>.Save(DefaultConfigFile, Configuration);
+                                SelectedTable = dataSet.Table.FirstOrDefault(t => t.name.Equals(dataSet.defaultTable));
+                            });
+
+                            var queryConfig = await ReLoadAndSaveQueries(dataSet);
+                            _schedulerProvider.MainThread.Schedule(() =>
+                            {
+                                foreach (var dset in queryConfig.Dataset)
+                                    Configuration.Dataset.FirstOrDefault(d => d.name.Equals(dset.name))
+                                        .Query.AddRange(dset.Query);
+
+                                SelectedQuery = dataSet.Query.FirstOrDefault();
+                            });                            
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.Log.Error(e, "Exception while reloading and saving configuration for {0}", dataSet.name);
+                    MessageQueue.Enqueue(e.Message);
+                }
+                finally
+                {
+                    _schedulerProvider.MainThread.Schedule(() => IsBusy = false);
+                }
+            });
+        }
+
+        private async Task<CConfiguration> ReLoadAndSaveQueries(CDataset dataSet)
+        {
+            var ds = Configuration.Datasource.FirstOrDefault(dsrc => dsrc.name.Equals(dataSet.dataSourceName));
+
+            var schema = await _dataSourceProvider.GetStoreProcsSchema(ds);
+            if (!string.IsNullOrEmpty(schema))
+            {
+                var builder = XmlBuilder.BuildQueryElements(ds, schema);
+                if (null != builder)
+                {
+                    var config = XmlHelper<CConfiguration>.LoadFromString(builder.ToString());
+                    var currentConfig = XmlHelper<CConfiguration>.Load(DefaultStoreProcsConfigFile);
+
+                    _schedulerProvider.MainThread.Schedule(() =>
+                    {
+                        var currentDataset = currentConfig.Dataset.FirstOrDefault(d => d.name.Equals(dataSet.name));
+                        currentDataset.Query.Clear();
+                        currentDataset.Query.AddRange(config.Dataset.FirstOrDefault().Query);
+
+                        XmlHelper<CConfiguration>.Save(DefaultStoreProcsConfigFile, currentConfig);
+                    });                    
+
+                    return currentConfig;
+                }
+            }
+
+            return new CConfiguration();
+        }
+
+        private void ReLoadAndSaveTableConfiguration(CDataset dataSet, CTable table)
+        {
+            IsBusy = true;
+            _schedulerProvider.Background.Schedule(async () =>
+            {
+                try
+                {
+                    var ds = Configuration.Datasource.FirstOrDefault(dsrc => dsrc.name.Equals(dataSet.dataSourceName));
+
+                    var schema = await _dataSourceProvider.GetSchema(ds, table.name.UnQuoteName());
+                    if (!string.IsNullOrEmpty(schema))
+                    {
+                        var builder = XmlBuilder.BuildElements(ds, schema);
+                        if (null != builder)
+                        {
+                            var config = XmlHelper<CConfiguration>.LoadFromString(builder.ToString());
+                            _schedulerProvider.MainThread.Schedule(() =>
+                            {
+                                var currentTable = dataSet.Table.FirstOrDefault(t => t.name.Equals(table.name));
+                                dataSet.Table.Remove(currentTable);
+                                var newTable = config.Dataset.FirstOrDefault().Table.FirstOrDefault();
+                                dataSet.Table.Add(newTable);
+
+                                foreach (var dset in Configuration.Dataset)
+                                    dset.Query.Clear();
+
+                                XmlHelper<CConfiguration>.Save(DefaultConfigFile, Configuration);
+
+                                AppendChildren(newTable, dataSet);
+                                newTable.Relationship = new ObservableCollection<CRelationship>
+                                {
+                                    dataSet.Relationship.Where(r => newTable.name.Equals(r.fromTable))
+                                };
+
+                                var currentConfig = XmlHelper<CConfiguration>.Load(DefaultStoreProcsConfigFile);
+                                foreach (var dset in currentConfig.Dataset)
+                                    Configuration.Dataset.FirstOrDefault(d => d.name.Equals(dset.name))
+                                        .Query.AddRange(dset.Query);
+
+                                SelectedTable = newTable;
+                            });
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.Log.Error(e, "Exception while reloading and saving configuration for table {0} at data set {1}", table.name, dataSet.name);
+                    MessageQueue.Enqueue(e.Message);
+                }
+                finally
+                {
+                    _schedulerProvider.MainThread.Schedule(() => IsBusy = false);
+                }
+            });
+        }
+
         public bool HasRelationshipChanges
         {
             get { return _newRelationships.Any() || _removedRelationships.Any(); }
