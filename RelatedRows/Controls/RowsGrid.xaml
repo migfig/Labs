@@ -153,6 +153,34 @@
                                         <Button ToolTip="Children" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SetMainViewCommand}" CommandParameter="{Binding}" Visibility="{Binding RelationshipVisibility}">
                                             <materialDesign:PackIcon Kind="MagnifyPlus" />
                                         </Button>
+                                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.Child1stPageCommand}" CommandParameter="{Binding}" 
+                            IsEnabled="{Binding Pager.CanGoFirst}" 
+                            ToolTip="{Binding Pager.FirstTooltip}"
+                            Visibility="{Binding Pager.EdgesVisible}">
+                                            <materialDesign:PackIcon Kind="ChevronDoubleLeft" />
+                                        </Button>
+                                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ChildPrevPageCommand}" CommandParameter="{Binding}" 
+                            IsEnabled="{Binding Pager.CanGoPrev}" 
+                            ToolTip="{Binding Pager.PrevTooltip}"
+                            Visibility="{Binding Pager.Visible}">
+                                            <materialDesign:PackIcon Kind="ChevronLeft" />
+                                        </Button>
+                                        <TextBlock Text="{Binding Pager.Page}" 
+                               VerticalAlignment="Center"
+                               Visibility="{Binding Pager.Visible}"/>
+                                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ChildNextPageCommand}" CommandParameter="{Binding}" 
+                            IsEnabled="{Binding Pager.CanGoNext}" 
+                            ToolTip="{Binding Pager.NextTooltip}"
+                            Visibility="{Binding Pager.Visible}">
+                                            <materialDesign:PackIcon Kind="ChevronRight" />
+                                        </Button>
+                                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ChildLastPageCommand}" CommandParameter="{Binding}" 
+                            IsEnabled="{Binding Pager.CanGoLast}" 
+                            ToolTip="{Binding Pager.LastTooltip}"
+                            Visibility="{Binding Pager.EdgesVisible}">
+                                            <materialDesign:PackIcon Kind="ChevronDoubleRight" />
+                                        </Button>
+                                        <Separator Visibility="{Binding Pager.Visible}"/>
                                         <Button ToolTip="Export" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ExportToSqlCommand}" CommandParameter="{Binding}" IsEnabled="{Binding DataTable.Rows.Count}">
                                             <materialDesign:PackIcon Kind="Export" />
                                         </Button>

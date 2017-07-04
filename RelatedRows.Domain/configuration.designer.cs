@@ -391,6 +391,15 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
         [XmlAttribute()]
         public string schemaName { get; set; }
 
+        [XmlAttribute()]
+        public long rows { get; set; }
+
+        [XmlIgnore]
+        public bool requiresPagination
+        {
+            get { return rows > 250; }
+        }
+
         [XmlIgnore()]
         public string iconName
         {

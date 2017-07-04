@@ -1,4 +1,8 @@
-﻿SELECT  '[' + TABLE_CATALOG + ']' AS catalog, '[' + TABLE_SCHEMA + ']' AS schemaName, '[' + TABLE_NAME + ']' AS name,
+﻿SELECT  '[' + TABLE_CATALOG + ']' AS catalog, '[' + TABLE_SCHEMA + ']' AS schemaName, '[' + TABLE_NAME + ']' AS name 
+	,rows = (SELECT TOP 1 pa.rows 
+			FROM sys.partitions pa
+			WHERE pa.object_id in (SELECT ta.object_id FROM sys.tables ta WHERE ta.name = TABLE_NAME)
+			),
 (
         SELECT 
 			'[' + [Column].COLUMN_NAME + ']' AS name, 
@@ -44,6 +48,7 @@
 FROM information_schema.TABLES AS [Table]
 WHERE 
 	TABLE_TYPE = 'BASE TABLE' 
-	AND TABLE_NAME NOT LIKE 'sysdiagrams%' AND TABLE_NAME NOT LIKE 'spt_%' AND TABLE_NAME NOT LIKE 'MSRepl%' 
+	AND TABLE_NAME NOT LIKE 'sysdiagrams%' AND TABLE_NAME NOT LIKE 'spt_%' AND TABLE_NAME NOT LIKE 'MSRepl%'
+	AND TABLE_NAME NOT LIKE '__RefactorLog%'
 ORDER BY 1, 2, 3
 FOR XML AUTO, TYPE, ROOT('schema')

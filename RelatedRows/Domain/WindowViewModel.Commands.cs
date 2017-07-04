@@ -558,6 +558,66 @@ namespace RelatedRows.Domain
             }
         }
 
+        private ICommand _child1stPageCommand;
+        public ICommand Child1stPageCommand
+        {
+            get
+            {
+                return _child1stPageCommand ?? (_child1stPageCommand = new Command<CTable>((table) =>
+                {
+                    Logger.Log.Verbose("Child PageCommand [{@direction}]", "first");
+
+                    table.Pager.Navigate("first");
+                    OnChildTableChange(table);
+                }));
+            }
+        }
+
+        private ICommand _childNextPageCommand;
+        public ICommand ChildNextPageCommand
+        {
+            get
+            {
+                return _childNextPageCommand ?? (_childNextPageCommand = new Command<CTable>((table) =>
+                {
+                    Logger.Log.Verbose("Child PageCommand [{@direction}]", "next");
+
+                    table.Pager.Navigate("next");
+                    OnChildTableChange(table);
+                }));
+            }
+        }
+
+        private ICommand _childPrevPageCommand;
+        public ICommand ChildPrevPageCommand
+        {
+            get
+            {
+                return _childPrevPageCommand ?? (_childPrevPageCommand = new Command<CTable>((table) =>
+                {
+                    Logger.Log.Verbose("Child PageCommand [{@direction}]", "prev");
+
+                    table.Pager.Navigate("prev");
+                    OnChildTableChange(table);
+                }));
+            }
+        }
+
+        private ICommand _childLastPageCommand;
+        public ICommand ChildLastPageCommand
+        {
+            get
+            {
+                return _childPrevPageCommand ?? (_childPrevPageCommand = new Command<CTable>((table) =>
+                {
+                    Logger.Log.Verbose("Child PageCommand [{@direction}]", "last");
+
+                    table.Pager.Navigate("last");
+                    OnChildTableChange(table);
+                }));
+            }
+        }
+
         private ICommand _collectMemoryCommand;
         public ICommand CollectMemoryCommand
         {

@@ -29,6 +29,7 @@ namespace RelatedRows.Domain
                                     new XAttribute("catalog", t.Attribute("catalog").Value),
                                     new XAttribute("schemaName", t.Attribute("schemaName").Value),
                                     new XAttribute("name", t.Attribute("name").Value),
+                                    new XAttribute("rows", t.Attribute("rows").Value),
                                 from c in t.Elements("Column")
                                 select
                                     new XElement("Column",

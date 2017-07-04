@@ -267,6 +267,9 @@ namespace RelatedRows.Domain
                                 child.DataTable =
                                     await _dataSourceProvider
                                         .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: SelectedTable));
+
+                                if (child.requiresPagination)
+                                    child.Pager = new CPager(child.DataTable.RowsCount(), Settings.RowsPerPage);
                             }
                     } else
                     {
@@ -284,12 +287,44 @@ namespace RelatedRows.Domain
                                 child.DataTable =
                                     await _dataSourceProvider
                                         .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: SelectedTable));
+
+                                if (child.requiresPagination)
+                                    child.Pager = new CPager(child.DataTable.RowsCount(), Settings.RowsPerPage);
                             }
                     }
                 }
                 catch (Exception e)
                 {
                     Logger.Log.Error(e, "Exception while loading selected table {@name}", SelectedTable.name);
+                    MessageQueue.Enqueue(e.Message);
+                }
+                finally
+                {
+                    _schedulerProvider.MainThread.Schedule(() => IsBusy = false);
+                }
+            });
+        }
+
+        private void OnChildTableChange(CTable table)
+        {
+            IsBusy = true;
+            Logger.Log.Verbose("OnChildTableChange({@name})", table.name);
+
+            _schedulerProvider.Background.Schedule(async () =>
+            {
+                try
+                {
+                    table.DataTable =
+                            await _dataSourceProvider
+                                .GetData(SelectedDatasource, table.name, table.GetQuery(Settings.RowsPerPage, skip: table.Pager.Skip));
+
+                    var rows = table.DataTable.RowsCount();
+                    if (table.Pager.RowsCount != rows)
+                        table.Pager.Reset(rows, Settings.RowsPerPage);
+                }
+                catch (Exception e)
+                {
+                    Logger.Log.Error(e, "Exception while loading child table {@name}", table.name);
                     MessageQueue.Enqueue(e.Message);
                 }
                 finally

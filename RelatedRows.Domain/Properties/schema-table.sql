@@ -1,4 +1,8 @@
-﻿SELECT  '[' + TABLE_CATALOG + ']' AS catalog, '[' + TABLE_SCHEMA + ']' AS schemaName, '[' + TABLE_NAME + ']' AS name,
+﻿SELECT  '[' + TABLE_CATALOG + ']' AS catalog, '[' + TABLE_SCHEMA + ']' AS schemaName, '[' + TABLE_NAME + ']' AS name
+	,rows = (SELECT TOP 1 pa.rows 
+			FROM sys.partitions pa
+			WHERE pa.object_id in (SELECT ta.object_id FROM sys.tables ta WHERE ta.name = TABLE_NAME)
+			),
 (
         SELECT 
 			'[' + [Column].COLUMN_NAME + ']' AS name, 

@@ -27,7 +27,9 @@ namespace RelatedRows.Domain
                     .Aggregate(" WHERE", 
                         (seed, cr) => seed + $" AND {cr.toColumn} = {row.Value(cr.fromColumn.UnQuoteName())}");
 
-                return subquery.Replace("WHERE AND ", "WHERE ");
+                subquery = subquery.Replace("WHERE AND ", "WHERE ");
+
+                if (!table.requiresPagination) return subquery;                
             }
 
             return query + subquery + offsetFetch;
