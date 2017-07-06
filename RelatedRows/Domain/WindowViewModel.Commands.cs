@@ -2,6 +2,7 @@
 using DynamicData;
 using RelatedRows.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics;
@@ -106,12 +107,99 @@ namespace RelatedRows.Domain
             }               
         }
 
+        private ICommand _runQueryCommand;
+        public ICommand RunQueryCommand
+        {
+            get
+            {
+                return _runQueryCommand ?? (_runQueryCommand = new Command<CQuery>((query) => {
+                    IsBusy = true;
+
+                    _schedulerProvider.Background.Schedule(async () =>
+                    {
+                        if (!string.IsNullOrEmpty(query.Text))
+                        {
+                            try
+                            {
+                                var children = new List<DataTable>();
+                                foreach(var subQuery in query.GetQueries())
+                                    if(subQuery.Replace(Environment.NewLine, "").Trim().Length > 0)
+                                        children.Add(
+                                            await _dataSourceProvider
+                                                .GetQueryData(
+                                                    SelectedDatasource,
+                                                    subQuery));
+
+                                _schedulerProvider.MainThread.Schedule(() => {
+                                    query.Children.Clear();
+                                    query.Children.AddRange(children);
+                                });
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.Log.Error(e, "Exception while running query {@name}", query.name);
+                                MessageQueue.Enqueue(e.Message);
+                            }
+                            finally
+                            {
+                                _schedulerProvider.MainThread.Schedule(() => IsBusy = false);
+                            }
+                        }
+                    });
+                }));
+            }
+        }
+
+        private ICommand _addQueryCommand;
+        public ICommand AddQueryCommand
+        {
+            get
+            {
+                return _addQueryCommand ?? (_addQueryCommand = new Command(() => {
+                    var query = new CQuery
+                    {
+                        catalog = SelectedDataset.Table.First().catalog,
+                        schemaName = SelectedDataset.Table.First().schemaName,
+                        name = $"{SelectedTable.name}-{DateTime.Now.ToString("yyyyMMMdd-hhmmss")}",
+                        type = "Q",
+                        isStoreProcedure = false,
+                        Text = $"SELECT * FROM {SelectedTable.catalog}.{SelectedTable.schemaName}.{SelectedTable.name} "
+                            + SelectedTable.Column.Take(2).Aggregate("WHERE", (seed, c) => seed + $" AND {c.name} = {c.QuoteParam()}")
+                                .Replace("WHERE AND", "WHERE "),
+                        Parameter = new ObservableCollection<CParameter>
+                        {
+                            SelectedTable.Column.Take(2).Select(c => 
+                                new CParameter
+                                {
+                                    type = c.DbType,
+                                    name = $"@{c.name.UnQuoteName()}",
+                                    defaultValue = c.DefaultValue()
+                                })
+                        }
+                    };
+                    SelectedDataset.Query.Add(query);
+                    SelectedScriptQuery = query;
+                }));
+            }
+        }
+
         private ICommand _refreshQueryCommand;
         public ICommand RefreshQueryCommand
         {
             get
             {
                 return _refreshQueryCommand ?? (_refreshQueryCommand = new Command(() => {
+                }));
+            }
+        }
+
+        private ICommand _removeParameterCommand;
+        public ICommand RemoveParameterCommand
+        {
+            get
+            {
+                return _removeParameterCommand ?? (_removeParameterCommand = new Command<CParameter>((p) => {
+                    SelectedScriptQuery.Parameter.Remove(p);
                 }));
             }
         }
@@ -143,9 +231,41 @@ namespace RelatedRows.Domain
         {
             get
             {
-                return _copyQueryCommand ?? (_copyQueryCommand = new Command(() => {
-                    Clipboard.SetText(SelectedQuery.FriendlyText, TextDataFormat.Text);
-                    PersistAndRunText(SelectedQuery.name, SelectedQuery.FriendlyText);
+                return _copyQueryCommand ?? (_copyQueryCommand = new Command<CQuery>((query) => {
+                    Clipboard.SetText(query.FriendlyText, TextDataFormat.Text);
+                    PersistAndRunText(query.name, query.FriendlyText);
+                }));
+            }
+        }
+
+        private ICommand _saveQueryCommand;
+        public ICommand SaveQueryCommand
+        {
+            get
+            {
+                return _saveQueryCommand ?? (_saveQueryCommand = new Command<CQuery>((query) => {
+                    var config = XmlHelper<CConfiguration>.Load(DefaultStoreProcsConfigFile);
+                    config.Dataset.FirstOrDefault(d => d.name.Equals(SelectedDataset.name))
+                        .Query.Add(query);
+
+                    foreach (var dsrc in Configuration.Datasource)
+                        if (!config.Datasource.Any(dsource => dsource.name.Equals(dsrc.name)))
+                            config.Datasource.Add(new CDatasource
+                            {
+                                name = dsrc.name,
+                                ConnectionString = dsrc.ConnectionString
+                            });
+
+                    foreach (var ds in Configuration.Dataset)
+                        if (!config.Dataset.Any(d => d.name.Equals(ds.name)))
+                            config.Dataset.Add(new CDataset
+                            {
+                                name = ds.name,
+                                dataSourceName = ds.dataSourceName,
+                                defaultTable = ds.defaultTable
+                            });
+
+                    XmlHelper<CConfiguration>.Save(DefaultStoreProcsConfigFile, config);
                 }));
             }
         }
@@ -355,6 +475,7 @@ namespace RelatedRows.Domain
 
                             var defaultQuery = config.Dataset.FirstOrDefault(d => d.name.Equals(SelectedDataset.name)).defaultTable;
                             SelectedQuery = SelectedDataset.Query.FirstOrDefault(q => q.name.Equals(defaultQuery));
+                            SelectedScriptQuery = SelectedDataset.Query.FirstOrDefault(q => !q.isStoreProcedure);
                         }
                     }
                 }));

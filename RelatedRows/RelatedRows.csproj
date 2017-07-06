@@ -25,7 +25,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>12</ApplicationRevision>
+    <ApplicationRevision>13</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -134,6 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\ScriptsGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\QueriesGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -163,6 +167,9 @@
     </Compile>
     <Compile Include="Controls\ApplicationOptionsView.xaml.cs">
       <DependentUpon>ApplicationOptionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScriptsGrid.xaml.cs">
+      <DependentUpon>ScriptsGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\QueriesGrid.xaml.cs">
       <DependentUpon>QueriesGrid.xaml</DependentUpon>

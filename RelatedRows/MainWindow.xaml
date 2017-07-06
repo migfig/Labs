@@ -46,11 +46,19 @@
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
-            <CollectionViewSource x:Key="cvsQueries" Source="{Binding SelectedDataset.Query}">
+            <CollectionViewSource x:Key="cvsQueries" Source="{Binding SelectedDataset.Query}"
+                                  Filter="OnStoreProcFilter">
                 <CollectionViewSource.SortDescriptions>
                     <scm:SortDescription PropertyName="name" />
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
+
+            <CollectionViewSource x:Key="cvsScriptQueries" Source="{Binding SelectedDataset.Query}"
+                                  Filter="OnQueryFilter">
+                <CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription PropertyName="name" />
+                </CollectionViewSource.SortDescriptions>                
+            </CollectionViewSource>            
         </ResourceDictionary>
     </Window.Resources>
 
@@ -307,6 +315,54 @@
                                     </ScrollViewer>
                                 </TabItem>
 
+                                <TabItem Header="Queries">
+                                    <ScrollViewer>
+                                        <StackPanel>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="0.75*"/>
+                                                    <ColumnDefinition Width="0.25*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <ItemsControl ItemsSource="{Binding Configuration.Dataset}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <materialDesign:Badged Margin="4 12 16 4" Badge="{Binding Query.Count}" BadgeColorZoneMode="{Binding ColorZone}">
+                                                                <Button Content="{Binding name}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SetDataset}" CommandParameter="{Binding}"/>
+                                                            </materialDesign:Badged>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                </ItemsControl>
+
+                                                <ComboBox Grid.Column="1" materialDesign:HintAssist.Hint="(search query)" 
+                                                      MinWidth="72"
+                                                      Margin="16 0 0 0"
+                                                      VerticalAlignment="Center" 
+                                                      IsEditable="True"                          
+                                                      ItemsSource="{Binding Source={StaticResource cvsScriptQueries}}"
+                                                      SelectedItem="{Binding Mode=TwoWay, Path=SelectedScriptQuery, UpdateSourceTrigger=PropertyChanged}">
+                                                    <ComboBox.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <VirtualizingStackPanel />
+                                                        </ItemsPanelTemplate>
+                                                    </ComboBox.ItemsPanel>
+                                                </ComboBox>
+                                            </Grid>
+
+                                            <local:ScriptsGrid />
+
+                                            <StackPanel.LayoutTransform>
+                                                <ScaleTransform ScaleX="{Binding Settings.ScaleRatio}"
+                                                                ScaleY="{Binding Settings.ScaleRatio}"/>
+                                            </StackPanel.LayoutTransform>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </TabItem>
                             </dragablz:TabablzControl>
                         </dockablz:Layout>
 

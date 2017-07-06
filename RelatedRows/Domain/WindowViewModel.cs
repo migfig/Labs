@@ -152,6 +152,8 @@ namespace RelatedRows.Domain
                         SelectedQuery = qryConfig.Dataset.FirstOrDefault()
                             .Query.FirstOrDefault(q => q.name.Equals(
                                 qryConfig.Dataset.FirstOrDefault().defaultTable));
+                        SelectedScriptQuery = qryConfig.Dataset.FirstOrDefault()
+                            .Query.FirstOrDefault(q => !q.isStoreProcedure);
                     }
 
                     if (File.Exists(file.FullName.Replace(".xml", "-store-procs-hist.xml")))
@@ -228,6 +230,13 @@ namespace RelatedRows.Domain
         {
             get { return _selectedQuery; }
             set { SetAndRaise(ref _selectedQuery, value); }
+        }
+
+        private CQuery _selectedScriptQuery;
+        public CQuery SelectedScriptQuery
+        {
+            get { return _selectedScriptQuery; }
+            set { SetAndRaise(ref _selectedScriptQuery, value); }
         }
 
         private CTable _selectedTable;
@@ -646,7 +655,8 @@ namespace RelatedRows.Domain
                                 _schedulerProvider.MainThread.Schedule(() =>
                                 {
                                     SelectedDataset.Query.AddRange(queryConfig.Dataset.FirstOrDefault().Query);
-                                    SelectedQuery = SelectedDataset.Query.FirstOrDefault();
+                                    SelectedQuery = SelectedDataset.Query.FirstOrDefault(q => q.isStoreProcedure);
+                                    SelectedScriptQuery = SelectedDataset.Query.FirstOrDefault(q => !q.isStoreProcedure);
                                 });
                             }
                             else
@@ -783,7 +793,8 @@ namespace RelatedRows.Domain
                                     Configuration.Dataset.FirstOrDefault(d => d.name.Equals(dset.name))
                                         .Query.AddRange(dset.Query);
 
-                                SelectedQuery = dataSet.Query.FirstOrDefault();
+                                SelectedQuery = dataSet.Query.FirstOrDefault(q => q.isStoreProcedure);
+                                SelectedScriptQuery = dataSet.Query.FirstOrDefault(q => !q.isStoreProcedure);
                             });                            
                         }
                     }

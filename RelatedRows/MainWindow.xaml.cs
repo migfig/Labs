@@ -61,5 +61,17 @@ namespace RelatedRows
             }
             e.Handled = true;
         }
+
+        private void OnQueryFilter(object sender, System.Windows.Data.FilterEventArgs e)
+        {
+            var query = e.Item as CQuery;
+            e.Accepted = !query.isStoreProcedure;
+        }
+
+        private void OnStoreProcFilter(object sender, System.Windows.Data.FilterEventArgs e)
+        {
+            var query = e.Item as CQuery;
+            e.Accepted = query.isStoreProcedure;
+        }
     }
 }

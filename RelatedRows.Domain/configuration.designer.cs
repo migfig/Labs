@@ -13,6 +13,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Linq;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace RelatedRows.Domain
 {
@@ -634,6 +635,7 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
         public CQuery()
         {
             Parameter = new ObservableCollection<CParameter>();
+            Children = new ObservableCollection<DataTable>();
         }
 
         [XmlElement("Parameter")]
@@ -686,6 +688,31 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
             set
             {
                 SetAndRaise(ref _dataTable, value);
+            }
+        }
+
+        public string[] GetQueries()
+        {
+            var list = new List<string>();
+
+            var text = Text;
+            foreach (var par in GetParameters())
+                text = text.Replace(par.ParameterName, par.Value.ToString());
+
+            return text.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private ObservableCollection<DataTable> _children;
+        [XmlIgnore]
+        public ObservableCollection<DataTable> Children
+        {
+            get
+            {
+                return _children;
+            }
+            set
+            {
+                SetAndRaise(ref _children, value);
             }
         }
 
@@ -843,7 +870,7 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
                         defaultValue = p.defaultValue
                     }))
             };
-        }
+        }        
     }
 
     [XmlRoot()]
@@ -901,6 +928,24 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
             writer.WriteAttributeString("defaultValue", defaultValue);
             writer.WriteAttributeString("customType", customType);
         }
+
+        private IEnumerable<CComboTrick> _comboTricks;
+        [XmlIgnore]
+        public IEnumerable<CComboTrick> ComboTricks {
+            get
+            {
+                if(_comboTricks == null)
+                {
+                    _comboTricks = new List<CComboTrick> { new CComboTrick { owner = this } };
+                }
+                return _comboTricks;
+            }
+        }
+    }
+
+    public partial class CComboTrick : AbstractNotifyPropertyChanged
+    {
+        public CParameter owner { get; set; }
     }
 
     [XmlRoot(Namespace = "", IsNullable = true)]
@@ -918,6 +963,14 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
 
         [XmlElement("Query")]
         public ObservableCollection<CQuery> Query { get; set; }
+
+        [XmlIgnore]
+        public IEnumerable<CQuery> QueryScripts {
+            get
+            {
+                return Query.Where(q => !q.isStoreProcedure);
+            }
+        }
 
         [XmlIgnore]
         public ObservableCollection<CQuery> QueryHistory { get; set; }

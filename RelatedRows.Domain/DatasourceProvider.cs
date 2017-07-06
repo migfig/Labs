@@ -16,6 +16,7 @@ namespace RelatedRows.Domain
         Task<ITabularSource> GetData(CDatasource source, CTable table, string query);
         Task<DataTable> GetData(CDatasource source, string name, string query);
         Task<DataTable> GetStoreProcedureData(CDatasource source, string name, params IDbDataParameter[] pars);
+        Task<DataTable> GetQueryData(CDatasource source, string query);
     }
 
     public class SqlServerProvider : IDatasourceProvider
@@ -77,6 +78,29 @@ namespace RelatedRows.Domain
                     cmd.Parameters.AddRange(pars);
                     var reader = await cmd.ExecuteReaderAsync();
                     var table = new DataTable(name);
+                    table.Load(reader);
+                    reader.Close();
+
+                    return table;
+                }
+            }
+        }
+
+        public async Task<DataTable> GetQueryData(CDatasource source, string query)
+        {
+            _logger.Information("Running query {@query} on server {@server}.{@databaseName}", query, source.serverName, source.databaseName);
+
+            using (var connection = new SqlConnection(source.ConnectionString))
+            {
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.Connection.Open();
+                    cmd.CommandText = query;
+                    cmd.CommandType = CommandType.Text;
+                    var reader = await cmd.ExecuteReaderAsync();
+                    var fromIdx = query.ToUpper().IndexOf("FROM") + 5;
+                    var portion = query.Substring(fromIdx).Split(' ');
+                    var table = new DataTable(portion.FirstOrDefault().Trim());
                     table.Load(reader);
                     reader.Close();
 

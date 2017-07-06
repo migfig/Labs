@@ -78,9 +78,9 @@ namespace RelatedRows.Domain
             return value.Replace("[","").Replace("]","");
         }
 
-        public static string QuoteName(this string value)
+        public static string QuoteName(this string value, string quoteChar = "[")
         {
-            return !value.StartsWith("[") ? $"[{value}]" : value;
+            return !value.StartsWith(quoteChar) ? $"{quoteChar}{value}{quoteChar}" : value;
         }
 
         public static bool AreEqual(this DataRowView row, DataRowView other)
@@ -267,6 +267,78 @@ namespace RelatedRows.Domain
                 case "System.Guid":
                 case "System.Object":
                     return string.Format("{0}{1}{0}", quoteChar, row[columnName].ToString().Replace("'","''"));
+            }
+
+            return value;
+        }
+
+        public static string QuoteParam(this CColumn col, string quoteChar = "'")
+        {
+            switch (col.DbType)
+            {
+                case eDbType.@string:
+                case eDbType.varchar:
+                case eDbType.nvarchar:
+                case eDbType.@char:
+                case eDbType.text:
+                case eDbType.xml:
+                case eDbType.ntext:
+                case eDbType.nchar:
+                case eDbType.date:
+                case eDbType.datetime:
+                case eDbType.datetime2:
+                case eDbType.datetimeoffset:
+                case eDbType.guid:
+                case eDbType.uniqueidentifier:
+                    return $"'@{col.name.UnQuoteName()}'";
+            }
+
+            return $"@{col.name.UnQuoteName()}";
+        }
+
+        public static string DefaultValue(this CColumn col)
+        {
+            var value = "NULL";
+
+            switch (col.DbType)
+            {
+                case eDbType.@bool:
+                case eDbType.bit:
+                    return "0";
+                case eDbType.binary:
+                case eDbType.varbinary:
+                case eDbType.sql_variant:
+                case eDbType.image:
+                    return "0x0";
+                case eDbType.@int:
+                case eDbType.@long:
+                case eDbType.@decimal:
+                case eDbType.real:
+                case eDbType.money:
+                case eDbType.smallmoney:
+                case eDbType.tinyint:
+                case eDbType.@float:
+                case eDbType.bigint:
+                case eDbType.numeric:
+                case eDbType.smallint:
+                    return default(Int32).ToString();
+                case eDbType.@string:
+                case eDbType.varchar:
+                case eDbType.nvarchar:
+                case eDbType.@char:
+                case eDbType.text:
+                case eDbType.xml:
+                case eDbType.ntext:
+                case eDbType.nchar:
+                    return string.Empty;
+                case eDbType.date:
+                case eDbType.datetime:
+                case eDbType.datetime2:
+                case eDbType.datetimeoffset:
+                    return DateTime.UtcNow.ToString("yyyy-mm-dd");
+                case eDbType.guid:
+                case eDbType.uniqueidentifier:
+                    return Guid.Empty.ToString();
             }
 
             return value;
