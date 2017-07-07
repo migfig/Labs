@@ -1,5 +1,7 @@
 ﻿using Common;
 using DynamicData;
+using MaterialDesignThemes.Wpf;
+using RelatedRows.Controls;
 using RelatedRows.Helpers;
 using System;
 using System.Collections.Generic;
@@ -261,8 +263,17 @@ namespace RelatedRows.Domain
         {
             get
             {
-                return _refreshSchemaCommand ?? (_refreshSchemaCommand = new Command<CDataset>((dataSet) => {
-                    ReLoadAndSaveConfiguration(dataSet);
+                return _refreshSchemaCommand ?? (_refreshSchemaCommand = new Command<CDataset>((dataSet) =>
+                {
+                    new Action(async () => {
+                        var proceed = (bool)await DialogHost.Show(new NotificationDialog
+                        {
+                            DataContext = "Running an Schema refresh can take some minute(s) to complete. \r\nDo you want to proceed?"
+                        }, "RootDialog", ClosingEventHandler);
+
+                        if (proceed) ReLoadAndSaveConfiguration(dataSet);
+                    })
+                    .Invoke();                    
                 }));
             }
         }

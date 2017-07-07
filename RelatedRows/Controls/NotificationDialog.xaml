@@ -7,7 +7,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             Width="320" Height="340">
+             >
     <Grid Margin="16">
 
         <Grid.RowDefinitions>
@@ -20,7 +20,7 @@
                  Text="{Binding}"
                  TextWrapping="WrapWithOverflow"
                  Margin="0 6 0 0"
-                 FontSize="18" Grid.Row="1"/>
+                 FontSize="16" Grid.Row="1"/>
         <StackPanel Orientation="Horizontal" 
                     Grid.Row="2"
                     Margin="0 16 0 0"
@@ -32,6 +32,13 @@
                     <system:Boolean>True</system:Boolean>
                 </Button.CommandParameter>
                 ACCEPT
+            </Button>
+            <Button IsCancel="True" Margin="8 0 0 0" Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}">
+                <Button.CommandParameter>
+                    <system:Boolean>False</system:Boolean>
+                </Button.CommandParameter>
+                CANCEL
             </Button>
         </StackPanel>
     </Grid>
