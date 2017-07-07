@@ -152,8 +152,8 @@ namespace RelatedRows.Domain
                         SelectedQuery = qryConfig.Dataset.FirstOrDefault()
                             .Query.FirstOrDefault(q => q.name.Equals(
                                 qryConfig.Dataset.FirstOrDefault().defaultTable));
-                        SelectedScriptQuery = qryConfig.Dataset.FirstOrDefault()
-                            .Query.FirstOrDefault(q => !q.isStoreProcedure);
+                        SelectedScriptQuery = qryConfig.Dataset.LastOrDefault()
+                            .Query.FirstOrDefault(q => q.isScript);
                     }
 
                     if (File.Exists(file.FullName.Replace(".xml", "-store-procs-hist.xml")))
@@ -661,7 +661,7 @@ namespace RelatedRows.Domain
                                 {
                                     SelectedDataset.Query.AddRange(queryConfig.Dataset.FirstOrDefault().Query);
                                     SelectedQuery = SelectedDataset.Query.FirstOrDefault(q => q.isStoreProcedure);
-                                    SelectedScriptQuery = SelectedDataset.Query.FirstOrDefault(q => !q.isStoreProcedure);
+                                    SelectedScriptQuery = SelectedDataset.Query.LastOrDefault(q => q.isScript);
                                 });
                             }
                             else
@@ -799,7 +799,7 @@ namespace RelatedRows.Domain
                                         .Query.AddRange(dset.Query);
 
                                 SelectedQuery = dataSet.Query.FirstOrDefault(q => q.isStoreProcedure);
-                                SelectedScriptQuery = dataSet.Query.FirstOrDefault(q => !q.isStoreProcedure);
+                                SelectedScriptQuery = dataSet.Query.LastOrDefault(q => q.isScript);
                             });                            
                         }
                     }
@@ -832,8 +832,10 @@ namespace RelatedRows.Domain
                     _schedulerProvider.MainThread.Schedule(() =>
                     {
                         var currentDataset = currentConfig.Dataset.FirstOrDefault(d => d.name.Equals(dataSet.name));
+                        var scripts = currentDataset.Query.Where(q => q.isScript).ToList();
                         currentDataset.Query.Clear();
                         currentDataset.Query.AddRange(config.Dataset.FirstOrDefault().Query);
+                        currentDataset.Query.AddRange(scripts);
 
                         XmlHelper<CConfiguration>.Save(DefaultStoreProcsConfigFile, currentConfig);
                     });                    

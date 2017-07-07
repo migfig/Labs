@@ -177,7 +177,7 @@ namespace RelatedRows.Domain
                                 })
                         }
                     };
-                    if (action == "add")
+                    if (action == "add" || SelectedScriptQuery == null)
                     {
                         SelectedDataset.Query.Add(query);
                         SelectedScriptQuery = query;
@@ -212,11 +212,14 @@ namespace RelatedRows.Domain
             get
             {
                 return _removeParametersCommand ?? (_removeParametersCommand = new Command(() => {
-                    SelectedScriptQuery.Parameter.ToList().ForEach((p) =>
+                    var selectedParams = SelectedScriptQuery.SelectedParameters ?? SelectedScriptQuery.Parameter;
+                    selectedParams.ToList().ForEach((p) =>
                     {
                         SelectedScriptQuery.Text = SelectedScriptQuery.Text.Replace(p.name, p.DefaultValue());
                     });
-                    SelectedScriptQuery.Parameter.Clear();
+
+                    for(var i=selectedParams.Count()-1;i>=0;i--)
+                        SelectedScriptQuery.Parameter.Remove(selectedParams.ElementAt(i));
                     OnPropertyChanged("SelectedScriptQuery");                    
                 }));
             }
@@ -228,17 +231,25 @@ namespace RelatedRows.Domain
             get
             {
                 return _actionParameterCommand ?? (_actionParameterCommand = new Command<CComboTrick>((trick) => {
-                    if(trick.action == "Remove Parameter")
-                        SelectedScriptQuery.Parameter.Remove(trick.owner);
+                    var p = trick.owner;
+
+                    if (trick.action == "Remove Parameter")
+                    {                        
+                         SelectedScriptQuery.Text = SelectedScriptQuery.Text
+                            .Replace(p.name, p.DefaultValue());
+                        
+                        SelectedScriptQuery.Parameter.Remove(p);
+                        OnPropertyChanged("SelectedScriptQuery");
+                    }
                     else
                     {
                         SelectedScriptQuery.Parameter.Add(new CParameter
                         {
-                            name = $"{trick.owner.name}{SelectedScriptQuery.Parameter.Count+1}",
-                            type = trick.owner.type,
-                            customType = trick.owner.customType,
-                            length = trick.owner.length,
-                            defaultValue = trick.owner.defaultValue
+                            name = $"{p.name}{SelectedScriptQuery.Parameter.Count + 1}",
+                            type = p.type,
+                            customType = p.customType,
+                            length = p.length,
+                            defaultValue = p.defaultValue
                         });
                     }
                 }));
@@ -516,7 +527,7 @@ namespace RelatedRows.Domain
 
                             var defaultQuery = config.Dataset.FirstOrDefault(d => d.name.Equals(SelectedDataset.name)).defaultTable;
                             SelectedQuery = SelectedDataset.Query.FirstOrDefault(q => q.name.Equals(defaultQuery));
-                            SelectedScriptQuery = SelectedDataset.Query.FirstOrDefault(q => !q.isStoreProcedure);
+                            SelectedScriptQuery = SelectedDataset.Query.LastOrDefault(q => q.isScript);
                         }
                     }
                 }));

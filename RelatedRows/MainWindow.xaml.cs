@@ -65,7 +65,7 @@ namespace RelatedRows
         private void OnQueryFilter(object sender, System.Windows.Data.FilterEventArgs e)
         {
             var query = e.Item as CQuery;
-            e.Accepted = !query.isStoreProcedure;
+            e.Accepted = !query.isStoreProcedure && query.isScript;
         }
 
         private void OnStoreProcFilter(object sender, System.Windows.Data.FilterEventArgs e)

@@ -118,6 +118,7 @@
                             <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
                                 <materialDesign:Chip Content="Parameters" Icon="{Binding SelectedScriptQuery.Parameter.Count}"/>
                                 <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemoveParametersCommand}"
+                                        IsEnabled="{Binding SelectedScriptQuery.Parameter.Count}"
                                         ToolTip="Remove all">
                                     <materialDesign:PackIcon Kind="DeleteForever" />
                                 </Button>
@@ -135,7 +136,10 @@
                         CanUserSortColumns="True" 
                         CanUserAddRows="False" 
                         IsReadOnly="False"
-                        AlternatingRowBackground="{Binding AlternatingRowBackground}"               
+                        AlternatingRowBackground="{Binding AlternatingRowBackground}"
+                        SelectionMode="Extended"
+                        SelectionUnit="Cell"
+                        SelectedCellsChanged="DataGrid_SelectedCellsChanged"
                         materialDesign:DataGridAssist.CellPadding="4 2 2 2" 
                         materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2">
 

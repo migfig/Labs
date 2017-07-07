@@ -662,6 +662,9 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
         [XmlAttribute()]
         public bool isStoreProcedure { get; set; }
 
+        [XmlIgnore]
+        public bool isScript { get { return type == "Q"; } }
+
         [XmlAttribute]
         public string type { get; set; }
 
@@ -848,6 +851,17 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
             }
         }
 
+        private IEnumerable<CParameter> _selectedParameters;
+        [XmlIgnore]
+        public IEnumerable<CParameter> SelectedParameters
+        {
+            get { return _selectedParameters; }
+            set
+            {
+                SetAndRaise(ref _selectedParameters, value);
+            }
+        }
+
         public override string ToString()
         {
             return name.Replace("[", "").Replace("]", "");
@@ -968,14 +982,6 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
 
         [XmlElement("Query")]
         public ObservableCollection<CQuery> Query { get; set; }
-
-        [XmlIgnore]
-        public IEnumerable<CQuery> QueryScripts {
-            get
-            {
-                return Query.Where(q => !q.isStoreProcedure);
-            }
-        }
 
         [XmlIgnore]
         public ObservableCollection<CQuery> QueryHistory { get; set; }
