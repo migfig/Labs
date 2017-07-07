@@ -936,7 +936,10 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
             {
                 if(_comboTricks == null)
                 {
-                    _comboTricks = new List<CComboTrick> { new CComboTrick { owner = this } };
+                    _comboTricks = new List<CComboTrick> {
+                        new CComboTrick { owner = this, action = "Remove Parameter", icon = "MinusCircleOutline" },
+                        new CComboTrick { owner = this, action = "Clone Parameter" , icon = "PlusCircleMultipleOutline" }
+                    };
                 }
                 return _comboTricks;
             }
@@ -946,6 +949,8 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
     public partial class CComboTrick : AbstractNotifyPropertyChanged
     {
         public CParameter owner { get; set; }
+        public string action { get; set; }
+        public string icon { get; set; }
     }
 
     [XmlRoot(Namespace = "", IsNullable = true)]

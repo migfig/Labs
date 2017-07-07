@@ -78,9 +78,9 @@ namespace RelatedRows.Domain
             return value.Replace("[","").Replace("]","");
         }
 
-        public static string QuoteName(this string value, string quoteChar = "[")
+        public static string QuoteName(this string value, string openQuoteChar = "[", string closeQuoteChar = "]")
         {
-            return !value.StartsWith(quoteChar) ? $"{quoteChar}{value}{quoteChar}" : value;
+            return !value.StartsWith(openQuoteChar) ? $"{openQuoteChar}{value}{closeQuoteChar}" : value;
         }
 
         public static bool AreEqual(this DataRowView row, DataRowView other)
@@ -301,6 +301,54 @@ namespace RelatedRows.Domain
             var value = "NULL";
 
             switch (col.DbType)
+            {
+                case eDbType.@bool:
+                case eDbType.bit:
+                    return "0";
+                case eDbType.binary:
+                case eDbType.varbinary:
+                case eDbType.sql_variant:
+                case eDbType.image:
+                    return "0x0";
+                case eDbType.@int:
+                case eDbType.@long:
+                case eDbType.@decimal:
+                case eDbType.real:
+                case eDbType.money:
+                case eDbType.smallmoney:
+                case eDbType.tinyint:
+                case eDbType.@float:
+                case eDbType.bigint:
+                case eDbType.numeric:
+                case eDbType.smallint:
+                    return default(Int32).ToString();
+                case eDbType.@string:
+                case eDbType.varchar:
+                case eDbType.nvarchar:
+                case eDbType.@char:
+                case eDbType.text:
+                case eDbType.xml:
+                case eDbType.ntext:
+                case eDbType.nchar:
+                    return string.Empty;
+                case eDbType.date:
+                case eDbType.datetime:
+                case eDbType.datetime2:
+                case eDbType.datetimeoffset:
+                    return DateTime.UtcNow.ToString("yyyy-mm-dd");
+                case eDbType.guid:
+                case eDbType.uniqueidentifier:
+                    return Guid.Empty.ToString();
+            }
+
+            return value;
+        }
+
+        public static string DefaultValue(this CParameter parameter)
+        {
+            var value = "NULL";
+
+            switch (parameter.type)
             {
                 case eDbType.@bool:
                 case eDbType.bit:

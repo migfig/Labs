@@ -176,7 +176,7 @@
                     </materialDesign:DrawerHost.LeftDrawerContent>
 
                     <Grid>
-                        <dockablz:Layout   x:Name="Layout">                            
+                        <dockablz:Layout x:Name="Layout">                            
                             
                             <dragablz:TabablzControl                             
                                 IsTabStop="True"

@@ -492,6 +492,11 @@ namespace RelatedRows.Domain
             get { return Enum.GetValues(typeof(eViewMode)).Cast<eViewMode>(); }
         }
 
+        public IEnumerable<eDbType> DbTypes
+        {
+            get { return Enum.GetValues(typeof(eDbType)).Cast<eDbType>(); }
+        }
+
         public bool IsDataMode
         {
             get { return ViewMode.Equals(eViewMode.Data); }

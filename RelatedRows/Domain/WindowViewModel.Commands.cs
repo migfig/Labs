@@ -155,7 +155,7 @@ namespace RelatedRows.Domain
         {
             get
             {
-                return _addQueryCommand ?? (_addQueryCommand = new Command(() => {
+                return _addQueryCommand ?? (_addQueryCommand = new Command<string>((action) => {
                     var query = new CQuery
                     {
                         catalog = SelectedDataset.Table.First().catalog,
@@ -164,11 +164,11 @@ namespace RelatedRows.Domain
                         type = "Q",
                         isStoreProcedure = false,
                         Text = $"SELECT * FROM {SelectedTable.catalog}.{SelectedTable.schemaName}.{SelectedTable.name} "
-                            + SelectedTable.Column.Take(2).Aggregate("WHERE", (seed, c) => seed + $" AND {c.name} = {c.QuoteParam()}")
-                                .Replace("WHERE AND", "WHERE "),
+                            + SelectedTable.Column.Aggregate("WHERE", (seed, c) => seed + $" AND {c.name} = {c.QuoteParam()}")
+                                .Replace("WHERE AND", "WHERE ") + ";",
                         Parameter = new ObservableCollection<CParameter>
                         {
-                            SelectedTable.Column.Take(2).Select(c => 
+                            SelectedTable.Column.Select(c => 
                                 new CParameter
                                 {
                                     type = c.DbType,
@@ -177,8 +177,21 @@ namespace RelatedRows.Domain
                                 })
                         }
                     };
-                    SelectedDataset.Query.Add(query);
-                    SelectedScriptQuery = query;
+                    if (action == "add")
+                    {
+                        SelectedDataset.Query.Add(query);
+                        SelectedScriptQuery = query;
+                    }
+                    else
+                    {
+                        SelectedScriptQuery.Text +=                            
+                           $"{(!SelectedScriptQuery.Text.TrimEnd().EndsWith(";") ? ";" : "")}{Environment.NewLine}{Environment.NewLine}{query.Text}";
+
+                        var currParNames = SelectedScriptQuery.Parameter.Select(p => p.name);
+                        SelectedScriptQuery.Parameter.AddRange(
+                            query.Parameter.Where(p => !currParNames.Contains(p.name)));
+                        OnPropertyChanged("SelectedScriptQuery");
+                    }
                 }));
             }
         }
@@ -193,13 +206,41 @@ namespace RelatedRows.Domain
             }
         }
 
-        private ICommand _removeParameterCommand;
-        public ICommand RemoveParameterCommand
+        private ICommand _removeParametersCommand;
+        public ICommand RemoveParametersCommand
         {
             get
             {
-                return _removeParameterCommand ?? (_removeParameterCommand = new Command<CParameter>((p) => {
-                    SelectedScriptQuery.Parameter.Remove(p);
+                return _removeParametersCommand ?? (_removeParametersCommand = new Command(() => {
+                    SelectedScriptQuery.Parameter.ToList().ForEach((p) =>
+                    {
+                        SelectedScriptQuery.Text = SelectedScriptQuery.Text.Replace(p.name, p.DefaultValue());
+                    });
+                    SelectedScriptQuery.Parameter.Clear();
+                    OnPropertyChanged("SelectedScriptQuery");                    
+                }));
+            }
+        }
+
+        private ICommand _actionParameterCommand;
+        public ICommand ActionParameterCommand
+        {
+            get
+            {
+                return _actionParameterCommand ?? (_actionParameterCommand = new Command<CComboTrick>((trick) => {
+                    if(trick.action == "Remove Parameter")
+                        SelectedScriptQuery.Parameter.Remove(trick.owner);
+                    else
+                    {
+                        SelectedScriptQuery.Parameter.Add(new CParameter
+                        {
+                            name = $"{trick.owner.name}{SelectedScriptQuery.Parameter.Count+1}",
+                            type = trick.owner.type,
+                            customType = trick.owner.customType,
+                            length = trick.owner.length,
+                            defaultValue = trick.owner.defaultValue
+                        });
+                    }
                 }));
             }
         }
@@ -729,7 +770,7 @@ namespace RelatedRows.Domain
         {
             get
             {
-                return _childPrevPageCommand ?? (_childPrevPageCommand = new Command<CTable>((table) =>
+                return _childLastPageCommand ?? (_childLastPageCommand = new Command<CTable>((table) =>
                 {
                     Logger.Log.Verbose("Child PageCommand [{@direction}]", "last");
 

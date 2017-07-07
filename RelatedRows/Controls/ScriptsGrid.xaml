@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:domain="clr-namespace:RelatedRows.Domain;assembly=RelatedRows.Domain"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -13,11 +14,17 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <CollectionViewSource x:Key="cvsTables" Source="{Binding SelectedDataset.Table}">
+                <CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription PropertyName="name" />
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+            
             <DataTemplate DataType="{x:Type domain:CComboTrick}">
-                <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemoveParameterCommand}"
-                        CommandParameter="{Binding owner}"
-                        ToolTip="Remove Parameter">
-                    <materialDesign:PackIcon Kind="MinusCircleOutline" />
+                <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ActionParameterCommand}"
+                        CommandParameter="{Binding}"
+                        ToolTip="{Binding action}">
+                    <materialDesign:PackIcon Kind="{Binding icon}" />
                 </Button>
             </DataTemplate>
         </ResourceDictionary>
@@ -43,7 +50,8 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding SelectedScriptQuery.name}" VerticalAlignment="Center" />
+                            <TextBox Text="{Binding Mode=TwoWay, Path=SelectedScriptQuery.name, UpdateSourceTrigger=PropertyChanged}" 
+                                     VerticalAlignment="Center" />
                             <Button Grid.Column="1"
                                     Style="{DynamicResource MaterialDesignFlatButton}"
                                     Command="{Binding SetDefaultStoreProc}" CommandParameter="{Binding SelectedScriptQuery}">
@@ -57,14 +65,34 @@
                     <Button Command="{Binding CopyQueryCommand}" CommandParameter="{Binding SelectedScriptQuery}" ToolTip="Copy Body">
                         <materialDesign:PackIcon Kind="ContentCopy" />
                     </Button>
-                    <Button Command="{Binding AddQueryCommand}" ToolTip="Add Query">
+                    <Button Command="{Binding AddQueryCommand}"
+                            CommandParameter="add"
+                            ToolTip="Add Query">
                         <materialDesign:PackIcon Kind="PlusCircleOutline" />
+                    </Button>
+                    <Button Command="{Binding AddQueryCommand}"
+                            CommandParameter="append"
+                            ToolTip="Append Query">
+                        <materialDesign:PackIcon Kind="PlusCircleMultipleOutline" />
                     </Button>
                     <Button Command="{Binding SaveQueryCommand}"
                             CommandParameter="{Binding SelectedScriptQuery}"
                             ToolTip="Save Query">
                         <materialDesign:PackIcon Kind="ContentSaveAll" />
                     </Button>
+                    <ComboBox materialDesign:HintAssist.Hint="(search table)" 
+                                              MinWidth="72"
+                                              Margin="16 0 0 0"
+                                              VerticalAlignment="Center" 
+                                              IsEditable="True"                          
+                                              ItemsSource="{Binding Source={StaticResource cvsTables}}"
+                                              SelectedItem="{Binding Mode=TwoWay, Path=SelectedTable, UpdateSourceTrigger=PropertyChanged, Delay=500}">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
                     <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
                                  IsIndeterminate="{Binding IsBusy}"
                                  x:Name="DeterminateCircularProgress"
@@ -84,7 +112,24 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <DataGrid Margin="0 8 0 0" 
+                <Expander ExpandDirection="Down" IsExpanded="True">
+                    <Expander.Header>
+                        <ToolBarTray Margin="-22 -10 0 0" RenderTransformOrigin="0,0">
+                            <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
+                                <materialDesign:Chip Content="Parameters" Icon="{Binding SelectedScriptQuery.Parameter.Count}"/>
+                                <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemoveParametersCommand}"
+                                        ToolTip="Remove all">
+                                    <materialDesign:PackIcon Kind="DeleteForever" />
+                                </Button>
+                            </ToolBar>
+
+                            <ToolBarTray.RenderTransform>
+                                <ScaleTransform ScaleX="0.75" ScaleY="0.75"/>
+                            </ToolBarTray.RenderTransform>
+                        </ToolBarTray>
+                    </Expander.Header>
+
+                    <DataGrid Margin="0 0 0 0" 
                         ItemsSource="{Binding SelectedScriptQuery.Parameter}"
                         AutoGenerateColumns="False"
                         CanUserSortColumns="True" 
@@ -93,27 +138,29 @@
                         AlternatingRowBackground="{Binding AlternatingRowBackground}"               
                         materialDesign:DataGridAssist.CellPadding="4 2 2 2" 
                         materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2">
-                    
-                    <DataGrid.Columns>
-                        <materialDesign:MaterialDataGridTextColumn Binding="{Binding name}"
-                                                               Header="Name"  
-                                                               IsReadOnly="True"/>
-                        
-                        <materialDesign:MaterialDataGridTextColumn Binding="{Binding type}"
-                                                               Header="Type"  
-                                                               IsReadOnly="True"/>
 
-                        <materialDesign:MaterialDataGridComboBoxColumn 
+                        <DataGrid.Columns>
+                            <materialDesign:MaterialDataGridTextColumn Binding="{Binding name}"
+                                                               Header="Name"  
+                                                               IsReadOnly="False"/>
+
+                            <materialDesign:MaterialDataGridComboBoxColumn ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.DbTypes}"
+                                                               SelectedItemBinding="{Binding type}"
+                                                               Header="Type"  
+                                                               IsReadOnly="False"/>
+
+                            <materialDesign:MaterialDataGridComboBoxColumn 
                                                                Header="Action"
                                                                ItemsSourceBinding="{Binding ComboTricks}"/>
-                        
-                        <materialDesign:MaterialDataGridTextColumn Binding="{Binding defaultValue}"
+
+                            <materialDesign:MaterialDataGridTextColumn Binding="{Binding defaultValue}"
                                                                Header="Value"
                                                                MinWidth="100"
                                                                IsReadOnly="False"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Expander>
+                
                 <TextBox Grid.Row="1" Text="{Binding Mode=TwoWay, Path=SelectedScriptQuery.Text, UpdateSourceTrigger=PropertyChanged}" 
                            Margin="0 8 0 0"
                            AcceptsTab="True"
