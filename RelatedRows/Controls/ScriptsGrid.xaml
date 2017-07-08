@@ -92,13 +92,7 @@
                                 <VirtualizingStackPanel />
                             </ItemsPanelTemplate>
                         </ComboBox.ItemsPanel>
-                    </ComboBox>
-                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
-                                 IsIndeterminate="{Binding IsBusy}"
-                                 x:Name="DeterminateCircularProgress"
-                                 VerticalAlignment="Center" 
-                                 HorizontalAlignment="Center" 
-                                 Margin="12 12 12 12" />
+                    </ComboBox>                    
                 </ToolBar>
 
                 <ToolBarTray.RenderTransform>

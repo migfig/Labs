@@ -115,6 +115,8 @@ namespace RelatedRows.Domain
 
         private void OpenFile()
         {
+            if (IsBusy) return;
+
             var dialog = new OpenFileDialog { Filter = "Xml files (*.xml)|*.xml" };
             var result = dialog.ShowDialog();
             if (result != true) return;
@@ -610,6 +612,8 @@ namespace RelatedRows.Domain
         public ICommand NewDatasourceCommand => new AnotherCommandImplementation(ExecDatasourceDialog);
         private async void ExecDatasourceDialog(object o)
         {
+            if (IsBusy) return;
+
             if (o == null)
             {
                 var view = new DatasourceDialog

@@ -184,6 +184,7 @@
                                 TextElement.Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=(TextElement.Foreground)}"
                                 Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=Background}"
                                 ShowDefaultCloseButton="False"
+                                IsEnabled="{Binding Path=IsBusy, Converter={StaticResource InvertedBooleanToBooleanConverter}}"
                                 Visibility="{Binding IsEmpty, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
                                 ClosingItemCallback="{Binding ClosingTabItemHandler}">
 
@@ -418,12 +419,7 @@
                                             Command="{Binding NewDatasourceCommand}">
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="DatabasePlus" />
-                                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">New Data Source</TextBlock>
-                                                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
-                                 IsIndeterminate="{Binding IsBusy}"
-                                 VerticalAlignment="Center" 
-                                 HorizontalAlignment="Center" 
-                                 Margin="8 0 0 0" />
+                                                <TextBlock Margin="8 0 0 0" VerticalAlignment="Center">New Data Source</TextBlock>                                                
                                             </StackPanel>
                                         </Button>
                                         <TextBlock Foreground="{DynamicResource MaterialDesignBodyLight}" TextWrapping="Wrap" Margin="16" VerticalAlignment="Center">
@@ -433,6 +429,25 @@
                                 </Border>
                             </Grid>
                         </materialDesign:Card>
+
+                        <materialDesign:Snackbar  
+                                             IsActive="{Binding IsBusy}"
+                                             VerticalAlignment="Bottom"
+                                             HorizontalContentAlignment="Center"
+                                             x:Name="SnackbarWait">
+                            <materialDesign:SnackbarMessage>
+                                <materialDesign:SnackbarMessage.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="         Please wait...       " 
+                                                   VerticalAlignment="Center"/>
+                                        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                                     Value="0"
+                                                     IsIndeterminate="True"
+                                                     VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </materialDesign:SnackbarMessage.Content>
+                            </materialDesign:SnackbarMessage>
+                        </materialDesign:Snackbar>
 
                         <materialDesign:Snackbar 
                                  VerticalAlignment="Bottom"

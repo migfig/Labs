@@ -392,6 +392,47 @@ namespace RelatedRows.Domain
             return value;
         }
 
+        public static bool IsString(this eDbType type)
+        {
+            switch (type)
+            {
+                case eDbType.@string:
+                case eDbType.varchar:
+                case eDbType.nvarchar:
+                case eDbType.@char:
+                case eDbType.text:
+                case eDbType.xml:
+                case eDbType.ntext:
+                case eDbType.nchar:
+                case eDbType.date:
+                case eDbType.datetime:
+                case eDbType.datetime2:
+                case eDbType.datetimeoffset:
+                case eDbType.guid:
+                case eDbType.uniqueidentifier:
+                    return true;
+            }
+            return false;
+        }
+
+        public static string RestoreText(this string value, CParameter parameter)
+        {
+            //WHERE  [ArtistId] = @ArtistId AND [Name] = '@Name'
+            value =
+                value
+                    .Replace($" AND {parameter.name.Replace("@", string.Empty).QuoteName()} = ", string.Empty)
+                    .Replace($"{parameter.name.Replace("@", string.Empty).QuoteName()} = ", string.Empty)
+                    .Replace((parameter.type.IsString() ? $"'{parameter.name}'": parameter.name), string.Empty);
+
+            return value //TODO: cleanup needs a better approach!
+                .Replace("WHERE AND ", "WHERE ")
+                .Replace("WHERE  AND ", "WHERE ")
+                .Replace("WHERE   AND ", "WHERE ")
+                .Replace("WHERE  ;", ";")
+                .Replace("WHERE ;", ";")
+                .Trim();
+        }
+
         private static string PwdRegex = @"([\s]*(?<passwordkey>password|Password|PASSWORD)=(?<passwordvalue>[a-zA-Z\s\.0-9%\\\^\`~!@#\$&\*\(\)_+\-=\[\{\]\}\]|:',\<\>/\?]*))";
 
         public static string Inflated(this string value)

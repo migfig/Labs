@@ -53,13 +53,7 @@
                     </Button>
                     <Button Command="{Binding CopyQueryCommand}" CommandParameter="{Binding SelectedQuery}" ToolTip="Copy Body">
                         <materialDesign:PackIcon Kind="ContentCopy" />
-                    </Button>
-                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
-                                 IsIndeterminate="{Binding IsBusy}"
-                                 x:Name="DeterminateCircularProgress"
-                                 VerticalAlignment="Center" 
-                                 HorizontalAlignment="Center" 
-                                 Margin="12 12 12 12" />
+                    </Button>                    
                 </ToolBar>
 
                 <ToolBarTray.RenderTransform>

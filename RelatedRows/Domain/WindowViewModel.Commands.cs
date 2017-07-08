@@ -217,7 +217,8 @@ namespace RelatedRows.Domain
                     var selectedParams = SelectedScriptQuery.SelectedParameters ?? SelectedScriptQuery.Parameter;
                     selectedParams.ToList().ForEach((p) =>
                     {
-                        SelectedScriptQuery.Text = SelectedScriptQuery.Text.Replace(p.name, p.DefaultValue());
+                        SelectedScriptQuery.Text = 
+                            SelectedScriptQuery.Text.RestoreText(p);
                     });
 
                     for(var i=selectedParams.Count()-1;i>=0;i--)
@@ -237,8 +238,7 @@ namespace RelatedRows.Domain
 
                     if (trick.action == "Remove Parameter")
                     {                        
-                         SelectedScriptQuery.Text = SelectedScriptQuery.Text
-                            .Replace(p.name, p.DefaultValue());
+                         SelectedScriptQuery.Text = SelectedScriptQuery.Text.RestoreText(p);
                         
                         SelectedScriptQuery.Parameter.Remove(p);
                         OnPropertyChanged("SelectedScriptQuery");

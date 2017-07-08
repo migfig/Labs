@@ -86,13 +86,7 @@
                     </Button>
                     <Button ToolTip="Export To Csv" Command="{Binding ExportToCsvCommand}" CommandParameter="{Binding SelectedTable.DataTable}" IsEnabled="{Binding SelectedTable.DataTable.Rows.Count}">
                         <materialDesign:PackIcon Kind="FileExcel" />
-                    </Button>                    
-                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
-                                 IsIndeterminate="{Binding IsBusy}"
-                                 x:Name="DeterminateCircularProgress"
-                                 VerticalAlignment="Center" 
-                                 HorizontalAlignment="Center" 
-                                 Margin="12 12 12 12" />
+                    </Button>
                 </ToolBar>
 
                 <ToolBarTray.RenderTransform>
