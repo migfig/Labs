@@ -1,4 +1,4 @@
-﻿SELECT  '[' + TABLE_CATALOG + ']' AS catalog, '[' + TABLE_SCHEMA + ']' AS schemaName, '[' + TABLE_NAME + ']' AS name
+﻿SELECT  '[' + TABLE_CATALOG + ']' AS catalog, '[' + TABLE_SCHEMA + ']' AS schemaName, '[' + TABLE_NAME + ']' AS name 
 	,rows = (SELECT TOP 1 pa.rows 
 			FROM sys.partitions pa
 			WHERE pa.object_id in (SELECT ta.object_id FROM sys.tables ta WHERE ta.name = TABLE_NAME)
@@ -32,11 +32,21 @@
 				where st.name = [Table].TABLE_NAME and sc.name = [Column].COLUMN_NAME
 			),
 			(
-				SELECT DISTINCT '[' + ccupk.TABLE_NAME + ']' as toTable, '[' + ccupk.COLUMN_NAME + ']' as toColumn
-				FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE [Relationship] 
-					INNER JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccupk ON [Relationship].COLUMN_NAME = ccupk.COLUMN_NAME
-				WHERE [Relationship].TABLE_NAME = [Table].TABLE_NAME and [Relationship].COLUMN_NAME = [Column].COLUMN_NAME 
-					and left([Relationship].CONSTRAINT_NAME, 2) = 'FK' and ccupk.TABLE_NAME <> [Table].TABLE_NAME
+				SELECT DISTINCT  '[' + [Relationship].TABLE_SCHEMA + ']' as toSchemaName
+					, '[' + [Relationship].TABLE_NAME + ']' as toTable
+					, '[' + [Relationship].COLUMN_NAME + ']' as toColumn
+				FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE [Relationship]
+				WHERE [Relationship].CONSTRAINT_NAME IN
+				(
+					SELECT rc.UNIQUE_CONSTRAINT_NAME
+					FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc
+					WHERE rc.CONSTRAINT_NAME IN
+					(
+						SELECT ccufk.CONSTRAINT_NAME
+						FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccufk
+						WHERE left(ccufk.CONSTRAINT_NAME,2) = 'FK' AND ccufk.TABLE_NAME = [Table].TABLE_NAME AND ccufk.COLUMN_NAME = [Column].COLUMN_NAME
+					)
+				)
 				FOR XML AUTO, TYPE
 			)
         
@@ -47,7 +57,7 @@
 )
 FROM information_schema.TABLES AS [Table]
 WHERE 
-	TABLE_TYPE = 'BASE TABLE' 
-	AND TABLE_NAME = '@tableName'
+	TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = '@tableName'
 ORDER BY 1, 2, 3
 FOR XML AUTO, TYPE, ROOT('schema')
+	
