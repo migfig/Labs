@@ -7,8 +7,8 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:helpers="clr-namespace:RelatedRows.Helpers"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-             Width="250" Height="340">
+             d:DesignHeight="250" d:DesignWidth="365"
+             Width="250" Height="365">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -33,9 +33,19 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBox wpf:HintAssist.Hint="Server" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"                 
-                 Margin="0 12 0 0">
+
+            <ComboBox wpf:HintAssist.Hint="Data Provider" 
+                                              MinWidth="72"
+                                              Margin="0 12 0 0"
+                                              VerticalAlignment="Center" 
+                                              IsEditable="False"                          
+                                              ItemsSource="{Binding ProviderNames}"
+                                              SelectedItem="{Binding Mode=TwoWay, Path=providerName, UpdateSourceTrigger=PropertyChanged, Delay=50}"/>
+
+            <TextBox wpf:HintAssist.Hint="Server" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                     Grid.Row="1" Margin="0 12 0 0">                
                 <TextBox.Text>
                     <Binding Path="serverName" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -46,7 +56,7 @@
             </TextBox>
             <TextBox wpf:HintAssist.Hint="Database" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                  Margin="0 12 0 0"
-                 Grid.Row="1">
+                 Grid.Row="2">
                 <TextBox.Text>
                     <Binding Path="databaseName" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -55,10 +65,10 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            <CheckBox Grid.Row="2" IsChecked="{Binding Mode=TwoWay, Path=isTrustedConnection}">Is Trusted Connection</CheckBox>
+            <CheckBox Grid.Row="3" IsChecked="{Binding Mode=TwoWay, Path=isTrustedConnection}">Is Trusted Connection</CheckBox>
             <TextBox wpf:HintAssist.Hint="User Name" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                  Margin="0 12 0 0"
-                 Grid.Row="3"
+                 Grid.Row="4"
                  IsEnabled="{Binding notIsTrustedConnection}">
                 <TextBox.Text>
                     <Binding Path="userName" UpdateSourceTrigger="PropertyChanged">
@@ -72,10 +82,10 @@
                          PasswordChanged="OnPasswordChanged"
                          Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                          Margin="0 12 0 0"
-                         Grid.Row="4"
+                         Grid.Row="5"
                          IsEnabled="{Binding notIsTrustedConnection}"/>
             <StackPanel Orientation="Horizontal" 
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Margin="0 16 0 0"
                     HorizontalAlignment="Right">
                 <Button IsDefault="True" Style="{DynamicResource MaterialDesignFlatButton}"

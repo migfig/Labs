@@ -39,7 +39,25 @@
                     </Button>
                     <Button Command="{Binding CopyRowCommand}" CommandParameter="{Binding SelectedTable}" ToolTip="Copy Rows" ToolBar.OverflowMode="AsNeeded">
                         <materialDesign:PackIcon Kind="ContentCopy" />
-                    </Button>                    
+                    </Button>
+                    <Button ToolTip="Actions (mouse right click)" Click="OnActionsClick" Visibility="{Binding DatasetActionsMenuVisibility}">
+                        <materialDesign:PackIcon Kind="Script" />
+                        <Button.ContextMenu>
+                            <ContextMenu ItemsSource="{Binding DatasetMenuActions}" MaxWidth="220">
+                                <ContextMenu.ItemTemplate>
+                                    <DataTemplate>
+                                        <MenuItem Header="{Binding Title}" 
+                                                  Command="{Binding ActionCommand}"
+                                                  MaxWidth="200">
+                                            <MenuItem.Icon>
+                                                <materialDesign:PackIcon Kind="{Binding Icon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                    </DataTemplate>
+                                </ContextMenu.ItemTemplate>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
                 </ToolBar>
 
                 <ToolBarTray.RenderTransform>

@@ -13,7 +13,6 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Linq;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace RelatedRows.Domain
 {
@@ -55,37 +54,24 @@ namespace RelatedRows.Domain
         public string defaultDataset { get; set; }
 
         [XmlAttribute()]
-        public string defaultDatasource { get; set; }
-
-        public void Inflate()
-        {
-            foreach(var source in Datasource)
-            {
-                //source.ConnectionString = source.ConnectionString.Inflated();
-            }
-        }
-
-        public void Deflate()
-        {
-            foreach (var source in Datasource)
-            {
-                //source.ConnectionString = source.ConnectionString.Deflated();
-            }
-        }
+        public string defaultDatasource { get; set; }       
     }
     
     [XmlRoot(Namespace="", IsNullable=true)]
     public partial class CDatasource: AbstractNotifyPropertyChanged, IXmlSerializable
-    {        
+    {
+        private string _connectionString;
         public string ConnectionString
         {
             get {
-                if(isTrustedConnection)
-                    return string.Format(@"Data Source={0};Initial Catalog={1};Integrated Security=True;Connect Timeout=120;MultipleActiveResultSets=True;Asynchronous Processing=True;Enlist=false;", _serverName, _databaseName);
-                else
-                    return string.Format(@"Data Source={0};Initial Catalog={1};User={2};Password={3};Connect Timeout=120;MultipleActiveResultSets=True;Asynchronous Processing=True;Enlist=false;", _serverName, _databaseName, _userName, _password);
+                if (null == _selectedProvider) return _connectionString;
+
+                return string.Format(
+                    _selectedProvider.GetConnectionStringFormat(isTrustedConnection), 
+                    _serverName, _databaseName, _userName, _password);
             }
             set {
+                _connectionString = value;
                 serverName = GetString(value, "server");
                 databaseName = GetString(value, "database");
                 userName = GetString(value, "userid");
@@ -97,12 +83,43 @@ namespace RelatedRows.Domain
 
         public CDatasource()
         {
-            ConnectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=Chinook;Integrated Security=False;
+            ConnectionString = @"Data Source=localhost;Initial Catalog=Chinook;Integrated Security=False;
 User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchronous Processing=True;Enlist=false;";
         }
         
         [XmlAttribute()]
         public string name { get; set; }
+
+        private string _providerName;
+        [XmlAttribute]
+        public string providerName {
+            get { return _providerName; }
+            set {
+                SetAndRaise(ref _providerName, value);
+                OnPropertyChanged("IsValid");
+                if(null != Providers)
+                    SelectedProvider = Providers.FirstOrDefault(p => p.Name.Equals(value));
+            }
+        }
+
+        [XmlIgnore]
+        public IEnumerable<IDatasourceProvider> Providers { get; set; }
+
+        [XmlIgnore]
+        public IEnumerable<string> ProviderNames {
+            get { return Providers.Select(p => p.Name); }
+        }
+
+        private IDatasourceProvider _selectedProvider;
+        [XmlIgnore]
+        public IDatasourceProvider SelectedProvider
+        {
+            get { return _selectedProvider; }
+            set
+            {
+                SetAndRaise(ref _selectedProvider, value);
+            }
+        }
 
         private string _serverName;
         [XmlIgnore]
@@ -174,9 +191,12 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
         [XmlIgnore]
         public bool IsValid
         {
-            get { return !string.IsNullOrEmpty(serverName)
+            get {
+                return !string.IsNullOrEmpty(serverName)
                     && !string.IsNullOrEmpty(databaseName)
-                    && (isTrustedConnection ? true : !string.IsNullOrEmpty(userName)); }
+                    && (!string.IsNullOrEmpty(providerName) && ProviderNames.Contains(providerName))
+                    && (isTrustedConnection ? true : !string.IsNullOrEmpty(userName));
+            }
         }
 
         private string GetString(string value, string group)
@@ -200,12 +220,14 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
         {
             var elem = XElement.ReadFrom(reader) as XElement;
             name = elem.Attribute("name").Value;
+            providerName = elem.Attribute("provider").Value;
             ConnectionString = elem.Element("ConnectionString").Value.Deflated();
         }
 
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("name", name);
+            writer.WriteAttributeString("provider", providerName);
             writer.WriteElementString("ConnectionString", ConnectionString.Inflated());
         }
     }
@@ -292,6 +314,7 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
         bit,
         @bool,
         @char,
+        custom,
         date,
         datetime,
         datetime2,
@@ -324,7 +347,6 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
         varbinary,
         varchar,
         xml,
-        custom
     }
     
     [XmlRoot(Namespace="", IsNullable=true)]
@@ -406,7 +428,7 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
         {
             get
             {
-                return name.Replace("[","").Replace("]", "").Substring(0, 1);
+                return name.UnQuoteName().Substring(0, 1);
             }            
         }
 
@@ -427,7 +449,9 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
 
         public override string ToString()
         {
-            return name.Replace("[", "").Replace("]", "");
+            return name
+                .Replace("[", "").Replace("]", "")
+                .Replace("\"", "");
         }
 
         #region clipboard handling
@@ -456,12 +480,20 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
                     && SelectedViewCell != null
                     && SelectedViewCell.Column != null
                     && SelectedViewCell.Column.Header != null)
-                {                    
-                    var column = SelectedViewCell.Column.Header.ToString();
+                {
+                    SelectedColumn = SelectedViewCell.Column.Header.ToString();
                     SelectedRow = SelectedViewCell.Item as DataRowView;
-                    CopyTooltip = this.GetQueryTooltip(column, SelectedRow.Row);
+                    ColumnValue = SelectedRow[SelectedColumn].ToString();
+                    CopyTooltip = this.GetQueryTooltip(SelectedColumn, SelectedRow.Row); //TODO: fix it using data source provider
                 }
             }
+        }
+
+        private string _selectedColumn;
+        public string SelectedColumn
+        {
+            get { return _selectedColumn; }
+            set { SetAndRaise(ref _selectedColumn, value); }
         }
 
         private string _copyTooltip = string.Empty;
@@ -486,6 +518,122 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
                         .Select(s => s.Substring(0, Math.Min(50, s.Length)) 
                             + (s.Length > 50 ? "..." : "")));
             }           
+        }
+
+        #endregion
+
+        #region column expressions
+
+        public string ColumnExpression
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(SelectedColumn) && !string.IsNullOrEmpty(SelectedOperator) && !string.IsNullOrEmpty(ColumnValue))
+                {
+                    if (!SelectedOperator.Equals("[NONE]"))
+                    {
+                        var column = Column.FirstOrDefault(c => c.name.UnQuoteName().Equals(SelectedColumn.UnQuoteName()));
+                        return $"{SelectedColumn.QuoteName("\"", "\"")} {SelectedOperator} {column.GetDefaultValue(SelectedOperator, ColumnValue)}";
+                    }
+                }
+
+                return string.Empty;
+            }
+        }
+
+        private string _columnValue;
+        [XmlIgnore]
+        public string ColumnValue
+        {
+            get { return _columnValue; }
+            set { SetAndRaise(ref _columnValue, value); }
+        }
+
+        private IList<string> _operators;
+        [XmlIgnore]
+        public IList<string> Operators
+        {
+            get
+            {
+                if(_operators == null)
+                {
+                    _operators = GetColumnOperators().ToList();
+                    SelectedOperator = _operators.FirstOrDefault();
+                }
+                return _operators;
+            }
+        }
+
+        private string _selectedOperator;
+        [XmlIgnore]
+        public string SelectedOperator
+        {
+            get { return _selectedOperator; }
+            set
+            {
+                SetAndRaise(ref _selectedOperator, value);
+            }
+        }        
+
+        private IEnumerable<string> GetColumnOperators()
+        {
+            var list = new List<string> { "[NONE]" };
+            foreach (var c in Column)
+            {
+                list.AddRange(GetColumnOperators(c));
+            }
+
+            return list.Distinct();
+        }
+
+        private IEnumerable<string> GetColumnOperators(CColumn column)
+        {
+            var list = new List<string>();
+
+            string opString = string.Empty;
+            switch (GetMappingType(column.DbType.ToString()).ToString())
+            {
+                case "System.DateTime":
+                case "System.Int16":
+                case "System.Int32":
+                case "System.Int64":
+                case "System.Double":
+                    opString = "=,<>,>,>=,<,<=,IS,IS NOT";
+                    break;
+                case "System.Boolean":
+                    opString = "=,<>,IS,IS NOT";
+                    break;
+                default:
+                    opString = "=,<>,LIKE,IS,IS NOT";
+                    break;
+            }
+
+            foreach (string op in opString.Split(new char[] { ',' }))
+                if (!list.Contains(op))
+                    list.Add(op);
+
+            return list;
+        }
+
+        private Type GetMappingType(string colType)
+        {
+            string typeName = colType.ToLower().Split(new char[] { '(' })[0];
+            var types = new Dictionary<Type, List<string>>{
+                {typeof(System.Int32), new List<string> {"int", "smallint", "long", "tinyint"}}
+                ,{typeof(System.Byte[]), new List<string> {"image", "blob", "binary", "sql_variant", "varbinary"}}
+                ,{typeof(System.DateTime), new List<string> {"datetime", "datetime2", "date", "timestamp", "datetimeoffset", "smalldatetime", "time"}}
+                ,{typeof(System.Double), new List<string> {"money", "real", "number", "bigint", "decimal", "float", "numeric"}}
+                ,{typeof(System.Boolean), new List<string> {"bit"}}
+            };
+
+            var theType = from key in types.Keys
+                          where types[key].Contains(colType)
+                          select key;
+
+            if (null != theType && null != theType.FirstOrDefault())
+                return theType.FirstOrDefault();
+
+            return typeof(System.String);
         }
 
         #endregion
@@ -864,7 +1012,9 @@ User=sa;Password=1234;Connect Timeout=120;MultipleActiveResultSets=True;Asynchro
 
         public override string ToString()
         {
-            return name.Replace("[", "").Replace("]", "");
+            return name
+                .Replace("[", "").Replace("]", "")
+                .Replace("\"", "");
         }
 
         public static CQuery Clone(CQuery other)

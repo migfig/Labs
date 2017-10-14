@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>RelatedRows.Domain</id>
+        <version>1.0.0</version>
+        <title>Common classes and utilities for RelatedRows</title>
+        <authors>migfig</authors>
+        <owners>Miguel Figueroa</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Common classes for RelatedRows application</description>
+        <summary>RelatedRows</summary>
+        <copyright>Copyright 2017 Miguel Figueroa</copyright>
+        <language>en-US</language>
+        <tags>WPF SQL</tags>
+    </metadata>
+    <files>
+        <file src="bin\Release\RelatedRows.Domain.dll" target="lib\net452\RelatedRows.Domain.dll" />
+        <file src="bin\Release\RelatedRows.Domain.pdb" target="lib\net452\RelatedRows.Domain.pdb" />
+    </files>
+</package>

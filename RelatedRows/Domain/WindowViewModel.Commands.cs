@@ -1,5 +1,4 @@
-﻿using Common;
-using DynamicData;
+﻿using DynamicData;
 using MaterialDesignThemes.Wpf;
 using RelatedRows.Controls;
 using RelatedRows.Helpers;
@@ -296,7 +295,7 @@ namespace RelatedRows.Domain
             {
                 return _copyQueryCommand ?? (_copyQueryCommand = new Command<CQuery>((query) => {
                     Clipboard.SetText(query.FriendlyText, TextDataFormat.Text);
-                    PersistAndRunText(query.name, query.FriendlyText);
+                    query.name.PersistAndRunText(query.FriendlyText);
                 }));
             }
         }
@@ -331,20 +330,7 @@ namespace RelatedRows.Domain
                     XmlHelper<CConfiguration>.Save(DefaultStoreProcsConfigFile, config);
                 }));
             }
-        }
-
-        private void PersistAndRunText(string objName, string content, string ext = "sql")
-        {
-            if (string.IsNullOrEmpty(content)) return;
-
-            string txtFile = Path.Combine(ExportPath, $"{objName}-{DateTime.Now.ToString("yyyyMMMdd-hhmmss")}.{ext}");
-            using (var stream = new StreamWriter(txtFile))
-            {
-                stream.Write(content);
-            }
-
-            Process.Start(txtFile);
-        }
+        }        
 
         private ICommand _setTargetTableCommand;
         public ICommand SetTargetTableCommand
@@ -364,7 +350,7 @@ namespace RelatedRows.Domain
             {
                 return _exportToSqlCommand ?? (_exportToSqlCommand = new Command<CTable>((table) =>
                 {
-                    PersistAndRunText(table.name, table.SqlInsert(true));
+                    table.name.PersistAndRunText(_dataSourceProvider.QueryBuilder.SqlInsert(table, true));
                 }));
             }
         }
@@ -375,7 +361,7 @@ namespace RelatedRows.Domain
             get
             {
                 return _exportToCsvCommand ?? (_exportToCsvCommand = new Command<DataTable>((table) => {
-                    PersistAndRunText(table.TableName, table.CsvExport(), "csv");
+                    table.TableName.PersistAndRunText(table.CsvExport(), "csv");
                 }));
             }
         }
@@ -456,7 +442,8 @@ namespace RelatedRows.Domain
                             {
                                 table.DataTable =
                                     await _dataSourceProvider
-                                        .GetData(SelectedDatasource, table.name, table.GetQuery(Settings.RowsPerPage));
+                                        .GetData(SelectedDatasource, table.name, 
+                                            _dataSourceProvider.QueryBuilder.GetQuery(table, Settings.RowsPerPage));
 
                                 table.Pager = new CPager(table.DataTable.RowsCount(), Settings.RowsPerPage);
 
@@ -465,7 +452,8 @@ namespace RelatedRows.Domain
                                     {
                                         child.DataTable =
                                             await _dataSourceProvider
-                                                .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: table));
+                                                .GetData(SelectedDatasource, child.name, 
+                                                    _dataSourceProvider.QueryBuilder.GetQuery(child, Settings.RowsPerPage, parent: table));
                                     });
 
                                 if (table == SelectedTable)
@@ -528,6 +516,11 @@ namespace RelatedRows.Domain
                         Logger.Log.Verbose("SetDataset [{@name}]", o.name);
 
                         SelectedDataset = o;
+
+                        var dSrc = Configuration.Datasource.FirstOrDefault(ds => ds.name.Equals(o.dataSourceName));
+                        _dataSourceProvider = _dataSourceProviders.FirstOrDefault(p => p.Name.Equals(dSrc.providerName));
+                        _dataSourceProvider.SetLog(Logger.Log);
+
                         Configuration.Dataset.ToList().ForEach((i) => i.isSelected = false);
                         SelectedDataset.isSelected = true;
                         SelectedTable = SelectedDataset.Table.FirstOrDefault(t => t.name.Equals(SelectedDataset.defaultTable));
@@ -690,7 +683,7 @@ namespace RelatedRows.Domain
                 {
                     Clipboard
                             .SetText(table.CopyTooltip, TextDataFormat.Text);
-                    PersistAndRunText(table.name, table.CopyTooltip);
+                    table.name.PersistAndRunText(table.CopyTooltip);
                 }));
             }
         }

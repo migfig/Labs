@@ -1,86 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace RelatedRows.Domain
 {
-    public static class QueryBuilder
+    public abstract class QueryBuilderBase
     {
-        public static string GetQuery(this CTable table, long top, long skip = 0, CTable parent = null, DataRow row = null)
+        public abstract string GetQuery(CTable table, long top, long skip = 0, CTable parent = null, DataRow row = null);
+        public abstract string GetQueryTooltip(CTable table, string column, DataRow row);
+        public abstract string SqlInsert(CTable table, bool includeChildren = true, IList<string> tables = null);
+
+        public virtual void SqlInsert(StringBuilder value, DataTable table)
         {
-            var query = $"SELECT *, COUNT(*) OVER() AS [CountOver$] FROM (";
-            var subquery = $"SELECT * FROM {table.catalog}.{table.schemaName}.{table.name}";
-            var offsetFetch = $") AS Q ORDER BY 1 OFFSET {skip} ROWS FETCH NEXT {top} ROWS ONLY";
-
-            if (parent != null 
-                && parent.Relationship.Any(r => r.toTable.Equals(table.name)) 
-                && parent.DataTable != null && parent.DataTable.Rows.Count > 0)
+            if (null != table && table.Rows.Count > 0)
             {
-                row = row ?? parent.DataTable.Rows[0];
-
-                subquery += parent.Relationship
-                    .Where(r => r.toTable.Equals(table.name))
-                    .SelectMany(r => r.ColumnRelationship)
-                    .Aggregate(" WHERE", 
-                        (seed, cr) => seed + $" AND {cr.toColumn} = {row.Value(cr.fromColumn.UnQuoteName())}");
-
-                subquery = subquery.Replace("WHERE AND ", "WHERE ");
-
-                if (!table.requiresPagination) return subquery;                
+                foreach (DataRow row in table.Rows)
+                    this.SqlInsert(value, row);
             }
-
-            return query + subquery + offsetFetch;
         }
 
-        public static string GetQueryTooltip(this CTable table, string column, DataRow row)
+        public virtual void SqlInsert(StringBuilder value, DataRow row)
         {
-            var query = $"SELECT * FROM {table.catalog}.{table.schemaName}.{table.name} WHERE {column.QuoteName()} = {row.Value(column.UnQuoteName())}";
-
-            query += Environment.NewLine
-                    + $"UPDATE {table.catalog}.{table.schemaName}.{table.name} SET "
-                    + table.Column
-                        .Where(c => !c.name.Equals(column.QuoteName()))
-                        .Aggregate("",
-                            (seed, c) => seed + $", {c.name} = {row.Value(c.name.UnQuoteName())}")
-                    + $" WHERE {column.QuoteName()} = {row.Value(column.UnQuoteName())}";
-
-            query += Environment.NewLine
-                + $"DELETE FROM {table.catalog}.{table.schemaName}.{table.name} WHERE {column.QuoteName()} = {row.Value(column.UnQuoteName())}";
-
-            var hasIdentity = table.Column.Any(x => x.isIdentity);
-            query += Environment.NewLine;
-
-            if (hasIdentity)
-                query += string.Format("SET IDENTITY_INSERT {0}.{1}.{2} ON{3}", table.catalog, table.schemaName, table.name, Environment.NewLine);
-            query += $"INSERT INTO {table.catalog}.{table.schemaName}.{table.name} ("
-                    + table.Column
-                        .Aggregate("",
-                            (seed, c) => seed + $", {c.name}")
-                    + ") VALUES ("
-                    + table.Column
-                        .Aggregate("",
-                            (seed, c) => seed + $", {row.Value(c.name.UnQuoteName())}")
-                    + ")";
-            if (hasIdentity)
+            try
             {
-                query += Environment.NewLine;
-                query += string.Format("SET IDENTITY_INSERT {0}.{1}.{2} OFF{3}", table.catalog, table.schemaName, table.name, Environment.NewLine);
+                value.AppendFormat("Insert Into {0} (", row.Table.TableName);
+                var columns = row.Table.Columns.Cast<DataColumn>();
+                var values = new StringBuilder("Values (");
+
+                foreach (DataColumn col in columns)
+                {
+                    value.AppendFormat("[{0}]{1}", col.ColumnName, col != columns.Last() ? "," : string.Empty);
+                    values.AppendFormat("{0}{1}", row.Value(col.ColumnName), col != columns.Last() ? "," : string.Empty);
+                }
+                values.Append(")");
+                value.Append(") ");
+                value.Append(values.ToString());
+                value.Append(";");
+                value.Append(Environment.NewLine);
             }
-
-            return query.Replace("SET ,", "SET ").Replace("(, ", "(");
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
+    }
 
-        public static string UnQuoteName(this string value)
+    public static class QueryBuilderExt
+    {
+        public static string UnQuoteName(this string value, string openQuoteChar = "[", string closeQuoteChar = "]")
         {
-            return value.Replace("[","").Replace("]","");
+            return value
+                .Replace(openQuoteChar, "").Replace(closeQuoteChar, "")
+                .Replace("\"", "");
         }
 
         public static string QuoteName(this string value, string openQuoteChar = "[", string closeQuoteChar = "]")
         {
-            return !value.StartsWith(openQuoteChar) ? $"{openQuoteChar}{value}{closeQuoteChar}" : value;
+            return !value.StartsWith(openQuoteChar) 
+                ? $"{openQuoteChar}{value}{closeQuoteChar}" 
+                : !value.StartsWith("\"") ? $"\"{value}\"" : value;
         }
 
         public static bool AreEqual(this DataRowView row, DataRowView other)
@@ -125,6 +108,44 @@ namespace RelatedRows.Domain
             return dataTable;
         }
 
+        public static string GetQueryTooltip(this CTable table, string column, DataRow row)
+        {
+            var query = $"SELECT * FROM {table.catalog}.{table.schemaName}.{table.name} WHERE {column.UnQuoteName().QuoteName("\"","\"")} = {row.Value(column.UnQuoteName())}";
+
+            query += Environment.NewLine
+                    + $"UPDATE {table.catalog}.{table.schemaName}.{table.name} SET "
+                    + table.Column
+                        .Where(c => !c.name.Equals(column.QuoteName()))
+                        .Aggregate("",
+                            (seed, c) => seed + $", {c.name} = {row.Value(c.name.UnQuoteName())}")
+                    + $" WHERE {column.UnQuoteName().QuoteName("\"", "\"")} = {row.Value(column.UnQuoteName())}";
+
+            query += Environment.NewLine
+                + $"DELETE FROM {table.catalog}.{table.schemaName}.{table.name} WHERE {column.UnQuoteName().QuoteName("\"", "\"")} = {row.Value(column.UnQuoteName())}";
+
+            var hasIdentity = table.Column.Any(x => x.isIdentity);
+            query += Environment.NewLine;
+
+            if (hasIdentity)
+                query += string.Format("SET IDENTITY_INSERT {0}.{1}.{2} ON{3}", table.catalog, table.schemaName, table.name, Environment.NewLine);
+            query += $"INSERT INTO {table.catalog}.{table.schemaName}.{table.name} ("
+                    + table.Column
+                        .Aggregate("",
+                            (seed, c) => seed + $", {c.name}")
+                    + ") VALUES ("
+                    + table.Column
+                        .Aggregate("",
+                            (seed, c) => seed + $", {row.Value(c.name.UnQuoteName())}")
+                    + ")";
+            if (hasIdentity)
+            {
+                query += Environment.NewLine;
+                query += string.Format("SET IDENTITY_INSERT {0}.{1}.{2} OFF{3}", table.catalog, table.schemaName, table.name, Environment.NewLine);
+            }
+
+            return query.Replace("SET ,", "SET ").Replace("(, ", "(");
+        }
+
         private static Type GetType(eDbType type)
         {
             switch (type)
@@ -147,75 +168,7 @@ namespace RelatedRows.Domain
             }
 
             return typeof(string);
-        }
-
-        public static string SqlInsert(this CTable table, bool includeChildren = true, IList<string> tables = null)
-        {
-            tables = tables ?? new List<string>();
-            if (tables.Contains(table.name)) return string.Empty;
-
-            var value = new StringBuilder();
-            if (null != table
-                && table.DataTable != null
-                && table.DataTable.Rows.Count > 0)
-            {
-                var hasIdentity = table.Column.Any(x => x.isIdentity);
-                if (hasIdentity)
-                    value.AppendFormat("SET IDENTITY_INSERT {0}.{1}.{2} ON{3}", table.catalog, table.schemaName, table.name, Environment.NewLine);
-                value.SqlInsert(table.DataTable);
-                if (hasIdentity)
-                    value.AppendFormat("SET IDENTITY_INSERT {0}.{1}.{2} OFF{3}", table.catalog, table.schemaName, table.name, Environment.NewLine);
-                value.Append(Environment.NewLine);
-
-                tables.Add(table.name);
-
-                if (includeChildren)
-                {
-                    foreach (var child in table.Children)
-                        value.Append(child.SqlInsert(includeChildren, tables));
-                }
-            }
-
-            return value.ToString();
-        }
-
-        public static StringBuilder SqlInsert(this StringBuilder value, DataTable table)
-        {
-            if (null != table && table.Rows.Count > 0)
-            {
-                foreach (DataRow row in table.Rows)
-                    value.SqlInsert(row);
-            }
-
-            return value;
-        }           
-
-        public static StringBuilder SqlInsert(this StringBuilder value, DataRow row)
-        {
-            try
-            {
-                value.AppendFormat("Insert Into {0} (", row.Table.TableName);
-                var columns = row.Table.Columns.Cast<DataColumn>();
-                var values = new StringBuilder("Values (");
-
-                foreach (DataColumn col in columns)
-                {
-                    value.AppendFormat("[{0}]{1}", col.ColumnName, col != columns.Last() ? "," : string.Empty);
-                    values.AppendFormat("{0}{1}", row.Value(col.ColumnName), col != columns.Last() ? "," : string.Empty);
-                }
-                values.Append(")");
-                value.Append(") ");
-                value.Append(values.ToString());
-                value.Append(";");
-                value.Append(Environment.NewLine);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return value;
-        }
+        }       
 
         public static string CsvExport(this DataTable table)
         {
@@ -225,12 +178,12 @@ namespace RelatedRows.Domain
             {
                 value.AppendFormat("{0}{1}",
                     table.Columns.Cast<DataColumn>().Aggregate("",
-                        (seed, c) => seed + $",{c.ColumnName}").Substring(1), 
+                        (seed, c) => seed + $",{c.ColumnName}").Substring(1),
                     Environment.NewLine);
 
                 foreach (DataRow row in table.Rows)
                     value.AppendFormat("{0}{1}", table.Columns.Cast<DataColumn>().Aggregate("",
-                        (seed, c) => seed + $",{row.Value(c.ColumnName, "\"")}").Substring(1), 
+                        (seed, c) => seed + $",{row.Value(c.ColumnName, "\"")}").Substring(1),
                         Environment.NewLine);
             }
 
@@ -266,7 +219,7 @@ namespace RelatedRows.Domain
                 case "System.DateTimeOffset":
                 case "System.Guid":
                 case "System.Object":
-                    return string.Format("{0}{1}{0}", quoteChar, row[columnName].ToString().Replace("'","''"));
+                    return string.Format("{0}{1}{0}", quoteChar, row[columnName].ToString().Replace("'", "''"));
             }
 
             return value;
@@ -274,74 +227,10 @@ namespace RelatedRows.Domain
 
         public static string QuoteParam(this CColumn col, string quoteChar = "'")
         {
-            switch (col.DbType)
-            {
-                case eDbType.@string:
-                case eDbType.varchar:
-                case eDbType.nvarchar:
-                case eDbType.@char:
-                case eDbType.text:
-                case eDbType.xml:
-                case eDbType.ntext:
-                case eDbType.nchar:
-                case eDbType.date:
-                case eDbType.datetime:
-                case eDbType.datetime2:
-                case eDbType.datetimeoffset:
-                case eDbType.guid:
-                case eDbType.uniqueidentifier:
+            if(col.DbType.IsString())
                     return $"'@{col.name.UnQuoteName()}'";
-            }
 
             return $"@{col.name.UnQuoteName()}";
-        }
-
-        public static string DefaultValue(this CColumn col)
-        {
-            var value = "NULL";
-
-            switch (col.DbType)
-            {
-                case eDbType.@bool:
-                case eDbType.bit:
-                    return "0";
-                case eDbType.binary:
-                case eDbType.varbinary:
-                case eDbType.sql_variant:
-                case eDbType.image:
-                    return "0x0";
-                case eDbType.@int:
-                case eDbType.@long:
-                case eDbType.@decimal:
-                case eDbType.real:
-                case eDbType.money:
-                case eDbType.smallmoney:
-                case eDbType.tinyint:
-                case eDbType.@float:
-                case eDbType.bigint:
-                case eDbType.numeric:
-                case eDbType.smallint:
-                    return default(Int32).ToString();
-                case eDbType.@string:
-                case eDbType.varchar:
-                case eDbType.nvarchar:
-                case eDbType.@char:
-                case eDbType.text:
-                case eDbType.xml:
-                case eDbType.ntext:
-                case eDbType.nchar:
-                    return string.Empty;
-                case eDbType.date:
-                case eDbType.datetime:
-                case eDbType.datetime2:
-                case eDbType.datetimeoffset:
-                    return DateTime.UtcNow.ToString("yyyy-mm-dd");
-                case eDbType.guid:
-                case eDbType.uniqueidentifier:
-                    return Guid.Empty.ToString();
-            }
-
-            return value;
         }
 
         public static string DefaultValue(this CParameter parameter)
@@ -392,6 +281,70 @@ namespace RelatedRows.Domain
             return value;
         }
 
+        public static string DefaultValue(this CColumn col, string defaultValue = "")
+        {
+            if (!string.IsNullOrEmpty(defaultValue)) return defaultValue;
+
+            var value = "NULL";
+
+            switch (col.DbType)
+            {
+                case eDbType.@bool:
+                case eDbType.bit:
+                    return "0";
+                case eDbType.binary:
+                case eDbType.varbinary:
+                case eDbType.sql_variant:
+                case eDbType.image:
+                    return "0x0";
+                case eDbType.@int:
+                case eDbType.@long:
+                case eDbType.@decimal:
+                case eDbType.real:
+                case eDbType.money:
+                case eDbType.smallmoney:
+                case eDbType.tinyint:
+                case eDbType.@float:
+                case eDbType.bigint:
+                case eDbType.numeric:
+                case eDbType.smallint:
+                    return default(Int32).ToString();
+                case eDbType.@string:
+                case eDbType.varchar:
+                case eDbType.nvarchar:
+                case eDbType.@char:
+                case eDbType.text:
+                case eDbType.xml:
+                case eDbType.ntext:
+                case eDbType.nchar:
+                    return string.Empty;
+                case eDbType.date:
+                case eDbType.datetime:
+                case eDbType.datetime2:
+                case eDbType.datetimeoffset:
+                case eDbType.time:
+                case eDbType.timestamp:
+                    return DateTime.UtcNow.ToString("yyyy-mm-dd");
+                case eDbType.guid:
+                case eDbType.uniqueidentifier:
+                    return Guid.Empty.ToString();
+            }
+
+            return value;
+        }        
+
+        public static object GetDefaultValue(this CColumn column, string @operator, string defaultValue = "")
+        {
+            if (@operator.ToLower().StartsWith("is"))
+                return "NULL";
+            else if (@operator.ToLower().StartsWith("like"))
+                return "'%" + column.DefaultValue(defaultValue) + "%'";
+            else
+                return column.DbType.IsString() 
+                    ? column.DefaultValue(defaultValue).ToString().QuoteName("'","'") 
+                    : column.DefaultValue(defaultValue);
+        }       
+
         public static bool IsString(this eDbType type)
         {
             switch (type)
@@ -408,6 +361,8 @@ namespace RelatedRows.Domain
                 case eDbType.datetime:
                 case eDbType.datetime2:
                 case eDbType.datetimeoffset:
+                case eDbType.time:
+                case eDbType.timestamp:
                 case eDbType.guid:
                 case eDbType.uniqueidentifier:
                     return true;
@@ -422,7 +377,7 @@ namespace RelatedRows.Domain
                 value
                     .Replace($" AND {parameter.name.Replace("@", string.Empty).QuoteName()} = ", string.Empty)
                     .Replace($"{parameter.name.Replace("@", string.Empty).QuoteName()} = ", string.Empty)
-                    .Replace((parameter.type.IsString() ? $"'{parameter.name}'": parameter.name), string.Empty);
+                    .Replace((parameter.type.IsString() ? $"'{parameter.name}'" : parameter.name), string.Empty);
 
             return value //TODO: cleanup needs a better approach!
                 .Replace("WHERE AND ", "WHERE ")
@@ -486,7 +441,84 @@ namespace RelatedRows.Domain
 
         public static string SecureString(this string value)
         {
-            return string.Join(";",value.Split(';').Where(s => !s.ToLower().Contains("password")));
+            return string.Join(";", value.Split(';').Where(s => !s.ToLower().Contains("password")));
         }
-    }
+
+        public static string ExportPath
+        {
+            get
+            {
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "export");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                return path;
+            }
+        }
+
+        public static void PersistAndRunText(this string objName, string content, string ext = "sql")
+        {
+            if (string.IsNullOrEmpty(content)) return;
+
+            string txtFile = Path.Combine(ExportPath, $"{objName.UnQuoteName()}-{DateTime.Now.ToString("yyyyMMMdd-hhmmss")}.{ext}");
+            using (var stream = new StreamWriter(txtFile))
+            {
+                stream.Write(content);
+            }
+
+            Process.Start(txtFile);
+        }
+
+        public static string Capitalize(this string value)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            value = value.Trim().UnQuoteName();
+
+            return value.Length > 1
+                ? $"{value[0].ToString().ToUpper()}{value.Substring(1)}"
+                : value.ToUpper();
+        }
+
+        public static string Lowerize(this string value)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            value = value.Trim().UnQuoteName();
+
+            return value.Length > 1
+                ? $"{value[0].ToString().ToLower()}{value.Substring(1)}"
+                : value.ToLower();
+        }
+
+        public static string Camelize(this string value)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            value = value.Trim().UnQuoteName();
+
+            var replaced = Regex.Replace(value, @"[\[\]" + "\"" + "]?(?<Char>[a-z]{1})", "${Char}");
+            var split = replaced.Split('_','-');
+            value = String.Join("", split.Select(s => s.Capitalize()));
+
+            return value.Capitalize();
+        }
+
+        public static string CamelizeLower(this string value)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            value = value.Trim().UnQuoteName();
+
+            var replaced = Regex.Replace(value, @"[\[\]" + "\"" + "]?(?<Char>[a-z]{1})", "${Char}");
+            var split = replaced.Split('_', '-');
+            value = String.Join("", split.Select(s => s.Lowerize()));
+
+            return value.Lowerize();
+        }
+
+        public static bool ContainsAnyOfList(this string value, IEnumerable<string> list)
+        {
+            foreach (var item in list)
+                if (value.Contains(item))
+                    return true;
+
+            return false;
+        }
+    }    
 }

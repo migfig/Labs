@@ -11,5 +11,12 @@ namespace RelatedRows.Controls
         {
             InitializeComponent();
         }
+
+        private void OnActionsClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            button.ContextMenu.IsOpen = true;
+            e.Handled = true;
+        }
     }
 }

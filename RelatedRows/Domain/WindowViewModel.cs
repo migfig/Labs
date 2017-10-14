@@ -1,5 +1,4 @@
-﻿using Common;
-using Dragablz;
+﻿using Dragablz;
 using DynamicData;
 using DynamicData.Binding;
 using MahApps.Metro.Controls;
@@ -26,7 +25,11 @@ namespace RelatedRows.Domain
 {
     public partial class WindowViewModel : AbstractNotifyPropertyChanged
     {
-        private readonly IDatasourceProvider _dataSourceProvider;
+        private readonly PlugableProviders _plugableProviders;
+        private IEnumerable<IDatasourceProvider> _dataSourceProviders;
+        private IDatasourceProvider _dataSourceProvider;
+        private IEnumerable<IDatasetConsumer> _dataSetConsumers;
+        private IEnumerable<ITableConsumer> _tableConsumers;
         private readonly ISchedulerProvider _schedulerProvider;
         private bool _menuIsOpen;
 
@@ -71,19 +74,7 @@ namespace RelatedRows.Domain
         private string DefaultStoreProcsHistoryFile
         {
             get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "configuration-store-procs-hist.xml"); }
-        }
-
-        private string ExportPath
-        {
-            get
-            {
-                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "export");
-                if (!Directory.Exists(path))
-                    WrapBlock(() => Directory.CreateDirectory(path)
-                        ,"creating directory {@path}", path);
-                return path;
-            }
-        }
+        }        
 
         private Stack<CTable> _navigationStack = new Stack<CTable>();
 
@@ -104,7 +95,22 @@ namespace RelatedRows.Domain
             _settings.ApplyThemeCommand.Execute(_settings.Theme.Equals(Theme.Dark));
             _settings.ApplyTheme();
             _isEmpty = true;
-            _dataSourceProvider = new SqlServerProvider(Logger.Log);
+            _plugableProviders = new PlugableProviders();
+            _plugableProviders.Load();
+            _dataSourceProviders = (from p in _plugableProviders.Plugins
+                                   let item = p as IDatasourceProvider
+                                   where item != null
+                                   select item).ToList();
+            _dataSetConsumers = (from p in _plugableProviders.Plugins
+                                 let item = p as IDatasetConsumer
+                                 where item != null
+                                 select item).ToList();
+            _tableConsumers = (from p in _plugableProviders.Plugins
+                               let item = p as ITableConsumer
+                               where item != null
+                               select item).ToList();
+            _dataSourceProvider = _dataSourceProviders.FirstOrDefault(p => p.IsDefault);
+            _dataSourceProvider.SetLog(Logger.Log);
             _schedulerProvider = schedulerProvider;
 
             Version = $"v{Assembly.GetEntryAssembly().GetName().Version.ToString(3)}";
@@ -143,6 +149,7 @@ namespace RelatedRows.Domain
                 {
                     Configuration = InitConfiguration(XmlHelper<CConfiguration>.Load(file.FullName));
                     IsEmpty = false;
+                    _dataSetConsumers.ToList().ForEach(c => c.OnConnected(Configuration, Logger.Log));
                     SetDataset.Execute(Configuration.Dataset.FirstOrDefault());
 
                     var qryConfig = XmlHelper<CConfiguration>.Load(file.FullName.Replace(".xml", "-store-procs.xml"));
@@ -199,7 +206,10 @@ namespace RelatedRows.Domain
         public CDataset SelectedDataset
         {
             get { return _selectedDataset; }
-            set { SetAndRaise(ref _selectedDataset, value); }
+            set {
+                SetAndRaise(ref _selectedDataset, value);
+                _dataSetConsumers.ToList().ForEach(c => c.OnDatasetUpdated(value));
+            }
         }
 
         public CDatasource SelectedDatasource
@@ -252,6 +262,10 @@ namespace RelatedRows.Domain
                 {
                     OnSelectedTableChange();
                 }
+                _tableConsumers.ToList().ForEach(t => {
+                    t.OnConnected(Configuration, Logger.Log);
+                    t.OnTableUpdated(value);
+                });
             }
         }
 
@@ -268,7 +282,8 @@ namespace RelatedRows.Domain
                     {
                         SelectedTable.DataTable =
                         await _dataSourceProvider
-                            .GetData(SelectedDatasource, SelectedTable.name, SelectedTable.GetQuery(Settings.RowsPerPage));
+                            .GetData(SelectedDatasource, SelectedTable.name,
+                                _dataSourceProvider.QueryBuilder.GetQuery(SelectedTable, Settings.RowsPerPage));
 
                         SelectedTable.Pager = new CPager(SelectedTable.DataTable.RowsCount(), Settings.RowsPerPage);
 
@@ -277,7 +292,8 @@ namespace RelatedRows.Domain
                             {
                                 child.DataTable =
                                     await _dataSourceProvider
-                                        .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: SelectedTable));
+                                        .GetData(SelectedDatasource, child.name, 
+                                            _dataSourceProvider.QueryBuilder.GetQuery(child, Settings.RowsPerPage, parent: SelectedTable));
 
                                 if (child.requiresPagination)
                                     child.Pager = new CPager(child.DataTable.RowsCount(), Settings.RowsPerPage);
@@ -286,7 +302,8 @@ namespace RelatedRows.Domain
                     {
                         SelectedTable.DataTable =
                             await _dataSourceProvider
-                                .GetData(SelectedDatasource, SelectedTable.name, SelectedTable.GetQuery(Settings.RowsPerPage, skip: SelectedTable.Pager.Skip));
+                                .GetData(SelectedDatasource, SelectedTable.name, 
+                                    _dataSourceProvider.QueryBuilder.GetQuery(SelectedTable, Settings.RowsPerPage, skip: SelectedTable.Pager.Skip));
 
                         var rows = SelectedTable.DataTable.RowsCount();
                         if (SelectedTable.Pager.RowsCount != rows)
@@ -297,7 +314,8 @@ namespace RelatedRows.Domain
                             {
                                 child.DataTable =
                                     await _dataSourceProvider
-                                        .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: SelectedTable));
+                                        .GetData(SelectedDatasource, child.name, 
+                                           _dataSourceProvider.QueryBuilder.GetQuery(child, Settings.RowsPerPage, parent: SelectedTable));
 
                                 if (child.requiresPagination)
                                     child.Pager = new CPager(child.DataTable.RowsCount(), Settings.RowsPerPage);
@@ -327,7 +345,8 @@ namespace RelatedRows.Domain
                 {
                     table.DataTable =
                             await _dataSourceProvider
-                                .GetData(SelectedDatasource, table.name, table.GetQuery(Settings.RowsPerPage, skip: table.Pager.Skip));
+                                .GetData(SelectedDatasource, table.name, 
+                                   _dataSourceProvider.QueryBuilder.GetQuery(table, Settings.RowsPerPage, skip: table.Pager.Skip));
 
                     var rows = table.DataTable.RowsCount();
                     if (table.Pager.RowsCount != rows)
@@ -384,7 +403,7 @@ namespace RelatedRows.Domain
                                     .Where(r => r.toTable.Equals(child.name))
                                     .SelectMany(r => r.ColumnRelationship)
                                     .Aggregate("",
-                                        (seed, cr) => seed + $" AND {cr.toColumn} = {_selectedRow.Row.Value(cr.fromColumn.UnQuoteName())}");
+                                        (seed, cr) => seed + $" AND {cr.toColumn.UnQuoteName()} = {_selectedRow.Row.Value(cr.fromColumn.UnQuoteName())}");
                                 filter = filter.Length > 5 ? filter.Substring(5) : filter;
 
                                 Logger.Log.Verbose("Set filter {@filter} on child table {@name}", filter, child.name);
@@ -395,7 +414,7 @@ namespace RelatedRows.Domain
                                     {
                                         var newData = await _dataSourceProvider
                                                     .GetData(SelectedDatasource, child.name,
-                                                        child.GetQuery(Settings.RowsPerPage, parent: SelectedTable, row: _selectedRow.Row));
+                                                        _dataSourceProvider.QueryBuilder.GetQuery(child, Settings.RowsPerPage, parent: SelectedTable, row: _selectedRow.Row));
 
                                         foreach (DataRow row in newData.Rows)
                                             child.DataTable.Rows.Add(row.ItemArray);
@@ -463,7 +482,8 @@ namespace RelatedRows.Domain
                         {
                             SelectedTable.DataTable =
                                 await _dataSourceProvider
-                                    .GetData(SelectedDatasource, SelectedTable.name, SelectedTable.GetQuery(Settings.RowsPerPage));
+                                    .GetData(SelectedDatasource, SelectedTable.name,
+                                        _dataSourceProvider.QueryBuilder.GetQuery(SelectedTable, Settings.RowsPerPage));
 
                             SelectedTable.Pager = new CPager(SelectedTable.DataTable.RowsCount(), Settings.RowsPerPage);
 
@@ -472,7 +492,8 @@ namespace RelatedRows.Domain
                                 {
                                     child.DataTable =
                                         await _dataSourceProvider
-                                            .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: SelectedTable));
+                                            .GetData(SelectedDatasource, child.name, 
+                                                _dataSourceProvider.QueryBuilder.GetQuery(child, Settings.RowsPerPage, parent: SelectedTable));
                                 });
                         }
                         catch (Exception e)
@@ -543,6 +564,30 @@ namespace RelatedRows.Domain
             get { return _navigationStack.Count > 0 ? Visibility.Visible : Visibility.Collapsed; }
         }
 
+        public IEnumerable<Actionable<CDataset>> DatasetMenuActions
+        {
+            get
+            {
+                return _dataSetConsumers.SelectMany(a => a.Actions);
+            }
+        }
+        public Visibility DatasetActionsMenuVisibility
+        {
+            get { return _dataSetConsumers.Any() ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public IEnumerable<Actionable<CTable>> TableMenuActions
+        {
+            get
+            {
+                return _tableConsumers.SelectMany(a => a.Actions);
+            }
+        }
+        public Visibility TableActionsMenuVisibility
+        {
+            get { return _tableConsumers.Any() ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
         public SolidColorBrush AlternatingRowBackground
         {
             get { return new SolidColorBrush(Settings.SelectedPrimaryColor.PrimaryHues.First().Color); }
@@ -581,7 +626,8 @@ namespace RelatedRows.Domain
                 );
         }
 
-        private CConfiguration InitConfiguration(CConfiguration config)
+        private CConfiguration 
+            InitConfiguration(CConfiguration config)
         {
             foreach (var ds in config.Dataset)
             {
@@ -616,9 +662,14 @@ namespace RelatedRows.Domain
 
             if (o == null)
             {
+                var providers = _dataSourceProviders.Select(p => p.Name);
+                var defaultProvider = _dataSourceProviders.FirstOrDefault(p => p.IsDefault).Name;
                 var view = new DatasourceDialog
                 {
-                    DataContext = new CDatasource()
+                    DataContext = new CDatasource {
+                        Providers = _dataSourceProviders,
+                        providerName = providers.FirstOrDefault(p => p.Equals(defaultProvider))
+                    }
                 };
                 o = new object[] { view.DataContext, false };
 
@@ -639,6 +690,9 @@ namespace RelatedRows.Domain
             {
                 try
                 {
+                    _dataSourceProvider = _dataSourceProviders.FirstOrDefault(p => p.Name.Equals(ds.providerName));
+                    _dataSourceProvider.SetLog(Logger.Log);
+
                     var schema = await _dataSourceProvider.GetSchema(ds);
                     if (!string.IsNullOrEmpty(schema))
                     {
@@ -672,7 +726,7 @@ namespace RelatedRows.Domain
                             {
                                 if (Configuration.Dataset.Any(cds => cds.name.Equals(config.defaultDataset)))
                                 {
-                                    for (var i = 1; i < 100; i++)
+                                    for (var i = 1; i < 10000; i++)
                                         if (!Configuration.Dataset.Any(cds => cds.name.Equals(config.defaultDataset + i)))
                                         {
                                             var newName = config.Dataset.FirstOrDefault().name + i;
@@ -691,6 +745,8 @@ namespace RelatedRows.Domain
                                         dset.Query.Clear();
 
                                     XmlHelper<CConfiguration>.Save(DefaultConfigFile, Configuration);
+
+                                    _dataSetConsumers.ToList().ForEach(c => c.OnConnected(Configuration, Logger.Log));
                                 });
 
                                 var queryConfig = await LoadAndSaveQueries(ds, config.Dataset.FirstOrDefault().name);
@@ -967,7 +1023,8 @@ namespace RelatedRows.Domain
                                     if (child != null)
                                         child.DataTable =
                                                 await _dataSourceProvider
-                                                    .GetData(SelectedDatasource, child.name, child.GetQuery(Settings.RowsPerPage, parent: SelectedTable));
+                                                    .GetData(SelectedDatasource, child.name, 
+                                                        _dataSourceProvider.QueryBuilder.GetQuery(child, Settings.RowsPerPage, parent: SelectedTable));
                                 });
 
                                 _newRelationships.Clear();

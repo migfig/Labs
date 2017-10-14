@@ -26,7 +26,6 @@ namespace RelatedRows.Domain
             }
         }
 
-
         private int _scale;
         public int Scale {
             get { return _scale; }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -40,6 +41,17 @@
                     <Button ToolTip="Home" Command="{Binding GoHomeCommand}" Visibility="{Binding GoHomeVisibility}">
                         <materialDesign:PackIcon Kind="Home" />
                     </Button>
+                    <ComboBox wpf:HintAssist.Hint="(operator)" 
+                            MaxWidth="55"
+                            VerticalAlignment="Center" 
+                            IsEditable="False"
+                            IsTextSearchEnabled="True"
+                            ItemsSource="{Binding SelectedTable.Operators}"
+                            SelectedItem="{Binding Mode=TwoWay, Path=SelectedTable.SelectedOperator, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox wpf:HintAssist.Hint="(value)"
+                            MaxWidth="100"
+                            VerticalAlignment="Center"
+                            Text="{Binding Mode=TwoWay, Path=SelectedTable.ColumnValue, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Command="{Binding PageCommand}" CommandParameter="first" 
                             IsEnabled="{Binding SelectedTable.Pager.CanGoFirst}" 
                             ToolTip="{Binding SelectedTable.Pager.FirstTooltip}"
@@ -86,6 +98,25 @@
                     </Button>
                     <Button ToolTip="Export To Csv" Command="{Binding ExportToCsvCommand}" CommandParameter="{Binding SelectedTable.DataTable}" IsEnabled="{Binding SelectedTable.DataTable.Rows.Count}">
                         <materialDesign:PackIcon Kind="FileExcel" />
+                    </Button>
+                    <Button ToolTip="Actions (mouse right click)" Click="OnActionsClick" Visibility="{Binding TableActionsMenuVisibility}">
+                        <materialDesign:PackIcon Kind="Script" />
+                        <Button.ContextMenu>
+                            <ContextMenu ItemsSource="{Binding TableMenuActions}" MaxWidth="220">
+                                <ContextMenu.ItemTemplate>
+                                    <DataTemplate>
+                                        <MenuItem Header="{Binding Title}" 
+                                                  Command="{Binding ActionCommand}"
+                                                  CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SelectedTable}"
+                                                  MaxWidth="200">
+                                            <MenuItem.Icon>
+                                                <materialDesign:PackIcon Kind="{Binding Icon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                    </DataTemplate>
+                                </ContextMenu.ItemTemplate>
+                            </ContextMenu>
+                        </Button.ContextMenu>
                     </Button>
                 </ToolBar>
 

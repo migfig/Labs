@@ -9,6 +9,7 @@ namespace RelatedRows.Domain
         public static XElement BuildElements(CDatasource dataSource, string schema)
         {
             var doc = XDocument.Load(new StringReader(schema));
+            //doc.Save("schema.xml");
             var dataSourceName = dataSource.serverName
                 .Split('.').First().Split('\\').First() + "-" + dataSource.databaseName;
 
@@ -17,6 +18,7 @@ namespace RelatedRows.Domain
                         new XAttribute("defaultDataset", dataSourceName),
                     new XElement("Datasource",
                         new XAttribute("name", dataSourceName),
+                        new XAttribute("provider", dataSource.providerName),
                         new XElement("ConnectionString", dataSource.ConnectionString)),
                     new XElement("Dataset",
                         new XAttribute("name", dataSourceName),
@@ -70,6 +72,7 @@ namespace RelatedRows.Domain
                         new XAttribute("defaultDataset", dataSourceName),
                     new XElement("Datasource",
                         new XAttribute("name", dataSourceName),
+                        new XAttribute("provider", dataSource.providerName),
                         new XElement("ConnectionString", dataSource.ConnectionString)),
                     new XElement("Dataset",
                         new XAttribute("name", dataSourceName),
